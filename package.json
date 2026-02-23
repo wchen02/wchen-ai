@@ -1,14 +1,15 @@
 {
-  "name": "next-temp",
+  "name": "wchen-ai",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "pnpm run prebuild && next build",
-    "prebuild": "tsx scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts",
+    "prebuild": "tsx scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "framer-motion": "^12.34.3",
@@ -29,6 +30,7 @@
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }

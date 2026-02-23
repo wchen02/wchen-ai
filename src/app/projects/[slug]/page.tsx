@@ -22,6 +22,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${project.title} | Wilson Chen`,
     description: project.problemAddressed,
+    openGraph: {
+      title: project.title,
+      description: project.problemAddressed,
+      url: `https://wchen.ai/projects/${resolvedParams.slug}`,
+      siteName: "Wilson Chen",
+      locale: "en_US",
+      type: "article",
+    },
   };
 }
 

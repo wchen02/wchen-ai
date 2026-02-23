@@ -1,46 +1,15 @@
-"use client";
+import type { GitHubContributions } from "@/lib/schemas";
 
-import { useEffect, useState } from "react";
-
-interface GitHubContributions {
-  totalContributions: number;
-  weeks: {
-    contributionDays: {
-      contributionCount: number;
-      date: string;
-    }[];
-  }[];
+interface GitHubGraphProps {
+  data: GitHubContributions | null;
 }
 
-export default function GitHubGraph() {
-  const [data, setData] = useState<GitHubContributions | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/github-contributions.json")
-      .then((res) => res.json())
-      .then((json: unknown) => {
-        setData(json as GitHubContributions);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load GitHub data:", err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <div className="h-32 w-full animate-pulse bg-gray-100 rounded-md dark:bg-neutral-800" />;
-  }
-
+export default function GitHubGraph({ data }: GitHubGraphProps) {
   if (!data || !data.weeks) {
-    return <div className="text-sm text-gray-500">Failed to load contribution data.</div>;
+    return <div className="text-sm text-gray-500">No contribution data available.</div>;
   }
 
-  // Flatten days and get the last N days for a simpler "recent activity" graph
   const allDays = data.weeks.flatMap((w) => w.contributionDays);
-  
-  // Get last 100 days roughly
   const recentDays = allDays.slice(-100);
 
   return (
@@ -51,7 +20,6 @@ export default function GitHubGraph() {
       
       <div className="flex flex-wrap gap-1">
         {recentDays.map((day, i) => {
-          // Calculate intensity 0-4
           const intensity = Math.min(Math.ceil((day.contributionCount / 10) * 4), 4);
           
           let bgColor = "bg-gray-100 dark:bg-neutral-800";

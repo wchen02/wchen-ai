@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { getProjects } from "@/lib/mdx";
+import { getProjects, getGitHubContributions } from "@/lib/mdx";
 import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
 import GitHubGraph from "@/components/GitHubGraph";
 
 export default function Home() {
-  const projects = getProjects().slice(0, 3); // Get 3 most recent
+  const projects = getProjects().slice(0, 3);
+  const githubData = getGitHubContributions();
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
@@ -85,7 +86,7 @@ export default function Home() {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Activity
         </h2>
-        <GitHubGraph />
+        <GitHubGraph data={githubData} />
       </section>
 
       <section id="contact" className="pt-8">

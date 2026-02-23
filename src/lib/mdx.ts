@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { ProjectSchema, WritingSchema, type Project, type Writing } from './schemas';
+import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from './schemas';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
+const GITHUB_DATA_PATH = path.join(process.cwd(), 'public', 'github-contributions.json');
 const PROJECTS_DIR = path.join(CONTENT_DIR, 'projects');
 const WRITING_DIR = path.join(CONTENT_DIR, 'writing');
 
@@ -19,8 +20,20 @@ function getMdxFilenames(directory: string) {
   return fs.readdirSync(directory).filter((file) => /\.mdx?$/.test(file));
 }
 
+function assertUniqueSlugs(filenames: string[], contentType: string): void {
+  const slugs = filenames.map(f => f.replace(/\.mdx?$/, ''));
+  const seen = new Set<string>();
+  for (const slug of slugs) {
+    if (seen.has(slug)) {
+      throw new Error(`Duplicate ${contentType} slug detected: "${slug}". Each ${contentType} must have a unique filename.`);
+    }
+    seen.add(slug);
+  }
+}
+
 export function getProjects(): Project[] {
   const filenames = getMdxFilenames(PROJECTS_DIR);
+  assertUniqueSlugs(filenames, 'project');
   
   const projects = filenames.map((filename) => {
     const rawContent = getFileContent(PROJECTS_DIR, filename);
@@ -60,13 +73,14 @@ export function getProjectBySlug(slug: string): Project | null {
       slug,
       content,
     } as Project;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
 
 export function getWritings(): Writing[] {
   const filenames = getMdxFilenames(WRITING_DIR);
+  assertUniqueSlugs(filenames, 'writing');
   
   const writings = filenames.map((filename) => {
     const rawContent = getFileContent(WRITING_DIR, filename);
@@ -92,6 +106,15 @@ export function getWritings(): Writing[] {
   return writings
     .filter((w) => !w.draft)
     .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime());
+}
+
+export function getGitHubContributions(): GitHubContributions | null {
+  try {
+    const raw = fs.readFileSync(GITHUB_DATA_PATH, 'utf8');
+    return GitHubContributionSchema.parse(JSON.parse(raw));
+  } catch {
+    return null;
+  }
 }
 
 export function getWritingBySlug(slug: string): Writing | null {
@@ -120,7 +143,7 @@ export function getWritingBySlug(slug: string): Writing | null {
       content,
       readingTimeMinutes,
     } as Writing;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

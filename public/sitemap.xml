@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://wchen.ai</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/projects</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/writing</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/projects/agentic-engineering</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/projects/knowledge-graph</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/writing/intention-execution</loc>
+  </url>
+  <url>
+    <loc>https://wchen.ai/writing/static-first</loc>
+  </url>
+</urlset>

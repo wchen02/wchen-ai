@@ -1,25 +1,27 @@
 import { getWritings } from "@/lib/mdx";
 import WritingCard from "@/components/WritingCard";
+import type { Writing } from "@/lib/schemas";
 
 export const metadata = {
   title: "Writing | Wilson Chen",
   description: "Thoughts and reflections on building, technology, and developer tools.",
 };
 
+function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
+  return writings.reduce((acc, writing) => {
+    const theme = writing.theme;
+    if (!acc[theme]) {
+      acc[theme] = [];
+    }
+    acc[theme].push(writing);
+    return acc;
+  }, {} as Record<string, Writing[]>);
+}
+
 export default function WritingPage() {
   const writings = getWritings();
-
-  // Group writings by year
-  const groupedWritings = writings.reduce((acc, writing) => {
-    const year = new Date(writing.publishDate).getFullYear().toString();
-    if (!acc[year]) {
-      acc[year] = [];
-    }
-    acc[year].push(writing);
-    return acc;
-  }, {} as Record<string, typeof writings>);
-
-  const years = Object.keys(groupedWritings).sort((a, b) => Number(b) - Number(a));
+  const themeGroups = groupByTheme(writings);
+  const themes = Object.keys(themeGroups).sort();
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-12">
@@ -33,15 +35,33 @@ export default function WritingPage() {
         </p>
       </header>
 
+      {themes.length > 1 && (
+        <nav className="flex flex-wrap gap-2">
+          {themes.map(theme => (
+            <a
+              key={theme}
+              href={`#theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
+              className="px-3 py-1 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+            >
+              {theme}
+            </a>
+          ))}
+        </nav>
+      )}
+
       <div className="space-y-16">
-        {years.length > 0 ? (
-          years.map(year => (
-            <section key={year} className="space-y-6">
+        {themes.length > 0 ? (
+          themes.map(theme => (
+            <section
+              key={theme}
+              id={`theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
+              className="space-y-6 scroll-mt-24"
+            >
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-                {year}
+                {theme}
               </h2>
               <div className="flex flex-col gap-2 -mx-5">
-                {groupedWritings[year].map((writing) => (
+                {themeGroups[theme].map((writing) => (
                   <WritingCard key={writing.slug} writing={writing} />
                 ))}
               </div>

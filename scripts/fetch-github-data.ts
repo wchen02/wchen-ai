@@ -1,6 +1,31 @@
 import fs from 'fs';
 import path from 'path';
 
+interface ContributionDay {
+  contributionCount: number;
+  date: string;
+}
+
+interface ContributionWeek {
+  contributionDays: ContributionDay[];
+}
+
+interface ContributionCalendar {
+  totalContributions: number;
+  weeks: ContributionWeek[];
+}
+
+interface GitHubGraphQLResponse {
+  data?: {
+    user?: {
+      contributionsCollection?: {
+        contributionCalendar?: ContributionCalendar;
+      };
+    };
+  };
+  errors?: { message: string }[];
+}
+
 // Define expected output directory relative to project root
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
 const OUTPUT_FILE = path.join(PUBLIC_DIR, 'github-contributions.json');
@@ -51,13 +76,13 @@ async function fetchGitHubData() {
       throw new Error(`GitHub API responded with status: ${response.status}`);
     }
 
-    const { data, errors } = await response.json() as { data: unknown; errors: { message: string }[] };
+    const result = await response.json() as GitHubGraphQLResponse;
 
-    if (errors) {
-      throw new Error(errors.map((e) => e.message).join('\n'));
+    if (result.errors) {
+      throw new Error(result.errors.map((e) => e.message).join('\n'));
     }
 
-    const calendar = (data as { user?: { contributionsCollection?: { contributionCalendar?: any } } })?.user?.contributionsCollection?.contributionCalendar;
+    const calendar = result.data?.user?.contributionsCollection?.contributionCalendar;
     
     if (!calendar) {
       throw new Error('Unexpected response format from GitHub API');

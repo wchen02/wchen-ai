@@ -19,8 +19,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: 'Writing Not Found' };
   }
   
+  const description = `${writing.theme} — ${writing.readingTimeMinutes} min read`;
+
   return {
     title: `${writing.title} | Wilson Chen`,
+    description,
+    openGraph: {
+      title: writing.title,
+      description,
+      url: `https://wchen.ai/writing/${resolvedParams.slug}`,
+      siteName: "Wilson Chen",
+      locale: "en_US",
+      type: "article",
+    },
   };
 }
 
