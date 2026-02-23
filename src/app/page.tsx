@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { getProjects, getGitHubContributions } from "@/lib/mdx";
+import { getProjects, getWritings, getGitHubContributions } from "@/lib/mdx";
 import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
 import GitHubGraph from "@/components/GitHubGraph";
 
 export default function Home() {
   const projects = getProjects().slice(0, 3);
+  const writings = getWritings().slice(0, 3);
   const githubData = getGitHubContributions();
 
   return (
@@ -79,6 +80,41 @@ export default function Home() {
           </div>
         ) : (
           <p className="text-gray-500 italic">No projects added yet.</p>
+        )}
+      </section>
+
+      <section className="space-y-6">
+        <div className="flex justify-between items-baseline border-b border-gray-200 dark:border-gray-800 pb-2">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Recent Thinking
+          </h2>
+          <Link href="/writing" className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
+            View all →
+          </Link>
+        </div>
+
+        {writings.length > 0 ? (
+          <div className="grid gap-6">
+            {writings.map((writing) => (
+              <div key={writing.slug} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
+                <Link href={`/writing/${writing.slug}`} className="flex justify-between items-baseline">
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {writing.title}
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    {new Date(writing.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+                  </span>
+                </Link>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <span>{writing.readingTimeMinutes} min read</span>
+                  <span>·</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">{writing.theme}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 italic">No writing yet.</p>
         )}
       </section>
 

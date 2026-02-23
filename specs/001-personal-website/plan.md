@@ -1,21 +1,13 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Personal Website
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
-
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
+**Branch**: `001-personal-website` | **Date**: 2026-02-22 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-personal-website/spec.md`
 
 ## Summary
 
 Create a static-first personal website for Wilson Chen, establishing him as a founder and builder. The site will use Next.js (App Router, static export) with MDX content, deployed to Cloudflare Pages. Content is managed purely via local Markdown files with Zod validation. A Cloudflare Pages Function will handle contact form submissions. Performance, type safety, and minimal JS are paramount.
 
 ## Technical Context
-
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
 
 **Language/Version**: TypeScript (strict) with Next.js (App Router)  
 **Primary Dependencies**: Next.js, React, Tailwind CSS, Framer Motion (lazy loaded), Zod (frontmatter validation)  

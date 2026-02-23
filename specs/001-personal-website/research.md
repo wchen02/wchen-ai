@@ -17,7 +17,7 @@
 ## 3. GitHub Contributions Proxy (Build Time)
 
 **Context**: We need to fetch GitHub contributions at build time using a `GITHUB_TOKEN` and write a cached JSON file to be consumed by the homepage, preventing client-side fetches.
-**Decision**: Create a pre-build script (`scripts/fetch-github-data.ts`) executed before `next build`. This script fetches the data via GraphQL API, processes it, and writes `public/data/github-contributions.json`.
+**Decision**: Create a pre-build script (`scripts/fetch-github-data.ts`) executed before `next build`. This script fetches the data via GraphQL API, processes it, and writes `public/github-contributions.json`.
 **Rationale**: Conforms perfectly to Constitution Principle 7 ("No Runtime Content Fetching"). By writing to `public/`, the data becomes a static asset that the frontend can load immediately, or the server component can read from disk during build.
 **Alternatives considered**: Fetching directly inside the Next.js Server Component during `next build` (viable, but explicitly separating it into a script makes it easier to test and cache independently if needed).
 
