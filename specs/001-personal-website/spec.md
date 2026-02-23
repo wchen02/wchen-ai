@@ -5,11 +5,23 @@
 **Status**: Draft  
 **Input**: User description: "We are creating a personal website for Wilson Chen whose purpose is to establish credibility as a thoughtful technical leader and attract meaningful connections with people who share similar interests in technology, building products, AI, and entrepreneurship. The site should function as a public thinking and building hub..."
 
+## Clarifications
+
+### Session 2026-02-22
+
+- Q: Who is the primary audience for the site? → A: Other builders / founders; all messaging should optimize clarity for this audience over others.
+- Q: How should Wilson's roles be prioritized in messaging? → A: The site should primarily communicate Wilson as a founder and secondarily as a builder.
+- Q: What constitutes a project entry? → A: A project entry represents an app/agent and should include experiments.
+- Q: What is the expected length and format of writing entries? → A: Writing entries represent quick thoughts and are expected to be at least 200 words and up to 1500 words.
+- Q: What is the expected frequency of content updates? → A: The site assumes content will be added roughly once every few weeks.
+- Q: What is the primary goal of the contact flow? → A: The desired post-contact outcome is primarily collaboration.
+- Q: What content should the homepage prioritize? → A: The homepage should prioritize "what I'm exploring now" over past work or other content.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 15-Second Homepage Overview (Priority: P1)
 
-A new visitor lands on the homepage and needs to quickly understand who Wilson is, what he builds, how he thinks, and whether they want to reach out.
+A new visitor (e.g., another builder or founder) lands on the homepage and needs to quickly understand who Wilson is, what he has founded and built, how he thinks, and whether they want to reach out. The immediate framing must establish him primarily as a founder, then as a builder.
 
 **Why this priority**: The primary mandate of the site is to establish identity and position quickly. If the first impression is confusing, the visitor will leave before discovering the deeper work.
 
@@ -17,16 +29,16 @@ A new visitor lands on the homepage and needs to quickly understand who Wilson i
 
 **Acceptance Scenarios**:
 
-1. **Given** a first-time visitor, **When** they load the homepage, **Then** they immediately see a curated overview of Wilson's problems of interest, past builds, current explorations, and contact info.
+1. **Given** a first-time visitor, **When** they load the homepage, **Then** they immediately see a curated overview prioritizing Wilson's current explorations ("what I'm exploring now"), followed by problems of interest, past founded companies/projects, and contact info, prioritizing founder positioning.
 2. **Given** a visitor scrolling the homepage, **When** they look for deeper content, **Then** they find clear pathways to dedicated sections (projects, writing, personal background).
 
 ---
 
 ### User Story 2 - Low-Barrier Contact (Priority: P1)
 
-A visitor feels aligned with Wilson's philosophy and wants to reach out for a conversation, collaboration, or to follow his work.
+A visitor feels aligned with Wilson's philosophy and wants to reach out primarily for collaboration, or secondarily for a conversation or to follow his work.
 
-**Why this priority**: The ultimate goal is to attract meaningful connections; the barrier to starting a conversation must feel incredibly low.
+**Why this priority**: The ultimate goal is to attract meaningful connections and collaborations; the barrier to starting a conversation must feel incredibly low.
 
 **Independent Test**: Can be tested by asking a user to find a way to reach out from any primary section of the site in under one click/action.
 
@@ -72,7 +84,7 @@ A visitor wants to understand how Wilson thinks and browses his written ideas to
 
 ### Functional Requirements
 
-- **FR-001**: System MUST provide a homepage that aggregates key information: problems solved, past builds, current explorations, and contact methods in a scannable format.
+- **FR-001**: System MUST provide a homepage that aggregates key information, explicitly prioritizing "what I'm exploring now" above problems solved, past builds, and contact methods in a scannable format.
 - **FR-002**: System MUST provide a dedicated "Projects" area where each entry is structured to highlight motivation, problem addressed, and learnings (not just feature lists).
 - **FR-003**: System MUST provide a dedicated "Writing" area to publish and organize written ideas over time, highlighting themes and recent reflections.
 - **FR-004**: System MUST provide clear, low-friction contact mechanisms accessible from the homepage and all primary dedicated sections.
@@ -82,13 +94,13 @@ A visitor wants to understand how Wilson thinks and browses his written ideas to
 
 ### Assumptions & Dependencies
 
-- **Assumption 1**: The site will be updated primarily by Wilson, requiring a straightforward method to add new projects and writings (e.g., Markdown files or a simple CMS), rather than a complex admin dashboard.
+- **Assumption 1**: The site will be updated primarily by Wilson roughly once every few weeks, requiring a straightforward method to add new projects and writings (e.g., Markdown files or a simple CMS), rather than a complex admin dashboard.
 - **Assumption 2**: Contact methods will utilize standard public communication channels (e.g., email or social media links) rather than a bespoke in-app messaging system.
 
 ### Key Entities
 
-- **Project**: Represents a built artifact. Key attributes: Title, Motivation, Problem Addressed, Learnings, Date/Status.
-- **Writing/Idea**: Represents a published thought. Key attributes: Title, Content, Publish Date, Theme/Category.
+- **Project**: Represents a built artifact (an app, agent, or experiment). Key attributes: Title, Motivation, Problem Addressed, Learnings, Date/Status, Type (App/Agent/Experiment).
+- **Writing/Idea**: Represents a published quick thought (200-1500 words). Key attributes: Title, Content, Publish Date, Theme/Category.
 
 ## Success Criteria *(mandatory)*
 
