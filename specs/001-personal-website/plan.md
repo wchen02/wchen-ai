@@ -23,7 +23,7 @@ Create a static-first personal website for Wilson Chen, establishing him as a fo
 **Testing**: NEEDS CLARIFICATION (likely Vitest or Jest for unit testing logic/validation, plus Playwright/Cypress for E2E if needed)  
 **Target Platform**: Cloudflare Pages (Static Export) + Cloudflare Workers/Pages Functions (API)  
 **Project Type**: Personal Website (Static Site + Serverless Edge APIs)  
-**Performance Goals**: Fast Lighthouse scores (90+), minimal JS shipped, static HTML prioritized  
+**Performance Goals**: Fast Lighthouse scores (90+), max 100KB initial JS payload, static HTML prioritized  
 **Constraints**: No database, no third-party CMS, no runtime content fetching, static-first (pre-render at build time)  
 **Scale/Scope**: ~50+ projects/writings initially, updated every few weeks. No auth, no user accounts.
 
@@ -64,7 +64,7 @@ specs/[###-feature]/
 │   ├── components/       # React components (UI, MDX wrappers)
 │   └── lib/              # Utilities (Zod schemas, MDX parsers)
 ├── functions/            # Cloudflare Pages Functions (api/contact.ts)
-├── scripts/              # Pre-build scripts (fetch-github.ts)
+├── scripts/              # Pre-build scripts (fetch-github.ts, generate-rss.ts)
 └── tests/                # Vitest/Playwright tests
 ```
 

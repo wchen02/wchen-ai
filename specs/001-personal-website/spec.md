@@ -15,7 +15,9 @@
 - Q: What is the expected length and format of writing entries? → A: Writing entries represent quick thoughts and are expected to be at least 200 words and up to 1500 words.
 - Q: What is the expected frequency of content updates? → A: The site assumes content will be added roughly once every few weeks.
 - Q: What is the primary goal of the contact flow? → A: The desired post-contact outcome is primarily collaboration.
+- Q: The spec currently lacks concrete visual/tone definitions for "founder primarily, builder secondarily" and explicit constraints for "scannable format" and "low-friction contact mechanisms". Should we define these as: Founder positioning communicated through bolder typography/visual primacy for founder roles; Scannable format constrained to max 3 short paragraphs per section with clear typographic hierarchy; Low-friction contact constrained to a simple form with max 3 fields or a direct mailto link? → A: Yes.
 - Q: What content should the homepage prioritize? → A: The homepage should prioritize "what I'm exploring now" over past work or other content.
+- Q: The implementation plan tasks lack a UX/copywriting pass to ensure the 15-second metric is met, an explicit JS bundle target, and an RSS feed generation step. Should we add these tasks? → A: Yes.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -29,7 +31,7 @@ A new visitor (e.g., another builder or founder) lands on the homepage and needs
 
 **Acceptance Scenarios**:
 
-1. **Given** a first-time visitor, **When** they load the homepage, **Then** they immediately see a curated overview prioritizing Wilson's current explorations ("what I'm exploring now"), followed by problems of interest, past founded companies/projects, and contact info, prioritizing founder positioning.
+1. **Given** a first-time visitor, **When** they load the homepage, **Then** they immediately see a curated overview prioritizing Wilson's current explorations ("what I'm exploring now"), followed by problems of interest, past founded companies/projects, and contact info, prioritizing founder positioning (e.g., through bolder typography or visual primacy for founder roles).
 2. **Given** a visitor scrolling the homepage, **When** they look for deeper content, **Then** they find clear pathways to dedicated sections (projects, writing, personal background).
 
 ---
@@ -84,10 +86,10 @@ A visitor wants to understand how Wilson thinks and browses his written ideas to
 
 ### Functional Requirements
 
-- **FR-001**: System MUST provide a homepage that aggregates key information, explicitly prioritizing "what I'm exploring now" above problems solved, past builds, and contact methods in a scannable format.
+- **FR-001**: System MUST provide a homepage that aggregates key information, explicitly prioritizing "what I'm exploring now" above problems solved, past builds, and contact methods in a scannable format (max 3 short paragraphs per section, clear typographic hierarchy).
 - **FR-002**: System MUST provide a dedicated "Projects" area where each entry is structured to highlight motivation, problem addressed, and learnings (not just feature lists).
 - **FR-003**: System MUST provide a dedicated "Writing" area to publish and organize written ideas over time, highlighting themes and recent reflections.
-- **FR-004**: System MUST provide clear, low-friction contact mechanisms accessible from the homepage and all primary dedicated sections.
+- **FR-004**: System MUST provide clear, low-friction contact mechanisms accessible from the homepage and all primary dedicated sections (e.g., maximum of 3 form fields or a direct mailto link).
 - **FR-005**: System MUST support the continuous addition of project and writing entries without requiring layout redesigns.
 - **FR-006**: System MUST present a cohesive personal identity (philosophy, interests, expertise) separated from a traditional résumé format.
 - **FR-007**: System MUST NOT utilize complex UI patterns typical of SaaS products, dashboards, or complex web applications.
