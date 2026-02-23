@@ -1,50 +1,191 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- Sync Impact Report
+- Version change: [CONSTITUTION_VERSION] -> 1.0.0
+- List of modified principles:
+  - Added: 1. Static-First Architecture
+  - Added: 2. Content Is Source of Truth
+  - Added: 3. Cloudflare-Only Infrastructure
+  - Added: 4. Deterministic Builds
+  - Added: 5. Simplicity Over Cleverness
+  - Added: 6. Type-Safe by Default
+  - Added: 7. No Runtime Content Fetching
+  - Added: 8. Edge-Native Enhancements Only
+  - Added: 9. Performance Is a Feature
+  - Added: 10. CI Is the Gatekeeper
+  - Added: 11. The Project Must Remain a Website
+- Added sections: Core Principles, Guiding Principle
+- Removed sections: [SECTION_2_NAME], [SECTION_3_NAME] (consolidated)
+- Templates requiring updates (✅ updated / ⚠ pending):
+  - `.specify/templates/plan-template.md` (✅ updated)
+  - `.specify/templates/spec-template.md` (✅ updated)
+  - `.specify/templates/tasks-template.md` (✅ updated)
+  - `.cursor/commands/speckit.constitution.md` (✅ updated - no outdated refs)
+- Follow-up TODOs: none
+-->
+
+# wchen.ai Constitution
+
+This document defines the permanent engineering principles of the `wchen.ai` project.
+All specifications, plans, and implementations MUST comply.
+If a task conflicts with this constitution, the constitution overrides the task.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### 1. Static-First Architecture
+This project follows a **Static-First** approach.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Rules:
+1. All content pages MUST be statically generated at build time.
+2. Runtime server rendering is forbidden unless absolutely unavoidable.
+3. If dynamic behavior is required → prefer build-time generation.
+4. If build-time is impossible → use cached edge functions.
+5. True dynamic runtime logic is the last resort and MUST be justified.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+Priority order:
+`Build-time generation > Edge cache > Edge compute > Runtime compute`
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+This site MUST function as a fully browsable static site if all APIs fail.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### 2. Content Is Source of Truth
+This is a **Content-Driven Site**.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Rules:
+1. All site content MUST live in `/content` as markdown or MDX.
+2. No database is allowed for site content.
+3. No CMS dashboard is allowed.
+4. Adding a markdown file MUST create a page.
+5. Invalid content MUST fail the build.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Frontmatter schemas are contracts, not suggestions.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### 3. Cloudflare-Only Infrastructure
+This project follows a **Single-Provider Edge Architecture**.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Allowed platforms:
+* Cloudflare Pages
+* Cloudflare Workers / Pages Functions
+* Cloudflare KV / Cache (if justified)
+
+Forbidden:
+* Vercel
+* Netlify
+* AWS server infrastructure
+* Firebase
+* External hosting servers
+
+The site MUST be deployable entirely within Cloudflare.
+
+### 4. Deterministic Builds
+Builds MUST be reproducible and predictable.
+
+Rules:
+1. Same commit → same output.
+2. No hidden runtime data dependencies.
+3. No client-side fetching required for page rendering.
+4. External data MUST be cached at build time or edge cached.
+5. Broken external APIs MUST never break page rendering.
+
+The website MUST degrade gracefully.
+
+### 5. Simplicity Over Cleverness
+This project follows a **Low-Complexity Principle**.
+
+Preferred:
+* Fewer moving parts
+* Fewer services
+* Static generation
+* Explicit logic
+
+Avoid:
+* Over-engineering
+* Abstraction layers without need
+* Plugin ecosystems when a utility function suffices
+
+The site is a personal website, not a platform.
+
+### 6. Type-Safe by Default
+This project is **strictly typed**.
+
+Rules:
+1. TypeScript strict mode required.
+2. No `any` types.
+3. Frontmatter MUST be typed and validated.
+4. Build fails on type errors.
+
+If data shape is unknown → validate and narrow.
+
+### 7. No Runtime Content Fetching
+Pages MUST never depend on browser-time content fetching to render.
+
+Allowed:
+* Build-time data fetching
+* Cached edge endpoints for enhancements
+
+Forbidden:
+* Client fetching for primary content
+* Hydration-dependent page rendering
+
+The site MUST remain readable with JavaScript disabled.
+
+### 8. Edge-Native Enhancements Only
+Server features exist only as progressive enhancement.
+
+Examples allowed:
+* Contact form submission
+* Cached GitHub activity
+* Lightweight APIs
+
+Examples forbidden:
+* User accounts
+* Dashboards
+* Persistent application state
+
+This is a presentation site, not an application backend.
+
+### 9. Performance Is a Feature
+The site MUST feel instant.
+
+Targets:
+* Minimal JS shipped
+* Static HTML prioritized
+* Motion MUST not block rendering
+* Respect reduced-motion preferences
+
+Prefer CSS and server components over client JS.
+
+### 10. CI Is the Gatekeeper
+Nothing ships without passing CI.
+
+CI MUST fail on:
+* Type errors
+* Invalid content schema
+* Build errors
+
+Successful deploys MUST originate only from the main branch pipeline.
+
+### 11. The Project Must Remain a Website
+This project MUST never evolve into a SaaS platform.
+
+Disallowed expansions:
+* Authentication systems
+* User data storage
+* Multi-tenant logic
+* Admin dashboards
+
+If a feature turns the site into an application, it MUST be rejected.
+
+## Guiding Principle
+
+> The purpose of this project is to publish ideas and showcase work, not to run software services.
+
+All decisions SHOULD bias toward longevity, clarity, and zero maintenance burden.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+All PRs/reviews MUST verify compliance. Complexity MUST be justified. 
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Amendments require documentation, approval, and a migration plan. The Constitution versioning policy follows semantic versioning:
+- **MAJOR**: Backward incompatible governance/principle removals or redefinitions.
+- **MINOR**: New principle/section added or materially expanded guidance.
+- **PATCH**: Clarifications, wording, typo fixes, non-semantic refinements.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-22 | **Last Amended**: 2026-02-22

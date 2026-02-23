@@ -1,0 +1,24 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      skills:
+        specifier: ^1.4.1
+        version: 1.4.1
+
+packages:
+
+  skills@1.4.1:
+    resolution: {integrity: sha512-Mmbu3sBw3cMoW6p9DzldlGpIZtFMAtiIlsHwXXtIwcd+a1MGDnjtysFabD2TvJWp3yyv+5pxfc2qcKnoWT7VEQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+snapshots:
+
+  skills@1.4.1: {}

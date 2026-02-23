@@ -31,7 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Static-First**: Does the feature rely on runtime server rendering? (If yes, it must be rejected or redesigned for build-time/edge).
+- [ ] **Content Source**: Are we adding databases or CMS dashboards? (Forbidden, use `/content` MDX).
+- [ ] **Infrastructure**: Does this require AWS, Vercel, Netlify, or Firebase? (Forbidden, must use Cloudflare only).
+- [ ] **Simplicity**: Does this add unnecessary abstraction layers or services?
+- [ ] **Type Safety**: Are data shapes fully validated and typed?
+- [ ] **Client Fetching**: Does rendering depend on browser-time content fetching? (Forbidden).
+- [ ] **Application Scope**: Does this add user accounts, auth systems, or dashboards? (Forbidden, must remain a website).
 
 ## Project Structure
 
