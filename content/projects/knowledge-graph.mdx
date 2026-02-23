@@ -1,0 +1,21 @@
+---
+title: "Personal Knowledge Graph"
+date: "2025-10-10T00:00:00Z"
+status: "active"
+type: ["experiment"]
+motivation: "I read hundreds of articles and books, but rarely retain the actionable insights. I needed a way to query my own brain."
+problemAddressed: "Note-taking apps become black holes where information goes to die. Organizing notes takes more time than using them."
+learnings: "Automatic tagging using LLMs works surprisingly well. The key is strict schema enforcement before writing to the graph database."
+featured: true
+---
+
+This was a weekend experiment to connect my Obsidian vault to a local LLM.
+
+## How it works
+
+1. A cron job runs every night, scanning for modified markdown files.
+2. It passes the content to a local model (Llama 3).
+3. The model extracts entities and relationships.
+4. Data is stored in Neo4j.
+
+It allows me to ask questions like: *What have I read about distributed systems in the last year?*

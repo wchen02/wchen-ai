@@ -1,0 +1,65 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run Typecheck
+        run: pnpm typecheck
+
+      # Note: tests could go here once implemented
+      # - name: Run Tests
+      #   run: pnpm test
+
+      - name: Build Next.js Application
+        run: pnpm build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_USERNAME: wenshengchen
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: wchen-ai
+          directory: out
+          # Optional: Enable this if you want to deploy branch previews
+          # gitHubToken: ${{ secrets.GITHUB_TOKEN }}

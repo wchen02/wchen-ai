@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wilson Chen | Writing</title>
+    <link>https://wchen.ai/writing</link>
+    <description>Thoughts on engineering, products, and building software.</description>
+    <language>en-us</language>
+    <atom:link href="https://wchen.ai/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 Feb 2026 14:21:32 GMT</lastBuildDate>
+    
+    <item>
+      <title><![CDATA[The Friction Between Intention and Execution]]></title>
+      <link>https://wchen.ai/writing/intention-execution</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/intention-execution</guid>
+      <pubDate>Fri, 20 Feb 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[A post about Developer Tools. Read more at the link.]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Building Static-First in an Era of Dynamism]]></title>
+      <link>https://wchen.ai/writing/static-first</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/static-first</guid>
+      <pubDate>Tue, 10 Feb 2026 14:30:00 GMT</pubDate>
+      <description><![CDATA[A post about Architecture. Read more at the link.]]></description>
+      <category>Architecture</category>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+---
+title: "Building Static-First in an Era of Dynamism"
+publishDate: "2026-02-10T14:30:00Z"
+theme: "Architecture"
+tags: ["nextjs", "static", "performance"]
+featured: false
+draft: false
+---
+
+There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free.
+
+But physics still applies.
+
+No matter how fast your edge function is, it will never beat the speed of serving a pre-compiled static file from a CDN.
+
+For this personal site, I explicitly chose a static-first approach. The site is generated once at build time. There is no database hit when you load this page. There is no server computing the HTML. 
+
+But what about dynamic data?
+
+I wanted to show my recent GitHub contributions. Instead of fetching that data from the client (slow, flashes of loading states) or fetching it on the server (requires dynamic rendering), I fetch it *during the build process*. A script pulls the data, saves it as a static JSON file, and the frontend consumes it.
+
+This hybrid approach—static HTML plus static data artifacts—gives the perception of dynamism with the unshakeable reliability of static hosting.
+
+Sometimes the best architectural decision is deciding *not* to use the shiny new dynamic tool.

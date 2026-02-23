@@ -13,10 +13,10 @@ description: "Task list for implementing the Personal Website feature"
 
 **Purpose**: Project initialization and basic structure.
 
-- [ ] T001 Initialize Next.js (App Router) project with TypeScript, Tailwind CSS, and ESLint in `/src`
-- [ ] T002 [P] Install core dependencies: `zod`, `next-mdx-remote`, `framer-motion`
-- [ ] T003 [P] Configure `next.config.mjs` for static export (`output: 'export'`)
-- [ ] T004 Create core directory structure (`/content/projects`, `/content/writing`, `/functions/api`, `/scripts`) per plan.md
+- [X] T001 Initialize Next.js (App Router) project with TypeScript, Tailwind CSS, and ESLint in `/src`
+- [X] T002 [P] Install core dependencies: `zod`, `next-mdx-remote`, `framer-motion`
+- [X] T003 [P] Configure `next.config.mjs` for static export (`output: 'export'`)
+- [X] T004 Create core directory structure (`/content/projects`, `/content/writing`, `/functions/api`, `/scripts`) per plan.md
 
 ---
 
@@ -26,11 +26,11 @@ description: "Task list for implementing the Personal Website feature"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T005 [P] Create Zod schemas for `Project` and `Writing` entities in `src/lib/schemas.ts` per data-model.md
-- [ ] T006 Implement local MDX file reading and validation utility in `src/lib/mdx.ts` (using `fs` and Zod)
-- [ ] T007 [P] Create GitHub GraphQL fetch script in `scripts/fetch-github-data.ts` to output `public/github-contributions.json`
-- [ ] T008 Update `package.json` build script to run the GitHub fetch script before `next build`
-- [ ] T009 Set up GitHub Actions CI workflow in `.github/workflows/ci.yml` (typecheck, lint, fetch data, build, deploy to Cloudflare Pages)
+- [X] T005 [P] Create Zod schemas for `Project` and `Writing` entities in `src/lib/schemas.ts` per data-model.md
+- [X] T006 Implement local MDX file reading and validation utility in `src/lib/mdx.ts` (using `fs` and Zod)
+- [X] T007 [P] Create GitHub GraphQL fetch script in `scripts/fetch-github-data.ts` to output `public/github-contributions.json`
+- [X] T008 Update `package.json` build script to run the GitHub fetch script before `next build`
+- [X] T009 Set up GitHub Actions CI workflow in `.github/workflows/ci.yml` (typecheck, lint, fetch data, build, deploy to Cloudflare Pages)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel.
 
@@ -44,11 +44,11 @@ description: "Task list for implementing the Personal Website feature"
 
 ### Implementation for User Story 1
 
-- [ ] T010 [P] [US1] Create a mock `public/github-contributions.json` for local development
-- [ ] T011 [P] [US1] Build lazy-loaded `HeroMotion` wrapper component in `src/components/HeroMotion.tsx` using `framer-motion`
-- [ ] T012 [P] [US1] Build `GitHubGraph` UI component in `src/components/GitHubGraph.tsx` to display cached contribution data
-- [ ] T013 [US1] Implement the homepage layout in `src/app/page.tsx` integrating `HeroMotion` and `GitHubGraph`
-- [ ] T014 [US1] Refine homepage typography and layout in `src/app/page.tsx` to explicitly prioritize "what I'm exploring now" over past builds
+- [X] T010 [P] [US1] Create a mock `public/github-contributions.json` for local development
+- [X] T011 [P] [US1] Build lazy-loaded `HeroMotion` wrapper component in `src/components/HeroMotion.tsx` using `framer-motion`
+- [X] T012 [P] [US1] Build `GitHubGraph` UI component in `src/components/GitHubGraph.tsx` to display cached contribution data
+- [X] T013 [US1] Implement the homepage layout in `src/app/page.tsx` integrating `HeroMotion` and `GitHubGraph`
+- [X] T014 [US1] Refine homepage typography and layout in `src/app/page.tsx` to explicitly prioritize "what I'm exploring now" over past builds
 
 **Checkpoint**: At this point, the homepage should be fully functional, static, and pass Lighthouse performance targets independently.
 
@@ -62,11 +62,11 @@ description: "Task list for implementing the Personal Website feature"
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Create Zod schema for `ContactPayload` in `src/lib/schemas.ts` per `api-contact.md` contract
-- [ ] T016 [P] [US2] Implement the Cloudflare Pages Function in `functions/api/contact.ts` with honeypot and rate-limiting
-- [ ] T017 [P] [US2] Build `ContactForm` React component in `src/components/ContactForm.tsx` (using semantic HTML and the honeypot field)
-- [ ] T018 [US2] Integrate `ContactForm` component into the homepage (`src/app/page.tsx`)
-- [ ] T019 [US2] Add subtle "reach out" call-to-action components for placement at the bottom of dedicated project/writing pages
+- [X] T015 [P] [US2] Create Zod schema for `ContactPayload` in `src/lib/schemas.ts` per `api-contact.md` contract
+- [X] T016 [P] [US2] Implement the Cloudflare Pages Function in `functions/api/contact.ts` with honeypot and rate-limiting
+- [X] T017 [P] [US2] Build `ContactForm` React component in `src/components/ContactForm.tsx` (using semantic HTML and the honeypot field)
+- [X] T018 [US2] Integrate `ContactForm` component into the homepage (`src/app/page.tsx`)
+- [X] T019 [US2] Add subtle "reach out" call-to-action components for placement at the bottom of dedicated project/writing pages
 
 **Checkpoint**: The contact API and form should now work locally via Wrangler, successfully blocking bots and accepting valid submissions.
 
@@ -80,11 +80,11 @@ description: "Task list for implementing the Personal Website feature"
 
 ### Implementation for User Story 3
 
-- [ ] T020 [P] [US3] Add 2-3 sample project MDX files in `/content/projects/` to test rendering
-- [ ] T021 [P] [US3] Build `ProjectCard` UI component in `src/components/ProjectCard.tsx`
-- [ ] T022 [US3] Implement the Projects index page in `src/app/projects/page.tsx` (fetching and listing all validated projects)
-- [ ] T023 [US3] Implement the dynamic Project detail page in `src/app/projects/[slug]/page.tsx` using `next-mdx-remote` and `generateStaticParams`
-- [ ] T024 [US3] Integrate the subtle "reach out" CTA (from T019) at the bottom of `src/app/projects/[slug]/page.tsx`
+- [X] T020 [P] [US3] Add 2-3 sample project MDX files in `/content/projects/` to test rendering
+- [X] T021 [P] [US3] Build `ProjectCard` UI component in `src/components/ProjectCard.tsx`
+- [X] T022 [US3] Implement the Projects index page in `src/app/projects/page.tsx` (fetching and listing all validated projects)
+- [X] T023 [US3] Implement the dynamic Project detail page in `src/app/projects/[slug]/page.tsx` using `next-mdx-remote` and `generateStaticParams`
+- [X] T024 [US3] Integrate the subtle "reach out" CTA (from T019) at the bottom of `src/app/projects/[slug]/page.tsx`
 
 **Checkpoint**: The Projects section is now fully static, rendering narrative-driven MDX files without runtime server logic.
 
@@ -98,11 +98,11 @@ description: "Task list for implementing the Personal Website feature"
 
 ### Implementation for User Story 4
 
-- [ ] T025 [P] [US4] Add 2-3 sample writing MDX files in `/content/writing/` to test rendering
-- [ ] T026 [P] [US4] Build `WritingCard` UI component in `src/components/WritingCard.tsx`
-- [ ] T027 [US4] Implement the Writing index page in `src/app/writing/page.tsx` (fetching, sorting by date, and grouping by theme)
-- [ ] T028 [US4] Implement the dynamic Writing detail page in `src/app/writing/[slug]/page.tsx` using `next-mdx-remote` and `generateStaticParams`
-- [ ] T029 [US4] Integrate the subtle "reach out" CTA (from T019) at the bottom of `src/app/writing/[slug]/page.tsx`
+- [X] T025 [P] [US4] Add 2-3 sample writing MDX files in `/content/writing/` to test rendering
+- [X] T026 [P] [US4] Build `WritingCard` UI component in `src/components/WritingCard.tsx`
+- [X] T027 [US4] Implement the Writing index page in `src/app/writing/page.tsx` (fetching, sorting by date, and grouping by theme)
+- [X] T028 [US4] Implement the dynamic Writing detail page in `src/app/writing/[slug]/page.tsx` using `next-mdx-remote` and `generateStaticParams`
+- [X] T029 [US4] Integrate the subtle "reach out" CTA (from T019) at the bottom of `src/app/writing/[slug]/page.tsx`
 
 **Checkpoint**: The Writing section is now fully static, highlighting recent reflections and overarching themes.
 
@@ -112,13 +112,13 @@ description: "Task list for implementing the Personal Website feature"
 
 **Purpose**: Improvements that affect multiple user stories, ensuring adherence to the constitution (e.g., performance, static constraints).
 
-- [ ] T030 [P] Implement a global navigation header and footer in `src/app/layout.tsx` to link all sections
-- [ ] T030.5 [P] Conduct a UI/copywriting pass to ensure the 15-second homepage metric (clarity of founder role, current explorations, and contact info) is met
-- [ ] T031 Run a local Lighthouse performance audit to ensure scores > 90 and verify initial JS payload sizes (< 100KB)
-- [ ] T032 Verify "no-JS degradation" by disabling JavaScript in the browser and confirming core content readability
-- [ ] T033 Add SEO metadata (Title, Description, OpenGraph) to `src/app/layout.tsx` and dynamic pages
-- [ ] T034 Run local test build (`pnpm build`) to ensure all MDX schemas validate and `output: export` succeeds without errors
-- [ ] T035 [US4] Implement an RSS feed generator in `scripts/generate-rss.ts` (run pre-build) to allow users to follow ongoing writing
+- [X] T030 [P] Implement a global navigation header and footer in `src/app/layout.tsx` to link all sections
+- [X] T030.5 [P] Conduct a UI/copywriting pass to ensure the 15-second homepage metric (clarity of founder role, current explorations, and contact info) is met
+- [X] T031 Run a local Lighthouse performance audit to ensure scores > 90 and verify initial JS payload sizes (< 100KB)
+- [X] T032 Verify "no-JS degradation" by disabling JavaScript in the browser and confirming core content readability
+- [X] T033 Add SEO metadata (Title, Description, OpenGraph) to `src/app/layout.tsx` and dynamic pages
+- [X] T034 Run local test build (`pnpm build`) to ensure all MDX schemas validate and `output: export` succeeds without errors
+- [X] T035 [US4] Implement an RSS feed generator in `scripts/generate-rss.ts` (run pre-build) to allow users to follow ongoing writing
 
 ---
 
