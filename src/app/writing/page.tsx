@@ -1,5 +1,6 @@
 import { getWritings } from "@/lib/mdx";
 import WritingCard from "@/components/WritingCard";
+import ReachOutCTA from "@/components/ReachOutCTA";
 import type { Writing } from "@/lib/schemas";
 
 export const metadata = {
@@ -18,7 +19,11 @@ function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
   }, {} as Record<string, Writing[]>);
 
   for (const theme of Object.keys(groups)) {
-    groups[theme].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    groups[theme].sort((a, b) => {
+      const featuredDiff = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      if (featuredDiff !== 0) return featuredDiff;
+      return new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+    });
   }
 
   return groups;
@@ -77,6 +82,8 @@ export default function WritingPage() {
           <p className="text-gray-500 italic">No writings found.</p>
         )}
       </div>
+
+      <ReachOutCTA />
     </main>
   );
 }

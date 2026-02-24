@@ -1,5 +1,6 @@
 import { getProjects } from "@/lib/mdx";
 import ProjectCard from "@/components/ProjectCard";
+import ReachOutCTA from "@/components/ReachOutCTA";
 
 export const metadata = {
   title: "Projects | Wilson Chen",
@@ -30,6 +31,8 @@ export default function ProjectsPage() {
       ) : (
         <p className="text-gray-500 italic">No projects found.</p>
       )}
+
+      <ReachOutCTA />
     </main>
   );
 }

@@ -10,9 +10,9 @@ export default function ProjectCard({ project }: { project: Project }) {
             {project.title}
           </Link>
         </h3>
-        <span className="text-sm text-gray-500 whitespace-nowrap ml-4">
+        <time dateTime={project.date} className="text-sm text-gray-500 whitespace-nowrap ml-4">
           {new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-        </span>
+        </time>
       </div>
       
       <div className="flex flex-wrap gap-2">

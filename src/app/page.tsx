@@ -72,9 +72,9 @@ export default function Home() {
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     {project.title}
                   </h3>
-                  <span className="text-sm text-gray-500">
+                  <time dateTime={project.date} className="text-sm text-gray-500">
                     {new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </span>
+                  </time>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                   {project.motivation}
@@ -105,9 +105,9 @@ export default function Home() {
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     {writing.title}
                   </h3>
-                  <span className="text-sm text-gray-500">
+                  <time dateTime={writing.publishDate} className="text-sm text-gray-500">
                     {new Date(writing.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </span>
+                  </time>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <span>{writing.readingTimeMinutes} min read</span>

@@ -52,19 +52,14 @@ export function getProjects(): Project[] {
   const filenames = getMdxFilenames(PROJECTS_DIR);
   assertUniqueSlugs(filenames, 'project');
   
-  const projects = filenames.map((filename) => {
+  const projects = filenames.map((filename): Project => {
     const rawContent = getFileContent(PROJECTS_DIR, filename);
     const { data, content } = matter(rawContent);
     const slug = filename.replace(/\.mdx?$/, '');
     
-    // Validate frontmatter using Zod. Will throw if invalid, stopping the build.
     const validatedData = ProjectSchema.parse(data);
     
-    return {
-      ...validatedData,
-      slug,
-      content,
-    } as Project;
+    return { ...validatedData, slug, content };
   });
   
   // Sort projects by date descending
@@ -84,12 +79,8 @@ export function getProjectBySlug(slug: string): Project | null {
     
     const { data, content } = matter(rawContent);
     const validatedData = ProjectSchema.parse(data);
-    
-    return {
-      ...validatedData,
-      slug,
-      content,
-    } as Project;
+    const project: Project = { ...validatedData, slug, content };
+    return project;
   } catch {
     return null;
   }
@@ -99,24 +90,17 @@ export function getWritings(): Writing[] {
   const filenames = getMdxFilenames(WRITING_DIR);
   assertUniqueSlugs(filenames, 'writing');
   
-  const writings = filenames.map((filename) => {
+  const writings = filenames.map((filename): Writing => {
     const rawContent = getFileContent(WRITING_DIR, filename);
     const { data, content } = matter(rawContent);
     const slug = filename.replace(/\.mdx?$/, '');
     
-    // Validate frontmatter using Zod
     const validatedData = WritingSchema.parse(data);
     
-    // Calculate reading time (rough estimate: 200 words per minute)
     const wordCount = content.trim().split(/\s+/).length;
     const readingTimeMinutes = Math.ceil(wordCount / 200) || 1;
     
-    return {
-      ...validatedData,
-      slug,
-      content,
-      readingTimeMinutes,
-    } as Writing;
+    return { ...validatedData, slug, content, readingTimeMinutes };
   });
   
   // Filter out drafts and sort by date descending
@@ -154,12 +138,8 @@ export function getWritingBySlug(slug: string): Writing | null {
     const wordCount = content.trim().split(/\s+/).length;
     const readingTimeMinutes = Math.ceil(wordCount / 200) || 1;
     
-    return {
-      ...validatedData,
-      slug,
-      content,
-      readingTimeMinutes,
-    } as Writing;
+    const writing: Writing = { ...validatedData, slug, content, readingTimeMinutes };
+    return writing;
   } catch {
     return null;
   }

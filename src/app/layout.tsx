@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: "Wilson Chen",
     locale: "en_US",
     type: "website",
-    images: [{ url: "https://wchen.ai/og-default.svg", width: 1200, height: 630, alt: "Wilson Chen — Founder & Builder" }],
+    images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Founder & Builder" }],
   },
 };
 
@@ -28,11 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <head>
         <link rel="alternate" type="application/rss+xml" title="Wilson Chen | Writing" href="/rss.xml" />
       </head>
       <body className={`${inter.className} bg-white dark:bg-neutral-950 text-gray-900 dark:text-gray-100 antialiased selection:bg-emerald-200 dark:selection:bg-emerald-900 min-h-screen flex flex-col`}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium">
+          Skip to content
+        </a>
         <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md">
           <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
             <Link href="/" className="font-bold text-lg tracking-tight hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
@@ -52,7 +55,7 @@ export default function RootLayout({
           </div>
         </header>
 
-        <div className="flex-grow">
+        <div id="main-content" className="flex-grow">
           {children}
         </div>
 

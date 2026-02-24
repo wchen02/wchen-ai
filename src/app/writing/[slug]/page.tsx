@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: "Wilson Chen",
       locale: "en_US",
       type: "article",
-      images: [{ url: "https://wchen.ai/og-default.svg", width: 1200, height: 630, alt: writing.title }],
+      images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: writing.title }],
     },
   };
 }

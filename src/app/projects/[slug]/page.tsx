@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: "Wilson Chen",
       locale: "en_US",
       type: "article",
-      images: [{ url: "https://wchen.ai/og-default.svg", width: 1200, height: 630, alt: project.title }],
+      images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: project.title }],
     },
   };
 }
@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </h1>
           
           <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 items-center">
-            <span>{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+            <time dateTime={project.date}>{new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
             <span>•</span>
             <div className="flex gap-2">
               {project.type.map((t) => (
