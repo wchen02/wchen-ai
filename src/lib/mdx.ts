@@ -3,6 +3,23 @@ import path from 'path';
 import matter from 'gray-matter';
 import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from './schemas';
 
+const EXCERPT_LENGTH = 160;
+
+export function extractExcerpt(mdxContent: string, maxLength = EXCERPT_LENGTH): string {
+  const plain = mdxContent
+    .replace(/^---[\s\S]*?---/m, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]*)\]\(.*?\)/g, '$1')
+    .replace(/#{1,6}\s+/g, '')
+    .replace(/[*_~`>]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+
+  if (plain.length <= maxLength) return plain;
+  return plain.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
+}
+
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 const GITHUB_DATA_PATH = path.join(process.cwd(), 'public', 'github-contributions.json');
 const PROJECTS_DIR = path.join(CONTENT_DIR, 'projects');

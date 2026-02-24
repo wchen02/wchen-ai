@@ -106,31 +106,44 @@ async function fetchGitHubData() {
   }
 }
 
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 16807 + 0) % 2147483647;
+    return s / 2147483647;
+  };
+}
+
 function createMockData() {
-  // Ensure public directory exists
   if (!fs.existsSync(PUBLIC_DIR)) {
     fs.mkdirSync(PUBLIC_DIR, { recursive: true });
   }
 
-  // Create some structured mock data that matches the schema
-  const mockWeeks = Array.from({ length: 52 }, () => {
-    return {
-      contributionDays: Array.from({ length: 7 }, () => {
-        // Randomly generate some contributions
-        const count = Math.random() > 0.6 ? Math.floor(Math.random() * 10) : 0;
-        return {
-          contributionCount: count,
-          date: `2026-01-01` // Just a placeholder string since we're mocking
-        };
-      })
-    };
-  });
+  const rand = seededRandom(42);
+  const today = new Date();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - 364);
 
-  const mockData = {
-    totalContributions: mockWeeks.reduce((acc, week) => 
+  const mockWeeks: ContributionWeek[] = [];
+  const cursor = new Date(startDate);
+
+  for (let w = 0; w < 52; w++) {
+    const days: ContributionDay[] = [];
+    for (let d = 0; d < 7; d++) {
+      days.push({
+        contributionCount: rand() > 0.6 ? Math.floor(rand() * 10) : 0,
+        date: cursor.toISOString().split('T')[0],
+      });
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    mockWeeks.push({ contributionDays: days });
+  }
+
+  const mockData: ContributionCalendar = {
+    totalContributions: mockWeeks.reduce((acc, week) =>
       acc + week.contributionDays.reduce((dayAcc, day) => dayAcc + day.contributionCount, 0)
     , 0),
-    weeks: mockWeeks
+    weeks: mockWeeks,
   };
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(mockData, null, 2));

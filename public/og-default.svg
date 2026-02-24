@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <text x="100" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" fill="#ffffff">Wilson Chen</text>
+  <text x="100" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="36" fill="#a3a3a3">Founder &amp; Builder</text>
+  <text x="100" y="420" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6ee7b7">wchen.ai</text>
+  <rect x="100" y="460" width="60" height="4" rx="2" fill="#10b981"/>
+</svg>

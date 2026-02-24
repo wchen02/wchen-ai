@@ -23,7 +23,7 @@ export default function GitHubGraph({ data }: GitHubGraphProps) {
       </div>
       
       <div className="flex flex-wrap gap-1" aria-hidden="true">
-        {recentDays.map((day, i) => {
+        {recentDays.map((day) => {
           const intensity = Math.min(Math.ceil((day.contributionCount / 10) * 4), 4);
           
           let bgColor = "bg-gray-100 dark:bg-neutral-800";
@@ -34,7 +34,7 @@ export default function GitHubGraph({ data }: GitHubGraphProps) {
 
           return (
             <div
-              key={i}
+              key={day.date}
               title={`${day.contributionCount} contributions on ${day.date}`}
               className={`w-3 h-3 rounded-sm ${bgColor}`}
             />

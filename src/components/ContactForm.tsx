@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +30,7 @@ export default function ContactForm() {
         throw new Error(result?.error || "Failed to submit form");
       }
 
+      formRef.current?.reset();
       setStatus("success");
       } catch (error: unknown) {
       console.error(error);
@@ -54,7 +56,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       {/* Honeypot field - visually hidden, explicitly removed from screen readers if possible, but kept accessible to bots */}
       <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
         <label htmlFor="_honey">Ignore this field</label>

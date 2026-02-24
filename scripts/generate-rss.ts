@@ -1,24 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { getWritings } from '../src/lib/mdx';
+import { getWritings, extractExcerpt } from '../src/lib/mdx';
 
 const SITE_URL = 'https://wchen.ai';
-const EXCERPT_LENGTH = 200;
-
-function extractExcerpt(mdxContent: string): string {
-  const plain = mdxContent
-    .replace(/^---[\s\S]*?---/m, '')       // frontmatter
-    .replace(/```[\s\S]*?```/g, '')        // code blocks
-    .replace(/!\[.*?\]\(.*?\)/g, '')       // images
-    .replace(/\[([^\]]*)\]\(.*?\)/g, '$1') // links → text
-    .replace(/#{1,6}\s+/g, '')             // headings
-    .replace(/[*_~`>]/g, '')               // emphasis/quote markers
-    .replace(/\n+/g, ' ')
-    .trim();
-
-  if (plain.length <= EXCERPT_LENGTH) return plain;
-  return plain.slice(0, EXCERPT_LENGTH).replace(/\s+\S*$/, '') + '…';
-}
 
 async function generateRss() {
   console.log('Generating RSS feed...');
@@ -26,7 +10,7 @@ async function generateRss() {
   const writings = getWritings();
 
   const rssItems = writings.map(writing => {
-    const excerpt = extractExcerpt(writing.content);
+    const excerpt = extractExcerpt(writing.content, 200);
     return `
     <item>
       <title><![CDATA[${writing.title}]]></title>

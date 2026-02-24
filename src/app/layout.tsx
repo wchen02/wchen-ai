@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     siteName: "Wilson Chen",
     locale: "en_US",
     type: "website",
+    images: [{ url: "https://wchen.ai/og-default.svg", width: 1200, height: 630, alt: "Wilson Chen — Founder & Builder" }],
   },
 };
 

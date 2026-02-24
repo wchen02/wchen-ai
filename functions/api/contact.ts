@@ -30,21 +30,26 @@ function isAllowedOrigin(origin: string | null): boolean {
 // The honeypot field + Cloudflare's built-in bot management provide the
 // primary spam defense layer for this personal site contact form.
 
-export async function onRequestPost(context: EventContext<Env, string, unknown>) {
-  const { request, env } = context;
-
-  const origin = request.headers.get("Origin");
+function corsHeaders(origin: string | null): Headers {
   const corsOrigin = isAllowedOrigin(origin) ? origin! : ALLOWED_ORIGINS[0];
-  const headers = new Headers({
+  return new Headers({
     "Access-Control-Allow-Origin": corsOrigin,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
   });
+}
 
-  if (request.method === "OPTIONS") {
-    return new Response(null, { headers, status: 204 });
-  }
+export async function onRequestOptions(context: EventContext<Env, string, unknown>) {
+  const origin = context.request.headers.get("Origin");
+  return new Response(null, { headers: corsHeaders(origin), status: 204 });
+}
+
+export async function onRequestPost(context: EventContext<Env, string, unknown>) {
+  const { request, env } = context;
+
+  const origin = request.headers.get("Origin");
+  const headers = corsHeaders(origin);
 
   if (!isAllowedOrigin(origin)) {
     return new Response(

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getWritingBySlug, getWritings } from "@/lib/mdx";
+import { getWritingBySlug, getWritings, extractExcerpt } from "@/lib/mdx";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import Link from "next/link";
 
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: 'Writing Not Found' };
   }
   
-  const description = `${writing.theme} — ${writing.readingTimeMinutes} min read`;
+  const description = extractExcerpt(writing.content);
 
   return {
     title: `${writing.title} | Wilson Chen`,
@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: "Wilson Chen",
       locale: "en_US",
       type: "article",
+      images: [{ url: "https://wchen.ai/og-default.svg", width: 1200, height: 630, alt: writing.title }],
     },
   };
 }

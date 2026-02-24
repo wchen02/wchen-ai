@@ -8,7 +8,7 @@
     "prebuild": "tsx scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
