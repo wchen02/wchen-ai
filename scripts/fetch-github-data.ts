@@ -31,22 +31,22 @@ const PUBLIC_DIR = path.join(process.cwd(), 'public');
 const OUTPUT_FILE = path.join(PUBLIC_DIR, 'github-contributions.json');
 
 // Get GitHub username from environment, fallback to what's in the spec
-const GITHUB_USERNAME = process.env.GITHUB_USERNAME || 'wenshengchen';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GH_USERNAME = process.env.GH_USERNAME || 'wenshengchen';
+const GH_TOKEN = process.env.GH_TOKEN;
 
 async function fetchGitHubData() {
-  if (!GITHUB_TOKEN) {
-    console.warn('⚠️ GITHUB_TOKEN is not set in environment. Skipping GitHub data fetch.');
+  if (!GH_TOKEN) {
+    console.warn('⚠️ GH_TOKEN is not set in environment. Skipping GitHub data fetch.');
     console.warn('Creating a mock github-contributions.json file instead.');
     createMockData();
     return;
   }
 
-  console.log(`Fetching GitHub contribution data for @${GITHUB_USERNAME}...`);
+  console.log(`Fetching GitHub contribution data for @${GH_USERNAME}...`);
 
   const query = `
     query {
-      user(login: "${GITHUB_USERNAME}") {
+      user(login: "${GH_USERNAME}") {
         contributionsCollection {
           contributionCalendar {
             totalContributions
@@ -66,7 +66,7 @@ async function fetchGitHubData() {
     const response = await fetch('https://api.github.com/graphql', {
       method: 'POST',
       headers: {
-        Authorization: `bearer ${GITHUB_TOKEN}`,
+        Authorization: `bearer ${GH_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),

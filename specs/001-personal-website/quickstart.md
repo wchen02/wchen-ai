@@ -24,8 +24,8 @@
    Create a `.env.local` file in the root directory:
    ```env
    # Required for build-time GitHub contributions fetch
-   GITHUB_TOKEN=your_personal_access_token_here
-   GITHUB_USERNAME=wenshengchen
+   GH_TOKEN=your_personal_access_token_here
+   GH_USERNAME=wenshengchen
    
    # For the contact form API (Cloudflare worker)
    CONTACT_WEBHOOK_URL=https://your-email-forwarder-or-webhook.com

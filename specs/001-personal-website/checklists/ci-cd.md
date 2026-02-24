@@ -8,7 +8,7 @@
 
 - [x] CHK001 - Are the exact steps required for the CI pipeline (typecheck, lint, test, build) explicitly documented? [Completeness, Spec §Input / User Description]
 - [x] CHK002 - Is the requirement to deploy ONLY via GitHub Actions (using Cloudflare Pages Action or wrangler) documented as a constraint? [Completeness, Spec §Input / User Description]
-- [x] CHK003 - Are the required environment variables or secrets (e.g., `GITHUB_TOKEN`, `CONTACT_WEBHOOK_URL`) explicitly identified for the pipeline? [Completeness, Quickstart]
+- [x] CHK003 - Are the required environment variables or secrets (e.g., `GH_TOKEN`, `CONTACT_WEBHOOK_URL`) explicitly identified for the pipeline? [Completeness, Quickstart]
 
 ## Requirement Clarity
 
