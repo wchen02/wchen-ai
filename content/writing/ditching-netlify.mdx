@@ -1,0 +1,54 @@
+---
+title: "Ditching Netlify"
+publishDate: "2026-02-24T10:00:00Z"
+theme: "Architecture"
+tags: ["netlify", "cloudflare", "hosting", "infrastructure"]
+featured: false
+draft: false
+---
+
+I used Netlify for years. It was the first platform that made deploying a static site feel effortless — git push, wait thirty seconds, done. For a long time, that was enough.
+
+Then it wasn't.
+
+## Death by a Thousand Papercuts
+
+Netlify didn't fail catastrophically. It eroded slowly. The free tier got quieter restrictions. Build minutes became something I tracked instead of ignored. The pricing tiers started optimizing for teams and enterprises, and the solo developer experience — the thing that made Netlify *Netlify* — drifted into afterthought territory.
+
+But the pricing wasn't what pushed me. It was the platform's direction.
+
+Netlify kept adding features I didn't ask for. Edge functions that felt bolted on. A graph database layer that solved a problem I'd never encountered. Blobstore, identity, forms — each one a half-integrated primitive that required its own mental model, its own documentation rabbit hole, its own set of gotchas.
+
+The platform became a feature buffet where nothing tasted like it came from the same kitchen.
+
+## The Coherence Problem
+
+What I wanted was simple: deploy static files fast, run a serverless function when I need to, and store the occasional piece of data. Three primitives. Netlify had all three — technically. But they felt like three different products stitched together under one dashboard.
+
+Netlify Functions ran on AWS Lambda under the hood. Edge Functions ran on Deno Deploy. The CDN was Netlify's own, but blob storage was yet another abstraction. Each layer had different cold start characteristics, different size limits, different debugging stories.
+
+I spent more time navigating *which Netlify primitive to use* than I spent building features. That's a design smell. When your hosting platform requires architectural research before you can write a handler, the abstraction has failed.
+
+## What Cloudflare Made Obvious
+
+Moving to Cloudflare wasn't a lateral migration. It was a simplification.
+
+Workers, KV, Pages, R2 — they all run on the same network, share the same deployment model, and operate under the same runtime. When I write a Pages Function, it's a Worker. When I store data in KV, it's accessible from the same Worker. There's no impedance mismatch between primitives because they were designed as *one system*, not bolted together from acquisitions and partnerships.
+
+The difference became visceral when I deployed this site. On Netlify, a deploy meant pushing to a branch, waiting for a build, hoping the edge function configuration was correct, and checking whether the redirect rules were being parsed in the right order. On Cloudflare Pages, I push and it's live — globally, on a network I already trust with my DNS.
+
+No build minute anxiety. No edge function cold start lottery. No redirect rule language that behaves differently in production than in preview.
+
+## The Vendor Lock-in Flip
+
+The conventional wisdom says switching platforms is risky because of vendor lock-in. But I was already locked in to Netlify — their redirect syntax, their function routing conventions, their deploy configuration format. Every platform has lock-in. The question is whether you're locked into a *good architecture* or a *convenient one*.
+
+Cloudflare's lock-in is the V8 isolate model and the Workers API. Those are closer to web standards than anything Netlify offered. If Cloudflare disappeared tomorrow, my Workers would need refactoring, but my mental model — edge-first, static-first, serverless — would transfer anywhere. Netlify's lock-in was in plumbing details that taught me nothing portable.
+
+## The Quiet Part
+
+The hardest thing about leaving Netlify was admitting I'd outgrown it. Netlify was genuinely great when all I needed was static hosting with a nice CI pipeline. The moment I wanted my hosting to be an *application platform* — to run compute, store data, handle forms at the edge — the seams showed.
+
+I don't think Netlify is bad. I think it optimized for a different developer than the one I became. It wanted to be the friendly on-ramp. I wanted a foundation I could build on for years without hitting a ceiling that required migrating *again*.
+
+Cloudflare is that foundation. Not because it's perfect, but because its architecture and mine point in the same direction.
