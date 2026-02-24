@@ -67,19 +67,19 @@ export default function Home() {
         {projects.length > 0 ? (
           <div className="grid gap-6">
             {projects.map((project) => (
-              <div key={project.slug} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-                <Link href={`/projects/${project.slug}`} className="flex justify-between items-baseline">
+              <Link key={project.slug} href={`/projects/${project.slug}`} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
+                <div className="flex justify-between items-baseline">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     {project.title}
                   </h3>
                   <span className="text-sm text-gray-500">
                     {new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
                   </span>
-                </Link>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                   {project.motivation}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
@@ -100,21 +100,21 @@ export default function Home() {
         {writings.length > 0 ? (
           <div className="grid gap-6">
             {writings.map((writing) => (
-              <div key={writing.slug} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-                <Link href={`/writing/${writing.slug}`} className="flex justify-between items-baseline">
+              <Link key={writing.slug} href={`/writing/${writing.slug}`} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
+                <div className="flex justify-between items-baseline">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     {writing.title}
                   </h3>
                   <span className="text-sm text-gray-500">
                     {new Date(writing.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
                   </span>
-                </Link>
+                </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <span>{writing.readingTimeMinutes} min read</span>
                   <span>·</span>
                   <span className="text-emerald-600 dark:text-emerald-400">{writing.theme}</span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (

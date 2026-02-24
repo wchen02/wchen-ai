@@ -42,7 +42,7 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
+      <div role="status" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
         <p className="font-medium">Message sent successfully!</p>
         <p className="text-sm mt-1">Thanks for reaching out. I&apos;ll get back to you soon.</p>
         <button 
@@ -111,7 +111,7 @@ export default function ContactForm() {
       </div>
 
       {status === "error" && (
-        <div className="text-sm text-red-600 dark:text-red-400">
+        <div role="alert" className="text-sm text-red-600 dark:text-red-400">
           {errorMessage}
         </div>
       )}

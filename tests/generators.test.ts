@@ -1,25 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getProjects, getWritings } from '@/lib/mdx';
-
-/**
- * Pure-function copies of build-script helpers, tested here to validate
- * transformation logic without triggering the script's side-effects.
- */
-
-function extractExcerpt(mdxContent: string, maxLength = 200): string {
-  const plain = mdxContent
-    .replace(/^---[\s\S]*?---/m, '')
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\[([^\]]*)\]\(.*?\)/g, '$1')
-    .replace(/#{1,6}\s+/g, '')
-    .replace(/[*_~`>]/g, '')
-    .replace(/\n+/g, ' ')
-    .trim();
-
-  if (plain.length <= maxLength) return plain;
-  return plain.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
+import { getProjects, getWritings, extractExcerpt } from '@/lib/mdx';
 
 function toDateString(isoDate: string): string {
   return isoDate.split('T')[0];

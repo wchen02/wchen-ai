@@ -3,7 +3,7 @@ import { type Project } from "@/lib/schemas";
 
 export default function ProjectCard({ project }: { project: Project }) {
   return (
-    <div className="flex flex-col gap-3 p-5 border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-neutral-900 hover:shadow-sm transition-shadow">
+    <div className={`flex flex-col gap-3 p-5 rounded-xl hover:shadow-sm transition-shadow ${project.featured ? "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/10" : "border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900"}`}>
       <div className="flex justify-between items-start">
         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
           <Link href={`/projects/${project.slug}`} className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">

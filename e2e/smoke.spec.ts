@@ -128,6 +128,46 @@ test.describe("SEO & Metadata", () => {
   test("homepage has correct title and meta description", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Wilson Chen/);
+
+    const metaDesc = page.locator('meta[name="description"]');
+    await expect(metaDesc).toHaveAttribute("content", /Wilson Chen/);
+  });
+
+  test("homepage has OpenGraph tags", async ({ page }) => {
+    await page.goto("/");
+
+    const ogTitle = page.locator('meta[property="og:title"]');
+    await expect(ogTitle).toHaveAttribute("content", /Wilson Chen/);
+
+    const ogImage = page.locator('meta[property="og:image"]');
+    await expect(ogImage).toBeAttached();
+  });
+
+  test("project detail page has OpenGraph metadata", async ({ page }) => {
+    await page.goto("/projects");
+    const firstLink = page.locator('a[href^="/projects/"]').first();
+    const href = await firstLink.getAttribute("href");
+    await page.goto(href!);
+
+    const ogTitle = page.locator('meta[property="og:title"]');
+    await expect(ogTitle).toBeAttached();
+
+    const ogType = page.locator('meta[property="og:type"]');
+    await expect(ogType).toHaveAttribute("content", "article");
+  });
+
+  test("writing detail page has OpenGraph metadata", async ({ page }) => {
+    await page.goto("/writing");
+    const firstLink = page.locator('a[href^="/writing/"]').first();
+    const href = await firstLink.getAttribute("href");
+    await page.goto(href!);
+
+    const ogTitle = page.locator('meta[property="og:title"]');
+    await expect(ogTitle).toBeAttached();
+
+    const metaDesc = page.locator('meta[name="description"]');
+    const descContent = await metaDesc.getAttribute("content");
+    expect(descContent!.length).toBeGreaterThan(20);
   });
 
   test("RSS feed link is in the document head", async ({ page }) => {

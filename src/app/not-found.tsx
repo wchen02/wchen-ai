@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Page Not Found | Wilson Chen",
+};
+
 export default function NotFound() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
