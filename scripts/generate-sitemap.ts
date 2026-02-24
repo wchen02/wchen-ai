@@ -22,6 +22,7 @@ function generateSitemap() {
 
   const entries: SitemapEntry[] = [
     { url: '', lastmod: buildDate },
+    { url: '/about', lastmod: buildDate },
     { url: '/projects', lastmod: buildDate },
     { url: '/writing', lastmod: buildDate },
     ...projects.map(p => ({ url: `/projects/${p.slug}`, lastmod: toDateString(p.date) })),

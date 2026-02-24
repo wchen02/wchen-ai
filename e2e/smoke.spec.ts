@@ -27,6 +27,7 @@ test.describe("Homepage - 15-Second Overview", () => {
     const nav = page.locator("header nav");
     await expect(nav.locator('a[href="/projects"]')).toBeVisible();
     await expect(nav.locator('a[href="/writing"]')).toBeVisible();
+    await expect(nav.locator('a[href="/about"]')).toBeVisible();
     await expect(nav.locator('a[href="/#contact"]')).toBeVisible();
   });
 });
@@ -93,6 +94,37 @@ test.describe("Writing Section", () => {
   });
 });
 
+test.describe("About Page", () => {
+  test("about page loads with key sections", async ({ page }) => {
+    await page.goto("/about");
+
+    await expect(page.locator("h1")).toContainText("About");
+    await expect(page.locator("text=Philosophy")).toBeVisible();
+    await expect(page.locator("text=Interests")).toBeVisible();
+    await expect(page.locator("text=Background")).toBeVisible();
+  });
+
+  test("about page has reach-out CTA", async ({ page }) => {
+    await page.goto("/about");
+
+    await expect(page.locator("text=Start a conversation")).toBeVisible();
+  });
+
+  test("navigation includes About link", async ({ page }) => {
+    await page.goto("/");
+
+    const nav = page.locator("header nav");
+    await expect(nav.locator('a[href="/about"]')).toBeVisible();
+  });
+
+  test("homepage has pathway to about page", async ({ page }) => {
+    await page.goto("/");
+
+    const aboutLink = page.locator('a[href="/about"]').first();
+    await expect(aboutLink).toBeVisible();
+  });
+});
+
 test.describe("No-JS Degradation", () => {
   test.use({ javaScriptEnabled: false });
 
@@ -113,6 +145,12 @@ test.describe("No-JS Degradation", () => {
   test("writing page is readable without JavaScript", async ({ page }) => {
     await page.goto("/writing");
     await expect(page.locator("h1")).toContainText("Writing");
+  });
+
+  test("about page is readable without JavaScript", async ({ page }) => {
+    await page.goto("/about");
+    await expect(page.locator("h1")).toContainText("About");
+    await expect(page.locator("text=Philosophy")).toBeVisible();
   });
 });
 

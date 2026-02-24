@@ -48,6 +48,9 @@ export default function RootLayout({
               <Link href="/writing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 Writing
               </Link>
+              <Link href="/about" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                About
+              </Link>
               <Link href="/#contact" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 Contact
               </Link>

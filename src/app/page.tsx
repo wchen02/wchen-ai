@@ -35,6 +35,9 @@ export default function Home() {
               for software engineering teams through context-aware agents.
             </p>
           </div>
+          <Link href="/about" className="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
+            More about me & my philosophy →
+          </Link>
         </header>
       </HeroMotion>
 
