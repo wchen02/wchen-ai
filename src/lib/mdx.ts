@@ -99,6 +99,12 @@ export function getWritings(): Writing[] {
     
     const wordCount = content.trim().split(/\s+/).length;
     const readingTimeMinutes = Math.ceil(wordCount / 200) || 1;
+
+    if (!validatedData.draft && (wordCount < 200 || wordCount > 1500)) {
+      console.warn(
+        `[content] Writing "${validatedData.title}" (${slug}) has ${wordCount} words (expected 200–1500).`
+      );
+    }
     
     return { ...validatedData, slug, content, readingTimeMinutes };
   });

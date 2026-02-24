@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm run prebuild && next build",
-    "prebuild": "tsx scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
+    "build": "pnpm run prebuild && next build && tsx scripts/check-bundle-size.ts",
+    "prebuild": "tsx scripts/validate-links.ts && tsx scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
