@@ -6,14 +6,14 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 23 Feb 2026 14:21:32 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 24 Feb 2026 00:49:01 GMT</lastBuildDate>
     
     <item>
       <title><![CDATA[The Friction Between Intention and Execution]]></title>
       <link>https://wchen.ai/writing/intention-execution</link>
       <guid isPermaLink="true">https://wchen.ai/writing/intention-execution</guid>
       <pubDate>Fri, 20 Feb 2026 10:00:00 GMT</pubDate>
-      <description><![CDATA[A post about Developer Tools. Read more at the link.]]></description>
+      <description><![CDATA[We've spent the last decade building better abstractions. React abstracted the DOM. Next.js abstracted routing and server-side rendering. Cloudflare abstracted infrastructure. Yet, somehow, it feels…]]></description>
       <category>Developer Tools</category>
     </item>
     <item>
@@ -21,7 +21,7 @@
       <link>https://wchen.ai/writing/static-first</link>
       <guid isPermaLink="true">https://wchen.ai/writing/static-first</guid>
       <pubDate>Tue, 10 Feb 2026 14:30:00 GMT</pubDate>
-      <description><![CDATA[A post about Architecture. Read more at the link.]]></description>
+      <description><![CDATA[There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free. But physics still applies. No matter…]]></description>
       <category>Architecture</category>
     </item>
   </channel>

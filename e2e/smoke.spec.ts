@@ -1,0 +1,144 @@
+import { test, expect } from "@playwright/test";
+
+test.describe("Homepage - 15-Second Overview", () => {
+  test("renders Wilson's identity and key sections", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.locator("h1")).toContainText("Wilson Chen");
+    await expect(page.locator("text=Founder & Builder")).toBeVisible();
+
+    await expect(page.locator("text=Current Focus")).toBeVisible();
+    await expect(page.locator("text=Selected Work")).toBeVisible();
+    await expect(page.locator("text=Recent Thinking")).toBeVisible();
+    await expect(page.locator("text=Activity")).toBeVisible();
+  });
+
+  test("contact section is accessible from homepage", async ({ page }) => {
+    await page.goto("/");
+
+    const contactSection = page.locator("#contact");
+    await expect(contactSection).toBeVisible();
+    await expect(contactSection.locator("text=collaborate")).toBeVisible();
+  });
+
+  test("navigation links point to correct pages", async ({ page }) => {
+    await page.goto("/");
+
+    const nav = page.locator("header nav");
+    await expect(nav.locator('a[href="/projects"]')).toBeVisible();
+    await expect(nav.locator('a[href="/writing"]')).toBeVisible();
+    await expect(nav.locator('a[href="/#contact"]')).toBeVisible();
+  });
+});
+
+test.describe("Projects Section", () => {
+  test("projects index page loads and lists projects", async ({ page }) => {
+    await page.goto("/projects");
+
+    await expect(page.locator("h1")).toContainText("Projects");
+    const projectCards = page.locator("article, [class*='ProjectCard'], .grid > div");
+    await expect(projectCards.first()).toBeVisible();
+  });
+
+  test("project detail page renders narrative sections", async ({ page }) => {
+    await page.goto("/projects");
+
+    const firstProjectLink = page.locator('a[href^="/projects/"]').first();
+    await firstProjectLink.click();
+
+    await expect(page.locator("text=The Motivation")).toBeVisible();
+    await expect(page.locator("text=The Problem")).toBeVisible();
+  });
+
+  test("project detail page has reach-out CTA", async ({ page }) => {
+    await page.goto("/projects");
+
+    const firstProjectLink = page.locator('a[href^="/projects/"]').first();
+    await firstProjectLink.click();
+
+    await expect(page.locator("text=Start a conversation")).toBeVisible();
+  });
+});
+
+test.describe("Writing Section", () => {
+  test("writing index page loads and groups by theme", async ({ page }) => {
+    await page.goto("/writing");
+
+    await expect(page.locator("h1")).toContainText("Writing");
+    const writingCards = page.locator("article");
+    await expect(writingCards.first()).toBeVisible();
+  });
+
+  test("writing detail page renders content and metadata", async ({ page }) => {
+    await page.goto("/writing");
+
+    const firstWritingLink = page.locator('a[href^="/writing/"]').first();
+    const href = await firstWritingLink.getAttribute("href");
+    await firstWritingLink.click();
+    await page.waitForURL(`**${href}`);
+
+    await expect(page.locator("article")).toBeVisible();
+    await expect(page.locator("text=min read")).toBeVisible();
+  });
+
+  test("writing detail page has reach-out CTA", async ({ page }) => {
+    await page.goto("/writing");
+
+    const firstWritingLink = page.locator('a[href^="/writing/"]').first();
+    const href = await firstWritingLink.getAttribute("href");
+    await firstWritingLink.click();
+    await page.waitForURL(`**${href}`);
+
+    await expect(page.locator("text=Start a conversation")).toBeVisible();
+  });
+});
+
+test.describe("No-JS Degradation", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("homepage core content is readable without JavaScript", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.locator("h1")).toContainText("Wilson Chen");
+    await expect(page.locator("text=Founder & Builder")).toBeVisible();
+    await expect(page.locator("text=Current Focus")).toBeVisible();
+    await expect(page.locator("text=Selected Work")).toBeVisible();
+  });
+
+  test("projects page is readable without JavaScript", async ({ page }) => {
+    await page.goto("/projects");
+    await expect(page.locator("h1")).toContainText("Projects");
+  });
+
+  test("writing page is readable without JavaScript", async ({ page }) => {
+    await page.goto("/writing");
+    await expect(page.locator("h1")).toContainText("Writing");
+  });
+});
+
+test.describe("404 Page", () => {
+  test("shows not found page for invalid routes", async ({ page }) => {
+    await page.goto("/nonexistent-page");
+    await expect(page.locator("text=404")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Go home" })).toBeVisible();
+  });
+});
+
+test.describe("SEO & Metadata", () => {
+  test("homepage has correct title and meta description", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveTitle(/Wilson Chen/);
+  });
+
+  test("RSS feed link is in the document head", async ({ page }) => {
+    await page.goto("/");
+    const rssLink = page.locator('link[type="application/rss+xml"]');
+    await expect(rssLink).toHaveAttribute("href", "/rss.xml");
+  });
+
+  test("favicon is referenced", async ({ page }) => {
+    await page.goto("/");
+    const favicon = page.locator('link[rel="icon"][href="/favicon.svg"]');
+    await expect(favicon).toBeAttached();
+  });
+});

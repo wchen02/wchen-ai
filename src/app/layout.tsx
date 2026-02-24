@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Wilson Chen | Founder & Builder",
   description: "Personal website of Wilson Chen. Founder, builder, and software engineer.",
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "Wilson Chen | Founder & Builder",
     description: "Personal website of Wilson Chen. Founder, builder, and software engineer.",

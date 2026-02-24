@@ -122,6 +122,22 @@ description: "Task list for implementing the Personal Website feature"
 
 ---
 
+## Phase 8: Gap Fixes & Quality Hardening
+
+**Purpose**: Address gaps identified during spec-vs-codebase review. Ensures data model contracts are honored, E2E coverage exists, and developer onboarding is smooth.
+
+- [X] T036 Fix `readingTimeMinutes` fallback bug (`|| 100` → `|| 1`) in `src/lib/mdx.ts`
+- [X] T037 Remove stray `roundedForm` CSS class typo from `src/app/page.tsx`
+- [X] T038 Fix responsive padding typo (`md-24` → `md:py-24`) in `src/app/projects/[slug]/page.tsx`
+- [X] T039 Prioritize `featured` items on homepage before date-sorting for projects and writings in `src/app/page.tsx`
+- [X] T040 Visually highlight featured writings in `src/components/WritingCard.tsx` and sort featured-first within theme groups on `src/app/writing/page.tsx`
+- [X] T041 Create `.env.example` with documented environment variables and exclude from `.gitignore`
+- [X] T042 Add SVG favicon to `/public/favicon.svg` and reference in layout metadata
+- [X] T043 Set up Playwright E2E test infrastructure: config, `e2e/smoke.spec.ts` (16 tests covering homepage, projects, writing, 404, no-JS degradation, SEO)
+- [X] T044 Add `test:e2e` script to `package.json` and integrate Playwright into CI pipeline (`.github/workflows/ci.yml`)
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
