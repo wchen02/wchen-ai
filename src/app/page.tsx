@@ -4,9 +4,13 @@ import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
 import GitHubGraph from "@/components/GitHubGraph";
 
+function featuredFirst<T extends { featured: boolean }>(items: T[]): T[] {
+  return [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+}
+
 export default function Home() {
-  const projects = getProjects().slice(0, 3);
-  const writings = getWritings().slice(0, 3);
+  const projects = featuredFirst(getProjects()).slice(0, 3);
+  const writings = featuredFirst(getWritings()).slice(0, 3);
   const githubData = getGitHubContributions();
 
   return (

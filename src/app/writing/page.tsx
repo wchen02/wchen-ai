@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
-  return writings.reduce((acc, writing) => {
+  const groups = writings.reduce((acc, writing) => {
     const theme = writing.theme;
     if (!acc[theme]) {
       acc[theme] = [];
@@ -16,6 +16,12 @@ function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
     acc[theme].push(writing);
     return acc;
   }, {} as Record<string, Writing[]>);
+
+  for (const theme of Object.keys(groups)) {
+    groups[theme].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  }
+
+  return groups;
 }
 
 export default function WritingPage() {
