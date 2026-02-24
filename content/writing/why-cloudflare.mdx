@@ -1,0 +1,66 @@
+---
+title: "Why I Build on Cloudflare"
+publishDate: "2026-02-23T12:00:00Z"
+theme: "Architecture"
+tags: ["cloudflare", "hosting", "infrastructure"]
+featured: false
+draft: false
+---
+
+Every project starts with the same unglamorous decision: where does this thing actually run?
+
+Most developers treat hosting as a checkbox. Pick the default, deploy, move on. I used to do the same. But the longer I build, the more I realize that your hosting platform isn't just infrastructure — it's an *architectural constraint* that shapes every decision downstream.
+
+For this site and everything I ship, I chose Cloudflare. Not because it was trending. Because it aligns with how I think software should work.
+
+## The Problem With the Obvious Choices
+
+The hosting landscape has become paradoxically complex. AWS gives you 200+ services and expects you to wire them together like an electrical engineer. Vercel offers a polished experience but couples you tightly to their framework opinions and pricing tiers.
+
+Traditional VPS hosting gives you control at the cost of everything else — you're back to managing nginx configs and SSL certificates at 2 AM.
+
+None of these are *bad*. But they all force a trade-off between simplicity and control that I don't think should exist.
+
+What I wanted was something different: a platform where infrastructure genuinely disappears. Where I don't think about servers, regions, or scaling policies. Where the global edge isn't a premium add-on but the *default*.
+
+## What Cloudflare Gets Right
+
+Cloudflare's model is built around a simple insight: compute should live where your users are, not where your server happens to be.
+
+Their Workers platform runs code at the edge — across 300+ data centers worldwide — without cold starts, without region selection, without capacity planning. When I deploy a Worker, it's immediately available everywhere. That's not marketing language. It's the actual architecture.
+
+For static sites, Cloudflare Pages gives me exactly what I described in my piece on static-first architecture: pre-built files served from the nearest edge node. No origin server. No dynamic rendering overhead. Just bytes traveling the shortest possible path to the browser.
+
+But what convinced me wasn't any single feature. It was the *coherence* of the platform.
+
+Need key-value storage? KV is right there, globally replicated. Need a relational database? D1 runs SQLite at the edge. Need object storage? R2 is S3-compatible with zero egress fees. Need AI inference? Workers AI runs models on the same network.
+
+Every primitive lives in the same ecosystem, shares the same deployment model, and speaks the same language. There's no glue code between five different vendor dashboards. There's no "now configure your IAM roles" ceremony.
+
+## The Philosophy Underneath
+
+The deeper reason I chose Cloudflare is philosophical.
+
+I believe infrastructure should be invisible. The best hosting platform is one you *forget about* — not because you're ignoring it, but because it requires so little of your attention that you can focus entirely on the product.
+
+Cloudflare's architecture embodies this. Workers don't have cold starts to tune. Pages don't have build caches to invalidate manually. KV doesn't have replication lag to design around. The platform absorbs complexity instead of exposing it.
+
+This matters more than most developers realize. Every hour spent configuring infrastructure is an hour not spent building the thing your users actually care about. Every architectural decision forced by your hosting provider is a constraint you didn't choose.
+
+I don't want to optimize my deployment pipeline. I want to push code and have it live — globally, instantly, reliably.
+
+## The Trade-offs
+
+I'm not naive about this. Cloudflare's ecosystem is younger than AWS. Some edges are rough.
+
+D1 is still maturing. The Workers runtime isn't Node.js — it's V8 isolates, which means some npm packages won't work without adaptation. The documentation, while improving, occasionally leaves gaps that require digging through Discord threads.
+
+These are real constraints. I accept them because the architectural alignment outweighs the friction.
+
+When your hosting platform thinks the way you think — edge-first, static-first, complexity-averse — the rough edges become temporary inconveniences rather than fundamental mismatches.
+
+## Looking Forward
+
+Cloudflare is building toward something ambitious: a full application platform at the edge. Not just hosting. Not just CDN. A complete runtime environment where the distance between your code and your user approaches zero.
+
+That vision matches mine. I want to build software that feels instant, runs everywhere, and demands nothing from the people using it. Choosing the right foundation isn't a technical footnote — it's the first real architectural decision, and it echoes through everything that follows.

@@ -1,0 +1,68 @@
+---
+title: "Lessons From Spec-Kit: Draft Before You Spec, Scope Before You Build"
+publishDate: "2026-02-23T23:00:00Z"
+theme: "Developer Tools"
+tags: ["spec-kit", "agents", "cursor", "workflow"]
+featured: false
+draft: false
+---
+
+The first time I used spec-kit, I fed it a vague paragraph about what I wanted and hit run. The spec it produced was technically valid — and practically useless. Too broad, too ambitious, too disconnected from what a coding agent could actually execute in a single session.
+
+The tool wasn't the problem. My input was.
+
+After dozens of spec-kit runs across multiple projects, I've developed a workflow that consistently produces better results. The core insight is counterintuitive: the most important work happens *before* you ever touch spec-kit, and *after* the agent finishes writing code.
+
+## Draft Each Phase With a Chatbot First
+
+Spec-kit follows a structured pipeline — specify, plan, implement. Each phase consumes the output of the previous one. If your initial specification is fuzzy, that fuzziness compounds through every subsequent step.
+
+The fix is simple: draft each phase in a general-purpose chatbot like ChatGPT before running it in spec-kit. Describe what you want to build. Let the chatbot ask clarifying questions. Iterate on the description until it's tight — concrete requirements, clear constraints, explicit non-goals.
+
+When I built this website, my first instinct was to dump everything into one spec-kit run: "I need a personal site with a homepage, about page, writing section, projects section, MDX content pipeline with Zod-validated frontmatter, GitHub contribution data fetched at build time, a contact form backed by a Cloudflare Worker, static export, and Cloudflare Pages deployment." That's what I fed into `/speckit.specify`.
+
+If I had that conversation with ChatGPT first, it would have asked the questions I skipped. What's the content schema for writing entries versus project entries? Are they the same frontmatter shape? How does the GitHub data refresh — rebuild on a schedule, or manual trigger? Does the contact form need rate limiting? Honeypot fields? What validation happens server-side versus client-side? Static export means no server components at runtime — have you accounted for that in your data fetching strategy?
+
+Those questions would have forced me to make decisions *before* the spec existed, not discover them mid-implementation when the agent was already eight tasks deep and guessing.
+
+The same applies to the planning phase. After spec-kit generates a spec, take that spec back to a chatbot and ask: "Is this scope realistic for a single implementation session? What's missing? What should I cut?" Then feed the refined version back into `/speckit.plan`.
+
+Think of the chatbot as a *thought partner* and spec-kit as the *execution framework*. Each has a role. Don't conflate them.
+
+## Never Plan a Feature Too Big to Ship in One Go
+
+This is the mistake that cost me the most time. I specced this entire website — homepage, about page, writing section, projects section, MDX pipeline, GitHub integration, contact form, deployment — as a single spec-kit run. Spec-kit dutifully produced a plan. The plan contained over twenty tasks. By task twelve, the agent's context was stale, earlier assumptions had drifted, and the codebase was in a half-built state that was painful to debug. The content parsing utility didn't match the frontmatter schema the agent had defined six tasks earlier. The contact form's server action used patterns that contradicted the static export decision. Components referenced props that no longer existed.
+
+The codebase compiled. Nothing actually worked together.
+
+The rule I follow now: if a feature can't be implemented, tested, and verified in a single focused session, it's too big. Break it down before you spec it — not after.
+
+This is where the chatbot earns its keep again. Take your feature idea and ask: "Break this into the smallest possible increments that each leave the codebase in a working state."
+
+Good increments are:
+
+- **Modular.** Each piece has a clear boundary. A content parsing utility that reads MDX files and validates frontmatter against a Zod schema is modular. "Build a personal website" is not.
+- **Reversible.** If the increment doesn't work out, you can remove it without cascading breakage. Adding a new `/writing` index page is reversible. Restructuring your entire content model mid-build to support a new page type is not.
+- **Incremental.** Each piece builds on the last and delivers visible progress. First, the project scaffolding with a working homepage. Then, the content schema and parsing layer. Then, the writing section. Then, the projects section. Each step produces something you can deploy and verify.
+
+If I could redo this site, I would break it into separate spec-kit runs: (1) Next.js scaffolding with static export, layout, and a working homepage, (2) MDX content directory structure with Zod schemas for writing and project entries, (3) content parsing utilities that validate and transform MDX into typed data, (4) writing index and detail pages consuming parsed content, (5) projects index and detail pages with their own schema and layout, (6) about page with structured sections, (7) GitHub contribution data fetched at build time and rendered as a static artifact, (8) contact form backed by a Cloudflare Worker edge function, (9) Cloudflare Pages deployment pipeline. Nine focused runs instead of one sprawling spec. Each leaving the site in a deployable state. Each small enough that the agent never loses track of its own decisions.
+
+## Use the Agent to Verify, Not Just Build
+
+Here's the part most people skip. After the agent finishes implementing a set of tasks, they move on to the next feature. But coding agents drift. They make reasonable-sounding decisions that subtly violate your original requirements or the project's conventions.
+
+I use Cursor to repeatedly verify the codebase against two things: the *requirement* (does the implementation match what was specced?) and the *constitution* (does the code conform to the project's rules and patterns?).
+
+In practice, this means asking the agent explicit verification questions between increments. "Read the spec for the content parsing layer. Now read the implementation. Does the Zod schema match what the writing index page expects? Are there fields in the frontmatter that nothing consumes? Are there components importing types that were defined differently in an earlier increment?" This catches drift early — before it becomes architectural debt.
+
+The constitution check is similar. Every project has conventions — naming patterns, file structure, error handling style, component patterns. I keep these documented in rule files that the agent can reference. After each implementation pass, I ask: "Review the files changed in this session against the project rules. Flag anything that doesn't conform."
+
+This verification loop — build, check against spec, check against constitution, correct, continue — is what turns a single productive session into a consistently reliable workflow.
+
+## The Compound Effect
+
+None of these practices are individually revolutionary. Draft before you spec. Scope small. Verify continuously. But combined, they transform spec-kit from a specification generator into a *reliable engineering workflow*.
+
+The agents are powerful enough to build almost anything you describe. The bottleneck was never their capability — it was the quality of what I was asking them to build, and whether I checked their work against the standard I actually cared about.
+
+Precision in, precision out. That's the lesson spec-kit keeps teaching me.

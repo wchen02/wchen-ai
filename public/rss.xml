@@ -6,15 +6,39 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 24 Feb 2026 02:20:53 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 24 Feb 2026 04:20:51 GMT</lastBuildDate>
     
     <item>
-      <title><![CDATA[The Friction Between Intention and Execution]]></title>
-      <link>https://wchen.ai/writing/intention-execution</link>
-      <guid isPermaLink="true">https://wchen.ai/writing/intention-execution</guid>
-      <pubDate>Fri, 20 Feb 2026 10:00:00 GMT</pubDate>
-      <description><![CDATA[We've spent the last decade building better abstractions. React abstracted the DOM. Next.js abstracted routing and server-side rendering. Cloudflare abstracted infrastructure. Yet, somehow, it feels…]]></description>
+      <title><![CDATA[Lessons From Spec-Kit: Draft Before You Spec, Scope Before You Build]]></title>
+      <link>https://wchen.ai/writing/spec-kit-lessons</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/spec-kit-lessons</guid>
+      <pubDate>Mon, 23 Feb 2026 23:00:00 GMT</pubDate>
+      <description><![CDATA[The first time I used spec-kit, I fed it a vague paragraph about what I wanted and hit run. The spec it produced was technically valid — and practically useless. Too broad, too ambitious, too…]]></description>
       <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Vibe Coding a Website in a Day]]></title>
+      <link>https://wchen.ai/writing/vibe-coding-in-a-day</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/vibe-coding-in-a-day</guid>
+      <pubDate>Mon, 23 Feb 2026 22:00:00 GMT</pubDate>
+      <description><![CDATA[I built this entire website in a single day. Not a landing page. Not a template with swapped colors. A statically exported Next.js site with MDX content pipelines, Zod-validated schemas, and a…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Teaching an Agent Your Voice]]></title>
+      <link>https://wchen.ai/writing/teaching-agents-your-voice</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/teaching-agents-your-voice</guid>
+      <pubDate>Mon, 23 Feb 2026 18:00:00 GMT</pubDate>
+      <description><![CDATA[You're reading a blog post written by an AI agent. But it sounds like me. That's not an accident. I built a skill — a reusable instruction set — that teaches the agent how to write in my voice,…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Why I Build on Cloudflare]]></title>
+      <link>https://wchen.ai/writing/why-cloudflare</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/why-cloudflare</guid>
+      <pubDate>Mon, 23 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Every project starts with the same unglamorous decision: where does this thing actually run? Most developers treat hosting as a checkbox. Pick the default, deploy, move on. I used to do the same. But…]]></description>
+      <category>Architecture</category>
     </item>
     <item>
       <title><![CDATA[Building Static-First in an Era of Dynamism]]></title>

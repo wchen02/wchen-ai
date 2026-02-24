@@ -1,0 +1,69 @@
+---
+title: "wchen.ai"
+date: "2026-02-22T00:00:00Z"
+status: "active"
+type: ["app"]
+motivation: "I needed a place to think in public — a site that functions as a building and thinking hub, not a résumé with a hero section."
+problemAddressed: "Most personal sites are either over-engineered portfolio templates or bare-bones blogs. Neither captures how a builder actually thinks and works. I wanted something that scales with my ideas without requiring a redesign every time I add content."
+learnings: "Specification before code is the single biggest force multiplier when vibe coding. The hour I spent on spec-kit artifacts saved three hours of backtracking during implementation. Also, static export with Zod-validated frontmatter catches content errors at build time — not in production."
+url: "https://wchen.ai"
+featured: true
+---
+
+I built this site in a single day using Cursor and spec-kit. The goal was straightforward: a public hub where I can share projects, writing, and a way for people to reach me — without the overhead of a CMS, a database, or a deployment pipeline that requires babysitting.
+
+## How It Works
+
+The site is a statically exported Next.js application. Every page is pre-rendered at build time into plain HTML and served from Cloudflare's CDN. No server computes anything when you load a page. No database is queried. No API is called.
+
+Content lives as MDX files in a `/content` directory — one folder for projects, one for writing. Each file has YAML frontmatter validated by Zod schemas at build time. If the frontmatter is malformed, the build fails. This means content errors surface during development, not after deployment.
+
+```typescript
+const WritingSchema = z.object({
+  title: z.string(),
+  publishDate: z.string().datetime(),
+  theme: z.string(),
+  tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
+  draft: z.boolean().default(false),
+});
+```
+
+Dynamic data — like GitHub contribution history — is fetched by a pre-build script that writes the result to a static JSON file. The frontend reads from that file as if it were any other static asset.
+
+## The Vibe Coding Workflow
+
+I didn't scaffold this project by hand. I described what I wanted and let Cursor — an AI-native code editor — generate the implementation.
+
+But the key was *what came before the code*. I used spec-kit, a structured specification workflow, to produce three artifacts before touching a single component:
+
+1. **spec.md** — what the site needs to accomplish, who it's for, and the acceptance criteria
+2. **plan.md** — architectural decisions, project structure, data model, and tech stack rationale
+3. **tasks.md** — a discrete breakdown of implementation steps the agent could execute sequentially
+
+This meant the agent wasn't guessing. When I asked it to build the writing index page, it already had the content schema, the component patterns, and the file structure documented in context. The specification acted as a shared contract between me and the AI.
+
+## Architecture
+
+```text
+/
+├── content/           # MDX source of truth
+│   ├── projects/      # Project narratives
+│   └── writing/       # Essays and thoughts
+├── src/
+│   ├── app/           # Next.js App Router pages
+│   ├── components/    # React components
+│   └── lib/           # Zod schemas, MDX parsers
+├── scripts/           # Pre-build data fetching
+└── functions/         # Cloudflare Pages Functions (contact API)
+```
+
+The contact form is the only dynamic element. It's handled by a Cloudflare Pages Function — an edge function that runs on Cloudflare's network, keeping the rest of the site purely static.
+
+Styling uses Tailwind CSS. Animations use Framer Motion, lazy-loaded to keep the initial JS payload under 100KB.
+
+## What I'd Do Differently
+
+I'd spend more time on the specification phase. Even with spec-kit, I found myself making micro-decisions during implementation that should have been captured upfront — things like tag taxonomy, theme naming conventions, and content length constraints. Those decisions are cheap to make in a spec document and expensive to refactor in code.
+
+The vibe coding workflow itself held up well. The constraint that made it work wasn't the AI model's capability — it was the quality of context I gave it before asking it to build.

@@ -1,0 +1,56 @@
+---
+title: "Teaching an Agent Your Voice"
+publishDate: "2026-02-23T18:00:00Z"
+theme: "Developer Tools"
+tags: ["skills", "agents", "cursor", "content"]
+featured: false
+draft: false
+---
+
+You're reading a blog post written by an AI agent. But it sounds like me.
+
+That's not an accident. I built a [skill](/projects/website-content-skill) — a reusable instruction set — that teaches the agent how to write in my voice, follow my content schemas, and structure posts the way I would. This article is both the explanation and the proof.
+
+## The Real Problem Isn't Capability
+
+Every time I asked an agent to write a blog post, the result sounded like a press release. Correct grammar. Hollow voice. Full of corporate filler and exclamation points I'd never use.
+
+The instinct is to blame the model. But the model can write in any voice — it just doesn't know *which* voice to use. Without constraints, it falls back to the average of its training data: safe, generic, corporate. The absence of direction *is* the direction.
+
+This realization changed how I think about working with agents. The bottleneck isn't intelligence. It's context. And context isn't something you pass once — it's something you *encode* so it persists across every interaction.
+
+## Voice Is Harder to Encode Than You Think
+
+Schema is easy. A Zod definition for frontmatter — required fields, types, validation rules — is precise and verifiable. Either the output conforms or the build breaks. There's no ambiguity.
+
+Voice is a different problem entirely. How do you tell an agent that your paragraphs are short, your sentences are declarative, you use italics for reframes but never for emphasis alone, and you'd rather delete a paragraph than add an exclamation point?
+
+The answer I landed on: *examples over descriptions*. Telling an agent "be conversational" produces nothing useful. Showing it five quoted passages from your actual writing — with annotations about what makes each one characteristic — produces output you'd almost keep as-is.
+
+The other insight was that *anti-patterns matter more than patterns*. Positive instructions ("use short paragraphs") are easy for the model to drift from. Negative constraints ("never use exclamation points," "never hedge with 'kind of' or 'sort of'") are bright lines. They pull the output away from generic more reliably than any amount of positive guidance.
+
+## Constraints as Creative Direction
+
+There's a counterintuitive dynamic at work. The more constraints I added to the skill, the better the output got. Not because more rules produced more rigid writing — but because constraints *remove the decisions the model is worst at*.
+
+An unconstrained agent agonizes over tone. Should this paragraph be formal? Casual? Enthusiastic? Without a signal, it splits the difference and produces something that sounds like no one in particular.
+
+A constrained agent doesn't face that decision. The voice guide says: first person, no hedging, end with conviction. The schema says: 1-3 sentences per paragraph, no H1. The checklist says: verify before returning. Each constraint eliminates a class of generic output.
+
+This mirrors how I think about product design. The best products aren't the ones with the most features — they're the ones with the fewest decisions pushed to the user. Skills work the same way for agents.
+
+## The Meta Layer
+
+This post was written using the skill it describes. I told the agent to use the `website-content` skill to write about teaching agents your voice. The agent read my voice guide, internalized my content schema, and produced a draft that follows my structural patterns — provocation at the top, position in the middle, conviction at the close.
+
+I didn't dictate sentences. I *taught the system how I think about writing*, and let it execute.
+
+That distinction matters. The value of a skill isn't that it generates text for you. It's that it captures *procedural knowledge* — the kind of institutional understanding that normally lives only in your head — and makes it reproducible.
+
+## Beyond Content
+
+The implication is broader than writing. Any repeatable workflow where you find yourself re-explaining context to an agent is a candidate for this approach. Code review standards. Deployment procedures. Database conventions. Design system rules.
+
+The interesting question isn't "can agents do this?" — they clearly can. The interesting question is: what knowledge do you carry in your head that you've never written down, because no human needed it written down? That knowledge is exactly what agents are missing.
+
+Skills are how you close that gap. Not by writing documentation for humans, but by writing *operating instructions* for agents. The format is a `SKILL.md` file. The ecosystem is [skills.sh](https://skills.sh). The hard part isn't the tooling — it's the introspection required to articulate what you actually do, how you actually think, and why your way is different from the default.

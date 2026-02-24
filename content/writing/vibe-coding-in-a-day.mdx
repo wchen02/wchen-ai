@@ -1,0 +1,62 @@
+---
+title: "Vibe Coding a Website in a Day"
+publishDate: "2026-02-23T22:00:00Z"
+theme: "Developer Tools"
+tags: ["vibe-coding", "cursor", "agents", "productivity"]
+featured: true
+draft: false
+---
+
+I built [this entire website](/projects/personal-website) in a single day. Not a landing page. Not a template with swapped colors. A statically exported Next.js site with MDX content pipelines, Zod-validated schemas, and a Cloudflare Pages deployment.
+
+I didn't mass-produce boilerplate. I *vibe coded* it. And the experience changed how I think about what it means to be a developer.
+
+## The Shift Nobody Talks About
+
+Andrej Karpathy coined "vibe coding" to describe building software by describing what you want in natural language. That definition is accurate but incomplete. It frames vibe coding as a technique — a way to produce code faster. The more interesting thing is what it reveals about where developer time *actually goes*.
+
+The traditional workflow is: think about what you want, translate that thinking into code, debug the translation, refactor, repeat. I've done this for years. And I never questioned how much of the cycle was *translation* — the mechanical act of converting decisions I'd already made into syntax the machine would accept.
+
+Vibe coding compresses that translation layer to near zero. What's left is the thinking. Architecture. Data flow. Edge cases. Trade-offs. The decisions that determine whether the thing you build is good.
+
+That compression is disorienting at first. You're so used to spending four hours implementing a feature that you don't realize three of those hours were boilerplate, API lookups, and wiring. When the agent absorbs that work, you finish in one hour and feel like you cheated. You didn't. You just stopped doing the parts that weren't yours to do.
+
+## Specification Is the New Bottleneck
+
+The biggest lesson from building this site in a day: the quality of the output is bounded by the quality of the *specification*, not the quality of the model.
+
+When I gave the agent vague direction — "build me a nice writing page" — the result was mediocre. Generic layout, placeholder patterns, no personality. When I gave it a structured spec with acceptance criteria, content schemas, and component contracts, the result was something I'd ship.
+
+This inverts the traditional skill hierarchy. In a pre-AI workflow, the developers who typed fastest and knew the most APIs had an edge. In a vibe coding workflow, the developers who *think most clearly* have the edge. The bottleneck moved upstream — from execution to articulation.
+
+That's uncomfortable for people who built their identity around implementation speed. But it's also liberating. If your advantage is taste, judgment, and architectural thinking, vibe coding amplifies those things. If your advantage was memorizing React hooks, the moat just evaporated.
+
+## The Trust Problem
+
+Vibe coding requires a specific kind of trust that most developers aren't trained for: trusting output you didn't write, line by line.
+
+I caught myself doing something strange during the build. I'd ask the agent to create a component, review the output, and then mentally rewrite it in my head to confirm I *could have* written it myself. As if the code was only valid if I could have produced it independently.
+
+That instinct is wrong, but it's worth understanding. Developers have spent decades building the habit of knowing every line of their codebase. Vibe coding asks you to shift from *authorship* to *ownership*. You don't write the code. You own the decisions that shaped it. You review, correct, and approve — like an architect who doesn't lay bricks but is responsible for every wall.
+
+The practical implication: if you can't articulate *why* a piece of generated code is correct, you haven't reviewed it. Reading the code isn't enough. You need to understand the decision it encodes.
+
+## What Speed Actually Buys You
+
+Building a website in a day sounds like a flex. It's not the point.
+
+The point is what the speed *freed up*. Because I wasn't spending hours on scaffolding and wiring, I spent that time on things I normally cut: thoughtful content hierarchy, animation polish, schema validation that catches errors at build time instead of in production, a contact form that actually works instead of a mailto link.
+
+Speed didn't produce a worse result. It produced a *better* result — because the time savings went into quality, not just into finishing earlier.
+
+This is the part people miss when they dismiss vibe coding as "letting AI write your code." The alternative wasn't me writing better code by hand. The alternative was me spending the weekend on boilerplate and shipping a half-polished version on Sunday night. The agent didn't lower the bar. It gave me time to raise it.
+
+## Where the Skill Still Matters
+
+Vibe coding doesn't work without taste. An agent can generate any architecture you describe — including bad ones. It will happily build an over-engineered component hierarchy, add unnecessary abstractions, or create a database schema that makes future queries painful. It does what you say, not what you mean.
+
+The developer's job in this workflow isn't to type. It's to *decide*. Static export or server rendering? MDX or a headless CMS? Edge functions or a traditional API? These decisions determine whether the project holds up over time, and no agent makes them for you.
+
+The irony of vibe coding is that it demands *more* architectural judgment, not less. When implementation is cheap, you can afford to explore more options — but you also have to evaluate more options. The constraint shifts from "can I build this?" to "should I build this, and is this the right way?"
+
+I built this site in a day. But the decisions that made it worth building took years to develop. Vibe coding doesn't skip that part. It just lets you finally *use* it.

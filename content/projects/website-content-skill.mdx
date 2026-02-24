@@ -1,0 +1,101 @@
+---
+title: "website-content skill"
+date: "2026-02-23T00:00:00Z"
+status: "active"
+type: ["agent"]
+motivation: "I wanted my AI agent to stop writing like a press release and start writing like me — same voice, same frontmatter, same structural patterns — without re-explaining those constraints every session."
+problemAddressed: "Every time I asked an agent to write content for my site, the result came back hollow. Correct grammar, zero personality. The model defaulted to corporate filler because it had no constraints to work against. Re-prompting my voice preferences each session was unsustainable."
+learnings: "Progressive disclosure is the architectural decision that makes skills practical. Loading a 100-token description for routing, then the full SKILL.md, then individual reference files on demand — this keeps context costs negligible even with dozens of skills installed. Also, encoding voice is harder than encoding schema. Getting the anti-patterns right (what to avoid) matters more than the positive patterns."
+featured: false
+---
+
+I built a reusable agent skill that teaches Cursor how to write content for this site — blog posts, project entries, page copy — in my voice, following my schemas, using my structural patterns. The skill is published through [skills.sh](https://skills.sh) and works across any AI coding platform that supports the `SKILL.md` convention.
+
+## How It Works
+
+The skill is a directory with a root `SKILL.md` file and a `references/` subdirectory containing two specialized documents. The agent reads these files in a specific order — a deliberate design choice called *progressive disclosure*.
+
+```text
+website-content/
+├── SKILL.md              # Router + workflow (read first)
+└── references/
+    ├── voice-guide.md    # Sentence patterns, vocabulary, tone
+    ├── content-schemas.md # Zod frontmatter specs, body constraints
+    └── page-patterns.md  # Layout and component reference
+```
+
+**Layer 1: SKILL.md** — The agent reads the YAML frontmatter description (~100 tokens) to decide whether this skill is relevant. If it matches, the full file loads. This layer defines *when* to activate, *what workflow to follow*, and *where files go*. It also includes a voice checklist — a set of boolean checks the agent runs against its own output before presenting the draft.
+
+**Layer 2: Voice guide** — Concrete sentence-level patterns extracted from my existing writing. Not abstract guidance like "be conversational." Instead: specific structural habits (short declarative anchors followed by expansion), vocabulary preferences (`build`, `ship`, `friction` — not `leverage`, `synergy`, `innovative`), paragraph constraints (1-3 sentences, each advancing exactly one idea), and explicit bans (no exclamation points, no emojis in body copy).
+
+**Layer 3: Content schemas** — Zod-validated frontmatter definitions for each content type. The writing schema requires `title`, `publishDate`, `theme`, and `tags`. The project schema requires `motivation`, `problemAddressed`, `status`, and `type`. These aren't style suggestions — they're build-time contracts. Malformed frontmatter fails the Next.js static export.
+
+```typescript
+const ProjectSchema = z.object({
+  title: z.string(),
+  date: z.string().datetime(),
+  status: z.enum(["active", "archived", "in-progress"]),
+  type: z.array(z.enum(["app", "agent", "experiment"])).min(1),
+  motivation: z.string().min(10),
+  problemAddressed: z.string().min(10),
+  learnings: z.string().optional(),
+  url: z.string().url().optional(),
+  github: z.string().url().optional(),
+  featured: z.boolean().default(false),
+});
+```
+
+## Architecture Decisions
+
+**Why separate files instead of one large SKILL.md?** Context economy. The voice guide alone is 83 lines. The content schema is 85 lines. Inlining everything into a single file would force the agent to load ~250 lines of instructions for every activation, even when it only needs the schema for a project entry. Splitting into reference files means the agent loads the voice guide *only when writing prose* and the page patterns *only when editing page-level copy*.
+
+**Why YAML frontmatter in SKILL.md?** The `name` and `description` fields serve as a routing mechanism. The agent scans these fields across all installed skills to decide which one to activate. A precise description — "Use when the user asks to write a new writing entry, create a new project entry, or says 'write content for' the site" — prevents false activations and ensures the skill triggers on the right intent.
+
+**Why a voice checklist?** Agents are prone to drift. Even with a detailed voice guide, the model might slip into hedging language ("I think maybe") or add an exclamation point at the end of a section. The checklist acts as a self-audit — a set of concrete, checkable constraints the agent applies to its own output before returning the draft.
+
+## Common Mistakes to Avoid
+
+Building a content skill sounds straightforward, but I hit several traps that wasted real time.
+
+### Writing abstract guidelines instead of concrete patterns
+
+"Be conversational" is useless to an agent. "Paragraphs are 1-3 sentences, each advances exactly one idea, end with conviction not summary" is actionable. Every instruction in the voice guide needs to be *falsifiable* — the agent should be able to look at its output and determine yes or no whether it complied.
+
+### Overloading the description field
+
+The SKILL.md description is a routing signal, not documentation. If you stuff it with implementation details, two things break: the agent wastes tokens parsing it on every request, and it may activate on requests where it shouldn't. Keep the description under 150 tokens and focused entirely on *when* the skill should trigger.
+
+### Forgetting anti-patterns
+
+Positive instructions ("use short paragraphs") are weaker than negative constraints ("never use exclamation points," "never hedge with 'kind of' or 'sort of'"). Models default to the average of their training data. The anti-patterns are what pull the output *away* from generic and toward your actual voice. My voice guide's "Avoid" section is more valuable than the "Use" section.
+
+### Skipping real examples
+
+Descriptions of patterns are less effective than examples of those patterns in action. The voice guide includes quoted examples pulled directly from my existing writing — not synthetic examples I wrote for the guide. The agent needs to see what the target output *actually looks like*, not a description of what it should look like.
+
+### Making the skill too broad
+
+A single skill that tries to cover "all content for the site, plus code review, plus deployment" will produce mediocre results across the board. Scope each skill to one domain. The website-content skill handles content authoring and nothing else. Code conventions, deployment procedures, and design system rules belong in separate skills.
+
+### Ignoring the build contract
+
+If your content has schema validation — Zod, TypeScript, JSON Schema — encode it in the skill. Without this, the agent will produce frontmatter that *looks* correct but fails at build time. I learned this after three rounds of fixing `publishDate` formats the agent generated as `"February 23, 2026"` instead of ISO 8601 datetime strings.
+
+## The Workflow in Practice
+
+When I tell the agent to write a new project entry, it follows a deterministic path:
+
+1. Reads the SKILL.md description, matches on "project entry"
+2. Loads the full SKILL.md, reads the workflow instructions
+3. Reads `references/voice-guide.md` to internalize tone and vocabulary
+4. Reads `references/content-schemas.md` to get the project frontmatter spec
+5. Drafts the content, then runs the voice checklist against its own output
+6. Writes the file to `content/projects/[slug].mdx`
+
+The result is a draft that follows my structural patterns, uses my vocabulary, respects my schema, and places the file in the right directory — without me re-explaining any of it.
+
+## Where This Goes
+
+The skill is portable across platforms. The same `SKILL.md` convention works in Cursor, Claude Code, and GitHub Copilot. Publishing through [skills.sh](https://skills.sh) means anyone can install it with `npx skills add` and adapt it to their own voice and schemas.
+
+The deeper pattern is that *procedural knowledge* — the kind of institutional understanding that lives in your head about how you do things — can be encoded and shared. Not as documentation that humans read, but as structured instructions that agents execute.
