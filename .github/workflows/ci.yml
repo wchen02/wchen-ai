@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -18,9 +19,9 @@ jobs:
           node-version: 20
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
 
       - name: Get pnpm store directory
         shell: bash
@@ -50,8 +51,8 @@ jobs:
       - name: Build Next.js Application
         run: pnpm build
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
-          GH_USERNAME: ${{ env.GH_USERNAME }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USERNAME: ${{ github.repository_owner }}
 
       - name: Install Playwright Browsers
         run: pnpm exec playwright install chromium --with-deps
@@ -64,7 +65,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: wchen-ai
+          projectName: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
           directory: out
           # Optional: Enable this if you want to deploy branch previews
           # gitHubToken: ${{ secrets.GH_TOKEN }}
