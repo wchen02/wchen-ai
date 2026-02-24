@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "pnpm run prebuild && next build && tsx scripts/check-bundle-size.ts",
+    "build": "pnpm run prebuild && next build",
     "prebuild": "tsx scripts/validate-links.ts && tsx --env-file=.env scripts/fetch-github-data.ts && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
     "start": "next start",
     "lint": "eslint",

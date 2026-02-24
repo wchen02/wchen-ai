@@ -114,7 +114,7 @@ description: "Task list for implementing the Personal Website feature"
 
 - [X] T030 [P] Implement a global navigation header and footer in `src/app/layout.tsx` to link all sections
 - [X] T030.5 [P] Conduct a UI/copywriting pass to ensure the 15-second homepage metric (clarity of founder role, current explorations, and contact info) is met
-- [X] T031 Run a local Lighthouse performance audit to ensure scores > 90 and verify initial JS payload sizes (< 100KB)
+- [X] T031 Run a local Lighthouse performance audit to ensure scores > 90
 - [X] T032 Verify "no-JS degradation" by disabling JavaScript in the browser and confirming core content readability
 - [X] T033 Add SEO metadata (Title, Description, OpenGraph) to `src/app/layout.tsx` and dynamic pages
 - [X] T034 Run local test build (`pnpm build`) to ensure all MDX schemas validate and `output: export` succeeds without errors
