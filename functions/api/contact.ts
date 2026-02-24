@@ -23,26 +23,12 @@ function isAllowedOrigin(origin: string | null): boolean {
   return false;
 }
 
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX = 5;
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true;
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX) {
-    return false;
-  }
-
-  entry.count++;
-  return true;
-}
+// Rate limiting: Cloudflare Workers are stateless — in-memory Maps reset on
+// every cold start and are isolated per edge location. For production rate
+// limiting, configure Cloudflare WAF Rate Limiting Rules in the dashboard
+// (Security > WAF > Rate limiting rules) targeting POST /api/contact.
+// The honeypot field + Cloudflare's built-in bot management provide the
+// primary spam defense layer for this personal site contact form.
 
 export async function onRequestPost(context: EventContext<Env, string, unknown>) {
   const { request, env } = context;
@@ -64,14 +50,6 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     return new Response(
       JSON.stringify({ success: false, error: "Forbidden" }),
       { status: 403, headers }
-    );
-  }
-
-  const ip = request.headers.get("cf-connecting-ip") || "unknown";
-  if (!checkRateLimit(ip)) {
-    return new Response(
-      JSON.stringify({ success: false, error: "Too many requests. Please try again later." }),
-      { status: 429, headers }
     );
   }
 

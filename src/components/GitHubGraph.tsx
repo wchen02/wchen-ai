@@ -13,12 +13,16 @@ export default function GitHubGraph({ data }: GitHubGraphProps) {
   const recentDays = allDays.slice(-100);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className="flex flex-col gap-2"
+      role="img"
+      aria-label={`GitHub contribution graph showing ${data.totalContributions} contributions in the last year across the most recent 100 days`}
+    >
       <div className="text-sm text-gray-600 dark:text-gray-400">
         <span className="font-medium text-gray-900 dark:text-gray-100">{data.totalContributions}</span> contributions in the last year
       </div>
       
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1" aria-hidden="true">
         {recentDays.map((day, i) => {
           const intensity = Math.min(Math.ceil((day.contributionCount / 10) * 4), 4);
           

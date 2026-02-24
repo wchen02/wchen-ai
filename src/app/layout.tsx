@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="alternate" type="application/rss+xml" title="Wilson Chen | Writing" href="/rss.xml" />
+      </head>
       <body className={`${inter.className} bg-white dark:bg-neutral-950 text-gray-900 dark:text-gray-100 antialiased selection:bg-emerald-200 dark:selection:bg-emerald-900 min-h-screen flex flex-col`}>
         <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md">
           <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -37,6 +40,9 @@ export default function RootLayout({
               </Link>
               <Link href="/writing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 Writing
+              </Link>
+              <Link href="/#contact" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                Contact
               </Link>
             </nav>
           </div>
@@ -56,6 +62,9 @@ export default function RootLayout({
               <a href="/rss.xml" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 RSS
               </a>
+              <Link href="/#contact" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                Contact
+              </Link>
             </div>
           </div>
         </footer>
