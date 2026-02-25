@@ -62,13 +62,5 @@ export const GitHubContributionSchema = z.object({
 
 export type GitHubContributions = z.infer<typeof GitHubContributionSchema>;
 
-export const ContactPayloadSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-  
-  // Honeypot field (must remain empty for submission to succeed)
-  _honey: z.string().max(0, "Invalid submission"),
-});
-
-export type ContactPayload = z.infer<typeof ContactPayloadSchema>;
+// Re-export from shared so frontend and backend stay in sync
+export { ContactPayloadSchema, type ContactPayload } from "../../shared/contact";

@@ -1,37 +1,30 @@
-import { describe, it, expect } from 'vitest';
-import fs from 'fs';
-import path from 'path';
+import { describe, it, expect } from "vitest";
+import fs from "fs";
+import path from "path";
 
 /**
- * Drift detection: ContactPayloadSchema is defined in both src/lib/schemas.ts
- * and functions/api/contact.ts. This test ensures they stay in sync by
- * comparing the schema object literal from both files.
+ * ContactPayloadSchema is defined once in shared/contact.ts and re-exported/imported
+ * by src/lib/schemas.ts and functions/api/contact.ts. This test ensures both sides
+ * use the shared module (no duplicate definitions).
  */
-describe('ContactPayloadSchema drift detection', () => {
-  function extractSchemaBlock(source: string): string {
-    const match = source.match(
-      /const ContactPayloadSchema\s*=\s*z\.object\(\{([\s\S]*?)\}\)/
-    );
-    if (!match) throw new Error('Could not find ContactPayloadSchema definition');
-    return match[1]
-      .replace(/\/\/.*$/gm, '')  // strip single-line comments
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
+describe("ContactPayloadSchema single source of truth", () => {
+  const sharedPath = path.resolve(__dirname, "../shared/contact.ts");
+  const schemasPath = path.resolve(__dirname, "../src/lib/schemas.ts");
+  const contactFnPath = path.resolve(__dirname, "../functions/api/contact.ts");
 
-  it('functions/api/contact.ts schema matches src/lib/schemas.ts', () => {
-    const canonicalSource = fs.readFileSync(
-      path.resolve(__dirname, '../src/lib/schemas.ts'),
-      'utf8',
-    );
-    const functionSource = fs.readFileSync(
-      path.resolve(__dirname, '../functions/api/contact.ts'),
-      'utf8',
-    );
+  it("shared/contact.ts defines ContactPayloadSchema", () => {
+    const source = fs.readFileSync(sharedPath, "utf8");
+    expect(source).toContain("ContactPayloadSchema");
+    expect(source).toContain("z.object");
+  });
 
-    const canonical = extractSchemaBlock(canonicalSource);
-    const functionSchema = extractSchemaBlock(functionSource);
+  it("src/lib/schemas.ts re-exports from shared", () => {
+    const source = fs.readFileSync(schemasPath, "utf8");
+    expect(source).toMatch(/from\s+["']\.\.\/\.\.\/shared\/contact["']/);
+  });
 
-    expect(functionSchema).toBe(canonical);
+  it("functions/api/contact.ts imports from shared", () => {
+    const source = fs.readFileSync(contactFnPath, "utf8");
+    expect(source).toMatch(/from\s+["']\.\.\/\.\.\/shared\/contact["']/);
   });
 });

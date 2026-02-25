@@ -7,7 +7,7 @@ export default function ContactForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("loading");
     setErrorMessage("");
@@ -24,7 +24,12 @@ export default function ContactForm() {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json() as { error?: string };
+      const contentType = response.headers.get("Content-Type") ?? "";
+      const isJson = contentType.includes("application/json");
+      const text = await response.text();
+      const result = isJson
+        ? (JSON.parse(text) as { error?: string })
+        : { error: "Server returned an invalid response. Please try again." };
 
       if (!response.ok) {
         throw new Error(result?.error || "Failed to submit form");
@@ -72,6 +77,7 @@ export default function ContactForm() {
             type="text"
             id="name"
             name="name"
+            autoComplete="name"
             required
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             placeholder="Jane Founder"
@@ -86,6 +92,7 @@ export default function ContactForm() {
             type="email"
             id="email"
             name="email"
+            autoComplete="email"
             required
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             placeholder="jane@example.com"
@@ -101,6 +108,7 @@ export default function ContactForm() {
         <textarea
           id="message"
           name="message"
+          autoComplete="off"
           required
           minLength={10}
           rows={4}

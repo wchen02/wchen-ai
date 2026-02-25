@@ -21,15 +21,18 @@
    ```
 
 3. **Set up environment variables**:
-   Create a `.env.local` file in the root directory:
+   Copy `.env.example` to `.env` in the root directory and fill in values:
    ```env
    # Required for build-time GitHub contributions fetch
    GH_TOKEN=your_personal_access_token_here
-   GH_USERNAME=wenshengchen
+   GH_USERNAME=your-github-username
    
-   # For the contact form API (Cloudflare worker)
-   CONTACT_WEBHOOK_URL=https://your-email-forwarder-or-webhook.com
+   # Contact form (Cloudflare Pages Function + Mailgun) — see docs/contact-form-setup.md
+   CONTACT_TO_EMAIL=you@yourdomain.com
+   MAILGUN_DOMAIN=yourdomain.com
+   # MAILGUN_API_KEY is set as a secret in Cloudflare Pages; for local dev use .dev.vars
    ```
+   For full contact form setup (Mailgun API key, Cloudflare secrets), see [Contact form setup](../../docs/contact-form-setup.md).
 
 ## Development
 

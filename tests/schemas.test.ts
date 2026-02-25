@@ -28,7 +28,8 @@ describe('ProjectSchema', () => {
   });
 
   it('rejects missing title', () => {
-    const { title: _, ...rest } = validProject;
+    const rest = { ...validProject };
+    delete (rest as Record<string, unknown>).title;
     const result = ProjectSchema.safeParse(rest);
     expect(result.success).toBe(false);
   });
@@ -98,7 +99,8 @@ describe('WritingSchema', () => {
   });
 
   it('rejects missing title', () => {
-    const { title: _, ...rest } = validWriting;
+    const rest = { ...validWriting };
+    delete (rest as Record<string, unknown>).title;
     const result = WritingSchema.safeParse(rest);
     expect(result.success).toBe(false);
   });

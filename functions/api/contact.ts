@@ -1,14 +1,13 @@
-import { z } from 'zod';
-
-const ContactPayloadSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-  _honey: z.string().max(0, "Invalid submission"),
-});
+import { ContactPayloadSchema } from "../../shared/contact";
 
 interface Env {
-  CONTACT_WEBHOOK_URL?: string;
+  CONTACT_TO_EMAIL?: string;
+  MAILGUN_API_KEY?: string;
+  MAILGUN_DOMAIN?: string;
+  /** Optional. Defaults to "Contact Form <noreply@{MAILGUN_DOMAIN}>" */
+  MAILGUN_FROM_EMAIL?: string;
+  /** Set to "1" to use EU API endpoint (api.eu.mailgun.net) */
+  MAILGUN_EU?: string;
 }
 
 const ALLOWED_ORIGINS = [
@@ -29,6 +28,42 @@ function isAllowedOrigin(origin: string | null): boolean {
 // (Security > WAF > Rate limiting rules) targeting POST /api/contact.
 // The honeypot field + Cloudflare's built-in bot management provide the
 // primary spam defense layer for this personal site contact form.
+
+function getMailgunBaseUrl(env: Env): string {
+  return env.MAILGUN_EU === "1" ? "https://api.eu.mailgun.net" : "https://api.mailgun.net";
+}
+
+async function sendViaMailgun(
+  env: Env,
+  params: {
+    to: string;
+    replyTo: string;
+    replyToName: string;
+    subject: string;
+    body: string;
+  }
+): Promise<Response> {
+  const domain = env.MAILGUN_DOMAIN!;
+  const from =
+    env.MAILGUN_FROM_EMAIL ?? `Contact Form <noreply@${domain}>`;
+  const body = new URLSearchParams({
+    from,
+    to: params.to,
+    subject: params.subject,
+    text: params.body,
+    "h:Reply-To": `${params.replyToName} <${params.replyTo}>`,
+  });
+  const apiKey = env.MAILGUN_API_KEY!;
+  const res = await fetch(`${getMailgunBaseUrl(env)}/v3/${domain}/messages`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: "Basic " + btoa(`api:${apiKey}`),
+    },
+    body: body.toString(),
+  });
+  return res;
+}
 
 function corsHeaders(origin: string | null): Headers {
   const corsOrigin = isAllowedOrigin(origin) ? origin! : ALLOWED_ORIGINS[0];
@@ -83,34 +118,38 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     }
 
     const { name, email, message } = parsed.data;
+    const n = name.trim();
+    const e = email.trim();
+    const m = message.trim();
 
-    const webhookUrl = env.CONTACT_WEBHOOK_URL;
+    const toEmail = env.CONTACT_TO_EMAIL;
+    const useMailgun =
+      toEmail && env.MAILGUN_API_KEY && env.MAILGUN_DOMAIN;
 
-    if (!webhookUrl) {
-      console.warn("CONTACT_WEBHOOK_URL is not configured.");
+    if (useMailgun) {
+      const mailRes = await sendViaMailgun(env, {
+        to: toEmail,
+        replyTo: e,
+        replyToName: n,
+        subject: `Contact form: ${n}`,
+        body: `From: ${n} <${e}>\n\n${m}`,
+      });
+      if (!mailRes.ok) {
+        const errBody = await mailRes.text();
+        console.error("Mailgun error:", mailRes.status, errBody);
+        throw new Error(`Mailgun responded with ${mailRes.status}`);
+      }
       return new Response(
-        JSON.stringify({ success: true, message: "Development mode: Message received but not sent." }),
+        JSON.stringify({ success: true, message: "Thanks for reaching out! I'll get back to you soon." }),
         { status: 200, headers }
       );
     }
 
-    const forwardResponse = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name.trim(),
-        email: email.trim(),
-        message: message.trim(),
-        source: "wchen.ai contact form",
-      }),
-    });
-
-    if (!forwardResponse.ok) {
-      throw new Error(`Webhook responded with ${forwardResponse.status}`);
-    }
-
+    console.warn(
+      "No contact delivery configured: set CONTACT_TO_EMAIL + MAILGUN_API_KEY + MAILGUN_DOMAIN."
+    );
     return new Response(
-      JSON.stringify({ success: true, message: "Thanks for reaching out! I'll get back to you soon." }),
+      JSON.stringify({ success: true, message: "Development mode: Message received but not sent." }),
       { status: 200, headers }
     );
 
