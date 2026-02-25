@@ -7,18 +7,18 @@ featured: false
 draft: false
 ---
 
-There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free.
+There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free. Run a function at the edge, return HTML in milliseconds, and the user never notices. So why bother with static generation at all?
 
-But physics still applies.
+But physics still applies. No matter how fast your edge function is, it will never beat the speed of serving a pre-compiled static file from a CDN. A static file is already there. No cold start, no function invocation, no database round-trip. The request hits the edge, and the bytes are on the wire. That baseline is hard to improve on.
 
-No matter how fast your edge function is, it will never beat the speed of serving a pre-compiled static file from a CDN.
+For this personal site, I explicitly chose a static-first approach. The site is generated once at build time. There is no database hit when you load this page. There is no server computing the HTML. Every route is a file. Deployments are trivial: push the build output to a CDN and you're done. No runtime to scale, no secrets to rotate in production, no "the function timed out" at 3 a.m.
 
-For this personal site, I explicitly chose a static-first approach. The site is generated once at build time. There is no database hit when you load this page. There is no server computing the HTML. 
+The obvious objection is: what about dynamic data? A blog might be static, but what if you want to show something that changes—recent activity, live counts, user-specific content?
 
-But what about dynamic data?
+I wanted to show my recent GitHub contributions on the homepage. I had three options. Fetch from the client: simple, but slow and prone to loading spinners. Fetch on the server per request: fresh data, but now every page view is dynamic and I lose the benefits of static. Or fetch *during the build process*. A script runs as part of the build, pulls the data from the API, writes it to a JSON file in `public/`, and the frontend reads it like any other static asset. The data is as fresh as the last deploy. For something like contribution history, that's more than enough.
 
-I wanted to show my recent GitHub contributions. Instead of fetching that data from the client (slow, flashes of loading states) or fetching it on the server (requires dynamic rendering), I fetch it *during the build process*. A script pulls the data, saves it as a static JSON file, and the frontend consumes it.
+This hybrid approach—static HTML plus static data artifacts—gives the perception of dynamism with the unshakeable reliability of static hosting. The page loads fast. The data is there. No loading states, no client-side fetch waterfalls. If the JSON is a few hours old, the cost is negligible for this use case.
 
-This hybrid approach—static HTML plus static data artifacts—gives the perception of dynamism with the unshakeable reliability of static hosting.
+Not every project can or should be static. Authenticated dashboards, real-time collaboration, and truly personalized feeds need a server. But a lot of content and marketing sites, docs, and personal homepages don't. The industry has tilted toward "make it dynamic and we'll make it fast," and that's led to a default of server rendering and client hydration even when a build-time snapshot would suffice. The tooling is good. The defaults are persuasive. It's easy to reach for the dynamic option without asking whether the data actually needs to be live on every request.
 
-Sometimes the best architectural decision is deciding *not* to use the shiny new dynamic tool.
+So the discipline is this: default to static. Only add a server or an edge function when you have a concrete reason—user identity, real-time updates, or data that truly cannot be known at build time. Sometimes the best architectural decision is deciding *not* to use the shiny new dynamic tool. The CDN was already the right answer; you just have to let it do its job.

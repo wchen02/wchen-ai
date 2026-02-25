@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wchen.ai</loc>
-    <lastmod>2026-02-24</lastmod>
+    <lastmod>2026-02-25</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/about</loc>
-    <lastmod>2026-02-24</lastmod>
+    <lastmod>2026-02-25</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/projects</loc>
-    <lastmod>2026-02-24</lastmod>
+    <lastmod>2026-02-25</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/writing</loc>
-    <lastmod>2026-02-24</lastmod>
+    <lastmod>2026-02-25</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/projects/website-content-skill</loc>
@@ -23,6 +23,14 @@
   <url>
     <loc>https://wchen.ai/projects/personal-website</loc>
     <lastmod>2026-02-22</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/writing/static-site-email</loc>
+    <lastmod>2026-02-24</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/writing/ditching-netlify</loc>
+    <lastmod>2026-02-24</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/writing/spec-kit-lessons</loc>

@@ -6,15 +6,31 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Tue, 24 Feb 2026 04:35:50 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 25 Feb 2026 05:30:10 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[The Friction of Static Site Email]]></title>
+      <link>https://wchen.ai/writing/static-site-email</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/static-site-email</guid>
+      <pubDate>Tue, 24 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Adding email to a static site should be a solved problem. I just needed to receive contact form submissions and send replies from my own domain. It sounds simple. Yet, the ecosystem of modern email…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Ditching Netlify]]></title>
+      <link>https://wchen.ai/writing/ditching-netlify</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/ditching-netlify</guid>
+      <pubDate>Tue, 24 Feb 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[I used Netlify for years. It was the first platform that made deploying a static site feel effortless — git push, wait thirty seconds, done. For a long time, that was enough. Then it wasn't. Death by…]]></description>
+      <category>Infrastructure</category>
+    </item>
     <item>
       <title><![CDATA[Lessons From Spec-Kit: Draft Before You Spec, Scope Before You Build]]></title>
       <link>https://wchen.ai/writing/spec-kit-lessons</link>
       <guid isPermaLink="true">https://wchen.ai/writing/spec-kit-lessons</guid>
       <pubDate>Mon, 23 Feb 2026 23:00:00 GMT</pubDate>
       <description><![CDATA[The first time I used spec-kit, I fed it a vague paragraph about what I wanted and hit run. The spec it produced was technically valid — and practically useless. Too broad, too ambitious, too…]]></description>
-      <category>Developer Tools</category>
+      <category>Workflow</category>
     </item>
     <item>
       <title><![CDATA[Vibe Coding a Website in a Day]]></title>
@@ -22,7 +38,7 @@
       <guid isPermaLink="true">https://wchen.ai/writing/vibe-coding-in-a-day</guid>
       <pubDate>Mon, 23 Feb 2026 22:00:00 GMT</pubDate>
       <description><![CDATA[I built this entire website in a single day. Not a landing page. Not a template with swapped colors. A statically exported Next.js site with MDX content pipelines, Zod-validated schemas, and a…]]></description>
-      <category>Developer Tools</category>
+      <category>Workflow</category>
     </item>
     <item>
       <title><![CDATA[Teaching an Agent Your Voice]]></title>
@@ -38,14 +54,14 @@
       <guid isPermaLink="true">https://wchen.ai/writing/why-cloudflare</guid>
       <pubDate>Mon, 23 Feb 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[Every project starts with the same unglamorous decision: where does this thing actually run? Most developers treat hosting as a checkbox. Pick the default, deploy, move on. I used to do the same. But…]]></description>
-      <category>Architecture</category>
+      <category>Infrastructure</category>
     </item>
     <item>
       <title><![CDATA[Building Static-First in an Era of Dynamism]]></title>
       <link>https://wchen.ai/writing/static-first</link>
       <guid isPermaLink="true">https://wchen.ai/writing/static-first</guid>
       <pubDate>Tue, 10 Feb 2026 14:30:00 GMT</pubDate>
-      <description><![CDATA[There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free. But physics still applies. No matter…]]></description>
+      <description><![CDATA[There is a growing trend to render everything on the server dynamically. With the advent of Edge computing, we're told that dynamic rendering is basically free. Run a function at the edge, return…]]></description>
       <category>Architecture</category>
     </item>
   </channel>

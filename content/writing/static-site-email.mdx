@@ -1,0 +1,24 @@
+---
+title: "The Friction of Static Site Email"
+publishDate: "2026-02-24T12:00:00Z"
+theme: "Infrastructure"
+tags: ["infrastructure", "mailgun", "static-sites"]
+featured: false
+draft: false
+---
+
+Adding email to a static site should be a solved problem.
+
+I just needed to receive contact form submissions and send replies from my own domain. It sounds simple. Yet, the ecosystem of modern email providers feels incredibly fragmented.
+
+I initially tested MailChannels. They claim to handle spam better than the alternatives. But physics still applies—if the documentation is poor and the developer experience is full of friction, the theoretical benefits don't matter. I spent more time fighting the setup than actually writing code.
+
+What about Formspree? It is the default recommendation for static sites.
+
+But Formspree is a form endpoint, not a mail solution. It restricts free submissions heavily and doesn't solve the other half of the equation: *sending* emails from the domain. I needed full bi-directional email routing without the overhead of a dedicated inbox.
+
+So I went back to an old solution I have used before—Mailgun.
+
+Mailgun just works. It provides complete control over receiving and routing rules, making it trivial to forward incoming messages to my personal inbox. It handles outbound delivery with the reliability of a mature platform. The API is predictable, the documentation is exhaustive, and the developer experience gets out of your way.
+
+Sometimes the best architectural choice isn't the newest tool. It is the one that quietly solved the exact problem you have a decade ago.

@@ -59,6 +59,13 @@ describe('ProjectSchema', () => {
     expect(result.success).toBe(false);
   });
 
+  it('accepts new project types (skill, library, tool)', () => {
+    expect(ProjectSchema.safeParse({ ...validProject, type: ['skill'] }).success).toBe(true);
+    expect(ProjectSchema.safeParse({ ...validProject, type: ['agent', 'skill'] }).success).toBe(true);
+    expect(ProjectSchema.safeParse({ ...validProject, type: ['library'] }).success).toBe(true);
+    expect(ProjectSchema.safeParse({ ...validProject, type: ['tool'] }).success).toBe(true);
+  });
+
   it('rejects motivation shorter than 10 chars', () => {
     const result = ProjectSchema.safeParse({ ...validProject, motivation: 'short' });
     expect(result.success).toBe(false);

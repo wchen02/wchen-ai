@@ -106,7 +106,7 @@ export function getWritings(): Writing[] {
       );
     }
     
-    return { ...validatedData, slug, content, readingTimeMinutes };
+    return { ...validatedData, slug, content, readingTimeMinutes, excerpt: extractExcerpt(content, 160) };
   });
   
   // Filter out drafts and sort by date descending
@@ -144,7 +144,7 @@ export function getWritingBySlug(slug: string): Writing | null {
     const wordCount = content.trim().split(/\s+/).length;
     const readingTimeMinutes = Math.ceil(wordCount / 200) || 1;
     
-    const writing: Writing = { ...validatedData, slug, content, readingTimeMinutes };
+    const writing: Writing = { ...validatedData, slug, content, readingTimeMinutes, excerpt: extractExcerpt(content, 160) };
     return writing;
   } catch {
     return null;

@@ -9,7 +9,7 @@ All content lives in `/content/` as MDX files. Frontmatter is validated by Zod a
 title: "string, required"           # Concise, evocative. Not clickbait.
 publishDate: "ISO 8601 datetime"    # e.g. "2026-02-20T10:00:00Z"
 updatedAt: "ISO 8601 datetime"      # optional, for revised pieces
-theme: "string, required"           # Single theme. Existing: "Architecture", "Developer Tools"
+theme: "string, required"           # Single theme. See Theme Values table below.
 tags: ["array", "of", "strings"]    # Lowercase, specific. Default: []
 featured: false                     # boolean. Featured items appear first on homepage/index.
 draft: false                        # boolean. If true, excluded from build.
@@ -40,7 +40,7 @@ No H1 in body (title is rendered from frontmatter). Use H2 sparingly for structu
 title: "string, required"                 # Clear project name
 date: "ISO 8601 datetime"                 # Project date
 status: "active" | "archived" | "in-progress"
-type: ["app"] | ["agent"] | ["experiment"] | ["agent", "app"]  # At least one required
+type: ["app"] | ["agent"] | ["experiment"] | ["skill"] | ["library"] | ["tool"] | combinations  # At least one required
 motivation: "string, min 10 chars"         # WHY Wilson built it. First-person, punchy.
 problemAddressed: "string, min 10 chars"   # The specific problem. Concrete, not abstract.
 learnings: "string, optional"              # What was discovered. Honest, specific.
@@ -70,10 +70,23 @@ Themes for writing entries. Not strictly enumerated — new themes can be added,
 
 | Theme | Covers |
 |---|---|
-| Architecture | Systems design, static-first, infrastructure philosophy |
-| Developer Tools | DX, productivity, tooling, friction reduction |
+| Architecture | Systems design, static-first, data flow, rendering strategy |
+| Developer Tools | DX, productivity, tooling, agents, cursor, skills, friction reduction |
+| Infrastructure | Hosting, deployment, email, platform choice, migration, CDN |
+| Workflow | Process, spec-kit, vibe coding, agent-augmented development |
 
 Add new themes only when content genuinely doesn't fit existing ones.
+
+## Project Types
+
+| Type | Use when |
+|---|---|
+| app | Web app, site, or deployable product |
+| agent | AI agent, bot, or agentic workflow |
+| experiment | One-off or exploratory build |
+| skill | Reusable agent instruction set (e.g. Cursor skill, SKILL.md package) |
+| library | Reusable code package or module |
+| tool | CLI, utility, or small standalone tool |
 
 ---
 

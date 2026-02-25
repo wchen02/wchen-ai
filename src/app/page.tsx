@@ -3,6 +3,7 @@ import { getProjects, getWritings, getGitHubContributions } from "@/lib/mdx";
 import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
 import GitHubGraph from "@/components/GitHubGraph";
+import WritingCard from "@/components/WritingCard";
 
 function featuredFirst<T extends { featured: boolean }>(items: T[]): T[] {
   return [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -103,21 +104,7 @@ export default function Home() {
         {writings.length > 0 ? (
           <div className="grid gap-6">
             {writings.map((writing) => (
-              <Link key={writing.slug} href={`/writing/${writing.slug}`} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-                <div className="flex justify-between items-baseline">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    {writing.title}
-                  </h3>
-                  <time dateTime={writing.publishDate} className="text-sm text-gray-500">
-                    {new Date(writing.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </time>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{writing.readingTimeMinutes} min read</span>
-                  <span>·</span>
-                  <span className="text-emerald-600 dark:text-emerald-400">{writing.theme}</span>
-                </div>
-              </Link>
+              <WritingCard key={writing.slug} writing={writing} />
             ))}
           </div>
         ) : (

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ProjectTypeEnum = z.enum(['app', 'agent', 'experiment']);
+export const ProjectTypeEnum = z.enum(['app', 'agent', 'experiment', 'skill', 'library', 'tool']);
 
 export const ProjectSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -44,6 +44,7 @@ export type Writing = z.infer<typeof WritingSchema> & {
   slug: string; 
   content: string; // The raw MDX body (200-1500 words per spec)
   readingTimeMinutes: number; // Calculated at build time
+  excerpt: string; // Derived at build/load time from content
 };
 
 export const GitHubContributionSchema = z.object({

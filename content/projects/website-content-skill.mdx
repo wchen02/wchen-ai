@@ -2,7 +2,7 @@
 title: "website-content skill"
 date: "2026-02-23T00:00:00Z"
 status: "active"
-type: ["agent"]
+type: ["agent", "skill"]
 motivation: "I wanted my AI agent to stop writing like a press release and start writing like me — same voice, same frontmatter, same structural patterns — without re-explaining those constraints every session."
 problemAddressed: "Every time I asked an agent to write content for my site, the result came back hollow. Correct grammar, zero personality. The model defaulted to corporate filler because it had no constraints to work against. Re-prompting my voice preferences each session was unsustainable."
 learnings: "Progressive disclosure is the architectural decision that makes skills practical. Loading a 100-token description for routing, then the full SKILL.md, then individual reference files on demand — this keeps context costs negligible even with dozens of skills installed. Also, encoding voice is harder than encoding schema. Getting the anti-patterns right (what to avoid) matters more than the positive patterns."

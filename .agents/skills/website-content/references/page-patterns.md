@@ -20,7 +20,7 @@ Layout and component patterns for each page of wchen.ai.
 1. **Hero** — Name, "Founder & Builder", current exploration statement, link to about
 2. **Current Focus & Problems** — What Wilson is obsessed with right now
 3. **Selected Work** — Top 3 projects (featured-first), link to all
-4. **Recent Thinking** — Top 3 writings (featured-first), link to all
+4. **Recent Thinking** — Top 3 writings (latest by date), link to all
 5. **Activity** — GitHub contribution graph
 6. **Contact** — "Let's collaborate" + ContactForm
 
