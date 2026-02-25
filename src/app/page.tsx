@@ -18,8 +18,9 @@ export default function Home() {
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
       {/* 15-Second Overview: Priority "what I'm exploring now" > problems > past work > contact */}
       
-      <HeroMotion>
-        <header className="space-y-6">
+      <div className="min-h-[420px] md:min-h-[320px] [contain:layout]" data-hero>
+        <HeroMotion>
+          <header className="space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
             Wilson Chen
           </h1>
@@ -40,7 +41,8 @@ export default function Home() {
             More about me & my philosophy →
           </Link>
         </header>
-      </HeroMotion>
+        </HeroMotion>
+      </div>
 
       <section className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
