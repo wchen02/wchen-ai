@@ -1,6 +1,7 @@
 import { getWritings } from "@/lib/mdx";
 import WritingCard from "@/components/WritingCard";
 import ReachOutCTA from "@/components/ReachOutCTA";
+import SectionReveal from "@/components/SectionReveal";
 import type { Writing } from "@/lib/schemas";
 
 export const metadata = {
@@ -35,55 +36,61 @@ export default function WritingPage() {
   const themes = Object.keys(themeGroups).sort();
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-12">
-      <header className="space-y-4">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Writing & Ideas
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400">
-          A living record of my evolving thoughts on engineering, products, and the friction 
-          of building software.
-        </p>
-      </header>
+    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
+      <SectionReveal className="space-y-4">
+        <header>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Writing & Ideas
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
+            A living record of my evolving thoughts on engineering, products, and the friction 
+            of building software.
+          </p>
+        </header>
+      </SectionReveal>
 
       {themes.length > 1 && (
-        <nav className="flex flex-wrap gap-2">
-          {themes.map(theme => (
-            <a
-              key={theme}
-              href={`#theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
-              className="px-3 py-1 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
-            >
-              {theme}
-            </a>
-          ))}
-        </nav>
+        <SectionReveal>
+          <nav className="flex flex-wrap gap-2">
+            {themes.map(theme => (
+              <a
+                key={theme}
+                href={`#theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
+                className="px-3 py-1 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+              >
+                {theme}
+              </a>
+            ))}
+          </nav>
+        </SectionReveal>
       )}
 
-      <div className="space-y-16">
-        {themes.length > 0 ? (
-          themes.map(theme => (
-            <section
-              key={theme}
-              id={`theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
-              className="space-y-6 scroll-mt-24"
-            >
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-                {theme}
-              </h2>
-              <div className="flex flex-col gap-2 -mx-5">
-                {themeGroups[theme].map((writing) => (
-                  <WritingCard key={writing.slug} writing={writing} />
-                ))}
-              </div>
-            </section>
-          ))
-        ) : (
+      {themes.length > 0 ? (
+        themes.map(theme => (
+          <SectionReveal
+            key={theme}
+            id={`theme-${theme.toLowerCase().replace(/\s+/g, '-')}`}
+            className="space-y-6 scroll-mt-24"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
+              {theme}
+            </h2>
+            <div className="flex flex-col gap-2 -mx-5">
+              {themeGroups[theme].map((writing) => (
+                <WritingCard key={writing.slug} writing={writing} />
+              ))}
+            </div>
+          </SectionReveal>
+        ))
+      ) : (
+        <SectionReveal>
           <p className="text-gray-500 italic">No writings found.</p>
-        )}
-      </div>
+        </SectionReveal>
+      )}
 
-      <ReachOutCTA />
+      <SectionReveal className="pt-8">
+        <ReachOutCTA />
+      </SectionReveal>
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ReachOutCTA from "@/components/ReachOutCTA";
+import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
   title: "About | Wilson Chen",
@@ -27,18 +28,20 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
-      <header className="space-y-6">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-          About
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
-          I build things at the intersection of artificial intelligence and
-          developer tools. This page is a snapshot of what drives me, what I care
-          about, and how I think about the work.
-        </p>
-      </header>
+      <SectionReveal className="space-y-6">
+        <header>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+            About
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mt-6">
+            I build things at the intersection of artificial intelligence and
+            developer tools. This page is a snapshot of what drives me, what I care
+            about, and how I think about the work.
+          </p>
+        </header>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Philosophy
         </h2>
@@ -62,9 +65,9 @@ export default function AboutPage() {
             Both are necessary, and neither is sufficient alone.
           </p>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Interests & Expertise
         </h2>
@@ -116,9 +119,9 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Background
         </h2>
@@ -143,9 +146,9 @@ export default function AboutPage() {
             stop thinking about.
           </p>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Principles I Build By
         </h2>
@@ -180,9 +183,11 @@ export default function AboutPage() {
             </li>
           ))}
         </ul>
-      </section>
+      </SectionReveal>
 
-      <ReachOutCTA />
+      <SectionReveal className="pt-8">
+        <ReachOutCTA />
+      </SectionReveal>
     </main>
   );
 }
