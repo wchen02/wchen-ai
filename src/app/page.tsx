@@ -2,8 +2,10 @@ import Link from "next/link";
 import { getProjects, getWritings, getGitHubContributions } from "@/lib/mdx";
 import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
-import GitHubGraph from "@/components/GitHubGraph";
-import WritingCard from "@/components/WritingCard";
+import GitHubGraphClient from "@/components/GitHubGraphClient";
+import ProjectsListClient from "@/components/ProjectsListClient";
+import SectionReveal from "@/components/SectionReveal";
+import WritingsListClient from "@/components/WritingsListClient";
 
 function featuredFirst<T extends { featured: boolean }>(items: T[]): T[] {
   return [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -18,7 +20,8 @@ export default function Home() {
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
       {/* 15-Second Overview: Priority "what I'm exploring now" > problems > past work > contact */}
       
-      <div className="min-h-[420px] md:min-h-[320px] [contain:layout]" data-hero>
+      <div className="relative min-h-[420px] md:min-h-[320px] [contain:layout] overflow-hidden" data-hero>
+        <div className="absolute inset-0 -z-10 opacity-[0.02] dark:opacity-[0.04] pointer-events-none [background-image:linear-gradient(var(--grid-color,#e5e7eb)_1px,transparent_1px),linear-gradient(90deg,var(--grid-color,#e5e7eb)_1px,transparent_1px)] [background-size:24px_24px] [--grid-color:theme(colors.gray.300)] dark:[--grid-color:theme(colors.neutral.700)]" aria-hidden="true" />
         <HeroMotion>
           <header className="space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -44,7 +47,7 @@ export default function Home() {
         </HeroMotion>
       </div>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Current Focus & Problems
         </h2>
@@ -58,9 +61,9 @@ export default function Home() {
             this context into seamless, invisible workflows rather than adding new dashboards.
           </p>
         </div>
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <div className="flex justify-between items-baseline border-b border-gray-200 dark:border-gray-800 pb-2">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Selected Work
@@ -71,29 +74,13 @@ export default function Home() {
         </div>
         
         {projects.length > 0 ? (
-          <div className="grid gap-6">
-            {projects.map((project) => (
-              <Link key={project.slug} href={`/projects/${project.slug}`} className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors">
-                <div className="flex justify-between items-baseline">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                    {project.title}
-                  </h3>
-                  <time dateTime={project.date} className="text-sm text-gray-500">
-                    {new Date(project.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-                  </time>
-                </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {project.motivation}
-                </p>
-              </Link>
-            ))}
-          </div>
+          <ProjectsListClient projects={projects} />
         ) : (
           <p className="text-gray-500 italic">No projects added yet.</p>
         )}
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <div className="flex justify-between items-baseline border-b border-gray-200 dark:border-gray-800 pb-2">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             Recent Thinking
@@ -104,24 +91,20 @@ export default function Home() {
         </div>
 
         {writings.length > 0 ? (
-          <div className="grid gap-6">
-            {writings.map((writing) => (
-              <WritingCard key={writing.slug} writing={writing} />
-            ))}
-          </div>
+          <WritingsListClient writings={writings} />
         ) : (
           <p className="text-gray-500 italic">No writing yet.</p>
         )}
-      </section>
+      </SectionReveal>
 
-      <section className="space-y-6">
+      <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Activity
         </h2>
-        <GitHubGraph data={githubData} />
-      </section>
+        <GitHubGraphClient data={githubData} />
+      </SectionReveal>
 
-      <section id="contact" className="pt-8">
+      <SectionReveal id="contact" className="pt-8">
         <h2 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white mb-4">
           Let&apos;s collaborate
         </h2>
@@ -130,7 +113,7 @@ export default function Home() {
           how we can build the future together.
         </p>
         <ContactForm />
-      </section>
+      </SectionReveal>
     </main>
   );
 }
