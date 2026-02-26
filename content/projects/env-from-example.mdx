@@ -1,0 +1,54 @@
+---
+title: "env-from-example"
+date: "2026-02-25T00:00:00Z"
+status: "active"
+type: ["tool", "library"]
+motivation: "I wanted creating a .env for a new developer to be as easy as possible — no copy-paste guesswork, no wrong values that only surface in production, no tribal knowledge about which vars are required."
+problemAddressed: "Onboarding usually means 'copy .env.example to .env and fill in the blanks.' That fails in predictable ways: people leave placeholders in, mistype URLs, forget which vars are required, and only discover mistakes when the app crashes or a feature silently breaks. There was no single CLI that walked you through setup with validation and guardrails built in."
+learnings: "Type detection and validation from a single schema.json — bundled with the package — keeps the CLI honest. Annotations in .env.example (REQUIRED, TYPE, CONSTRAINTS) are optional for authors but give the tool enough structure to validate input and auto-generate secrets. The --polish flag that infers and adds those annotations turned out to be the feature that makes adoption stick: teams can start with a minimal example file and upgrade it in place."
+url: "https://www.npmjs.com/package/@wchen.ai/env-from-example"
+github: "https://github.com/wchen02/env-from-example"
+featured: false
+---
+
+I built **env-from-example** — an npm package and CLI that generates `.env` from `.env.example` with prompts, type validation, optional secret generation, and a schema-driven guardrail so new developers get a correct environment on first run instead of debugging bad config later.
+
+## How It Works
+
+You run it from the project root where `.env.example` lives. The CLI reads each variable, detects or uses declared types from annotations, prompts for missing values, and can auto-generate secrets (e.g. `SESSION_SECRET`). Everything is driven by a bundled `schema.json`; no extra config file in your repo.
+
+```bash
+# No install required
+npx @wchen.ai/env-from-example
+
+# Non-interactive (CI, or accept defaults)
+npx env-from-example -y
+
+# Create .env.example if you don't have one
+npx env-from-example --init
+npx env-from-example --init .env   # from existing .env
+```
+
+Variables in `.env.example` can be annotated in the comment above the line. Those annotations are optional — but when present, the tool validates input and guides the user.
+
+```env
+# Database connection [REQUIRED] [TYPE: network/uri] Default: postgres://localhost:5432/myapp
+DATABASE_URL=postgres://localhost:5432/myapp
+
+# Application port [TYPE: integer] [CONSTRAINTS: min=3000,max=10000] Default: 3000
+PORT=3000
+```
+
+If you don't want to write annotations by hand, `--polish` infers types and constraints from the example values and updates `.env.example` in place. That keeps the barrier to adoption low: start with a minimal file, run polish once, and you get validation and better prompts for free.
+
+## Guardrails
+
+The goal was to make incorrect .env values hard to commit. Type checking catches malformed URLs, non-numeric ports, and invalid enums. Required variables must be non-empty before the tool writes `.env`. In CI you can run `env-from-example --validate` so the pipeline fails if someone changed `.env` in a way that no longer matches the schema.
+
+Optional flags support different workflows: `-e staging` for `.env.staging`, `--dry-run` to preview without writing, `--version patch` to bump the schema version and optionally sync `package.json`. Pre-commit hooks can call `--validate`; GitHub Actions can run `env-from-example -y -e test` before tests so the test environment is always generated from the same source of truth.
+
+## Why Publish Under @wchen.ai
+
+I wanted the package to live under a scope I control and can reuse for other dev-tool experiments. The name is descriptive: you get env from example. No branding gymnastics — the thing does what it says.
+
+The package is on npm as `@wchen.ai/env-from-example`. Install as a dev dependency and run `npx env-from-example` from the project root, or use npx without installing. Docs and schema are on the [npm page](https://www.npmjs.com/package/@wchen.ai/env-from-example) and in the [GitHub repo](https://github.com/wchen02/env-from-example).
