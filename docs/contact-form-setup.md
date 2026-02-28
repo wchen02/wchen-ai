@@ -10,9 +10,24 @@ The contact form is handled by a Cloudflare Pages Function (`functions/api/conta
 2. In the Mailgun dashboard, add and verify your **sending domain** (e.g. `wchen.ai` or a subdomain like `mg.wchen.ai`). Follow their DNS instructions (MX, TXT for verification and DKIM).
 3. Create an **API key**: **Sending** → **Domain settings** → **Sending API keys**, or use the primary API key from **Account** → **API keys**. Store it securely; you’ll add it as a secret in Cloudflare.
 
-## 2. Environment variables in Cloudflare Pages
+## 2. Environment variables (CI and production)
 
-Set these in the dashboard so the contact function can send mail:
+For **production** the contact function needs these at runtime. You can provide them in either place (or both):
+
+### Option A: GitHub Actions (recommended for CI)
+
+Add these to your GitHub repository’s **production** environment so the workflow can sync them to Cloudflare Pages on each deploy:
+
+- **Variables:** `CONTACT_TO_EMAIL`, `MAILGUN_DOMAIN` (required). Optional: `MAILGUN_FROM_EMAIL`, `MAILGUN_EU`.
+- **Secret:** `MAILGUN_API_KEY`.
+
+Path: **GitHub repo → Settings → Environments → production → Environment variables / Environment secrets.**
+
+The workflow (`.github/workflows/ci.yml`) syncs these to the Cloudflare Pages project before deploy when `CONTACT_TO_EMAIL` and `MAILGUN_DOMAIN` are set.
+
+### Option B: Cloudflare Dashboard
+
+Set them directly in Cloudflare so the contact function can send mail:
 
 1. Go to **Cloudflare Dashboard → Workers & Pages → [your project] → Settings → Environment variables**.
 2. Add for **Production** (and optionally **Preview**):
@@ -30,6 +45,8 @@ Set these in the dashboard so the contact function can send mail:
 Emails are sent with the submitter’s name and email as **Reply-To**, so you see who wrote and can reply directly. The **From** address is your configured sending address (to satisfy Mailgun’s domain verification).
 
 1. Save. Redeploy the project (or push a new commit) so the new env vars are used.
+
+If you use Option A and the sync step fails in CI, add or fix the same variables in the Cloudflare dashboard (Option B) and redeploy.
 
 ## 3. Verify and monitor
 
