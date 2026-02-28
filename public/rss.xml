@@ -6,8 +6,16 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 28 Feb 2026 01:19:23 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 28 Feb 2026 02:47:12 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Choosing a Marketing Email Provider]]></title>
+      <link>https://wchen.ai/writing/choosing-marketing-email-providers</link>
+      <guid isPermaLink="true">https://wchen.ai/writing/choosing-marketing-email-providers</guid>
+      <pubDate>Fri, 27 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Picking an email provider for a newsletter or marketing drip feels like it should be simple. You need to send emails, collect subscribers, and maybe track opens. The market is crowded: Buttondown,…]]></description>
+      <category>Infrastructure</category>
+    </item>
     <item>
       <title><![CDATA[The Friction of Static Site Email]]></title>
       <link>https://wchen.ai/writing/static-site-email</link>
