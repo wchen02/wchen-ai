@@ -6,6 +6,7 @@ test.describe("Homepage - 15-Second Overview", () => {
 
     await expect(page.locator("h1")).toContainText("Wilson Chen");
     await expect(page.locator("text=Founder & Builder")).toBeVisible();
+    await expect(page.locator("text=I go by Wilson")).toBeVisible();
 
     await expect(page.locator("text=Current Focus")).toBeVisible();
     await expect(page.locator("text=Selected Work")).toBeVisible();

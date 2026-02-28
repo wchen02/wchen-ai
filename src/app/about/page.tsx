@@ -34,7 +34,7 @@ export default function AboutPage() {
             About
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mt-6">
-            I build things at the intersection of artificial intelligence and
+            I&apos;m Wensheng Chen; I go by Wilson. I build things at the intersection of artificial intelligence and
             developer tools. This page is a snapshot of what drives me, what I care
             about, and how I think about the work.
           </p>

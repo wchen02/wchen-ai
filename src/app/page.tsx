@@ -30,6 +30,9 @@ export default function Home() {
           <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-medium">
             Founder & Builder
           </p>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            I&apos;m Wensheng Chen; I go by Wilson.
+          </p>
           <div className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
             <p>
               I am currently exploring the intersection of artificial intelligence and 
