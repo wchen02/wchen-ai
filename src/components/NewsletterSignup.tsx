@@ -82,13 +82,13 @@ export default function NewsletterSignup() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="px-5 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+          className="btn-primary whitespace-nowrap text-sm"
         >
           {status === "loading" ? "Subscribing..." : "Subscribe"}
         </button>
       </form>
       {status === "error" && (
-        <p role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400 rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 px-4 py-3">
           {errorMessage}
         </p>
       )}

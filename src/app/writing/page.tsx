@@ -127,7 +127,9 @@ export default function WritingPage() {
         ))
       ) : (
         <SectionReveal>
-          <p className="text-gray-500 italic">No writings found.</p>
+          <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-8 text-center">
+            <p className="text-gray-600 dark:text-gray-400">No writings found.</p>
+          </div>
         </SectionReveal>
       )}
 

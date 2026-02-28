@@ -11,7 +11,7 @@ export default function ReachOutCTA() {
       </p>
       <Link 
         href="/#contact" 
-        className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
+        className="btn-secondary inline-flex items-center text-sm px-4 py-2"
       >
         Start a conversation
       </Link>

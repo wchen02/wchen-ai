@@ -117,11 +117,11 @@ export default function Home() {
         <GitHubGraphClient data={githubData} />
       </SectionReveal>
 
-      <SectionReveal id="contact" className="pt-8">
-        <h2 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white mb-2">
+      <SectionReveal id="contact" className="pt-8 space-y-6">
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Contact
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-lg">
+        <p className="text-gray-600 dark:text-gray-400 max-w-lg">
           Get in touch — email or use the form below. I&apos;m open to ideas, collaboration, and building the future together.
         </p>
         <ContactForm />

@@ -120,7 +120,7 @@ export default function ContactForm() {
       </div>
 
       {status === "error" && (
-        <div role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400">
+        <div role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400 rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 px-4 py-3">
           {errorMessage}
         </div>
       )}
@@ -128,7 +128,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full md:w-auto px-6 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+        className="btn-primary w-full md:w-auto px-6"
       >
         {status === "loading" ? "Sending..." : "Send Message"}
       </button>
