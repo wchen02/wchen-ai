@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getWritingBySlug, getWritings, getRelatedWritings, extractExcerpt, extractHeadings } from "@/lib/mdx";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import TableOfContents from "@/components/TableOfContents";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import ReadNext from "@/components/ReadNext";
@@ -113,7 +114,7 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
         <TableOfContents headings={extractHeadings(writing.content)} />
 
         <div className="prose dark:prose-invert prose-emerald max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
-          <MDXRemote source={writing.content} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
+          <MDXRemote source={writing.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }} />
         </div>
       </article>
 
