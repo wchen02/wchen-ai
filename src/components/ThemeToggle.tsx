@@ -16,10 +16,12 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") {
-      setTheme(stored);
-    }
-    setMounted(true);
+    queueMicrotask(() => {
+      if (stored === "light" || stored === "dark") {
+        setTheme(stored);
+      }
+      setMounted(true);
+    });
   }, []);
 
   function cycleTheme() {

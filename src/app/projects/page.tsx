@@ -3,9 +3,27 @@ import ProjectCard from "@/components/ProjectCard";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
 
+const projectsDescription = "Things I've built, including apps, agents, and experiments.";
+const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Projects" };
+
 export const metadata = {
   title: "Projects | Wilson Chen",
-  description: "Things I've built, including apps, agents, and experiments.",
+  description: projectsDescription,
+  openGraph: {
+    title: "Projects | Wilson Chen",
+    description: projectsDescription,
+    url: "https://wchen.ai/projects",
+    siteName: "Wilson Chen",
+    locale: "en_US",
+    type: "website",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Projects | Wilson Chen",
+    description: projectsDescription,
+    images: [ogImage.url],
+  },
 };
 
 export default function ProjectsPage() {

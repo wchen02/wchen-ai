@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
 import { SOCIAL_LINKS, SITE_URL } from "@/lib/site-config";
 
+const aboutDescription =
+  "Philosophy, interests, and background of Wilson Chen — founder and builder at the intersection of AI and developer tools.";
+const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Founder & Builder" };
+
 export const metadata: Metadata = {
   title: "About | Wilson Chen",
-  description:
-    "Philosophy, interests, and background of Wilson Chen — founder and builder at the intersection of AI and developer tools.",
+  description: aboutDescription,
   openGraph: {
     title: "About Wilson Chen",
-    description:
-      "Philosophy, interests, and background of Wilson Chen — founder and builder at the intersection of AI and developer tools.",
+    description: aboutDescription,
     url: "https://wchen.ai/about",
     siteName: "Wilson Chen",
     locale: "en_US",
     type: "profile",
-    images: [
-      {
-        url: "https://wchen.ai/og-default.png",
-        width: 1200,
-        height: 630,
-        alt: "Wilson Chen — Founder & Builder",
-      },
-    ],
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Wilson Chen",
+    description: aboutDescription,
+    images: [ogImage.url],
   },
 };
 
@@ -49,7 +51,7 @@ export default function AboutPage() {
             <div className="absolute inset-0 flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 select-none">
               WC
             </div>
-            <img
+            <Image
               src="/headshot.jpg"
               alt="Wilson Chen"
               width={96}

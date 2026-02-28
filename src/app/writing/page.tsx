@@ -5,9 +5,27 @@ import NewsletterSignup from "@/components/NewsletterSignup";
 import SectionReveal from "@/components/SectionReveal";
 import type { Writing } from "@/lib/schemas";
 
+const writingDescription = "Thoughts and reflections on building, technology, and developer tools.";
+const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Writing" };
+
 export const metadata = {
   title: "Writing | Wilson Chen",
-  description: "Thoughts and reflections on building, technology, and developer tools.",
+  description: writingDescription,
+  openGraph: {
+    title: "Writing | Wilson Chen",
+    description: writingDescription,
+    url: "https://wchen.ai/writing",
+    siteName: "Wilson Chen",
+    locale: "en_US",
+    type: "website",
+    images: [ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Writing | Wilson Chen",
+    description: writingDescription,
+    images: [ogImage.url],
+  },
 };
 
 function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
