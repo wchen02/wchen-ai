@@ -31,7 +31,7 @@ export default function Home() {
             Founder & Builder
           </p>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            I&apos;m Wensheng Chen; I go by Wilson.
+            I&apos;m Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building bestpos.io and AI-powered developer tools.
           </p>
           <div className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
             <p>
@@ -54,6 +54,9 @@ export default function Home() {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Current Focus & Problems
         </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          What I&apos;m obsessed with now and the problems I believe matter.
+        </p>
         <div className="prose dark:prose-invert text-gray-600 dark:text-gray-400 leading-relaxed">
           <p>
             The core problem I am obsessed with is knowledge fragmentation. We have more tools 
@@ -75,7 +78,9 @@ export default function Home() {
             View all →
           </Link>
         </div>
-        
+        <p className="text-gray-600 dark:text-gray-400">
+          Projects and experiments that reflect how I build and what I&apos;ve learned.
+        </p>
         {projects.length > 0 ? (
           <ProjectsListClient projects={projects} />
         ) : (
@@ -92,7 +97,9 @@ export default function Home() {
             View all →
           </Link>
         </div>
-
+        <p className="text-gray-600 dark:text-gray-400">
+          Essays and notes on engineering, products, and building in public.
+        </p>
         {writings.length > 0 ? (
           <WritingsListClient writings={writings} />
         ) : (
@@ -104,16 +111,18 @@ export default function Home() {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
           Activity
         </h2>
+        <p className="text-gray-600 dark:text-gray-400">
+          Recent open-source and side-project activity on GitHub.
+        </p>
         <GitHubGraphClient data={githubData} />
       </SectionReveal>
 
       <SectionReveal id="contact" className="pt-8">
-        <h2 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white mb-4">
-          Let&apos;s collaborate
+        <h2 className="text-xl font-medium tracking-tight text-gray-900 dark:text-white mb-2">
+          Contact
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-lg">
-          I&apos;m always open to discussing new ideas, sharing insights, or exploring 
-          how we can build the future together.
+          Get in touch — email or use the form below. I&apos;m open to ideas, collaboration, and building the future together.
         </p>
         <ContactForm />
       </SectionReveal>

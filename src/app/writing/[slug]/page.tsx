@@ -10,6 +10,7 @@ import ShareButton from "@/components/ShareButton";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/site-config";
+import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 
 export async function generateStaticParams() {
   const writings = getWritings();
@@ -27,23 +28,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
   
   const description = extractExcerpt(writing.content);
+  const canonicalUrl = `${METADATA_DEFAULTS.canonicalBaseUrl}/writing/${resolvedParams.slug}`;
+  const ogImageUrl = writing.ogImage ?? METADATA_DEFAULTS.defaultOgImageUrl;
 
   return {
     title: `${writing.title} | Wilson Chen`,
     description,
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: writing.title,
       description,
-      url: `https://wchen.ai/writing/${resolvedParams.slug}`,
-      siteName: "Wilson Chen",
-      locale: "en_US",
+      url: canonicalUrl,
+      siteName: METADATA_DEFAULTS.siteName,
+      locale: METADATA_DEFAULTS.locale,
       type: "article",
-      images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: writing.title }],
+      images: [{ url: ogImageUrl, width: METADATA_DEFAULTS.defaultOgImageWidth, height: METADATA_DEFAULTS.defaultOgImageHeight, alt: writing.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: writing.title,
       description,
+      images: [ogImageUrl],
     },
   };
 }
@@ -65,7 +70,7 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
     ...(writing.updatedAt ? { dateModified: writing.updatedAt } : {}),
     description: extractExcerpt(writing.content),
     url: `${SITE_URL}/writing/${resolvedParams.slug}`,
-    image: `${SITE_URL}/og-default.png`,
+    image: writing.ogImage ?? METADATA_DEFAULTS.defaultOgImageUrl,
   };
 
   const tocHeadings = extractHeadings(writing.content);

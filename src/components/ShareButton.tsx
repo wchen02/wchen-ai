@@ -18,7 +18,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 5000);
     } catch {
       // Clipboard API not available
     }
@@ -29,7 +29,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
       onClick={handleShare}
       type="button"
       aria-label="Share or copy link"
-      className="relative inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+      className="relative inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />

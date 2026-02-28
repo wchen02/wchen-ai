@@ -25,8 +25,8 @@
 
 **Purpose**: Feature context and shared config used by multiple stories
 
-- [ ] T001 Add metadata defaults module with siteName, defaultOgImageUrl, locale, canonicalBaseUrl in src/lib/metadata-defaults.ts (or extend src/lib/site-config.ts)
-- [ ] T002 [P] Add theme descriptor config (map theme key to short description) in src/lib/theme-config.ts
+- [x] T001 Add metadata defaults module with siteName, defaultOgImageUrl, locale, canonicalBaseUrl in src/lib/metadata-defaults.ts (or extend src/lib/site-config.ts)
+- [x] T002 [P] Add theme descriptor config (map theme key to short description) in src/lib/theme-config.ts
 
 ---
 
@@ -36,8 +36,8 @@
 
 **Checkpoint**: After this phase, all user stories can consume metadata defaults and theme config
 
-- [ ] T003 Wire layout and page metadata to use metadata defaults (canonical base URL, locale, default OG image) from src/lib/metadata-defaults.ts in src/app/layout.tsx and relevant page metadata exports
-- [ ] T004 Add optional ogImage field to WritingSchema in src/lib/schemas.ts for article-specific preview images
+- [x] T003 Wire layout and page metadata to use metadata defaults (canonical base URL, locale, default OG image) from src/lib/metadata-defaults.ts in src/app/layout.tsx and relevant page metadata exports
+- [x] T004 Add optional ogImage field to WritingSchema in src/lib/schemas.ts for article-specific preview images
 
 ---
 
@@ -47,11 +47,11 @@
 
 **Independent Test**: Visit homepage and About; confirm one credibility signal in hero, each section has heading + brief summary, About has headshot/background/social; writing index shows theme descriptors.
 
-- [ ] T005 [P] [US1] Add at least one concrete credibility signal (e.g. previous role, thing built, current initiative) to hero in src/app/page.tsx
-- [ ] T006 [US1] Add clear heading and brief summary or subheading for each major homepage section (Current Focus, Selected Work, Recent Writing, GitHub, Contact) in src/app/page.tsx
-- [ ] T007 [US1] Ensure About page is the single place for headshot, companies/roles/timelines, and social links; ensure homepage links to About with “more about me” in src/app/about/page.tsx and src/app/page.tsx
-- [ ] T008 [US1] Use theme config to render short descriptors for each theme on the writing index in src/app/writing/page.tsx
-- [ ] T009 [US1] Add build or lint check that warns when a writing theme has no descriptor in src/lib/theme-config.ts (optional script or in existing validation)
+- [x] T005 [P] [US1] Add at least one concrete credibility signal (e.g. previous role, thing built, current initiative) to hero in src/app/page.tsx
+- [x] T006 [US1] Add clear heading and brief summary or subheading for each major homepage section (Current Focus, Selected Work, Recent Writing, GitHub, Contact) in src/app/page.tsx
+- [x] T007 [US1] Ensure About page is the single place for headshot, companies/roles/timelines, and social links; ensure homepage links to About with “more about me” in src/app/about/page.tsx and src/app/page.tsx
+- [x] T008 [US1] Use theme config to render short descriptors for each theme on the writing index in src/app/writing/page.tsx
+- [x] T009 [US1] Add build or lint check that warns when a writing theme has no descriptor in src/lib/theme-config.ts (optional script or in existing validation)
 
 **Checkpoint**: User Story 1 independently testable — 15-second scan, one credibility signal, About hub, theme descriptors visible
 
@@ -63,10 +63,10 @@
 
 **Independent Test**: Use screen reader and keyboard; complete newsletter and contact flows; tab through header; confirm labels, announcements, focus order, and theme toggle state.
 
-- [ ] T010 [US2] Add associated label or accessible name for newsletter email field and wrap success/error messages in a live region (aria-live) in src/components/NewsletterSignup.tsx
-- [ ] T011 [US2] Add associated labels or accessible names for contact form required fields and announce errors/success via live region in src/components/ContactForm.tsx
-- [ ] T012 [US2] Ensure header tab order is logo, nav, social, theme toggle and add visible focus indicator (e.g. focus-visible:ring) for all interactive elements in src/app/layout.tsx
-- [ ] T013 [US2] Expose theme toggle current state (dark or light) to assistive tech via aria-pressed or aria-label including mode in src/components/ThemeToggle.tsx
+- [x] T010 [US2] Add associated label or accessible name for newsletter email field and wrap success/error messages in a live region (aria-live) in src/components/NewsletterSignup.tsx
+- [x] T011 [US2] Add associated labels or accessible names for contact form required fields and announce errors/success via live region in src/components/ContactForm.tsx
+- [x] T012 [US2] Ensure header tab order is logo, nav, social, theme toggle and add visible focus indicator (e.g. focus-visible:ring) for all interactive elements in src/app/layout.tsx
+- [x] T013 [US2] Expose theme toggle current state (dark or light) to assistive tech via aria-pressed or aria-label including mode in src/components/ThemeToggle.tsx
 
 **Checkpoint**: User Story 2 independently testable — forms and header fully usable with keyboard and screen reader
 
@@ -78,9 +78,9 @@
 
 **Independent Test**: Visit projects page; filter/group by type or status; confirm list updates and selection is clear; clear filter and see all projects in consistent order; zero results shows empty state and clear option. With one project, default view shows that project without redundant filter.
 
-- [ ] T014 [P] [US3] Add client component for project filter or group UI (by type or status from frontmatter) in src/app/projects/page.tsx or new src/components/ProjectsFilter.tsx; when only one project exists, hide or simplify filter per FR-009
-- [ ] T015 [US3] Implement filter/group logic and pass filtered or grouped list to project cards; show “All” / clear state in src/app/projects/page.tsx
-- [ ] T016 [US3] Add empty state (e.g. “No projects match”) and visible way to clear filter when zero results in src/app/projects/page.tsx (or ProjectsFilter component)
+- [x] T014 [P] [US3] Add client component for project filter or group UI (by type or status from frontmatter) in src/app/projects/page.tsx or new src/components/ProjectsFilter.tsx; when only one project exists, hide or simplify filter per FR-009
+- [x] T015 [US3] Implement filter/group logic and pass filtered or grouped list to project cards; show “All” / clear state in src/app/projects/page.tsx
+- [x] T016 [US3] Add empty state (e.g. “No projects match”) and visible way to clear filter when zero results in src/app/projects/page.tsx (or ProjectsFilter component)
 
 **Checkpoint**: User Story 3 independently testable — projects page supports filter/group and empty state
 
@@ -92,12 +92,12 @@
 
 **Independent Test**: Share About and one writing; validate previews; run metadata validator; use on-site search to find a writing by title or theme; confirm canonical and locale on page types.
 
-- [ ] T017 [US4] Add canonical link (no trailing slash) and og:locale to all page metadata using metadata defaults in src/app/layout.tsx and per-route metadata/generateMetadata
-- [ ] T018 [US4] Use article ogImage when present in writing frontmatter for og:image and twitter:image in src/app/writing/[slug]/page.tsx generateMetadata
-- [ ] T019 [P] [US4] Add scripts/generate-search-index.ts that outputs public/search-index.json (slug, title, theme, tags) from getWritings() with Zod schema validation
-- [ ] T020 [US4] Add search index generation to prebuild in package.json (e.g. after generate-sitemap) when on-site search is implemented (T019 + T021)
-- [ ] T021 [US4] Add search UI (input + client-side filter over static index) on writing index or layout; show “no results” message and optional “browse by theme” in src/app/writing/page.tsx or new SearchWriting component
-- [ ] T022 [US4] Ensure writing index and projects index have correct metadata (title, description, default or section image) per contracts/page-metadata in src/app/writing/page.tsx and src/app/projects/page.tsx
+- [x] T017 [US4] Add canonical link (no trailing slash) and og:locale to all page metadata using metadata defaults in src/app/layout.tsx and per-route metadata/generateMetadata
+- [x] T018 [US4] Use article ogImage when present in writing frontmatter for og:image and twitter:image in src/app/writing/[slug]/page.tsx generateMetadata
+- [x] T019 [P] [US4] Add scripts/generate-search-index.ts that outputs public/search-index.json (slug, title, theme, tags) from getWritings() with Zod schema validation
+- [x] T020 [US4] Add search index generation to prebuild in package.json (e.g. after generate-sitemap) when on-site search is implemented (T019 + T021)
+- [x] T021 [US4] Add search UI (input + client-side filter over static index) on writing index or layout; show “no results” message and optional “browse by theme” in src/app/writing/page.tsx or new SearchWriting component
+- [x] T022 [US4] Ensure writing index and projects index have correct metadata (title, description, default or section image) per contracts/page-metadata in src/app/writing/page.tsx and src/app/projects/page.tsx
 
 **Checkpoint**: User Story 4 independently testable — rich previews, canonical/locale, optional search working
 
@@ -109,10 +109,10 @@
 
 **Independent Test**: Measure LCP and CLS on critical routes; confirm font/hero do not cause layout shift; verify reduced-motion disables or simplifies motion.
 
-- [ ] T023 [US5] Document or add constants for LCP (e.g. ≤2.5s) and CLS (e.g. ≤0.1) targets for critical routes (e.g. in specs/003-website-improvements/plan.md or src/lib/constants.ts)
-- [ ] T024 [US5] Ensure hero and above-the-fold content have dimensions or font fallback to avoid layout shift in src/app/globals.css and hero component (e.g. src/components/HeroMotionClient.tsx or HeroMotion)
-- [ ] T025 [US5] Confirm reduced-motion preference is respected for motion (hero, section reveal) via existing prefers-reduced-motion handling in src/app/globals.css and motion components
-- [ ] T026 [US5] If host supports image optimization (e.g. Cloudflare Image Resizing), wire default and article images to use it; otherwise leave images unoptimized per research in next.config.ts or metadata URLs
+- [x] T023 [US5] Document or add constants for LCP (e.g. ≤2.5s) and CLS (e.g. ≤0.1) targets for critical routes (e.g. in specs/003-website-improvements/plan.md or src/lib/constants.ts)
+- [x] T024 [US5] Ensure hero and above-the-fold content have dimensions or font fallback to avoid layout shift in src/app/globals.css and hero component (e.g. src/components/HeroMotionClient.tsx or HeroMotion)
+- [x] T025 [US5] Confirm reduced-motion preference is respected for motion (hero, section reveal) via existing prefers-reduced-motion handling in src/app/globals.css and motion components
+- [x] T026 [US5] If host supports image optimization (e.g. Cloudflare Image Resizing), wire default and article images to use it; otherwise leave images unoptimized per research in next.config.ts or metadata URLs
 
 **Checkpoint**: User Story 5 independently testable — performance targets documented; layout shift and motion handled
 
@@ -124,10 +124,10 @@
 
 **Independent Test**: Open writing index; see newsletter without scrolling and RSS near CTA; follow Contact to prominent section or page with clear next step.
 
-- [ ] T027 [US6] Make newsletter signup visible without scrolling on writing index (e.g. compact strip or sidebar near top) in src/app/writing/page.tsx
-- [ ] T028 [US6] Add copy that sets expectations (e.g. frequency or “no spam”) to NewsletterSignup in src/components/NewsletterSignup.tsx
-- [ ] T029 [US6] Add “Subscribe via RSS” (or equivalent) link near newsletter CTA on writing index and in footer in src/app/writing/page.tsx and src/app/layout.tsx
-- [ ] T030 [US6] Ensure Contact link leads to prominent contact section or page with clear next step (email or form) in src/app/page.tsx and nav
+- [x] T027 [US6] Make newsletter signup visible without scrolling on writing index (e.g. compact strip or sidebar near top) in src/app/writing/page.tsx
+- [x] T028 [US6] Add copy that sets expectations (e.g. frequency or “no spam”) to NewsletterSignup in src/components/NewsletterSignup.tsx
+- [x] T029 [US6] Add “Subscribe via RSS” (or equivalent) link near newsletter CTA on writing index and in footer in src/app/writing/page.tsx and src/app/layout.tsx
+- [x] T030 [US6] Ensure Contact link leads to prominent contact section or page with clear next step (email or form) in src/app/page.tsx and nav
 
 **Checkpoint**: User Story 6 independently testable — newsletter, RSS, and contact discoverable and clear
 
@@ -139,9 +139,9 @@
 
 **Independent Test**: Open a writing with related posts — see Read Next; open writing with no related — section hidden; use share/copy and see “Copied!” (or equivalent) that dismisses.
 
-- [ ] T031 [US7] Ensure Read Next shows 2–3 related items and is hidden when no related posts in src/app/writing/[slug]/page.tsx
-- [ ] T032 [US7] Ensure share/copy control exists on writing pages and shows brief visual confirmation (e.g. “Copied!”) that dismisses or times out (e.g. within 5s) in src/components/ShareButton.tsx
-- [ ] T033 [US7] Ensure Web Share API unavailability falls back to copy-to-clipboard with same confirmation in src/components/ShareButton.tsx
+- [x] T031 [US7] Ensure Read Next shows 2–3 related items and is hidden when no related posts in src/app/writing/[slug]/page.tsx
+- [x] T032 [US7] Ensure share/copy control exists on writing pages and shows brief visual confirmation (e.g. “Copied!”) that dismisses or times out (e.g. within 5s) in src/components/ShareButton.tsx
+- [x] T033 [US7] Ensure Web Share API unavailability falls back to copy-to-clipboard with same confirmation in src/components/ShareButton.tsx
 
 **Checkpoint**: User Story 7 independently testable — Read Next and share with feedback working
 
@@ -153,11 +153,11 @@
 
 **Independent Test**: Run CI; trigger a11y and metadata checks on critical routes; add new page using centralized defaults; break an internal link and run build to see failure or warning.
 
-- [ ] T034 [US8] Add Playwright a11y check (e.g. axe-core) for critical routes (home, about, writing index, one writing, projects index) in tests/ or e2e
-- [ ] T035 [US8] Add scripts/validate-metadata.ts (or equivalent) that validates required meta and JSON-LD on critical routes (run after build or in CI)
-- [ ] T036 [US8] Ensure all page metadata imports default values from src/lib/metadata-defaults.ts (or site-config); remove duplicated default OG image and site name from layout and pages
-- [ ] T037 [US8] Extend or confirm scripts/validate-links.ts validates internal writing/project slugs and fails build or emits clear warning on broken links
-- [ ] T038 [US8] Wire a11y and metadata validation into CI (e.g. in package.json scripts or GitHub Actions) so failures are reported clearly
+- [x] T034 [US8] Add Playwright a11y check (e.g. axe-core) for critical routes (home, about, writing index, one writing, projects index) in tests/ or e2e
+- [x] T035 [US8] Add scripts/validate-metadata.ts (or equivalent) that validates required meta and JSON-LD on critical routes (run after build or in CI)
+- [x] T036 [US8] Ensure all page metadata imports default values from src/lib/metadata-defaults.ts (or site-config); remove duplicated default OG image and site name from layout and pages
+- [x] T037 [US8] Extend or confirm scripts/validate-links.ts validates internal writing/project slugs and fails build or emits clear warning on broken links
+- [x] T038 [US8] Wire a11y and metadata validation into CI (e.g. in package.json scripts or GitHub Actions) so failures are reported clearly
 
 **Checkpoint**: User Story 8 independently testable — automation runs; single source used; link validation blocks or warns
 
@@ -167,9 +167,9 @@
 
 **Purpose**: Final consistency and validation
 
-- [ ] T039 [P] Update quickstart or README if new scripts or config locations were added in specs/003-website-improvements/quickstart.md
-- [ ] T040 Run full build and typecheck; fix any regressions (pnpm build, pnpm typecheck)
-- [ ] T041 Run quickstart validation: dev, build, and manual pass of critical routes per quickstart.md
+- [x] T039 [P] Update quickstart or README if new scripts or config locations were added in specs/003-website-improvements/quickstart.md
+- [x] T040 Run full build and typecheck; fix any regressions (pnpm build, pnpm typecheck)
+- [x] T041 Run quickstart validation: dev, build, and manual pass of critical routes per quickstart.md
 
 ---
 

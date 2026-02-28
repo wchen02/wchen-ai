@@ -35,6 +35,9 @@ export const WritingSchema = z.object({
   theme: z.string().min(1),
   tags: z.array(z.string()).default([]),
   
+  // Optional article-specific OG image (FR-010)
+  ogImage: z.string().url().optional(),
+  
   // State
   featured: z.boolean().default(false), // To highlight on homepage/writing index
   draft: z.boolean().default(false),    // If true, exclude from build

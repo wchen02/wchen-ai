@@ -2,29 +2,37 @@ import { getWritings } from "@/lib/mdx";
 import WritingCard from "@/components/WritingCard";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import SearchWriting from "@/components/SearchWriting";
 import SectionReveal from "@/components/SectionReveal";
+import { getThemeDescriptor } from "@/lib/theme-config";
+import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 import type { Writing } from "@/lib/schemas";
 
 const writingDescription = "Thoughts and reflections on building, technology, and developer tools.";
-const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Writing" };
 
 export const metadata = {
   title: "Writing | Wilson Chen",
   description: writingDescription,
+  alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/writing` },
   openGraph: {
     title: "Writing | Wilson Chen",
     description: writingDescription,
-    url: "https://wchen.ai/writing",
-    siteName: "Wilson Chen",
-    locale: "en_US",
+    url: `${METADATA_DEFAULTS.canonicalBaseUrl}/writing`,
+    siteName: METADATA_DEFAULTS.siteName,
+    locale: METADATA_DEFAULTS.locale,
     type: "website",
-    images: [ogImage],
+    images: [{
+      url: METADATA_DEFAULTS.defaultOgImageUrl,
+      width: METADATA_DEFAULTS.defaultOgImageWidth,
+      height: METADATA_DEFAULTS.defaultOgImageHeight,
+      alt: "Wilson Chen — Writing",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Writing | Wilson Chen",
     description: writingDescription,
-    images: [ogImage.url],
+    images: [METADATA_DEFAULTS.defaultOgImageUrl],
   },
 };
 
@@ -68,9 +76,22 @@ export default function WritingPage() {
         </header>
       </SectionReveal>
 
+      <SectionReveal className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900/50">
+        <NewsletterSignup />
+        <p className="text-sm text-gray-600 dark:text-gray-400 shrink-0">
+          <a href="/rss.xml" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded">
+            Subscribe via RSS
+          </a>
+        </p>
+      </SectionReveal>
+
+      <SectionReveal>
+        <SearchWriting />
+      </SectionReveal>
+
       {themes.length > 1 && (
         <SectionReveal>
-          <nav className="flex flex-wrap gap-2">
+          <nav id="theme-nav" className="flex flex-wrap gap-2" aria-label="Browse by theme">
             {themes.map(theme => (
               <a
                 key={theme}
@@ -94,6 +115,9 @@ export default function WritingPage() {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
               {theme}
             </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              {getThemeDescriptor(theme)}
+            </p>
             <div className="flex flex-col gap-2 -mx-5">
               {themeGroups[theme].map((writing) => (
                 <WritingCard key={writing.slug} writing={writing} />
@@ -106,10 +130,6 @@ export default function WritingPage() {
           <p className="text-gray-500 italic">No writings found.</p>
         </SectionReveal>
       )}
-
-      <SectionReveal className="pt-8">
-        <NewsletterSignup />
-      </SectionReveal>
 
       <SectionReveal className="pt-8">
         <ReachOutCTA />

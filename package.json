@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "pnpm run prebuild && next build",
-    "prebuild": "tsx scripts/validate-links.ts && (test -f .env && tsx --env-file=.env scripts/fetch-github-data.ts || tsx scripts/fetch-github-data.ts) && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts",
+    "prebuild": "tsx scripts/validate-links.ts && tsx scripts/validate-theme-descriptors.ts && (test -f .env && tsx --env-file=.env scripts/fetch-github-data.ts || tsx scripts/fetch-github-data.ts) && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-search-index.ts",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "postbuild": "tsx scripts/validate-metadata.ts",
+    "validate:metadata": "tsx scripts/validate-metadata.ts"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
@@ -25,6 +27,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@cloudflare/workers-types": "^4.20260302.0",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",

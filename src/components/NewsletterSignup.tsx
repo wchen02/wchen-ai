@@ -45,7 +45,7 @@ export default function NewsletterSignup() {
 
   if (status === "success") {
     return (
-      <div role="status" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
+      <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
         <p className="font-medium">Check your email to confirm your subscription.</p>
         <p className="text-sm mt-1">We sent a confirmation link to your inbox.</p>
       </div>
@@ -57,7 +57,7 @@ export default function NewsletterSignup() {
       <div>
         <h3 className="font-bold text-gray-900 dark:text-white">Stay in the loop</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Get notified when I publish new writing. No spam, unsubscribe anytime.
+          Occasional updates when I publish new writing. No spam, unsubscribe anytime.
         </p>
       </div>
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
@@ -76,19 +76,19 @@ export default function NewsletterSignup() {
             required
             placeholder="you@example.com"
             disabled={status === "loading"}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-sm"
           />
         </div>
         <button
           type="submit"
           disabled={status === "loading"}
-          className="px-5 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          className="px-5 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
         >
           {status === "loading" ? "Subscribing..." : "Subscribe"}
         </button>
       </form>
       {status === "error" && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400">
           {errorMessage}
         </p>
       )}

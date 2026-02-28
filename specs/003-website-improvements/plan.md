@@ -17,7 +17,7 @@ Implement multi-perspective improvements to wchen.ai: (1) clearer credibility an
 **Testing**: Vitest (unit), Playwright (e2e); CI runs typecheck, lint, build, tests  
 **Target Platform**: Cloudflare Pages (static export); optional Pages Functions for contact/newsletter  
 **Project Type**: Static site (web) with progressive enhancement (forms, theme, optional client-side search)  
-**Performance Goals**: LCP ≤ 2.5s, CLS ≤ 0.1 on critical routes; minimal JS; motion non-blocking and respects reduced-motion  
+**Performance Goals**: LCP ≤ 2.5s, CLS ≤ 0.1 on critical routes (see `src/lib/constants.ts`: `PERF_LCP_TARGET_MS`, `PERF_CLS_TARGET`); minimal JS; motion non-blocking and respects reduced-motion  
 **Constraints**: Static export only (`output: "export"`); no runtime content fetch for primary rendering; images currently unoptimized (host-dependent)  
 **Scale/Scope**: Single-tenant personal site; ~tens of writings and projects; critical routes: homepage, About, writing index, one writing page, projects index
 

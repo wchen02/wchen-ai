@@ -17,8 +17,11 @@ pnpm install
 # Dev (no prebuild required for local content)
 pnpm dev
 
-# Full build (runs prebuild: validate-links, fetch-github-data, generate-rss, generate-sitemap)
+# Full build (runs prebuild: validate-links, validate-theme-descriptors, fetch-github-data, generate-rss, generate-sitemap, generate-search-index; postbuild: validate-metadata)
 pnpm build
+
+# Optional: validate metadata only (requires out/ from a prior build)
+pnpm validate:metadata
 
 # Typecheck and lint
 pnpm typecheck
@@ -26,7 +29,7 @@ pnpm lint
 
 # Tests
 pnpm test          # Unit (Vitest)
-pnpm test:e2e      # E2E (Playwright)
+pnpm test:e2e      # E2E (Playwright, includes a11y axe-core on critical routes)
 ```
 
 ## Where to change what
@@ -44,11 +47,13 @@ pnpm test:e2e      # E2E (Playwright)
 
 ## New files to add (reference)
 
-- `src/lib/metadata-defaults.ts` (or extend `src/lib/site-config.ts`): siteName, defaultOgImageUrl, locale, canonicalBaseUrl
+- `src/lib/metadata-defaults.ts`: siteName, defaultOgImageUrl, locale, canonicalBaseUrl
 - `src/lib/theme-config.ts`: map theme key → descriptor
-- `scripts/generate-search-index.ts`: optional; outputs `public/search-index.json`
-- Metadata validation script (e.g. `scripts/validate-metadata.ts`) for CI
-- A11y test(s) in Playwright for critical routes
+- `src/lib/constants.ts`: LCP/CLS performance targets
+- `scripts/generate-search-index.ts`: outputs `public/search-index.json` (prebuild)
+- `scripts/validate-theme-descriptors.ts`: warns when a writing theme has no descriptor (prebuild)
+- `scripts/validate-metadata.ts`: required meta and JSON-LD on critical routes (postbuild)
+- `e2e/a11y.spec.ts`: axe-core a11y checks on critical routes
 
 ## Content
 

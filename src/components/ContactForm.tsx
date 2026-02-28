@@ -47,12 +47,13 @@ export default function ContactForm() {
 
   if (status === "success") {
     return (
-      <div role="status" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
+      <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
         <p className="font-medium">Message sent successfully!</p>
         <p className="text-sm mt-1">Thanks for reaching out. I&apos;ll get back to you soon.</p>
-        <button 
+        <button
+          type="button"
           onClick={() => setStatus("idle")}
-          className="mt-4 text-sm underline hover:no-underline"
+          className="mt-4 text-sm underline hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
         >
           Send another message
         </button>
@@ -79,7 +80,7 @@ export default function ContactForm() {
             name="name"
             autoComplete="name"
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             placeholder="Jane Founder"
             disabled={status === "loading"}
           />
@@ -94,7 +95,7 @@ export default function ContactForm() {
             name="email"
             autoComplete="email"
             required
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
             placeholder="jane@example.com"
             disabled={status === "loading"}
           />
@@ -112,14 +113,14 @@ export default function ContactForm() {
           required
           minLength={10}
           rows={4}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-y"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 resize-y"
           placeholder="I&apos;d love to collaborate on..."
           disabled={status === "loading"}
         />
       </div>
 
       {status === "error" && (
-        <div role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <div role="alert" aria-live="assertive" className="text-sm text-red-600 dark:text-red-400">
           {errorMessage}
         </div>
       )}
@@ -127,7 +128,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full md:w-auto px-6 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full md:w-auto px-6 py-2 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-white text-white dark:text-gray-900 font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
       >
         {status === "loading" ? "Sending..." : "Send Message"}
       </button>

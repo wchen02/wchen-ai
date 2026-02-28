@@ -1,28 +1,34 @@
 import { getProjects } from "@/lib/mdx";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectsFilter from "@/components/ProjectsFilter";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
+import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 
 const projectsDescription = "Things I've built, including apps, agents, and experiments.";
-const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Projects" };
 
 export const metadata = {
   title: "Projects | Wilson Chen",
   description: projectsDescription,
+  alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/projects` },
   openGraph: {
     title: "Projects | Wilson Chen",
     description: projectsDescription,
-    url: "https://wchen.ai/projects",
-    siteName: "Wilson Chen",
-    locale: "en_US",
+    url: `${METADATA_DEFAULTS.canonicalBaseUrl}/projects`,
+    siteName: METADATA_DEFAULTS.siteName,
+    locale: METADATA_DEFAULTS.locale,
     type: "website",
-    images: [ogImage],
+    images: [{
+      url: METADATA_DEFAULTS.defaultOgImageUrl,
+      width: METADATA_DEFAULTS.defaultOgImageWidth,
+      height: METADATA_DEFAULTS.defaultOgImageHeight,
+      alt: "Wilson Chen — Projects",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Projects | Wilson Chen",
     description: projectsDescription,
-    images: [ogImage.url],
+    images: [METADATA_DEFAULTS.defaultOgImageUrl],
   },
 };
 
@@ -44,15 +50,7 @@ export default function ProjectsPage() {
       </SectionReveal>
 
       <SectionReveal>
-        {projects.length > 0 ? (
-          <div className="grid gap-8">
-            {projects.map((project) => (
-              <ProjectCard key={project.slug} project={project} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 italic">No projects found.</p>
-        )}
+        <ProjectsFilter projects={projects} />
       </SectionReveal>
 
       <SectionReveal className="pt-8">

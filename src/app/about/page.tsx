@@ -3,28 +3,34 @@ import ReachOutCTA from "@/components/ReachOutCTA";
 import Headshot from "@/components/Headshot";
 import SectionReveal from "@/components/SectionReveal";
 import { SOCIAL_LINKS, SITE_URL } from "@/lib/site-config";
+import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 
 const aboutDescription =
   "Philosophy, interests, and background of Wilson Chen — founder and builder at the intersection of AI and developer tools.";
-const ogImage = { url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: "Wilson Chen — Founder & Builder" };
 
 export const metadata: Metadata = {
   title: "About | Wilson Chen",
   description: aboutDescription,
+  alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/about` },
   openGraph: {
     title: "About Wilson Chen",
     description: aboutDescription,
-    url: "https://wchen.ai/about",
-    siteName: "Wilson Chen",
-    locale: "en_US",
+    url: `${METADATA_DEFAULTS.canonicalBaseUrl}/about`,
+    siteName: METADATA_DEFAULTS.siteName,
+    locale: METADATA_DEFAULTS.locale,
     type: "profile",
-    images: [ogImage],
+    images: [{
+      url: METADATA_DEFAULTS.defaultOgImageUrl,
+      width: METADATA_DEFAULTS.defaultOgImageWidth,
+      height: METADATA_DEFAULTS.defaultOgImageHeight,
+      alt: METADATA_DEFAULTS.defaultOgImageAlt,
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About Wilson Chen",
     description: aboutDescription,
-    images: [ogImage.url],
+    images: [METADATA_DEFAULTS.defaultOgImageUrl],
   },
 };
 
