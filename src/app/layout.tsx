@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="alternate" type="application/rss+xml" title="Wilson Chen | Writing" href="/rss.xml" />
         <script

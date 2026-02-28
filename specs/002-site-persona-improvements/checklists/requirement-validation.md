@@ -8,64 +8,64 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are error handling requirements defined for newsletter subscribe API failures (e.g. Resend down, rate limit)? [Gap]
-- [ ] CHK002 Are accessibility requirements specified for all new interactive elements (share button, theme toggle, TOC links, newsletter form)? [Completeness, Spec §FR-009, FR-012, FR-013]
-- [ ] CHK003 Is the exact placement of the headshot relative to page structure specified (e.g. after header, before Philosophy)? [Clarity, Spec §FR-001]
-- [ ] CHK004 Are the header layout and order of elements (nav links, social icons, theme toggle) explicitly defined? [Completeness, Spec §FR-002, FR-013]
-- [ ] CHK005 Is confirmation link expiry (e.g. 24 hours) for newsletter double opt-in documented in requirements or contracts? [Gap]
+- [x] CHK001 Are error handling requirements defined for newsletter subscribe API failures (e.g. Resend down, rate limit)? [Gap]
+- [x] CHK002 Are accessibility requirements specified for all new interactive elements (share button, theme toggle, TOC links, newsletter form)? [Completeness, Spec §FR-009, FR-012, FR-013]
+- [x] CHK003 Is the exact placement of the headshot relative to page structure specified (e.g. after header, before Philosophy)? [Clarity, Spec §FR-001]
+- [x] CHK004 Are the header layout and order of elements (nav links, social icons, theme toggle) explicitly defined? [Completeness, Spec §FR-002, FR-013]
+- [x] CHK005 Is confirmation link expiry (e.g. 24 hours) for newsletter double opt-in documented in requirements or contracts? [Gap]
 
 ## Requirement Clarity
 
-- [ ] CHK006 Is "visually distinct active state" for navigation defined with specific attributes (e.g. color, underline, font weight)? [Clarity, Spec §FR-004]
-- [ ] CHK007 Is "subtle" for the copy-link/share button defined with measurable or design criteria? [Clarity, Spec §FR-009]
-- [ ] CHK008 Is "brief visual confirmation" for copy-link quantified (duration, placement, or fade behavior)? [Clarity, Spec §User Story 4]
-- [ ] CHK009 Is "smoothly" for dark mode transition defined (e.g. duration, no flash)? [Clarity, Spec §User Story 8]
-- [ ] CHK010 Are "2-3 related posts" selection and tiebreaker rules fully specified (theme weight, tag weight, recency)? [Clarity, Spec §FR-008]
-- [ ] CHK011 Is "near the top of the article" for the table of contents placement defined (e.g. after title, before first paragraph)? [Clarity, Spec §FR-012]
+- [x] CHK006 Is "visually distinct active state" for navigation defined with specific attributes (e.g. color, underline, font weight)? [Clarity, Spec §FR-004]
+- [x] CHK007 Is "subtle" for the copy-link/share button defined with measurable or design criteria? [Clarity, Spec §FR-009]
+- [x] CHK008 Is "brief visual confirmation" for copy-link quantified (duration, placement, or fade behavior)? [Clarity, Spec §User Story 4]
+- [x] CHK009 Is "smoothly" for dark mode transition defined (e.g. duration, no flash)? [Clarity, Spec §User Story 8]
+- [x] CHK010 Are "2-3 related posts" selection and tiebreaker rules fully specified (theme weight, tag weight, recency)? [Clarity, Spec §FR-008]
+- [x] CHK011 Is "near the top of the article" for the table of contents placement defined (e.g. after title, before first paragraph)? [Clarity, Spec §FR-012]
 
 ## Requirement Consistency
 
-- [ ] CHK012 Do social link requirements (header icons, footer text links, new tab, rel) align between FR-002 and Key Entities SocialLinks? [Consistency, Spec §FR-002]
-- [ ] CHK013 Are JSON-LD and Twitter Card requirements consistent across page types (all pages vs about vs writing)? [Consistency, Spec §FR-005, FR-006, FR-007]
-- [ ] CHK014 Is the Contact link treatment (anchor vs page) consistently specified in nav requirements? [Consistency, Spec §FR-004]
+- [x] CHK012 Do social link requirements (header icons, footer text links, new tab, rel) align between FR-002 and Key Entities SocialLinks? [Consistency, Spec §FR-002]
+- [x] CHK013 Are JSON-LD and Twitter Card requirements consistent across page types (all pages vs about vs writing)? [Consistency, Spec §FR-005, FR-006, FR-007]
+- [x] CHK014 Is the Contact link treatment (anchor vs page) consistently specified in nav requirements? [Consistency, Spec §FR-004]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK015 Can "within 15 seconds" (SC-001) be objectively measured or is the measurement method specified? [Measurability, Spec §SC-001]
-- [ ] CHK016 Are the 500ms (copy feedback) and 100ms (theme switch) thresholds verifiable in acceptance criteria? [Measurability, Spec §SC-006, SC-007]
-- [ ] CHK017 Is "100% of the time" (SC-005) defined with clear preconditions (e.g. when more than one post exists)? [Acceptance Criteria, Spec §SC-005]
-- [ ] CHK018 Are success criteria for "correct active navigation state" (SC-002) unambiguous for all routes including homepage? [Measurability, Spec §SC-002]
+- [x] CHK015 Can "within 15 seconds" (SC-001) be objectively measured or is the measurement method specified? [Measurability, Spec §SC-001]
+- [x] CHK016 Are the 500ms (copy feedback) and 100ms (theme switch) thresholds verifiable in acceptance criteria? [Measurability, Spec §SC-006, SC-007]
+- [x] CHK017 Is "100% of the time" (SC-005) defined with clear preconditions (e.g. when more than one post exists)? [Acceptance Criteria, Spec §SC-005]
+- [x] CHK018 Are success criteria for "correct active navigation state" (SC-002) unambiguous for all routes including homepage? [Measurability, Spec §SC-002]
 
 ## Scenario Coverage
 
-- [ ] CHK019 Are exception flows for newsletter (invalid email, expired confirmation link, already subscribed) fully specified in requirements or edge cases? [Coverage, Spec §Edge Cases]
-- [ ] CHK020 Is the "no related posts" scenario (only one post on site) explicitly required (Read Next hidden)? [Coverage, Spec §Edge Cases]
-- [ ] CHK021 Is Web Share API unavailability fallback (copy-to-clipboard only) explicitly required? [Coverage, Spec §Edge Cases]
-- [ ] CHK022 Are requirements specified for newsletter confirmation success page (content, next steps)? [Completeness, Spec §FR-011, User Story 6]
+- [x] CHK019 Are exception flows for newsletter (invalid email, expired confirmation link, already subscribed) fully specified in requirements or edge cases? [Coverage, Spec §Edge Cases]
+- [x] CHK020 Is the "no related posts" scenario (only one post on site) explicitly required (Read Next hidden)? [Coverage, Spec §Edge Cases]
+- [x] CHK021 Is Web Share API unavailability fallback (copy-to-clipboard only) explicitly required? [Coverage, Spec §Edge Cases]
+- [x] CHK022 Are requirements specified for newsletter confirmation success page (content, next steps)? [Completeness, Spec §FR-011, User Story 6]
 
 ## Edge Case Coverage
 
-- [ ] CHK023 Are all six documented edge cases (no related posts, Web Share fallback, localStorage cleared, headshot fail, social URL change, already subscribed) reflected in functional or acceptance criteria? [Edge Case, Spec §Edge Cases]
-- [ ] CHK024 Is headshot fallback behavior (initials or empty state, no layout shift) specified in requirements? [Edge Case, Spec §Edge Cases]
-- [ ] CHK025 Is behavior when theme is not in localStorage (system preference) explicitly required? [Edge Case, Spec §User Story 8]
+- [x] CHK023 Are all six documented edge cases (no related posts, Web Share fallback, localStorage cleared, headshot fail, social URL change, already subscribed) reflected in functional or acceptance criteria? [Edge Case, Spec §Edge Cases]
+- [x] CHK024 Is headshot fallback behavior (initials or empty state, no layout shift) specified in requirements? [Edge Case, Spec §Edge Cases]
+- [x] CHK025 Is behavior when theme is not in localStorage (system preference) explicitly required? [Edge Case, Spec §User Story 8]
 
 ## Non-Functional Requirements
 
-- [ ] CHK026 Is the theme persistence mechanism (localStorage) documented as requirement or assumption? [Assumption, Spec §Assumptions]
-- [ ] CHK027 Are performance or LCP requirements for the headshot image specified (e.g. dimensions, loading)? [Gap]
-- [ ] CHK028 Is the requirement for "no visible flash of incorrect theme" (SC-007) testable (e.g. blocking script, order of execution)? [Measurability, Spec §SC-007]
+- [x] CHK026 Is the theme persistence mechanism (localStorage) documented as requirement or assumption? [Assumption, Spec §Assumptions]
+- [x] CHK027 Are performance or LCP requirements for the headshot image specified (e.g. dimensions, loading)? [Gap]
+- [x] CHK028 Is the requirement for "no visible flash of incorrect theme" (SC-007) testable (e.g. blocking script, order of execution)? [Measurability, Spec §SC-007]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK029 Is dependency on Resend API documented with required environment or contract references? [Dependency, Spec §Assumptions]
-- [ ] CHK030 Are assumptions (headshot placeholder, static export preserved) explicitly listed and validated in scope? [Assumption, Spec §Assumptions]
-- [ ] CHK031 Is the scope boundary (e.g. no search, no comments, no /now) clearly stated so out-of-scope items are not implied as required? [Scope, Spec §Scope Boundaries]
+- [x] CHK029 Is dependency on Resend API documented with required environment or contract references? [Dependency, Spec §Assumptions]
+- [x] CHK030 Are assumptions (headshot placeholder, static export preserved) explicitly listed and validated in scope? [Assumption, Spec §Assumptions]
+- [x] CHK031 Is the scope boundary (e.g. no search, no comments, no /now) clearly stated so out-of-scope items are not implied as required? [Scope, Spec §Scope Boundaries]
 
 ## Ambiguities & Conflicts
 
-- [ ] CHK032 Is "appropriate scroll offset (accounting for sticky header)" for TOC links quantified or referenced (e.g. scroll-margin)? [Clarity, Spec §User Story 7]
-- [ ] CHK033 Does FR-010 ("SHOULD include native share button") conflict with or clarify FR-009 (copy-link) for implementation precedence? [Consistency, Spec §FR-009, FR-010]
-- [ ] CHK034 Is a requirement ID scheme (FR-xxx, SC-xxx) established and used consistently for traceability? [Traceability, Spec §Requirements]
+- [x] CHK032 Is "appropriate scroll offset (accounting for sticky header)" for TOC links quantified or referenced (e.g. scroll-margin)? [Clarity, Spec §User Story 7]
+- [x] CHK033 Does FR-010 ("SHOULD include native share button") conflict with or clarify FR-009 (copy-link) for implementation precedence? [Consistency, Spec §FR-009, FR-010]
+- [x] CHK034 Is a requirement ID scheme (FR-xxx, SC-xxx) established and used consistently for traceability? [Traceability, Spec §Requirements]
 
 ## Notes
 

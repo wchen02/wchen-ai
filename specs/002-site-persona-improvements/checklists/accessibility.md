@@ -8,42 +8,42 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Is appropriate alt text for the headshot explicitly required (e.g. name only, no decorative)? [Completeness, Spec §FR-001]
-- [ ] CHK002 Are accessible names or labels required for icon-only controls (share button, theme toggle)? [Gap]
-- [ ] CHK003 Are social profile links required to have accessible names (e.g. aria-label or visible text in footer)? [Completeness, Spec §FR-002]
-- [ ] CHK004 Is the table of contents required to be exposed to assistive tech (e.g. `<nav aria-label="Table of contents">` or equivalent)? [Completeness, Spec §FR-012]
-- [ ] CHK005 Are form labels and error association requirements specified for the newsletter signup (email field, validation errors)? [Gap]
-- [ ] CHK006 Is skip-to-content or landmark structure mentioned for the new header/footer content? [Gap]
+- [x] CHK001 Is appropriate alt text for the headshot explicitly required (e.g. name only, no decorative)? [Completeness, Spec §FR-001]
+- [x] CHK002 Are accessible names or labels required for icon-only controls (share button, theme toggle)? [Gap]
+- [x] CHK003 Are social profile links required to have accessible names (e.g. aria-label or visible text in footer)? [Completeness, Spec §FR-002]
+- [x] CHK004 Is the table of contents required to be exposed to assistive tech (e.g. `<nav aria-label="Table of contents">` or equivalent)? [Completeness, Spec §FR-012]
+- [x] CHK005 Are form labels and error association requirements specified for the newsletter signup (email field, validation errors)? [Gap]
+- [x] CHK006 Is skip-to-content or landmark structure mentioned for the new header/footer content? [Gap]
 
 ## Clarity & Specificity
 
-- [ ] CHK007 Is "appropriate alt text" for the headshot defined (informative vs decorative, wording)? [Clarity, Spec §FR-001]
-- [ ] CHK008 Are focus order or tab sequence requirements specified for header (logo, nav, social, theme toggle)? [Clarity, Gap]
-- [ ] CHK009 Is keyboard operability required for all new interactive elements (share, theme toggle, TOC links, newsletter submit)? [Gap]
-- [ ] CHK010 Are focus visibility requirements (focus ring or visible focus indicator) specified for interactive elements? [Gap]
+- [x] CHK007 Is "appropriate alt text" for the headshot defined (informative vs decorative, wording)? [Clarity, Spec §FR-001]
+- [x] CHK008 Are focus order or tab sequence requirements specified for header (logo, nav, social, theme toggle)? [Clarity, Gap]
+- [x] CHK009 Is keyboard operability required for all new interactive elements (share, theme toggle, TOC links, newsletter submit)? [Gap]
+- [x] CHK010 Are focus visibility requirements (focus ring or visible focus indicator) specified for interactive elements? [Gap]
 
 ## Consistency
 
-- [ ] CHK011 Are link purpose requirements consistent for text links (footer) vs icon links (header) so both are determinable without context? [Consistency, Spec §FR-002]
-- [ ] CHK012 Are error and success messaging requirements for the newsletter form required to be announced (e.g. live region)? [Consistency, Spec §FR-011]
+- [x] CHK011 Are link purpose requirements consistent for text links (footer) vs icon links (header) so both are determinable without context? [Consistency, Spec §FR-002]
+- [x] CHK012 Are error and success messaging requirements for the newsletter form required to be announced (e.g. live region)? [Consistency, Spec §FR-011]
 
 ## Scenario Coverage
 
-- [ ] CHK013 Are requirements specified for keyboard-only navigation through nav, TOC, and signup flow? [Coverage, Gap]
-- [ ] CHK014 Are requirements specified for screen reader users (headshot, active nav state, "Copied!" feedback, theme change)? [Coverage, Gap]
-- [ ] CHK015 Is color contrast or "visually distinct" active state defined so it is not reliant on color alone? [Coverage, Spec §FR-004]
-- [ ] CHK016 Are reduced-motion or animation preferences addressed for theme transition or any motion? [Gap]
+- [x] CHK013 Are requirements specified for keyboard-only navigation through nav, TOC, and signup flow? [Coverage, Gap]
+- [x] CHK014 Are requirements specified for screen reader users (headshot, active nav state, "Copied!" feedback, theme change)? [Coverage, Gap]
+- [x] CHK015 Is color contrast or "visually distinct" active state defined so it is not reliant on color alone? [Coverage, Spec §FR-004]
+- [x] CHK016 Are reduced-motion or animation preferences addressed for theme transition or any motion? [Gap]
 
 ## Measurability & Acceptance
 
-- [ ] CHK017 Can accessibility requirements be verified (e.g. WCAG 2.x level, manual a11y check, automated scan)? [Measurability]
-- [ ] CHK018 Is an accessibility success criterion or standard referenced in the spec (e.g. WCAG 2.1 AA)? [Gap]
-- [ ] CHK019 Are TOC in-page links required to be keyboard activatable and to move focus or announce target? [Clarity, Spec §FR-012]
+- [x] CHK017 Can accessibility requirements be verified (e.g. WCAG 2.x level, manual a11y check, automated scan)? [Measurability]
+- [x] CHK018 Is an accessibility success criterion or standard referenced in the spec (e.g. WCAG 2.1 AA)? [Gap]
+- [x] CHK019 Are TOC in-page links required to be keyboard activatable and to move focus or announce target? [Clarity, Spec §FR-012]
 
 ## Edge Cases
 
-- [ ] CHK020 When the headshot fails and fallback (initials) is shown, is the fallback required to have alt or role so it is not announced as an image? [Edge Case, Spec §Edge Cases]
-- [ ] CHK021 Is the theme toggle required to communicate current state to assistive tech (e.g. aria-pressed or aria-label with mode)? [Completeness, Spec §FR-013]
+- [x] CHK020 When the headshot fails and fallback (initials) is shown, is the fallback required to have alt or role so it is not announced as an image? [Edge Case, Spec §Edge Cases]
+- [x] CHK021 Is the theme toggle required to communicate current state to assistive tech (e.g. aria-pressed or aria-label with mode)? [Completeness, Spec §FR-013]
 
 ## Notes
 

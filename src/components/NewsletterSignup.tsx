@@ -65,14 +65,20 @@ export default function NewsletterSignup() {
           <label htmlFor="nl_honey">Ignore this field</label>
           <input type="text" id="nl_honey" name="_honey" tabIndex={-1} autoComplete="off" />
         </div>
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder="you@example.com"
-          disabled={status === "loading"}
-          className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
-        />
+        <div className="flex-1 flex flex-col min-w-0">
+          <label htmlFor="nl_email" className="sr-only">
+            Email address
+          </label>
+          <input
+            id="nl_email"
+            type="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            disabled={status === "loading"}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
+          />
+        </div>
         <button
           type="submit"
           disabled={status === "loading"}

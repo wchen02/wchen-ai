@@ -8,42 +8,42 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 Are the two signup locations (writing index page, bottom of each writing page) explicitly required and unambiguous? [Completeness, Spec §FR-011]
-- [ ] CHK002 Is double opt-in (confirm via email before being added to audience) explicitly required in functional requirements? [Completeness, Spec §FR-011]
-- [ ] CHK003 Is the confirmation email content or template requirements specified (e.g. link, expiry mention)? [Clarity, Spec §User Story 6]
-- [ ] CHK004 Is the success page after confirmation required to show specific content (e.g. "You're subscribed", link back to writing)? [Completeness, Spec §User Story 6 Acceptance]
-- [ ] CHK005 Is the dependency on Resend's audience/contacts API documented in requirements or assumptions? [Dependency, Spec §FR-011, Assumptions]
+- [x] CHK001 Are the two signup locations (writing index page, bottom of each writing page) explicitly required and unambiguous? [Completeness, Spec §FR-011]
+- [x] CHK002 Is double opt-in (confirm via email before being added to audience) explicitly required in functional requirements? [Completeness, Spec §FR-011]
+- [x] CHK003 Is the confirmation email content or template requirements specified (e.g. link, expiry mention)? [Clarity, Spec §User Story 6]
+- [x] CHK004 Is the success page after confirmation required to show specific content (e.g. "You're subscribed", link back to writing)? [Completeness, Spec §User Story 6 Acceptance]
+- [x] CHK005 Is the dependency on Resend's audience/contacts API documented in requirements or assumptions? [Dependency, Spec §FR-011, Assumptions]
 
 ## Messaging & Copy
 
-- [ ] CHK006 Is the post-submit success message specified (e.g. "Check your email to confirm your subscription.")? [Clarity, Spec §FR-011, User Story 6]
-- [ ] CHK007 Is the neutral message for already-subscribed case explicitly required to match normal success (no disclosure)? [Consistency, Spec §Edge Cases]
-- [ ] CHK008 Are inline validation error requirements for invalid email specified (placement, user-facing message)? [Completeness, Spec §User Story 6]
-- [ ] CHK009 Are server or network error message requirements specified (e.g. generic retry message)? [Gap]
+- [x] CHK006 Is the post-submit success message specified (e.g. "Check your email to confirm your subscription.")? [Clarity, Spec §FR-011, User Story 6]
+- [x] CHK007 Is the neutral message for already-subscribed case explicitly required to match normal success (no disclosure)? [Consistency, Spec §Edge Cases]
+- [x] CHK008 Are inline validation error requirements for invalid email specified (placement, user-facing message)? [Completeness, Spec §User Story 6]
+- [x] CHK009 Are server or network error message requirements specified (e.g. generic retry message)? [Gap]
 
 ## Validation & Data
 
-- [ ] CHK010 Is email validation scope defined (format only, or also disposable/domain rules)? [Clarity, Spec §FR-011]
-- [ ] CHK011 Is honeypot or bot protection mentioned in requirements or left to implementation? [Gap]
-- [ ] CHK012 Is confirmation link expiry (e.g. 24 hours) specified in requirements or contracts? [Completeness, Spec §FR-011]
+- [x] CHK010 Is email validation scope defined (format only, or also disposable/domain rules)? [Clarity, Spec §FR-011]
+- [x] CHK011 Is honeypot or bot protection mentioned in requirements or left to implementation? [Gap]
+- [x] CHK012 Is confirmation link expiry (e.g. 24 hours) specified in requirements or contracts? [Completeness, Spec §FR-011]
 
 ## Scenario Coverage
 
-- [ ] CHK013 Are requirements defined for the flow: submit → confirmation email sent → user clicks link → added to audience → success page? [Coverage, Spec §User Story 6]
-- [ ] CHK014 Are exception flows specified: invalid email (inline error), expired link (user-facing message), already subscribed (neutral message)? [Coverage, Spec §Edge Cases]
-- [ ] CHK015 Is behavior when Resend API is unavailable or returns error specified in requirements? [Gap]
-- [ ] CHK016 Is the "added to the audience" outcome defined (e.g. segment/contact in Resend)? [Clarity, Spec §FR-011]
+- [x] CHK013 Are requirements defined for the flow: submit → confirmation email sent → user clicks link → added to audience → success page? [Coverage, Spec §User Story 6]
+- [x] CHK014 Are exception flows specified: invalid email (inline error), expired link (user-facing message), already subscribed (neutral message)? [Coverage, Spec §Edge Cases]
+- [x] CHK015 Is behavior when Resend API is unavailable or returns error specified in requirements? [Gap]
+- [x] CHK016 Is the "added to the audience" outcome defined (e.g. segment/contact in Resend)? [Clarity, Spec §FR-011]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK017 Can SC-008 ("newsletter signup successfully registers a subscription") be verified without implementation details? [Measurability, Spec §SC-008]
-- [ ] CHK018 Is "subscription is registered with the email service" in the Independent Test defined (e.g. contact in segment)? [Clarity, Spec §User Story 6]
+- [x] CHK017 Can SC-008 ("newsletter signup successfully registers a subscription") be verified without implementation details? [Measurability, Spec §SC-008]
+- [x] CHK018 Is "subscription is registered with the email service" in the Independent Test defined (e.g. contact in segment)? [Clarity, Spec §User Story 6]
 
 ## Edge Cases
 
-- [ ] CHK019 Is the already-subscribed edge case (neutral message, no disclosure) explicitly required? [Edge Case, Spec §Edge Cases]
-- [ ] CHK020 Is re-submission after confirmation (same email, already in audience) behavior specified? [Edge Case, Gap]
-- [ ] CHK021 Is behavior for duplicate pending confirmations (same email, two signups before confirming) specified? [Edge Case, Gap]
+- [x] CHK019 Is the already-subscribed edge case (neutral message, no disclosure) explicitly required? [Edge Case, Spec §Edge Cases]
+- [x] CHK020 Is re-submission after confirmation (same email, already in audience) behavior specified? [Edge Case, Gap]
+- [x] CHK021 Is behavior for duplicate pending confirmations (same email, two signups before confirming) specified? [Edge Case, Gap]
 
 ## Notes
 
