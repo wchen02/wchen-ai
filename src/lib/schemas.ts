@@ -65,3 +65,4 @@ export type GitHubContributions = z.infer<typeof GitHubContributionSchema>;
 
 // Re-export from shared so frontend and backend stay in sync
 export { ContactPayloadSchema, type ContactPayload } from "../../shared/contact";
+export { NewsletterPayloadSchema, type NewsletterPayload } from "../../shared/newsletter";

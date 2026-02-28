@@ -1,8 +1,14 @@
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { getWritingBySlug, getWritings, extractExcerpt } from "@/lib/mdx";
+import { getWritingBySlug, getWritings, getRelatedWritings, extractExcerpt, extractHeadings } from "@/lib/mdx";
+import rehypeSlug from "rehype-slug";
+import TableOfContents from "@/components/TableOfContents";
 import ReachOutCTA from "@/components/ReachOutCTA";
+import ReadNext from "@/components/ReadNext";
+import ShareButton from "@/components/ShareButton";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/site-config";
 
 export async function generateStaticParams() {
   const writings = getWritings();
@@ -33,6 +39,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "article",
       images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: writing.title }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: writing.title,
+      description,
+    },
   };
 }
 
@@ -44,8 +55,24 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
     notFound();
   }
 
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: writing.title,
+    author: { "@type": "Person", name: "Wilson Chen", url: SITE_URL },
+    datePublished: writing.publishDate,
+    ...(writing.updatedAt ? { dateModified: writing.updatedAt } : {}),
+    description: extractExcerpt(writing.content),
+    url: `${SITE_URL}/writing/${resolvedParams.slug}`,
+    image: `${SITE_URL}/og-default.png`,
+  };
+
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <div className="mb-8">
         <Link href="/writing" className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
           ← Back to all writing
@@ -68,6 +95,8 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
             <span className="font-medium text-emerald-600 dark:text-emerald-400">
               {writing.theme}
             </span>
+            <span>•</span>
+            <ShareButton url={`https://wchen.ai/writing/${resolvedParams.slug}`} title={writing.title} />
           </div>
 
           {writing.tags && writing.tags.length > 0 && (
@@ -81,11 +110,18 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
           )}
         </header>
 
-        {/* Dynamic MDX Content */}
-        <div className="prose dark:prose-invert prose-emerald max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
-          <MDXRemote source={writing.content} />
+        <TableOfContents headings={extractHeadings(writing.content)} />
+
+        <div className="prose dark:prose-invert prose-emerald max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
+          <MDXRemote source={writing.content} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
         </div>
       </article>
+
+      <ReadNext writings={getRelatedWritings(resolvedParams.slug)} />
+
+      <div className="mt-12">
+        <NewsletterSignup />
+      </div>
 
       <ReachOutCTA />
     </main>

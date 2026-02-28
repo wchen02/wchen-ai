@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
+import { SOCIAL_LINKS, SITE_URL } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "About | Wilson Chen",
@@ -25,19 +26,47 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Wilson Chen",
+  url: SITE_URL,
+  jobTitle: "Founder & Builder",
+  sameAs: SOCIAL_LINKS.map((l) => l.url),
+  image: `${SITE_URL}/headshot.jpg`,
+};
+
 export default function AboutPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <SectionReveal className="space-y-6">
-        <header>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            About
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mt-6">
-            I&apos;m Wensheng Chen; I go by Wilson. I build things at the intersection of artificial intelligence and
-            developer tools. This page is a snapshot of what drives me, what I care
-            about, and how I think about the work.
-          </p>
+        <header className="flex flex-col sm:flex-row gap-6 items-start">
+          <div className="relative shrink-0 w-24 h-24 rounded-full overflow-hidden bg-gray-200 dark:bg-neutral-800">
+            <div className="absolute inset-0 flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 select-none">
+              WC
+            </div>
+            <img
+              src="/headshot.jpg"
+              alt="Wilson Chen"
+              width={96}
+              height={96}
+              className="relative w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+              About
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl mt-4">
+              I&apos;m Wensheng Chen; I go by Wilson. I build things at the intersection of artificial intelligence and
+              developer tools. This page is a snapshot of what drives me, what I care
+              about, and how I think about the work.
+            </p>
+          </div>
         </header>
       </SectionReveal>
 
@@ -127,23 +156,29 @@ export default function AboutPage() {
         </h2>
         <div className="prose dark:prose-invert text-gray-600 dark:text-gray-400 leading-relaxed max-w-none">
           <p>
-            I&apos;ve spent my career founding and building software companies.
-            The thread connecting all of it is a fascination with how people and
-            systems work together — and a frustration with how much friction
-            still exists in that relationship.
+            I started my career at the Financial Times, where I spent close to
+            five years as an engineer working across their digital platform. That
+            experience gave me a deep appreciation for systems that serve millions
+            of readers without getting in the way — tools that disappear.
           </p>
           <p>
-            I started as an engineer, moved into product, and eventually into
-            founding. Each step gave me a different lens on the same problem: the
-            distance between having an idea and seeing it realized is still too
-            large, and most of that distance is artificial.
+            From there I founded Innovative Web Services and served as CTO for
+            about three years, building custom web solutions for businesses that
+            needed more than off-the-shelf templates could offer. After that I
+            moved through a series of engineering roles — at Zume, then as a
+            senior engineer at HubSpot and FullStory — each sharpening a
+            different part of how I think about developer experience, data
+            pipelines, and product quality.
           </p>
           <p>
-            Today I spend my time building tools that compress that distance —
-            primarily through AI agents that understand engineering context
-            deeply enough to act on it. When I&apos;m not building, I&apos;m
-            writing about the patterns I notice and the questions I can&apos;t
-            stop thinking about.
+            Most recently I served as CTO at The Juicy Crab, where I led the
+            technology strategy for a growing restaurant group. Today I
+            run{" "}
+            <a href="https://bestpos.io" target="_blank" rel="noopener noreferrer">bestpos.io</a>,
+            a restaurant marketing agency, and{" "}
+            <a href="https://kloudeats.com" target="_blank" rel="noopener noreferrer">kloudeats.com</a>,
+            a first-party online ordering platform — while continuing to build
+            AI-powered developer tools on the side.
           </p>
         </div>
       </SectionReveal>

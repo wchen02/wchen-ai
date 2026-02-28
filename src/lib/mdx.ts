@@ -3,6 +3,28 @@ import path from 'path';
 import matter from 'gray-matter';
 import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from './schemas';
 
+export interface TOCItem {
+  id: string;
+  text: string;
+  level: 2 | 3;
+}
+
+export function extractHeadings(content: string): TOCItem[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const items: TOCItem[] = [];
+  let match;
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length as 2 | 3;
+    const text = match[2].trim();
+    const id = text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/\s+/g, "-");
+    items.push({ id, text, level });
+  }
+  return items;
+}
+
 const EXCERPT_LENGTH = 160;
 
 export function extractExcerpt(mdxContent: string, maxLength = EXCERPT_LENGTH): string {
@@ -122,6 +144,30 @@ export function getGitHubContributions(): GitHubContributions | null {
   } catch {
     return null;
   }
+}
+
+export function getRelatedWritings(currentSlug: string, limit = 3): Writing[] {
+  const all = getWritings();
+  const current = all.find((w) => w.slug === currentSlug);
+  if (!current) return all.slice(0, limit);
+
+  const candidates = all.filter((w) => w.slug !== currentSlug);
+  if (candidates.length === 0) return [];
+
+  const scored = candidates.map((w) => {
+    let score = 0;
+    if (w.theme === current.theme) score += 3;
+    const overlap = w.tags.filter((t) => current.tags.includes(t)).length;
+    score += overlap;
+    return { writing: w, score };
+  });
+
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return new Date(b.writing.publishDate).getTime() - new Date(a.writing.publishDate).getTime();
+  });
+
+  return scored.slice(0, limit).map((s) => s.writing);
 }
 
 export function getWritingBySlug(slug: string): Writing | null {

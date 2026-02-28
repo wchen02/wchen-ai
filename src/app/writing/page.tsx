@@ -1,6 +1,7 @@
 import { getWritings } from "@/lib/mdx";
 import WritingCard from "@/components/WritingCard";
 import ReachOutCTA from "@/components/ReachOutCTA";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import SectionReveal from "@/components/SectionReveal";
 import type { Writing } from "@/lib/schemas";
 
@@ -87,6 +88,10 @@ export default function WritingPage() {
           <p className="text-gray-500 italic">No writings found.</p>
         </SectionReveal>
       )}
+
+      <SectionReveal className="pt-8">
+        <NewsletterSignup />
+      </SectionReveal>
 
       <SectionReveal className="pt-8">
         <ReachOutCTA />
