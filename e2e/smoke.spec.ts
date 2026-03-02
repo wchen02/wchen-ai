@@ -11,7 +11,7 @@ test.describe("Homepage - 15-Second Overview", () => {
     await expect(page.locator("text=Current Focus")).toBeVisible();
     await expect(page.locator("text=Selected Work")).toBeVisible();
     await expect(page.locator("text=Recent Thinking")).toBeVisible();
-    await expect(page.locator("text=Activity")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Activity" })).toBeVisible();
   });
 
   test("contact section is accessible from homepage", async ({ page }) => {
@@ -19,7 +19,7 @@ test.describe("Homepage - 15-Second Overview", () => {
 
     const contactSection = page.locator("#contact");
     await expect(contactSection).toBeVisible();
-    await expect(contactSection.locator("text=collaborate")).toBeVisible();
+    await expect(contactSection.locator("text=collaboration")).toBeVisible();
   });
 
   test("navigation links point to correct pages", async ({ page }) => {
@@ -48,8 +48,8 @@ test.describe("Projects Section", () => {
     const firstProjectLink = page.locator('a[href^="/projects/"]').first();
     await firstProjectLink.click();
 
-    await expect(page.locator("text=The Motivation")).toBeVisible();
-    await expect(page.locator("text=The Problem")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "The Motivation" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "The Problem" })).toBeVisible();
   });
 
   test("project detail page has reach-out CTA", async ({ page }) => {
@@ -79,8 +79,9 @@ test.describe("Writing Section", () => {
     await firstWritingLink.click();
     await page.waitForURL(`**${href}`);
 
-    await expect(page.locator("article")).toBeVisible();
-    await expect(page.locator("text=min read")).toBeVisible();
+    const mainArticle = page.getByRole("main").locator("article").first();
+    await expect(mainArticle).toBeVisible();
+    await expect(mainArticle.getByText(/min read/)).toBeVisible();
   });
 
   test("writing detail page has reach-out CTA", async ({ page }) => {

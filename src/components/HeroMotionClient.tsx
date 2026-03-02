@@ -40,8 +40,7 @@ export default function HeroMotionClient({ children }: HeroMotionClientProps) {
         children: headerChildren.map((block, i) => (
           <m.div
             key={i}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 1, y: 0 }}
             transition={{
               duration: BLOCK_DURATION,
               delay: i * STAGGER_DELAY,
