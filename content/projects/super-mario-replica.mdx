@@ -1,0 +1,29 @@
+---
+title: "Super Mario Replica"
+date: "2025-03-10T00:00:00Z"
+status: "archived"
+type: ["app", "experiment"]
+motivation: "I wanted to build a Super Mario–style platformer and stress-test a full spec-first, agent-driven workflow — spec-kit for requirements, Cursor vibe coding, and custom commands for self-review, testing, and memory — to see how far I could push it before having to step in."
+problemAddressed: "Agent-built projects often ship with hidden bugs and no clear next step. I wanted to see whether a structured requirement spec plus agent commands for self-review, unit tests, e2e blackbox testing, and a SQLite-backed step memory could reduce that friction and eventually replace the need for a human operator."
+learnings: "The pipeline eliminated many bugs that would have surfaced later and proved that structured specs plus the right agent commands can carry most of the load. I still had to steer at times. The gap feels like missing commands and decision points — more of them could eventually replace the need for a human operator."
+github: "https://github.com/wchen02/platformer"
+featured: false
+---
+
+I built a Super Mario–style platformer in Godot over about a week. The game itself is a replica — run-and-jump, coins, blocks, the usual beats. The real experiment was the workflow: a full requirement spec up front, a Cursor vibe code environment, and a custom command that let the agent self-review the code, decide the next step, run tests, run e2e blackbox checks, and keep track of steps in a SQLite database. The repo has a [detailed README](https://github.com/wchen02/platformer) for anyone who wants to run or extend it.
+
+## How I ran the experiment
+
+I gave the project a full requirement spec using spec-kit so the agent had a clear contract before writing a single line. Then I set up the Cursor vibe code environment and added a command that orchestrated the loop: the agent would self-review the code, choose the next action, run unit tests, run e2e tests as a blackbox, and persist progress in a SQLite DB. The idea was to compress the distance between "agent wrote something" and "we know it works" — and to give the agent enough context (via memory) that it could make reasonable next-step decisions without me in the loop every time.
+
+## What worked
+
+The setup caught a lot of bugs that would have shown up later in manual play or in user reports. Having the agent run tests and e2e checks as part of its own loop meant regressions and integration issues surfaced early. The spec acted as a shared source of truth; the SQLite-backed memory meant the agent could refer to what had already been done. In practice, the combination of spec-kit, vibe coding, and these commands *did* eliminate much of the need for constant human intervention. It was a strong signal that the approach is viable.
+
+## Where I had to step in
+
+It worked to a certain extent, but not end-to-end without me. There were points where the agent would have gone in circles or missed a decision that required product or design judgment. I had to steer — clarify priorities, correct course, or unblock when the command set didn't cover a scenario. The gap wasn't the agent's capability so much as the *coverage* of commands and decision rules. Some situations still need a human to say "do this next" or "we're done with that."
+
+## Takeaway
+
+It was a great experiment. The pipeline proved that structured specs plus agent commands for review, testing, and memory can take you most of the way. I didn't need to babysit every change. What's left is filling in the gaps: more commands, clearer decision points, and better handling of edge cases. I'm convinced that with enough of those, the need for a human operator in the loop could eventually disappear.

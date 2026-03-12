@@ -1,70 +1,6 @@
 {
-  "totalContributions": 255,
+  "totalContributions": 354,
   "weeks": [
-    {
-      "contributionDays": [
-        {
-          "contributionCount": 0,
-          "date": "2025-02-23"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-02-24"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-02-25"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-02-26"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-02-27"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-02-28"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-01"
-        }
-      ]
-    },
-    {
-      "contributionDays": [
-        {
-          "contributionCount": 0,
-          "date": "2025-03-02"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-03"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-04"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-05"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-06"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-07"
-        },
-        {
-          "contributionCount": 0,
-          "date": "2025-03-08"
-        }
-      ]
-    },
     {
       "contributionDays": [
         {
@@ -1692,8 +1628,64 @@
           "date": "2026-02-27"
         },
         {
-          "contributionCount": 3,
+          "contributionCount": 6,
           "date": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "contributionDays": [
+        {
+          "contributionCount": 1,
+          "date": "2026-03-01"
+        },
+        {
+          "contributionCount": 0,
+          "date": "2026-03-02"
+        },
+        {
+          "contributionCount": 0,
+          "date": "2026-03-03"
+        },
+        {
+          "contributionCount": 59,
+          "date": "2026-03-04"
+        },
+        {
+          "contributionCount": 23,
+          "date": "2026-03-05"
+        },
+        {
+          "contributionCount": 2,
+          "date": "2026-03-06"
+        },
+        {
+          "contributionCount": 6,
+          "date": "2026-03-07"
+        }
+      ]
+    },
+    {
+      "contributionDays": [
+        {
+          "contributionCount": 0,
+          "date": "2026-03-08"
+        },
+        {
+          "contributionCount": 0,
+          "date": "2026-03-09"
+        },
+        {
+          "contributionCount": 0,
+          "date": "2026-03-10"
+        },
+        {
+          "contributionCount": 3,
+          "date": "2026-03-11"
+        },
+        {
+          "contributionCount": 2,
+          "date": "2026-03-12"
         }
       ]
     }
