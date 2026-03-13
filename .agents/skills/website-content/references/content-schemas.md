@@ -56,7 +56,7 @@ draft: false                        # boolean. If true, excluded from build.
 Typical pattern from existing content:
 1. Opening observation or provocation (1-2 paragraphs)
 2. The problem reframed (1-2 paragraphs)
-3. Wilson's position or insight (1-2 paragraphs)
+3. The author's position or insight (1-2 paragraphs)
 4. Closing conviction or forward-looking statement (1 paragraph)
 
 No H1 in body (title is rendered from frontmatter). Use H2 sparingly for structure within longer pieces.
@@ -71,7 +71,7 @@ title: "string, required"                 # Clear project name
 date: "ISO 8601 datetime"                 # Project date
 status: "active" | "archived" | "in-progress"
 type: ["app"] | ["agent"] | ["experiment"] | ["skill"] | ["library"] | ["tool"] | combinations  # At least one required
-motivation: "string, min 10 chars"         # WHY Wilson built it. First-person, punchy.
+motivation: "string, min 10 chars"         # Why the author built it. First-person, punchy.
 problemAddressed: "string, min 10 chars"   # The specific problem. Concrete, not abstract.
 learnings: "string, optional"              # What was discovered. Honest, specific.
 url: "valid URL, optional"                 # Live app link

@@ -1,18 +1,18 @@
 ---
 name: website-content
-description: Write, rewrite, or improve content for Wilson Chen's personal website (wchen.ai). Use when the user asks to write a new writing entry, create a new project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," or "draft copy for the site." This skill covers MDX content authoring, frontmatter construction, page copy, and handing shared writing/project entries off to the translation workflow when they are finished.
+description: Write, rewrite, or improve content for the site owner's personal website (this repo). Use when the user asks to write a new writing entry, create a new project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," or "draft copy for the site." This skill covers MDX content authoring, frontmatter construction, page copy, and handing shared writing/project entries off to the translation workflow when they are finished.
 ---
 
 # Website Content
 
-Write content for `wchen.ai` in Wilson Chen's voice. The site now splits content into two buckets:
+Write content for the site in the site owner's voice. The site splits content into two buckets:
 
 - Locale-scoped JSON bundles for site copy under `content/locales/<locale>/site/*.json`
 - MDX entries for writing and projects, loaded locale-first with fallback to shared content in `content/writing` and `content/projects`
 
 ## Before Writing
 
-1. Read [references/voice-guide.md](references/voice-guide.md) to internalize Wilson's voice.
+1. Read [references/voice-guide.md](references/voice-guide.md) to internalize the site owner's voice (customize that guide for your own voice if you forked this template).
 2. Read [references/content-schemas.md](references/content-schemas.md) for the content type being written.
 3. If updating homepage/about or other page-level copy, also read [references/page-patterns.md](references/page-patterns.md).
 
@@ -83,7 +83,7 @@ See `page-patterns.md` for the rendered section structure in `src/app/[locale]/p
 Key constraints:
 - Hero: intro plus two short supporting paragraphs
 - Current Focus: short description plus two paragraphs
-- A new visitor should understand who Wilson is, what he is building, and how to reach him within 15 seconds
+- A new visitor should understand who the site owner is, what they are building, and how to reach them within 15 seconds
 - For route values like the about link, store the unprefixed path such as `/about`; localization is applied at runtime
 
 ### About Page Copy

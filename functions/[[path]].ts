@@ -4,7 +4,8 @@ import {
   shouldRedirectBarePath,
 } from "../src/lib/i18n";
 
-interface Env {}
+/** No Workers bindings (KV, D1, etc.) for this entry. */
+type Env = Record<string, never>;
 
 export async function onRequest(context: EventContext<Env, string, unknown>) {
   const { request, next } = context;

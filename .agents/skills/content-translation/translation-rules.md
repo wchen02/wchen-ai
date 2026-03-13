@@ -37,7 +37,7 @@ Do not translate these unless the repository clearly stores localized prose in t
 
 ## Quality Bar
 
-- Keep Wilson's first-person voice when the source is first person.
+- Keep the author's first-person voice when the source is first person.
 - Translate for clarity and idiomatic flow, not literal wording.
 - Keep the same confidence level, technical precision, and rhetorical shape.
 - Do not add new claims, examples, or sections that are not in the source.

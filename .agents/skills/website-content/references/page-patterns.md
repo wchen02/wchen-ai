@@ -1,6 +1,6 @@
 # Page Patterns & Component Reference
 
-Layout and component patterns for each page of wchen.ai.
+Layout and component patterns for each page of the site.
 
 Active page implementations now live under `src/app/[locale]/...`. The non-localized routes in `src/app/...` are redirect shells and should not be treated as the source of page copy.
 
@@ -19,18 +19,18 @@ Active page implementations now live under `src/app/[locale]/...`. The non-local
 ## Homepage (`src/app/[locale]/page.tsx`)
 
 ### Section order (priority-driven)
-1. **Hero** — Name, "Founder & Builder", current exploration statement, link to about
-2. **Current Focus & Problems** — What Wilson is obsessed with right now
+1. **Hero** — Name, role or tagline, current exploration statement, link to about
+2. **Current Focus & Problems** — What the site owner is focused on right now
 3. **Selected Work** — Top 3 projects (featured-first), link to all
 4. **Recent Thinking** — Top 3 writings (latest by date), link to all
 5. **Activity** — GitHub contribution graph
 6. **Contact** — "Let's collaborate" + ContactForm
 
 ### Hero copy structure
-- H1: "Wilson Chen"
-- Subtitle: "Founder & Builder"
-- Intro snippet plus two short paragraphs: (1) what he's exploring, (2) primary focus area
-- Link: "More about me & my philosophy →"
+- H1: site name (from `profile.json` / `siteName`)
+- Subtitle: role or tagline (from profile)
+- Intro snippet plus two short paragraphs: (1) what the site owner is exploring, (2) primary focus area
+- Link: "More about me & my philosophy" (or equivalent from locale copy)
 
 ### Content source
 - `content/locales/<locale>/site/home.json` for hero and section copy

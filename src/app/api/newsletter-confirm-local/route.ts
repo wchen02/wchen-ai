@@ -5,6 +5,7 @@ import {
   renderNewsletterWelcomeEmail,
 } from "../../../../shared/newsletter-email";
 import { sendResendEmail, upsertResendContact } from "../../../../shared/resend";
+import { resolveLocale } from "@/lib/locales";
 import {
   getNewsletterEmailBrand,
   getNewsletterEmailContent,
@@ -13,21 +14,21 @@ import {
 } from "@/lib/site-config";
 import { getSystemContent } from "@/lib/site-content";
 
-const systemContent = getSystemContent();
-
 export async function POST(request: Request) {
   const payload = (await request.json()) as {
     email?: string;
     ts?: string;
     sig?: string;
+    locale?: string;
   };
   const email = payload.email ?? null;
   const ts = payload.ts ?? null;
   const sig = payload.sig ?? null;
+  const resolvedLocale = resolveLocale(payload.locale);
 
   if (!email || !ts || !sig) {
     return NextResponse.json(
-      { success: false, error: systemContent.newsletter.invalidConfirmationLink },
+      { success: false, error: getSystemContent(resolvedLocale).newsletter.invalidConfirmationLink },
       { status: 400 }
     );
   }
@@ -35,21 +36,22 @@ export async function POST(request: Request) {
   const secret = process.env.NEWSLETTER_SECRET;
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;
-  const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
   const requestUrl = new URL(request.url);
-  const brand = getNewsletterEmailBrand(requestUrl.origin);
 
   if (!secret || !apiKey || !segmentId) {
     return NextResponse.json(
-      { success: false, error: systemContent.common.genericError },
+      { success: false, error: getSystemContent(resolvedLocale).common.genericError },
       { status: 500 }
     );
   }
 
+  const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM, resolvedLocale);
+  const brand = getNewsletterEmailBrand(requestUrl.origin, resolvedLocale);
+
   const tokenAge = Math.floor(Date.now() / 1000) - Number.parseInt(ts, 10);
   if (Number.isNaN(tokenAge) || tokenAge < 0 || tokenAge > NEWSLETTER_TOKEN_MAX_AGE_S) {
     return NextResponse.json(
-      { success: false, error: systemContent.newsletter.expiredConfirmationLink },
+      { success: false, error: getSystemContent(resolvedLocale).newsletter.expiredConfirmationLink },
       { status: 400 }
     );
   }
@@ -57,21 +59,27 @@ export async function POST(request: Request) {
   const expected = await hmacSign(secret, `${email}|${ts}`);
   if (!timingSafeEqual(sig, expected)) {
     return NextResponse.json(
-      { success: false, error: systemContent.newsletter.invalidConfirmationLink },
+      { success: false, error: getSystemContent(resolvedLocale).newsletter.invalidConfirmationLink },
       { status: 400 }
     );
   }
 
   try {
-    await upsertResendContact({ apiKey, email, segmentId });
+    await upsertResendContact({
+      apiKey,
+      email,
+      segmentId,
+      properties: { preferred_locale: resolvedLocale },
+    });
 
-    const newsletterContent = getNewsletterEmailContent(requestUrl.origin);
+    const newsletterContent = getNewsletterEmailContent(requestUrl.origin, resolvedLocale);
     const unsubscribeSig = await hmacSign(secret, email);
     const unsubscribeUrl = getNewsletterUnsubscribeUrl({
       email,
       sig: unsubscribeSig,
       siteUrl: requestUrl.origin,
       useLocalPage: true,
+      locale: resolvedLocale,
     });
     const welcomeEmail = await renderNewsletterWelcomeEmail({
       brand,
@@ -90,9 +98,7 @@ export async function POST(request: Request) {
         text: welcomeEmail.text,
         idempotencyKey: createNewsletterWelcomeIdempotencyKey(email, ts),
         headers: {
-          "List-Unsubscribe": `<${requestUrl.origin}/api/newsletter-unsubscribe-local?email=${encodeURIComponent(
-            email
-          )}&sig=${unsubscribeSig}>`,
+          "List-Unsubscribe": `<${unsubscribeUrl}>`,
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         },
       });
@@ -104,7 +110,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error confirming newsletter subscription locally:", error);
     return NextResponse.json(
-      { success: false, error: systemContent.common.genericError },
+      { success: false, error: getSystemContent(resolvedLocale).common.genericError },
       { status: 500 }
     );
   }

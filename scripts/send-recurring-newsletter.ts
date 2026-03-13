@@ -1,4 +1,6 @@
+import { DEFAULT_LOCALE, resolveLocale } from "../src/lib/locales";
 import {
+  SITE_URL,
   getNewsletterEmailBrand,
   getNewsletterEmailContent,
   getNewsletterFromAddress,
@@ -17,23 +19,31 @@ import {
   renderNewsletterIssueEmail,
 } from "../shared/newsletter-email";
 import { hmacSign } from "../shared/newsletter-crypto";
+import type { ResendContact } from "../shared/resend";
 import { listResendContactsBySegment, sendResendEmail } from "../shared/resend";
 
-function getUniqueDeliverableRecipients(emails: string[]): string[] {
-  const seen = new Set<string>();
-  const unique: string[] = [];
+function getPreferredLocale(contact: ResendContact): string {
+  const fromProps =
+    (contact.properties as Record<string, string> | undefined)?.preferred_locale;
+  return resolveLocale(contact.preferred_locale ?? fromProps ?? DEFAULT_LOCALE);
+}
 
-  for (const email of emails) {
-    const normalized = email.trim().toLowerCase();
-    if (!normalized || seen.has(normalized)) {
-      continue;
-    }
+function getUniqueDeliverableRecipientsWithLocale(
+  contacts: ResendContact[]
+): Array<{ email: string; locale: string }> {
+  const seen = new Set<string>();
+  const result: Array<{ email: string; locale: string }> = [];
+
+  for (const contact of contacts) {
+    if (contact.unsubscribed) continue;
+    const normalized = contact.email.trim().toLowerCase();
+    if (!normalized || seen.has(normalized)) continue;
 
     seen.add(normalized);
-    unique.push(normalized);
+    result.push({ email: normalized, locale: getPreferredLocale(contact) });
   }
 
-  return unique;
+  return result;
 }
 
 async function main(): Promise<void> {
@@ -49,10 +59,13 @@ async function main(): Promise<void> {
   }
 
   const state = loadNewsletterSendState();
-  const candidates = getRecurringNewsletterCandidates();
-  const unsentCandidates = selectUnsentRecurringNewsletterCandidates(candidates, state);
+  const candidatesDefault = getRecurringNewsletterCandidates(DEFAULT_LOCALE);
+  const unsentCandidatesForState = selectUnsentRecurringNewsletterCandidates(
+    candidatesDefault,
+    state
+  );
 
-  if (unsentCandidates.length === 0) {
+  if (unsentCandidatesForState.length === 0) {
     console.log("No unsent recurring newsletter items found.");
     return;
   }
@@ -61,35 +74,45 @@ async function main(): Promise<void> {
     apiKey,
     segmentId,
   });
-  const recipients = getUniqueDeliverableRecipients(
-    contacts.filter((contact) => !contact.unsubscribed).map((contact) => contact.email)
-  );
+  const recipientsWithLocale = getUniqueDeliverableRecipientsWithLocale(contacts);
 
-  if (recipients.length === 0) {
+  if (recipientsWithLocale.length === 0) {
     console.log("No confirmed newsletter subscribers found in the configured Resend segment.");
     return;
   }
 
-  const brand = getNewsletterEmailBrand();
-  const footer = getNewsletterEmailContent().footer;
-  const issueContent = getRecurringNewsletterEmailContent({
-    itemCount: unsentCandidates.length,
+  const issueContentDefault = getRecurringNewsletterEmailContent({
+    itemCount: unsentCandidatesForState.length,
+    locale: DEFAULT_LOCALE,
   });
-  const digestEntries = unsentCandidates.map((candidate) => ({
-    type: candidate.type,
-    title: candidate.title,
-    summary: candidate.summary,
-    ctaLabel: issueContent.itemActionLabels[candidate.type],
-    ctaUrl: candidate.ctaUrl,
-    typeLabel: issueContent.itemTypeLabels[candidate.type],
-  }));
-  const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
 
-  for (const recipient of recipients) {
+  for (const { email: recipient, locale } of recipientsWithLocale) {
+    const candidates = getRecurringNewsletterCandidates(locale);
+    const unsentCandidates = selectUnsentRecurringNewsletterCandidates(candidates, state);
+
+    const brand = getNewsletterEmailBrand(SITE_URL, locale);
+    const footer = getNewsletterEmailContent(SITE_URL, locale).footer;
+    const issueContent = getRecurringNewsletterEmailContent({
+      itemCount: unsentCandidates.length,
+      locale,
+    });
+    const digestEntries = unsentCandidates.map((candidate) => ({
+      type: candidate.type,
+      title: candidate.title,
+      summary: candidate.summary,
+      ctaLabel: issueContent.itemActionLabels[candidate.type],
+      ctaUrl: candidate.ctaUrl,
+      typeLabel: issueContent.itemTypeLabels[candidate.type],
+    }));
+    const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM, locale);
+
     const unsubscribeSig = await hmacSign(secret, recipient);
     const unsubscribeUrl = getNewsletterUnsubscribeUrl({
       email: recipient,
       sig: unsubscribeSig,
+      siteUrl: SITE_URL,
+      useLocalPage: true,
+      locale,
     });
     const rendered = await renderNewsletterIssueEmail({
       brand,
@@ -107,7 +130,7 @@ async function main(): Promise<void> {
       subject: issueContent.subject,
       html: rendered.html,
       text: rendered.text,
-      idempotencyKey: createNewsletterIssueIdempotencyKey(unsentCandidates, recipient),
+      idempotencyKey: createNewsletterIssueIdempotencyKey(unsentCandidatesForState, recipient),
       headers: {
         "List-Unsubscribe": `<${unsubscribeUrl}>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
@@ -118,14 +141,14 @@ async function main(): Promise<void> {
   const sentAt = new Date().toISOString();
   const nextState = markRecurringNewsletterCandidatesSent(
     state,
-    unsentCandidates,
+    unsentCandidatesForState,
     sentAt,
-    issueContent.subject
+    issueContentDefault.subject
   );
   writeNewsletterSendState(nextState);
 
   console.log(
-    `Sent recurring newsletter digest with ${unsentCandidates.length} items to ${recipients.length} subscribers.`
+    `Sent recurring newsletter digest with ${unsentCandidatesForState.length} items to ${recipientsWithLocale.length} subscribers.`
   );
 }
 

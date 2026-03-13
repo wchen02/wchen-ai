@@ -1,6 +1,6 @@
-# Wilson Chen — Voice & Tone Guide
+# Site Owner — Voice & Tone Guide
 
-Voice profile distilled from existing site content (about page, writing entries, project narratives, homepage).
+This guide describes the voice and tone used for site content. **If you forked this template, replace this file or customize the profile below to match your own voice.** The following is an example profile distilled from a reflective, technical, first-person style (about page, writing entries, project narratives, homepage).
 
 ## Core Voice Attributes
 
@@ -14,7 +14,7 @@ Voice profile distilled from existing site content (about page, writing entries,
 
 ## Sentence Patterns
 
-Wilson's writing follows these structural habits:
+Example structural habits (adapt to the site owner's style):
 
 **Short declarative anchors followed by expansion:**
 > "But physics still applies."
@@ -63,8 +63,8 @@ Wilson's writing follows these structural habits:
 
 ## First Person Usage
 
-Always write in first person. Wilson owns every statement:
-- "I build..." not "Wilson builds..."
+Write in first person so the site owner owns every statement:
+- "I build..." not "[Name] builds..."
 - "I believe..." not "We believe..."
 - Exception: project narratives may use "We" when referring to a team effort ("We built a custom ingestion pipeline...")
 

@@ -18,6 +18,9 @@ export interface ResendContact {
   last_name?: string;
   created_at: string;
   unsubscribed: boolean;
+  /** Set when Resend returns custom contact properties (e.g. preferred_locale). */
+  preferred_locale?: string;
+  properties?: Record<string, unknown>;
 }
 
 export async function sendResendEmail({
@@ -57,6 +60,7 @@ export async function upsertResendContact(params: {
   apiKey: string;
   email: string;
   segmentId: string;
+  properties?: Record<string, string | number>;
 }): Promise<void> {
   const response = await fetch(`${RESEND_API_BASE}/contacts`, {
     method: "POST",
@@ -67,6 +71,9 @@ export async function upsertResendContact(params: {
     body: JSON.stringify({
       email: params.email,
       segments: [{ id: params.segmentId }],
+      ...(params.properties && Object.keys(params.properties).length > 0
+        ? { properties: params.properties }
+        : {}),
     }),
   });
 

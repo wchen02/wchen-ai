@@ -54,22 +54,22 @@ export function writeNewsletterSendState(
   fs.writeFileSync(statePath, `${JSON.stringify(normalized, null, 2)}\n`, "utf8");
 }
 
-export function getRecurringNewsletterCandidates(): RecurringNewsletterCandidate[] {
-  const writingCandidates = getWritings().map((writing) => ({
+export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE): RecurringNewsletterCandidate[] {
+  const writingCandidates = getWritings(locale).map((writing) => ({
     type: "writing" as const,
     slug: writing.slug,
     title: writing.title,
     summary: writing.excerpt,
-    ctaUrl: absoluteUrl(`/writing/${writing.slug}`, DEFAULT_LOCALE),
+    ctaUrl: absoluteUrl(`/writing/${writing.slug}`, locale),
     publishedAt: writing.publishDate,
   }));
 
-  const projectCandidates = getProjects().map((project) => ({
+  const projectCandidates = getProjects(locale).map((project) => ({
     type: "project" as const,
     slug: project.slug,
     title: project.title,
     summary: extractExcerpt(project.content, 200),
-    ctaUrl: absoluteUrl(`/projects/${project.slug}`, DEFAULT_LOCALE),
+    ctaUrl: absoluteUrl(`/projects/${project.slug}`, locale),
     publishedAt: project.date,
   }));
 

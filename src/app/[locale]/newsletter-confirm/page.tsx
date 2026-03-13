@@ -23,8 +23,9 @@ function NewsletterConfirmContent() {
       email: searchParams?.get("email") ?? null,
       ts: searchParams?.get("ts") ?? null,
       sig: searchParams?.get("sig") ?? null,
+      locale,
     }),
-    [searchParams]
+    [locale, searchParams]
   );
 
   useEffect(() => {

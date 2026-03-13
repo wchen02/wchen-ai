@@ -22,9 +22,9 @@
 - Follow-up TODOs: none
 -->
 
-# wchen.ai Constitution
+# Site Constitution
 
-This document defines the permanent engineering principles of the `wchen.ai` project.
+This document defines the permanent engineering principles of this personal site/blog project.
 All specifications, plans, and implementations MUST comply.
 If a task conflicts with this constitution, the constitution overrides the task.
 

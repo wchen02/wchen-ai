@@ -1,5 +1,10 @@
 import { hmacSign, timingSafeEqual } from "../../shared/newsletter-crypto";
 import { updateResendContact } from "../../shared/resend";
+import {
+  DEFAULT_LOCALE,
+  getPreferredLocaleFromAcceptLanguage,
+  resolveLocale,
+} from "../../src/lib/locales";
 import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
@@ -7,9 +12,16 @@ interface Env {
   NEWSLETTER_SECRET?: string;
 }
 
-const systemContent = getSystemContent();
+function getLocaleFromRequest(request: Request): string {
+  const url = new URL(request.url);
+  const localeParam = url.searchParams.get("locale");
+  return localeParam
+    ? resolveLocale(localeParam)
+    : getPreferredLocaleFromAcceptLanguage(request.headers.get("Accept-Language"));
+}
 
-function htmlResponse(body: string, status = 400): Response {
+function htmlResponse(body: string, status = 400, locale?: string): Response {
+  const systemContent = getSystemContent(locale ?? DEFAULT_LOCALE);
   return new Response(
     `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${systemContent.common.newsletterHtmlTitle}</title></head><body style="font-family:system-ui,sans-serif;max-width:480px;margin:4rem auto;padding:0 1rem;"><p>${body}</p></body></html>`,
     { status, headers: { "Content-Type": "text/html;charset=utf-8" } }
@@ -20,25 +32,27 @@ async function unsubscribe(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const email = url.searchParams.get("email");
   const sig = url.searchParams.get("sig");
+  const preferredLocale = getLocaleFromRequest(request);
+  const systemContent = getSystemContent(preferredLocale);
 
   if (!email || !sig) {
     return request.method === "POST"
       ? new Response("", { status: 400 })
-      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink);
+      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink, 400, preferredLocale);
   }
 
   if (!env.NEWSLETTER_SECRET || !env.RESEND_API_KEY) {
     console.error("Newsletter unsubscribe not configured");
     return request.method === "POST"
       ? new Response("", { status: 500 })
-      : htmlResponse(systemContent.common.genericError, 500);
+      : htmlResponse(systemContent.common.genericError, 500, preferredLocale);
   }
 
   const expected = await hmacSign(env.NEWSLETTER_SECRET, email);
   if (!timingSafeEqual(sig, expected)) {
     return request.method === "POST"
       ? new Response("", { status: 400 })
-      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink);
+      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink, 400, preferredLocale);
   }
 
   await updateResendContact({
@@ -51,7 +65,8 @@ async function unsubscribe(request: Request, env: Env): Promise<Response> {
     return new Response("", { status: 202 });
   }
 
-  return Response.redirect(new URL("/newsletter-unsubscribed", request.url).toString(), 302);
+  const localizedPath = `/${preferredLocale}/newsletter-unsubscribed`;
+  return Response.redirect(new URL(localizedPath, request.url).toString(), 302);
 }
 
 export async function onRequestGet(context: EventContext<Env, string, unknown>) {
@@ -59,7 +74,8 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     return await unsubscribe(context.request, context.env);
   } catch (error) {
     console.error("Error unsubscribing newsletter contact:", error);
-    return htmlResponse(systemContent.common.genericError, 500);
+    const locale = getLocaleFromRequest(context.request);
+    return htmlResponse(getSystemContent(locale).common.genericError, 500, locale);
   }
 }
 

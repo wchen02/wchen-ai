@@ -1,11 +1,11 @@
 ---
 name: content-translation
-description: Translate shared wchen.ai writing and project MDX entries into every locale defined under `content/locales`. Use after creating or updating canonical entries in `content/writing` or `content/projects`, or when the user asks to translate a writing/project entry across site locales.
+description: Translate shared site writing and project MDX entries into every locale defined under `content/locales`. Use after creating or updating canonical entries in `content/writing` or `content/projects`, or when the user asks to translate a writing/project entry across site locales.
 ---
 
 # Content Translation
 
-Translate shared `wchen.ai` MDX content into every locale directory under `content/locales`.
+Translate shared site MDX content into every locale directory under `content/locales`.
 
 This skill is for MDX entries only:
 
@@ -47,7 +47,7 @@ Apply these rules throughout:
 - Translate frontmatter values only when they are human-facing text.
 - Preserve dates, booleans, arrays of machine-readable values, URLs, filenames, and slugs unless the source format clearly expects translated prose.
 - Preserve MDX structure, heading levels, code fences, JSX, links, and inline formatting.
-- Keep Wilson's voice and the original level of specificity.
+- Keep the author's voice and the original level of specificity.
 - Match the target language naturally instead of doing word-for-word substitution.
 
 ## Content-Type Notes

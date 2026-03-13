@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
 import { updateResendContact } from "../../../../shared/resend";
+import { resolveLocale } from "@/lib/locales";
 import { getSystemContent } from "@/lib/site-content";
-
-const systemContent = getSystemContent();
 
 async function unsubscribe(request: Request): Promise<
   | { success: true; redirectTo: string }
@@ -12,6 +11,8 @@ async function unsubscribe(request: Request): Promise<
   const url = new URL(request.url);
   const email = url.searchParams.get("email");
   const sig = url.searchParams.get("sig");
+  const preferredLocale = resolveLocale(url.searchParams.get("locale") ?? null);
+  const systemContent = getSystemContent(preferredLocale);
 
   if (!email || !sig) {
     return { success: false, error: systemContent.newsletter.invalidUnsubscribeLink, status: 400 };
@@ -34,7 +35,8 @@ async function unsubscribe(request: Request): Promise<
     unsubscribed: true,
   });
 
-  return { success: true, redirectTo: "/newsletter-unsubscribed" };
+  const redirectTo = `/${preferredLocale}/newsletter-unsubscribed`;
+  return { success: true, redirectTo };
 }
 
 export async function POST(request: Request) {
@@ -50,8 +52,10 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     console.error("Error unsubscribing newsletter contact locally:", error);
+    const url = new URL(request.url);
+    const locale = resolveLocale(url.searchParams.get("locale") ?? null);
     return NextResponse.json(
-      { success: false, error: systemContent.common.genericError },
+      { success: false, error: getSystemContent(locale).common.genericError },
       { status: 500 }
     );
   }

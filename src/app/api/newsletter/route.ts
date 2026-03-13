@@ -3,6 +3,8 @@ import { NewsletterPayloadSchema } from "../../../../shared/newsletter";
 import { hmacSign } from "../../../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../../../shared/newsletter-email";
 import { sendResendEmail } from "../../../../shared/resend";
+import { localizePath } from "@/lib/i18n";
+import { resolveLocale } from "@/lib/locales";
 import {
   SITE_URL,
   getAllowedOrigins,
@@ -13,7 +15,6 @@ import {
 import { getSystemContent } from "@/lib/site-content";
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
-const systemContent = getSystemContent();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
 
   if (!isAllowedOrigin(origin)) {
     return new Response(
-      JSON.stringify({ success: false, error: systemContent.common.forbidden }),
+      JSON.stringify({ success: false, error: getSystemContent().common.forbidden }),
       { status: 403, headers }
     );
   }
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
     if (!parsed.success) {
       const issues = parsed.error.issues;
       const honeyIssue = issues.find((issue) => issue.path.includes("_honey"));
+      const systemContent = getSystemContent();
       if (honeyIssue) {
         return NextResponse.json(
           { success: false, error: systemContent.common.invalidSubmission },
@@ -78,7 +80,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email } = parsed.data;
+    const { email, locale: payloadLocale } = parsed.data;
+    const locale = resolveLocale(payloadLocale);
+    const systemContent = getSystemContent(locale);
     const secret = process.env.NEWSLETTER_SECRET;
     const apiKey = process.env.RESEND_API_KEY;
 
@@ -100,11 +104,12 @@ export async function POST(request: Request) {
     const confirmPath =
       process.env.NODE_ENV === "production"
         ? "/api/newsletter-confirm"
-        : "/newsletter-confirm";
-    const confirmUrl = `${baseUrl}${confirmPath}?email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}`;
-    const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
-    const brand = getNewsletterEmailBrand(baseUrl);
-    const newsletterContent = getNewsletterEmailContent(baseUrl);
+        : localizePath(locale as import("@/lib/locales").SupportedLocale, "/newsletter-confirm");
+    const confirmQuery = `email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}${process.env.NODE_ENV === "production" ? `&locale=${locale}` : ""}`;
+    const confirmUrl = `${baseUrl}${confirmPath}?${confirmQuery}`;
+    const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM, locale);
+    const brand = getNewsletterEmailBrand(baseUrl, locale);
+    const newsletterContent = getNewsletterEmailContent(baseUrl, locale);
     const emailContent = await renderNewsletterConfirmEmail({
       brand,
       content: newsletterContent.confirm,
@@ -132,7 +137,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: systemContent.newsletter.subscribeFailure,
+        error: getSystemContent().newsletter.subscribeFailure,
       },
       { status: 500, headers }
     );

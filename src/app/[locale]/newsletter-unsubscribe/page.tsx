@@ -18,7 +18,11 @@ function NewsletterUnsubscribeContent() {
   const [status, setStatus] = useState<Status>("loading");
   const [message, setMessage] = useState(uiContent.newsletterFlow.unsubscribeLoadingMessage);
 
-  const queryString = useMemo(() => searchParams?.toString() ?? "", [searchParams]);
+  const queryString = useMemo(() => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    params.set("locale", locale);
+    return params.toString();
+  }, [locale, searchParams]);
 
   useEffect(() => {
     let cancelled = false;

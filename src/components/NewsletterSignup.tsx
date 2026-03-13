@@ -25,7 +25,7 @@ export default function NewsletterSignup() {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, locale }),
       });
 
       const contentType = response.headers.get("Content-Type") ?? "";
