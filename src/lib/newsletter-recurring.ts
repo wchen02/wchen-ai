@@ -4,7 +4,13 @@ import { z } from "zod";
 
 import { DEFAULT_LOCALE } from "./locales";
 import { absoluteUrl } from "./site-config";
-import { extractExcerpt, getProjects, getWritings } from "./mdx";
+import {
+  extractExcerpt,
+  getProjectContentVersion,
+  getProjects,
+  getWritingContentVersion,
+  getWritings,
+} from "./mdx";
 
 export type RecurringNewsletterItemType = "writing" | "project";
 
@@ -14,6 +20,7 @@ const NewsletterSendRecordSchema = z.object({
   slug: z.string().min(1),
   sentAt: z.string().datetime(),
   subject: z.string().min(1),
+  contentVersion: z.string().optional(),
 });
 
 const NewsletterSendStateSchema = z.object({
@@ -31,6 +38,7 @@ export interface RecurringNewsletterCandidate {
   summary: string;
   ctaUrl: string;
   publishedAt: string;
+  contentVersion: string;
 }
 
 export function getNewsletterStatePath(): string {
@@ -62,6 +70,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     summary: writing.excerpt,
     ctaUrl: absoluteUrl(`/writing/${writing.slug}`, locale),
     publishedAt: writing.publishDate,
+    contentVersion: getWritingContentVersion(writing.slug, locale),
   }));
 
   const projectCandidates = getProjects(locale).map((project) => ({
@@ -71,6 +80,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     summary: extractExcerpt(project.content, 200),
     ctaUrl: absoluteUrl(`/projects/${project.slug}`, locale),
     publishedAt: project.date,
+    contentVersion: getProjectContentVersion(project.slug, locale),
   }));
 
   return [...writingCandidates, ...projectCandidates].sort(compareRecurringCandidates);
@@ -94,10 +104,13 @@ export function compareRecurringCandidates(
 
 export function hasNewsletterBeenSent(
   state: NewsletterSendState,
-  candidate: Pick<RecurringNewsletterCandidate, "type" | "slug">
+  candidate: Pick<RecurringNewsletterCandidate, "type" | "slug" | "contentVersion">
 ): boolean {
   const records = candidate.type === "writing" ? state.writing : state.projects;
-  return records.some((record) => record.slug === candidate.slug);
+  const record = records.find((r) => r.slug === candidate.slug);
+  if (!record) return false;
+  if (record.contentVersion === undefined) return true;
+  return record.contentVersion === candidate.contentVersion;
 }
 
 export function selectNextRecurringNewsletterCandidate(
@@ -116,36 +129,29 @@ export function selectUnsentRecurringNewsletterCandidates(
 
 export function markRecurringNewsletterSent(
   state: NewsletterSendState,
-  candidate: Pick<RecurringNewsletterCandidate, "type" | "slug">,
+  candidate: Pick<RecurringNewsletterCandidate, "type" | "slug" | "contentVersion">,
   sentAt: string,
   subject: string
 ): NewsletterSendState {
-  if (hasNewsletterBeenSent(state, candidate)) {
-    return state;
-  }
-
   const record: NewsletterSendRecord = {
     slug: candidate.slug,
     sentAt,
     subject,
+    contentVersion: candidate.contentVersion,
   };
 
   if (candidate.type === "writing") {
-    return {
-      ...state,
-      writing: [...state.writing, record],
-    };
+    const filtered = state.writing.filter((r) => r.slug !== candidate.slug);
+    return { ...state, writing: [...filtered, record] };
   }
 
-  return {
-    ...state,
-    projects: [...state.projects, record],
-  };
+  const filtered = state.projects.filter((r) => r.slug !== candidate.slug);
+  return { ...state, projects: [...filtered, record] };
 }
 
 export function markRecurringNewsletterCandidatesSent(
   state: NewsletterSendState,
-  candidates: Array<Pick<RecurringNewsletterCandidate, "type" | "slug">>,
+  candidates: Array<Pick<RecurringNewsletterCandidate, "type" | "slug" | "contentVersion">>,
   sentAt: string,
   subject: string
 ): NewsletterSendState {

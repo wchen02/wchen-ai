@@ -13,7 +13,7 @@ The newsletter system is designed to behave like the rest of this template repo:
 Update these files first:
 
 - `content/locales/en/site/newsletter.json`: source of truth for confirmation, welcome, and recurring newsletter email copy
-- `content/site/newsletter-state.json`: tracks which writing and project slugs have already been sent as recurring emails
+- `content/site/newsletter-state.json`: tracks which writing and project slugs (and content versions) have already been sent as recurring emails; the script updates it so new items and updated items are included in the next digest
 - `content/locales/en/site/profile.json`: brand metadata such as site name, author name, base URL, locale values, and default from-address
 - `content/locales/<locale>/writing/*.mdx`: localized writing entries eligible for recurring sends, with fallback to `content/writing/*.mdx`
 - `content/locales/<locale>/projects/*.mdx`: localized project entries eligible for recurring sends, with fallback to `content/projects/*.mdx`
@@ -114,23 +114,25 @@ The script:
 
 1. loads `content/site/newsletter-state.json`
 2. loads published writings and projects from `content/locales/<locale>/` when available, with fallback to the legacy `content/` root
-3. selects all unsent items deterministically using oldest-unsent-first order
-4. renders one recurring digest email for the unsent writing/project items using `content/locales/en/site/newsletter.json`
-5. fetches confirmed subscribers from the configured Resend segment
-6. sends the email in batches
-7. updates `content/site/newsletter-state.json` for every included item only after the send succeeds
+3. computes a content version per item (writings: `updatedAt` from frontmatter when set, otherwise a hash of the file; projects: hash of the file)
+4. selects all unsent items: those never sent, or whose content version has changed since the last send (so updates are included)
+5. renders one recurring digest email for the unsent writing/project items using `content/locales/en/site/newsletter.json`
+6. fetches confirmed subscribers from the configured Resend segment
+7. sends the email in batches
+8. updates `content/site/newsletter-state.json` for every included item only after the send succeeds (one record per slug; re-sending an updated item replaces the record with the new version)
 
 Important behavior:
 
 - only non-draft writing entries are eligible
-- recurring sends bundle all currently unsent writings and projects into one mixed digest email
+- recurring sends bundle all currently unsent writings and projects (new or updated) into one mixed digest email
+- an item is considered sent only for the exact content version that was sent; if you edit a writing or project and deploy again, that updated version is eligible for the next digest
 - if there is no eligible content or no configured newsletter env, the script exits without changing state
 
 ## CI Behavior
 
 The GitHub Actions deploy workflow runs the recurring sender only on `main` and only when `RESEND_API_KEY` and `RESEND_SEGMENT_ID` are configured.
 
-After a successful send, CI writes the updated `content/site/newsletter-state.json` back to the repository so the same item is not sent again on the next build.
+After a successful send, CI writes the updated `content/site/newsletter-state.json` back to the repository so the same content version is not sent again; new items and updated items (changed since last send) are included in future digests.
 
 ## Local Testing
 

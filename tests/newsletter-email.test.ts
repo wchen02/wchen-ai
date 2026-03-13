@@ -206,6 +206,8 @@ describe("newsletter shared wiring", () => {
 });
 
 describe("recurring newsletter state", () => {
+  const v1 = "v1";
+  const v2 = "v2";
   const candidates: RecurringNewsletterCandidate[] = [
     {
       type: "project" as const,
@@ -214,6 +216,7 @@ describe("recurring newsletter state", () => {
       summary: "A static-first site.",
       ctaUrl: "https://wchen.ai/en/projects/personal-website",
       publishedAt: "2026-02-22T00:00:00Z",
+      contentVersion: v1,
     },
     {
       type: "writing" as const,
@@ -222,6 +225,7 @@ describe("recurring newsletter state", () => {
       summary: "Email on static sites is surprisingly awkward.",
       ctaUrl: "https://wchen.ai/en/writing/static-site-email",
       publishedAt: "2026-02-24T12:00:00Z",
+      contentVersion: v1,
     },
     {
       type: "writing" as const,
@@ -230,6 +234,7 @@ describe("recurring newsletter state", () => {
       summary: "Cloudflare fits the stack.",
       ctaUrl: "https://wchen.ai/en/writing/why-cloudflare",
       publishedAt: "2026-02-28T12:00:00Z",
+      contentVersion: v1,
     },
   ].sort(compareRecurringCandidates);
 
@@ -243,7 +248,7 @@ describe("recurring newsletter state", () => {
       .toEqual(["personal-website", "static-site-email", "why-cloudflare"]);
   });
 
-  it("skips sent items and preserves send records without duplicates", () => {
+  it("skips sent items when record has matching contentVersion", () => {
     const state: NewsletterSendState = {
       writing: [],
       projects: [
@@ -251,6 +256,7 @@ describe("recurring newsletter state", () => {
           slug: "personal-website",
           sentAt: "2026-03-01T00:00:00Z",
           subject: "New project: wchen.ai",
+          contentVersion: v1,
         },
       ],
     };
@@ -260,29 +266,88 @@ describe("recurring newsletter state", () => {
       "static-site-email",
       "why-cloudflare",
     ]);
+  });
 
+  it("includes item again when contentVersion differs from stored (update resend)", () => {
+    const state: NewsletterSendState = {
+      writing: [],
+      projects: [
+        {
+          slug: "personal-website",
+          sentAt: "2026-03-01T00:00:00Z",
+          subject: "New project: wchen.ai",
+          contentVersion: v1,
+        },
+      ],
+    };
+    const updatedCandidates: RecurringNewsletterCandidate[] = [
+      {
+        ...candidates[0],
+        contentVersion: v2,
+      },
+      candidates[1],
+      candidates[2],
+    ].sort(compareRecurringCandidates);
+    const unsent = selectUnsentRecurringNewsletterCandidates(updatedCandidates, state);
+    expect(unsent.map((c) => c.slug)).toContain("personal-website");
+    expect(unsent.map((c) => c.slug)).toContain("static-site-email");
+    expect(unsent.map((c) => c.slug)).toContain("why-cloudflare");
+  });
+
+  it("treats record without contentVersion as sent (backward compat)", () => {
+    const state: NewsletterSendState = {
+      writing: [
+        {
+          slug: "static-site-email",
+          sentAt: "2026-03-01T00:00:00Z",
+          subject: "New on Wilson Chen",
+        },
+      ],
+      projects: [],
+    };
+    const unsentCandidates = selectUnsentRecurringNewsletterCandidates(candidates, state);
+    expect(unsentCandidates.map((c) => c.slug)).not.toContain("static-site-email");
+    expect(unsentCandidates.map((c) => c.slug)).toEqual(["personal-website", "why-cloudflare"]);
+  });
+
+  it("upserts send records by slug and preserves contentVersion", () => {
+    const state: NewsletterSendState = {
+      writing: [],
+      projects: [
+        {
+          slug: "personal-website",
+          sentAt: "2026-03-01T00:00:00Z",
+          subject: "New project: wchen.ai",
+          contentVersion: v1,
+        },
+      ],
+    };
+    const toMark = [
+      { type: "writing" as const, slug: "static-site-email", contentVersion: v1 },
+      { type: "writing" as const, slug: "why-cloudflare", contentVersion: v1 },
+    ];
     const markedOnce = markRecurringNewsletterCandidatesSent(
       state,
-      [
-        { type: "writing", slug: "static-site-email" },
-        { type: "writing", slug: "why-cloudflare" },
-      ],
+      toMark,
       "2026-03-02T00:00:00Z",
       "New on Wilson Chen"
     );
+    expect(markedOnce.writing).toHaveLength(2);
+    expect(markedOnce.writing.every((r) => r.contentVersion === v1)).toBe(true);
+
     const markedTwice = markRecurringNewsletterCandidatesSent(
       markedOnce,
       [
-        { type: "writing", slug: "static-site-email" },
-        { type: "writing", slug: "why-cloudflare" },
+        { type: "writing", slug: "static-site-email", contentVersion: v2 },
+        { type: "writing", slug: "why-cloudflare", contentVersion: v1 },
       ],
       "2026-03-03T00:00:00Z",
       "New on Wilson Chen"
     );
-
-    expect(markedOnce.writing).toHaveLength(2);
     expect(markedTwice.writing).toHaveLength(2);
-    expect(markedTwice.writing.every((record) => record.subject === "New on Wilson Chen")).toBe(true);
+    const staticRecord = markedTwice.writing.find((r) => r.slug === "static-site-email");
+    expect(staticRecord?.contentVersion).toBe(v2);
+    expect(staticRecord?.sentAt).toBe("2026-03-03T00:00:00Z");
   });
 
   it("builds deterministic candidates from the content loaders", () => {

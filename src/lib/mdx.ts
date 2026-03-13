@@ -1,8 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from './schemas';
-import { DEFAULT_LOCALE } from './locales';
+import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from "./schemas";
+import { DEFAULT_LOCALE } from "./locales";
+
+function hashRawFileContent(raw: string): string {
+  return crypto.createHash("sha256").update(raw, "utf8").digest("hex").slice(0, 16);
+}
 
 export interface TOCItem {
   id: string;
@@ -228,4 +233,39 @@ export function getWritingBySlug(
   } catch {
     return null;
   }
+}
+
+export function getWritingContentVersion(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+  baseContentDir = CONTENT_DIR
+): string {
+  const writingDir = getWritingDir(locale, baseContentDir);
+  let rawContent: string;
+  try {
+    rawContent = getFileContent(writingDir, `${slug}.mdx`);
+  } catch {
+    rawContent = getFileContent(writingDir, `${slug}.md`);
+  }
+  const { data } = matter(rawContent);
+  const validated = WritingSchema.safeParse(data);
+  if (validated.success && validated.data.updatedAt) {
+    return validated.data.updatedAt;
+  }
+  return hashRawFileContent(rawContent);
+}
+
+export function getProjectContentVersion(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+  baseContentDir = CONTENT_DIR
+): string {
+  const projectsDir = getProjectsDir(locale, baseContentDir);
+  let rawContent: string;
+  try {
+    rawContent = getFileContent(projectsDir, `${slug}.mdx`);
+  } catch {
+    rawContent = getFileContent(projectsDir, `${slug}.md`);
+  }
+  return hashRawFileContent(rawContent);
 }
