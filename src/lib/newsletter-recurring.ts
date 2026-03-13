@@ -113,6 +113,15 @@ export function hasNewsletterBeenSent(
   return record.contentVersion === candidate.contentVersion;
 }
 
+/** True when a record already exists for this slug (so this send is an "update", not first-time). */
+export function isRecurringCandidateUpdate(
+  state: NewsletterSendState,
+  candidate: Pick<RecurringNewsletterCandidate, "type" | "slug">
+): boolean {
+  const records = candidate.type === "writing" ? state.writing : state.projects;
+  return records.some((r) => r.slug === candidate.slug);
+}
+
 export function selectNextRecurringNewsletterCandidate(
   candidates: RecurringNewsletterCandidate[],
   state: NewsletterSendState

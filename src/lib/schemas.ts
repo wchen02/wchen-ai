@@ -129,6 +129,8 @@ export const SiteProfileSchema = z.object({
     skipToContentLabel: z.string().min(1),
     rssLabel: z.string().min(1),
     mainAriaLabel: z.string().min(1),
+    menuOpenAriaLabel: z.string().min(1),
+    menuCloseAriaLabel: z.string().min(1),
   }),
   footer: z.object({
     rightsLabel: z.string().min(1),
@@ -195,6 +197,8 @@ export const NewsletterContentSourceSchema = z.object({
       preview: z.string().min(1),
       summary: z.string().min(1),
       itemsHeading: z.string().min(1).optional(),
+      newItemsHeading: z.string().min(1).optional(),
+      updatedItemsHeading: z.string().min(1).optional(),
       sections: z.array(NewsletterEmailSectionSchema).optional(),
       itemTypeLabels: z.object({
         writing: z.string().min(1),

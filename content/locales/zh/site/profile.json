@@ -50,7 +50,9 @@
     "contactLabel": "联系",
     "skipToContentLabel": "跳到正文",
     "rssLabel": "通过 RSS 订阅",
-    "mainAriaLabel": "主导航"
+    "mainAriaLabel": "主导航",
+    "menuOpenAriaLabel": "打开菜单",
+    "menuCloseAriaLabel": "关闭菜单"
   },
   "footer": {
     "rightsLabel": "版权所有。"

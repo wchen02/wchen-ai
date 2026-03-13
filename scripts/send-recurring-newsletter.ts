@@ -9,6 +9,7 @@ import {
 } from "../src/lib/site-config";
 import {
   getRecurringNewsletterCandidates,
+  isRecurringCandidateUpdate,
   loadNewsletterSendState,
   markRecurringNewsletterCandidatesSent,
   selectUnsentRecurringNewsletterCandidates,
@@ -103,6 +104,7 @@ async function main(): Promise<void> {
       ctaLabel: issueContent.itemActionLabels[candidate.type],
       ctaUrl: candidate.ctaUrl,
       typeLabel: issueContent.itemTypeLabels[candidate.type],
+      isUpdate: isRecurringCandidateUpdate(state, candidate),
     }));
     const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM, locale);
 

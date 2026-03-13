@@ -50,7 +50,9 @@
     "contactLabel": "Contact",
     "skipToContentLabel": "Skip to content",
     "rssLabel": "Subscribe via RSS",
-    "mainAriaLabel": "Main"
+    "mainAriaLabel": "Main",
+    "menuOpenAriaLabel": "Open menu",
+    "menuCloseAriaLabel": "Close menu"
   },
   "footer": {
     "rightsLabel": "All rights reserved."

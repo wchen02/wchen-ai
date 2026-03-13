@@ -218,6 +218,8 @@ export interface NewsletterIssueEntry {
   ctaLabel: string;
   ctaUrl: string;
   typeLabel?: string;
+  /** When true, this item is a content update (re-send); when false or unset, it is new. */
+  isUpdate?: boolean;
 }
 
 async function renderNewsletterTemplate(
@@ -313,7 +315,15 @@ export async function renderNewsletterWelcomeEmail(params: {
 export async function renderNewsletterIssueEmail(
   params: NewsletterIssueEmailInput
 ): Promise<RenderedNewsletterEmail> {
-  const itemsHeading = (params.content as NewsletterIssueContent & { itemsHeading?: string }).itemsHeading;
+  const contentWithHeadings = params.content as NewsletterIssueContent & {
+    itemsHeading?: string;
+    newItemsHeading?: string;
+    updatedItemsHeading?: string;
+  };
+  const newEntries = params.entries.filter((e) => !e.isUpdate);
+  const updatedEntries = params.entries.filter((e) => e.isUpdate);
+  const newHeading = contentWithHeadings.newItemsHeading ?? "New";
+  const updatedHeading = contentWithHeadings.updatedItemsHeading ?? "Updated";
 
   return renderNewsletterTemplate(
     <NewsletterEmailShell
@@ -337,25 +347,46 @@ export async function renderNewsletterIssueEmail(
       }
     >
       {params.entries.length > 0 ? (
-        <Section>
-          {itemsHeading ? (
-            <Heading as="h2" style={sectionHeadingStyle}>
-              {itemsHeading}
-            </Heading>
-          ) : null}
-          {params.entries.map((entry) => (
-            <Section key={`${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
-              <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
-              <Heading as="h3" style={issueTitleStyle}>
-                {entry.title}
+        <>
+          {newEntries.length > 0 ? (
+            <Section>
+              <Heading as="h2" style={sectionHeadingStyle}>
+                {newHeading}
               </Heading>
-              <Text style={paragraphStyle}>{entry.summary}</Text>
-              <Button href={entry.ctaUrl} style={secondaryButtonStyle}>
-                {entry.ctaLabel}
-              </Button>
+              {newEntries.map((entry) => (
+                <Section key={`new-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
+                  <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
+                  <Heading as="h3" style={issueTitleStyle}>
+                    {entry.title}
+                  </Heading>
+                  <Text style={paragraphStyle}>{entry.summary}</Text>
+                  <Button href={entry.ctaUrl} style={secondaryButtonStyle}>
+                    {entry.ctaLabel}
+                  </Button>
+                </Section>
+              ))}
             </Section>
-          ))}
-        </Section>
+          ) : null}
+          {updatedEntries.length > 0 ? (
+            <Section>
+              <Heading as="h2" style={sectionHeadingStyle}>
+                {updatedHeading}
+              </Heading>
+              {updatedEntries.map((entry) => (
+                <Section key={`updated-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
+                  <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
+                  <Heading as="h3" style={issueTitleStyle}>
+                    {entry.title}
+                  </Heading>
+                  <Text style={paragraphStyle}>{entry.summary}</Text>
+                  <Button href={entry.ctaUrl} style={secondaryButtonStyle}>
+                    {entry.ctaLabel}
+                  </Button>
+                </Section>
+              ))}
+            </Section>
+          ) : null}
+        </>
       ) : null}
     </NewsletterEmailShell>
   );

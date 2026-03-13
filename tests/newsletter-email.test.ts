@@ -104,11 +104,50 @@ describe("newsletter email templates", () => {
     expect(result.html).toContain("New on Wilson Chen");
     expect(result.html).toContain("Shipping before you&#x27;re ready");
     expect(result.html).toContain("wchen.ai");
-    expect(result.text).toContain((issueContent.itemsHeading ?? "").toUpperCase());
+    expect(result.text).toContain((issueContent.newItemsHeading ?? "New").toUpperCase());
     expect(result.text).toContain("Read the article");
     expect(result.text).toContain(issueContent.itemActionLabels.project);
     expect(result.text).toContain(resolvedContent.footer.projectsArchiveLabel ?? "");
     expect(result.text).toContain(resolvedContent.footer.unsubscribeLabel ?? "");
+  });
+
+  it("renders digest with separate New and Updated sections when entries have isUpdate", async () => {
+    const issueContent = getRecurringNewsletterEmailContent({
+      itemCount: 2,
+      siteUrl: "https://wchen.ai",
+    });
+    const result = await renderNewsletterIssueEmail({
+      brand,
+      content: issueContent,
+      footer: resolvedContent.footer,
+      subjectLine: issueContent.subject,
+      entries: [
+        {
+          type: "writing",
+          title: "New post",
+          summary: "A new article.",
+          ctaLabel: issueContent.itemActionLabels.writing,
+          ctaUrl: "https://wchen.ai/en/writing/new-post",
+          typeLabel: issueContent.itemTypeLabels.writing,
+          isUpdate: false,
+        },
+        {
+          type: "project",
+          title: "Updated project",
+          summary: "This project was updated.",
+          ctaLabel: issueContent.itemActionLabels.project,
+          ctaUrl: "https://wchen.ai/en/projects/updated-project",
+          typeLabel: issueContent.itemTypeLabels.project,
+          isUpdate: true,
+        },
+      ],
+      unsubscribeUrl: "https://wchen.ai/api/newsletter-unsubscribe?email=reader%40example.com&sig=abc",
+    });
+
+    expect(result.text).toContain("A new article.");
+    expect(result.text).toContain("This project was updated.");
+    expect(result.text).toContain((issueContent.newItemsHeading ?? "New").toUpperCase());
+    expect(result.text).toContain((issueContent.updatedItemsHeading ?? "Updated").toUpperCase());
   });
 
   it("builds a stable idempotency key per confirmation event", () => {

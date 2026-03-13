@@ -29,6 +29,8 @@ export interface RecurringNewsletterEntryTokens {
 export interface ResolvedRecurringNewsletterEmailContent extends NewsletterIssueContent {
   subject: string;
   itemsHeading?: string;
+  newItemsHeading?: string;
+  updatedItemsHeading?: string;
   itemTypeLabels: Record<RecurringNewsletterType, string>;
   itemActionLabels: Record<RecurringNewsletterType, string>;
 }
@@ -232,6 +234,12 @@ export function getRecurringNewsletterEmailContent(params: {
     sections: resolveNewsletterSections(template.sections, tokens),
     itemsHeading: template.itemsHeading
       ? resolveNewsletterTokens(template.itemsHeading, tokens)
+      : undefined,
+    newItemsHeading: template.newItemsHeading
+      ? resolveNewsletterTokens(template.newItemsHeading, tokens)
+      : undefined,
+    updatedItemsHeading: template.updatedItemsHeading
+      ? resolveNewsletterTokens(template.updatedItemsHeading, tokens)
       : undefined,
     itemTypeLabels: {
       writing: resolveNewsletterTokens(template.itemTypeLabels.writing, tokens),

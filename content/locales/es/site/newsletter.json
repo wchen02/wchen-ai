@@ -48,6 +48,8 @@
       "preview": "Hay nuevos escritos y proyectos publicados en {siteName}.",
       "summary": "Ultimamente publique algunas cosas nuevas. Aqui tienes un resumen rapido de los ultimos escritos y proyectos.",
       "itemsHeading": "Ultimas actualizaciones",
+      "newItemsHeading": "Nuevo",
+      "updatedItemsHeading": "Actualizado",
       "itemTypeLabels": {
         "writing": "Writing",
         "project": "Proyecto"

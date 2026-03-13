@@ -48,6 +48,8 @@
       "preview": "{siteName} 上有新的写作和项目更新。",
       "summary": "最近上线了一些新内容。这里是最新写作与项目的简短摘要。",
       "itemsHeading": "最新更新",
+      "newItemsHeading": "新内容",
+      "updatedItemsHeading": "已更新",
       "itemTypeLabels": {
         "writing": "写作",
         "project": "项目"

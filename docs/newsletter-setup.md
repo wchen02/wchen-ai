@@ -124,7 +124,7 @@ The script:
 Important behavior:
 
 - only non-draft writing entries are eligible
-- recurring sends bundle all currently unsent writings and projects (new or updated) into one mixed digest email
+- recurring sends bundle all currently unsent writings and projects (new or updated) into one digest email, with **separate sections** for new items and updated items so readers can tell them apart (headings come from `newItemsHeading` and `updatedItemsHeading` in each locale's `newsletter.json`)
 - an item is considered sent only for the exact content version that was sent; if you edit a writing or project and deploy again, that updated version is eligible for the next digest
 - if there is no eligible content or no configured newsletter env, the script exits without changing state
 

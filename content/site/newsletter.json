@@ -48,6 +48,8 @@
       "preview": "Fresh writing and project updates are live on {siteName}.",
       "summary": "A few new things went live recently. Here's a quick digest of the latest writing and projects.",
       "itemsHeading": "Latest updates",
+      "newItemsHeading": "New",
+      "updatedItemsHeading": "Updated",
       "itemTypeLabels": {
         "writing": "Writing",
         "project": "Project"

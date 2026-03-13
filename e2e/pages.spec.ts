@@ -337,6 +337,26 @@ test.describe("Metadata and document", () => {
   }
 });
 
+test.describe("Mobile navigation", () => {
+  test("menu button opens drawer with nav links and contact", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/en");
+
+    const profile = profileEn;
+
+    const menuButton = page.getByRole("button", { name: profile.navigation.menuOpenAriaLabel });
+    await expect(menuButton).toBeVisible();
+    await menuButton.click();
+
+    const drawer = page.locator("#site-header-menu-panel");
+    await expect(drawer).toBeVisible();
+    await expect(drawer.getByRole("link", { name: profile.navigation.projectsLabel })).toBeVisible();
+    await expect(drawer.getByRole("link", { name: profile.navigation.writingLabel })).toBeVisible();
+    await expect(drawer.getByRole("link", { name: profile.navigation.aboutLabel })).toBeVisible();
+    await expect(drawer.getByRole("link", { name: profile.navigation.contactLabel })).toBeVisible();
+  });
+});
+
 test.describe("Theme toggle and comment color theme", () => {
   test("theme toggle adds and removes dark class on document", async ({ page }) => {
     await page.goto("/en");

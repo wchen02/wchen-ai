@@ -8,9 +8,11 @@ import { localizePath } from "@/lib/i18n";
 export default function NavLink({
   href,
   children,
+  onClick,
 }: {
   href: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }) {
   const locale = useCurrentLocale();
   const pathname = usePathname() ?? "";
@@ -28,6 +30,7 @@ export default function NavLink({
           ? "text-emerald-600 dark:text-emerald-400 font-semibold link-nav"
           : "link-nav"
       }
+      onClick={onClick}
     >
       {children}
     </Link>
