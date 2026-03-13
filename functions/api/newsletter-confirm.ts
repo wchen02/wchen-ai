@@ -78,7 +78,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ email, segments: [segmentId] }),
+      body: JSON.stringify({ email, segments: [{ id: segmentId }] }),
     });
 
     if (!contactRes.ok) {

@@ -9,7 +9,7 @@ export interface SocialLink {
 export const SOCIAL_LINKS: SocialLink[] = [
   { platform: "x", url: "https://x.com/wchen_ai", label: "X (Twitter)" },
   { platform: "linkedin", url: "https://www.linkedin.com/in/wchen02/", label: "LinkedIn" },
-  { platform: "github", url: "https://github.com/wenshengchen", label: "GitHub" },
+  { platform: "github", url: "https://github.com/wchen02", label: "GitHub" },
 ];
 
 export const SITE_URL = "https://wchen.ai";
