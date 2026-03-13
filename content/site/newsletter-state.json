@@ -1,10 +1,66 @@
 {
-  "writing": [],
+  "writing": [
+    {
+      "slug": "static-first",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "why-cloudflare",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "teaching-agents-your-voice",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "vibe-coding-in-a-day",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "spec-kit-lessons",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "ditching-netlify",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "static-site-email",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "choosing-marketing-email-providers",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    }
+  ],
   "projects": [
     {
       "slug": "super-mario-replica",
       "sentAt": "2026-03-13T03:50:38.691Z",
       "subject": "New project: Super Mario Replica"
+    },
+    {
+      "slug": "personal-website",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "website-content-skill",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "env-from-example",
+      "sentAt": "2026-03-13T04:06:53.139Z",
+      "subject": "New on Wilson Chen"
     }
   ]
 }
