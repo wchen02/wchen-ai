@@ -122,7 +122,7 @@ export default async function LocalizedWritingPage({
   const discussionTerm = `Writing: ${writing.title} (${resolvedLocale})`;
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12 md:py-24">
+    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}

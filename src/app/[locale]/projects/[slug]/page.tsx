@@ -103,7 +103,7 @@ export default async function LocalizedProjectPage({
   const discussionTerm = `Project: ${project.title} (${resolvedLocale})`;
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12 md:py-24">
+    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24">
       <ArticleWithTOC
         locale={resolvedLocale}
         backLink={

@@ -27,31 +27,26 @@ export default function ArticleWithTOC({
     <>
       <div className="mb-8">{backLink}</div>
 
-      <div
-        className={
-          showToc ? "md:grid md:grid-cols-[1fr_200px] md:gap-10 lg:gap-12" : ""
-        }
-      >
-        <article className="min-w-0 space-y-12">
-          {header}
-
-          {showToc && (
-            <div className="md:hidden py-3 -mx-6 px-6 bg-background border-b border-gray-200 dark:border-gray-800">
-              <TableOfContents headings={tocHeadings} locale={locale} />
-            </div>
-          )}
-
-          {children}
-        </article>
+      <article className="min-w-0 space-y-12">
+        {header}
 
         {showToc && (
-          <aside className="hidden md:block" aria-label={uiContent.tableOfContents.ariaLabel}>
-            <div className="sticky top-24">
-              <TableOfContents headings={tocHeadings} locale={locale} />
-            </div>
-          </aside>
+          <div className="xl:hidden py-3 -mx-6 px-6 bg-background border-b border-gray-200 dark:border-gray-800">
+            <TableOfContents headings={tocHeadings} locale={locale} />
+          </div>
         )}
-      </div>
+
+        {children}
+      </article>
+
+      {showToc && (
+        <aside
+          className="hidden xl:block xl:fixed xl:top-24 xl:left-[calc(50%+25rem)] xl:w-48"
+          aria-label={uiContent.tableOfContents.ariaLabel}
+        >
+          <TableOfContents headings={tocHeadings} locale={locale} />
+        </aside>
+      )}
 
       {footer}
     </>
