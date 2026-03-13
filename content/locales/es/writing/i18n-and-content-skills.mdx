@@ -1,0 +1,38 @@
+---
+title: "Cómo funciona la i18n de este sitio (y cómo dos skills de agente la mantienen al día)"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["i18n", "nextjs", "skills", "content", "agents"]
+featured: false
+draft: false
+---
+
+Me preguntan cómo wchen.ai maneja varios idiomas y cómo mantengo inglés, español y chino alineados sin ahogarme en copiar y pegar. La respuesta corta: el sitio se apoya en un modelo de contenido claro, y dos skills de agente — website-content y content-translation — codifican dónde vive todo y cómo propagarlo. La arquitectura hace el trabajo pesado; las skills se encargan de que el contenido y las traducciones caigan siempre en el sitio correcto.
+
+## Cómo está construida la i18n
+
+El sitio usa un modelo de locale en la URL. Cada página que debe localizarse vive bajo `/[locale]/...` — por ejemplo `/en/about`, `/es/writing`, `/zh/projects`. Las rutas raíz (`/`, `/about`, `/writing`) son shells de redirección: al entrar en `/`, la app resuelve tu locale desde una cookie persistida o desde la cabecera `Accept-Language` y te redirige a `/en`, `/es` o `/zh`. Una vez en un locale, el layout y todos los enlaces se quedan en ese locale. Sin query params ocultos ni dominios separados. Una sola forma de URL, un solo lugar donde mirar.
+
+El contenido se divide en dos bloques. El primero es JSON por locale: copy del sitio, etiquetas de navegación, placeholders de formularios, copy de emails del newsletter y mensajes de sistema. Eso vive en `content/locales/<locale>/site/*.json`. En build importamos y validamos con Zod; la app llama a `getLocaleContent(locale)` y obtiene un único bundle para ese locale. Sin carga en runtime, sin claves faltantes. Si un JSON es inválido, el build falla. Así el contrato queda estricto y la UI predecible.
+
+El segundo bloque es MDX: entradas de writing y de projects. Ahí usamos un directorio locale-first con fallback compartido. Para un locale dado, el loader mira en `content/locales/<locale>/writing` y `content/locales/<locale>/projects`. Si ese directorio existe, usamos solo los archivos que haya. Si no (o para el locale por defecto, según cómo semilles el contenido), hacemos fallback a los directorios compartidos `content/writing` y `content/projects`. Así la fuente canónica de un nuevo ensayo puede vivir una vez en `content/writing`; las versiones traducidas se crean como archivos hermanos bajo `content/locales/es/writing` y `content/locales/zh/writing`. El build no mezcla archivos por slug; elige un directorio por locale y lista los MDX que haya. El modelo sigue siendo simple: o tienes un conjunto locale-específico de artículos y proyectos o usas el conjunto compartido.
+
+Enrutado, enlaces y metadatos pasan por helpers pequeños. Los paths se prefijan con el locale actual al renderizar enlaces; el sitemap y los generadores RSS se ejecutan por locale; el índice de búsqueda se construye una vez por locale. Toda la tubería — desde el contenido en disco hasta los estáticos que desplegamos — es locale-aware por defecto.
+
+## Qué hace la skill website-content
+
+La skill website-content es el único lugar al que yo (y cualquier agente) miro al crear o editar copy del sitio y MDX. Define dónde va el copy de la homepage (JSON por locale, no TSX), dónde va el copy de la página about y dónde viven las entradas de writing y projects. Asocia cada tipo de contenido a un schema y a una guía de voz para que páginas y ensayos nuevos no se desvíen en estructura ni tono. También define el handoff: cuando una entrada *compartida* de writing o project en `content/writing` o `content/projects` está terminada, la skill indica ejecutar la skill content-translation a continuación. Ese handoff es el puente entre «una pieza canónica» y «la misma pieza en cada locale».
+
+Sin esa skill, estaría comprobando todo el rato si la página about vive en un componente o en JSON, si el próximo ensayo va en `content/writing` o bajo un locale, y qué frontmatter o forma de JSON hace falta. Con ella, el agente tiene un único conjunto de instrucciones alineado con el codebase: colocación de archivos, schema, voz y cuándo disparar la traducción.
+
+## Qué hace la skill content-translation
+
+La skill content-translation solo se ejecuta para MDX compartidos — archivos en `content/writing` y `content/projects`. Descubre los locales objetivo listando `content/locales` y, para cada locale distinto del origen, escribe o actualiza un archivo traducido en `content/locales/<locale>/writing/<slug>.mdx` o `content/locales/<locale>/projects/<slug>.mdx`. Mantiene claves y estructura del frontmatter, traduce los valores orientados a personas (títulos, cuerpo, motivation, problemAddressed, learnings) y deja slugs, URLs, fechas y bloques de código sin tocar. Las reglas de traducción viven en la skill y en un pequeño doc translation-rules: preservar voz, preservar estructura, sin afirmaciones ni secciones nuevas.
+
+Así que el flujo es: yo (o el agente) termino un ensayo nuevo en `content/writing/foo.mdx`. La skill website-content dice «ahora ejecuta content-translation». La skill content-translation lee el archivo, encuentra los locales `en`, `es`, `zh`, y escribe `content/locales/es/writing/foo.mdx` y `content/locales/zh/writing/foo.mdx`. El siguiente build los recoge para los sitios en español y chino; inglés puede seguir usando el archivo compartido o una copia en `content/locales/en/writing`, según cómo esté montado el repo. En cualquier caso: una fuente de verdad, un handoff, y cada locale tiene su versión.
+
+## Por qué esta combinación funciona
+
+El diseño de i18n cumple una promesa simple: el locale es explícito en la URL y en el árbol de contenido, y el build es determinista por locale. La skill website-content cumple una segunda: cada tipo de contenido tiene un lugar correcto y un conjunto de reglas, y cuando terminas una entrada compartida, pasas el testigo a la traducción. La skill content-translation cumple una tercera: no traducimos al tun tun ni en la dirección equivocada; solo traducimos desde los archivos compartidos canónicos a cada directorio de locale, con reglas coherentes.
+
+Juntas eliminan las conjeturas. No tengo que recordar que el copy de la página about está en JSON bajo `content/locales/<locale>/site/about.json`. No tengo que recordar crear tres archivos a mano al publicar un ensayo. La arquitectura codifica el modelo; las skills codifican el flujo. Así es como la i18n y el contenido se mantienen alineados sin el caos — y cómo dos archivos de skill pequeños hacen gran parte del trabajo que de otro modo sería manual y propenso a errores.

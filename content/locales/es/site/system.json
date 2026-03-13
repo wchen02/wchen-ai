@@ -1,0 +1,26 @@
+{
+  "common": {
+    "forbidden": "Prohibido",
+    "invalidSubmission": "Envio invalido",
+    "validationFailed": "La validacion fallo",
+    "genericError": "Algo salio mal. Intentalo de nuevo mas tarde.",
+    "newsletterHtmlTitle": "Newsletter"
+  },
+  "validation": {
+    "nameRequired": "El nombre es obligatorio",
+    "invalidEmail": "Correo electronico invalido",
+    "messageTooShort": "El mensaje debe tener al menos 10 caracteres"
+  },
+  "contact": {
+    "successMessage": "Gracias por escribir. Te respondere pronto.",
+    "developmentMessage": "Modo desarrollo: mensaje recibido pero no enviado.",
+    "sendFailure": "No se pudo enviar el mensaje. Intentalo de nuevo mas tarde."
+  },
+  "newsletter": {
+    "subscribeSuccess": "Revisa tu correo para confirmar tu suscripcion.",
+    "subscribeFailure": "No se pudo procesar la suscripcion. Intentalo de nuevo mas tarde.",
+    "invalidConfirmationLink": "Enlace de confirmacion invalido. Vuelve a suscribirte.",
+    "expiredConfirmationLink": "Este enlace de confirmacion ha expirado. Vuelve a suscribirte.",
+    "invalidUnsubscribeLink": "Enlace de baja invalido."
+  }
+}

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 
+import { DEFAULT_LOCALE } from "./locales";
 import { absoluteUrl } from "./site-config";
 import { extractExcerpt, getProjects, getWritings } from "./mdx";
 
@@ -59,7 +60,7 @@ export function getRecurringNewsletterCandidates(): RecurringNewsletterCandidate
     slug: writing.slug,
     title: writing.title,
     summary: writing.excerpt,
-    ctaUrl: absoluteUrl(`/writing/${writing.slug}`),
+    ctaUrl: absoluteUrl(`/writing/${writing.slug}`, DEFAULT_LOCALE),
     publishedAt: writing.publishDate,
   }));
 
@@ -68,7 +69,7 @@ export function getRecurringNewsletterCandidates(): RecurringNewsletterCandidate
     slug: project.slug,
     title: project.title,
     summary: extractExcerpt(project.content, 200),
-    ctaUrl: absoluteUrl(`/projects/${project.slug}`),
+    ctaUrl: absoluteUrl(`/projects/${project.slug}`, DEFAULT_LOCALE),
     publishedAt: project.date,
   }));
 

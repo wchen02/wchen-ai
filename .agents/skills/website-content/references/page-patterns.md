@@ -2,6 +2,8 @@
 
 Layout and component patterns for each page of wchen.ai.
 
+Active page implementations now live under `src/app/[locale]/...`. The non-localized routes in `src/app/...` are redirect shells and should not be treated as the source of page copy.
+
 ## Global Patterns
 
 - **Max width**: `max-w-3xl` (all pages)
@@ -14,7 +16,7 @@ Layout and component patterns for each page of wchen.ai.
 
 ---
 
-## Homepage (`src/app/page.tsx`)
+## Homepage (`src/app/[locale]/page.tsx`)
 
 ### Section order (priority-driven)
 1. **Hero** — Name, "Founder & Builder", current exploration statement, link to about
@@ -27,8 +29,12 @@ Layout and component patterns for each page of wchen.ai.
 ### Hero copy structure
 - H1: "Wilson Chen"
 - Subtitle: "Founder & Builder"
-- Two short paragraphs: (1) what he's exploring, (2) primary focus area
+- Intro snippet plus two short paragraphs: (1) what he's exploring, (2) primary focus area
 - Link: "More about me & my philosophy →"
+
+### Content source
+- `content/locales/<locale>/site/home.json` for hero and section copy
+- `content/locales/<locale>/site/profile.json` for site name, role, and contact block copy
 
 ### Current Focus copy structure
 - Two paragraphs max
@@ -37,7 +43,7 @@ Layout and component patterns for each page of wchen.ai.
 
 ---
 
-## About Page (`src/app/about/page.tsx`)
+## About Page (`src/app/[locale]/about/page.tsx`)
 
 ### Section order
 1. **Header** — "About" + intro paragraph
@@ -46,6 +52,10 @@ Layout and component patterns for each page of wchen.ai.
 4. **Background** — 3 paragraphs on career arc
 5. **Principles I Build By** — 3 items with principle + detail
 6. **ReachOutCTA**
+
+### Content source
+- `content/locales/<locale>/site/about.json` for all about-page prose
+- `content/locales/<locale>/site/profile.json` for shared CTA/contact language used by `ReachOutCTA`
 
 ### Interest card structure
 Each card: `p-5 rounded-xl bg-gray-50 dark:bg-neutral-900 border`
@@ -59,15 +69,16 @@ Each item: emerald dot + bold principle + supporting detail
 
 ---
 
-## Writing Index (`src/app/writing/page.tsx`)
+## Writing Index (`src/app/[locale]/writing/page.tsx`)
 
 - Groups entries by theme
 - Theme headers as navigation anchors
 - WritingCard: title, date, reading time, theme badge, featured styling
+- Data source: locale-specific writing entries first, then fallback shared entries
 
 ---
 
-## Writing Detail (`src/app/writing/[slug]/page.tsx`)
+## Writing Detail (`src/app/[locale]/writing/[slug]/page.tsx`)
 
 1. Back link: "← Back to all writing"
 2. Header: title, date, reading time, theme, tags
@@ -76,14 +87,15 @@ Each item: emerald dot + bold principle + supporting detail
 
 ---
 
-## Projects Index (`src/app/projects/page.tsx`)
+## Projects Index (`src/app/[locale]/projects/page.tsx`)
 
 - ProjectCard list
 - Cards include: title, date, status, type badges, motivation excerpt, links
+- Data source: locale-specific project entries first, then fallback shared entries
 
 ---
 
-## Project Detail (`src/app/projects/[slug]/page.tsx`)
+## Project Detail (`src/app/[locale]/projects/[slug]/page.tsx`)
 
 1. Back link: "← Back to all projects"
 2. Header: title, date, type badges, links
@@ -101,4 +113,4 @@ Each item: emerald dot + bold principle + supporting detail
 Placed at the bottom of About, Writing detail, and Project detail pages.
 - Heading: "Interested in discussing this further?"
 - Body: "I'm always open to connecting with fellow builders and founders."
-- Button: "Start a conversation" → links to `/#contact`
+- Button: "Start a conversation" -> links to the localized home page contact anchor, for example `/en/#contact`

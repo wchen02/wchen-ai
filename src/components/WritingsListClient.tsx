@@ -1,6 +1,7 @@
 "use client";
 
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import { useCurrentLocale } from "@/components/LocaleProvider";
 import type { Writing } from "@/lib/schemas";
 import WritingCard from "@/components/WritingCard";
 
@@ -11,13 +12,14 @@ interface WritingsListClientProps {
 }
 
 export default function WritingsListClient({ writings }: WritingsListClientProps) {
+  const locale = useCurrentLocale();
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
     return (
       <div className="grid gap-6">
         {writings.map((writing) => (
-          <WritingCard key={writing.slug} writing={writing} />
+          <WritingCard key={writing.slug} writing={writing} locale={locale} />
         ))}
       </div>
     );
@@ -36,7 +38,7 @@ export default function WritingsListClient({ writings }: WritingsListClientProps
             whileHover={{ y: -2 }}
             className="transition-[box-shadow] duration-200 hover:shadow-[0_4px_14px_-4px_rgba(16,185,129,0.2)] dark:hover:shadow-[0_4px_14px_-4px_rgba(16,185,129,0.15)]"
           >
-            <WritingCard writing={writing} />
+            <WritingCard writing={writing} locale={locale} />
           </m.div>
         ))}
       </div>

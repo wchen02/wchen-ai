@@ -1,8 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useCurrentLocale } from "@/components/LocaleProvider";
+import { getFormsContent } from "@/lib/site-content";
 
 export default function ContactForm() {
+  const locale = useCurrentLocale();
+  const formsContent = getFormsContent(locale);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,18 +33,18 @@ export default function ContactForm() {
       const text = await response.text();
       const result = isJson
         ? (JSON.parse(text) as { error?: string })
-        : { error: "Server returned an invalid response. Please try again." };
+        : { error: formsContent.common.invalidResponseError };
 
       if (!response.ok) {
-        throw new Error(result?.error || "Failed to submit form");
+        throw new Error(result?.error || formsContent.contact.submitErrorFallback);
       }
 
       formRef.current?.reset();
       setStatus("success");
-      } catch (error: unknown) {
+    } catch (error: unknown) {
       console.error(error);
       setStatus("error");
-      const errMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+      const errMessage = error instanceof Error ? error.message : formsContent.common.unexpectedError;
       setErrorMessage(errMessage);
     }
   };
@@ -48,14 +52,14 @@ export default function ContactForm() {
   if (status === "success") {
     return (
       <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
-        <p className="font-medium">Message sent successfully!</p>
-        <p className="text-sm mt-1">Thanks for reaching out. I&apos;ll get back to you soon.</p>
+        <p className="font-medium">{formsContent.contact.successTitle}</p>
+        <p className="text-sm mt-1">{formsContent.contact.successDescription}</p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
           className="mt-4 text-sm underline hover:no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
         >
-          Send another message
+          {formsContent.contact.resetLabel}
         </button>
       </div>
     );
@@ -65,14 +69,14 @@ export default function ContactForm() {
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       {/* Honeypot field - visually hidden, explicitly removed from screen readers if possible, but kept accessible to bots */}
       <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
-        <label htmlFor="_honey">Ignore this field</label>
+        <label htmlFor="_honey">{formsContent.common.honeypotLabel}</label>
         <input type="text" id="_honey" name="_honey" tabIndex={-1} autoComplete="off" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
           <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Name
+            {formsContent.contact.fields.name.label}
           </label>
           <input
             type="text"
@@ -81,13 +85,13 @@ export default function ContactForm() {
             autoComplete="name"
             required
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-            placeholder="Jane Founder"
+            placeholder={formsContent.contact.fields.name.placeholder}
             disabled={status === "loading"}
           />
         </div>
         <div className="space-y-1">
           <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email
+            {formsContent.contact.fields.email.label}
           </label>
           <input
             type="email"
@@ -96,7 +100,7 @@ export default function ContactForm() {
             autoComplete="email"
             required
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-            placeholder="jane@example.com"
+            placeholder={formsContent.contact.fields.email.placeholder}
             disabled={status === "loading"}
           />
         </div>
@@ -104,7 +108,7 @@ export default function ContactForm() {
 
       <div className="space-y-1">
         <label htmlFor="message" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Message
+          {formsContent.contact.fields.message.label}
         </label>
         <textarea
           id="message"
@@ -114,7 +118,7 @@ export default function ContactForm() {
           minLength={10}
           rows={4}
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 resize-y"
-          placeholder="I&apos;d love to collaborate on..."
+          placeholder={formsContent.contact.fields.message.placeholder}
           disabled={status === "loading"}
         />
       </div>
@@ -130,7 +134,7 @@ export default function ContactForm() {
         disabled={status === "loading"}
         className="btn-primary w-full md:w-auto px-6"
       >
-        {status === "loading" ? "Sending..." : "Send Message"}
+        {status === "loading" ? formsContent.contact.submittingLabel : formsContent.contact.submitLabel}
       </button>
     </form>
   );

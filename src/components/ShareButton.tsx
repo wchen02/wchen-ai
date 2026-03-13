@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useCurrentLocale } from "@/components/LocaleProvider";
+import { getUiContent } from "@/lib/site-content";
 
 export default function ShareButton({ url, title }: { url: string; title: string }) {
+  const locale = useCurrentLocale();
+  const uiContent = getUiContent(locale);
   const [copied, setCopied] = useState(false);
 
   async function handleShare() {
@@ -28,7 +32,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
     <button
       onClick={handleShare}
       type="button"
-      aria-label="Share or copy link"
+      aria-label={uiContent.shareButton.ariaLabel}
       className="relative inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -36,7 +40,7 @@ export default function ShareButton({ url, title }: { url: string; title: string
         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
       </svg>
       <span className={`transition-opacity duration-200 ${copied ? "opacity-100" : "opacity-0"} absolute -top-7 left-1/2 -translate-x-1/2 text-xs bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-2 py-1 rounded whitespace-nowrap`}>
-        Copied!
+        {uiContent.shareButton.copiedLabel}
       </span>
     </button>
   );

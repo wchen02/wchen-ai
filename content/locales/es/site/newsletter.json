@@ -1,0 +1,69 @@
+{
+  "confirm": {
+    "subject": "Confirma tu suscripcion a los escritos de {siteName}",
+    "preview": "Confirma tu suscripcion al newsletter.",
+    "title": "Confirma tu suscripcion",
+    "intro": [
+      "Gracias por suscribirte a los escritos de {authorName}.",
+      "Confirma tu correo electronico para empezar a recibir notas ocasionales cuando publique algo nuevo."
+    ],
+    "primaryActionLabel": "Confirmar suscripcion",
+    "secondaryActionPrefix": "O copia y pega este enlace en tu navegador:",
+    "sections": [
+      {
+        "heading": "Que puedes esperar",
+        "paragraphs": [
+          "{newsletterDescription}",
+          "Este enlace de confirmacion expira en 24 horas. Si no lo pediste, puedes ignorar este correo sin problema."
+        ]
+      }
+    ]
+  },
+  "welcome": {
+    "subject": "Ya estas suscrito a los escritos de {siteName}",
+    "preview": "Ya estas suscrito a los escritos de {siteName}.",
+    "title": "Ya estas suscrito",
+    "intro": [
+      "Todo listo. {authorName} te enviara actualizaciones ocasionales cuando publique algo nuevo.",
+      "Espera notas cuidadosas sobre software, herramientas para developers y lo que hace falta para convertir ideas en productos."
+    ],
+    "primaryActionLabel": "Leer lo ultimo",
+    "secondaryActionLabel": "Explorar el sitio",
+    "sections": [
+      {
+        "heading": "Una nota rapida",
+        "paragraphs": [
+          "Nada de spam, nada de secuencias pesadas y nada de presion para seguir suscrito si deja de ser util."
+        ]
+      }
+    ]
+  },
+  "issueDefaults": {
+    "preview": "Hay una nueva actualizacion.",
+    "primaryActionLabel": "Leer la actualizacion"
+  },
+  "recurring": {
+    "digest": {
+      "subject": "Novedades en {siteName}",
+      "preview": "Hay nuevos escritos y proyectos publicados en {siteName}.",
+      "summary": "Ultimamente publique algunas cosas nuevas. Aqui tienes un resumen rapido de los ultimos escritos y proyectos.",
+      "itemsHeading": "Ultimas actualizaciones",
+      "itemTypeLabels": {
+        "writing": "Writing",
+        "project": "Proyecto"
+      },
+      "itemActionLabels": {
+        "writing": "Leer el articulo",
+        "project": "Ver el proyecto"
+      },
+      "footerNote": "{newsletterDescription}"
+    }
+  },
+  "footer": {
+    "note": "{newsletterDescription}",
+    "writingArchiveLabel": "Leer el archivo de escritos",
+    "projectsArchiveLabel": "Ver el archivo de proyectos",
+    "homeLabel": "Visitar el sitio",
+    "unsubscribeLabel": "Darse de baja"
+  }
+}

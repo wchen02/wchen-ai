@@ -54,21 +54,26 @@ Use the dedicated guides for full provider setup and production environment conf
 
 Most rebranding and site copy updates happen here:
 
-- `content/site/profile.json` for site identity, social links, metadata defaults, contact/newsletter copy, and shared UI labels
-- `content/site/home.json` for homepage hero and section copy
-- `content/site/about.json` for about-page narrative and principles
-- `content/site/newsletter.json` for newsletter email copy
+- `content/locales/en/site/profile.json` for site identity, social links, metadata defaults, and locale settings
+- `content/locales/en/site/home.json` for homepage hero and section copy
+- `content/locales/en/site/about.json` for about-page narrative and principles
+- `content/locales/en/site/newsletter.json` for newsletter email copy
+- `content/locales/en/site/ui.json` for reusable UI labels, metadata fragments, empty states, and theme descriptors
+- `content/locales/en/site/forms.json` for form labels, placeholders, and button copy
+- `content/locales/en/site/system.json` for validation, API, and status messages
 - `content/site/newsletter-state.json` for recurring-send history
-- `content/projects/*.mdx` for projects
-- `content/writing/*.mdx` for writing
+- `content/locales/<locale>/projects/*.mdx` for localized projects, with fallback to `content/projects/*.mdx`
+- `content/locales/<locale>/writing/*.mdx` for localized writing, with fallback to `content/writing/*.mdx`
 - `public/headshot.jpg`, `public/og-default.svg`, and `public/favicon.svg` for brand assets
 
 ## Adding Content
 
 Content stays in the repository under `content/`; no database or CMS is required.
 
-- Add a new project by creating a file in `content/projects/` and following the structure of an existing project entry
-- Add a new writing entry by creating a file in `content/writing/` and following an existing writing entry
+- Add or edit site copy by updating the files under `content/locales/en/site/`
+- Add a new project by creating a file in `content/locales/en/projects/` or `content/projects/` and following the structure of an existing project entry
+- Add a new writing entry by creating a file in `content/locales/en/writing/` or `content/writing/` and following an existing writing entry
+- Add a new locale by mirroring `content/locales/en/` under a new locale directory, then register it in `src/lib/content.ts`
 - Frontmatter is validated during builds, so it is safest to copy a nearby example and edit it rather than start from scratch
 
 ## Local Development

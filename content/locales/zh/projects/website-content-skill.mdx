@@ -1,0 +1,101 @@
+---
+title: "website-content skill"
+date: "2026-02-23T00:00:00Z"
+status: "active"
+type: ["agent", "skill"]
+motivation: "我希望自己的 AI agent 别写得像新闻稿，而是像我在写——同样的语气、同样的 frontmatter、同样的结构习惯——不用每次会话都重新讲一遍这些约束。"
+problemAddressed: "每次让 agent 给站点写内容，结果都空洞：语法没错，个性为零。模型没有可对抗的约束，就默认往企业腔填。每场会话重新 prompt 自己的语气偏好，不可持续。"
+learnings: "渐进式披露是让 skill 真正可用的架构选择。先载入约 100 token 的描述做路由，再载入完整 SKILL.md，再按需载入各个参考文件——这样即使装了几十个 skill，上下文成本也可忽略。另外，编码「语气」比编码 schema 难；把反模式（要避免什么）写对，比正模式更重要。"
+featured: false
+---
+
+我写了一个可复用的 agent skill，教 Cursor 按我的语气、用我的 schema 和结构习惯，为这个站写内容——博客、项目条目、页面文案。Skill 通过 [skills.sh](https://skills.sh) 发布，在任何支持 `SKILL.md` 约定的 AI 编程环境里都能用。
+
+## 怎么运作
+
+Skill 是一个目录：根目录一个 `SKILL.md`，下面一个 `references/` 放两份专门文档。Agent 按固定顺序读这些文件——这是刻意的设计，叫*渐进式披露*。
+
+```text
+website-content/
+├── SKILL.md              # 路由 + 流程（先读）
+└── references/
+    ├── voice-guide.md    # 句式、用词、语气
+    ├── content-schemas.md # Zod frontmatter 规格、正文约束
+    └── page-patterns.md  # 版式和组件参考
+```
+
+**第一层：SKILL.md** — Agent 先读 YAML frontmatter 里的 description（约 100 token）判断这个 skill 是否相关；匹配再载入整份文件。这一层定义*何时*激活、*按什么流程*、*文件写哪儿*，还带一份语气检查清单——一组布尔检查，agent 在交出草稿前对自己的输出跑一遍。
+
+**第二层：语气指南** — 从我已有文章里抽出来的、句子级别的具体模式。不是「要 conversational」这种抽象指导，而是：具体结构习惯（短句定锚再展开）、用词偏好（用 `build`、`ship`、`friction`，不用 `leverage`、`synergy`、`innovative`）、段落约束（1–3 句，每句只推进一个点）、以及明确禁止（正文不用感叹号、不用 emoji）。
+
+**第三层：Content schemas** — 每种内容类型的 Zod 校验 frontmatter 定义。写作 schema 要求 `title`、`publishDate`、`theme`、`tags`；项目 schema 要求 `motivation`、`problemAddressed`、`status`、`type`。这不是风格建议，是构建期契约；frontmatter 不合法，Next.js 静态导出会直接失败。
+
+```typescript
+const ProjectSchema = z.object({
+  title: z.string(),
+  date: z.string().datetime(),
+  status: z.enum(["active", "archived", "in-progress"]),
+  type: z.array(z.enum(["app", "agent", "experiment"])).min(1),
+  motivation: z.string().min(10),
+  problemAddressed: z.string().min(10),
+  learnings: z.string().optional(),
+  url: z.string().url().optional(),
+  github: z.string().url().optional(),
+  featured: z.boolean().default(false),
+});
+```
+
+## 架构取舍
+
+**为什么拆成多文件而不是一个大 SKILL.md？** 省上下文。光语气指南就 83 行，content schema 85 行，全塞进一个文件会让 agent 每次激活都载入约 250 行说明，哪怕它只想写一条项目条目。拆成 reference 后，agent 只在写正文时载语气指南，只在改页面级文案时载 page patterns。
+
+**为什么 SKILL.md 用 YAML frontmatter？** `name` 和 `description` 当路由用。Agent 扫一遍所有已装 skill 的这两个字段决定激活谁。描述写准——例如「当用户要写新 writing 条目、新建项目条目或说『给站写内容』时用」——能减少误激活，保证在正确意图下触发。
+
+**为什么要有语气检查清单？** Agent 容易漂移。就算有详细语气指南，模型也可能滑向含糊（「我觉得也许」）或在段末加感叹号。清单相当于自检：一组具体、可判定的约束，agent 在交稿前对自己的输出跑一遍。
+
+## 常见坑
+
+做内容 skill 听起来简单，我踩过几个真耗时间的坑。
+
+### 写抽象指南而不是具体模式
+
+「要 conversational」对 agent 没用。「段落 1–3 句，每句只推进一个点，结尾要有立场不要总结」才可执行。语气指南里每条都要*可证伪*——agent 能对着自己的输出判断有没有做到。
+
+### 把 description 塞太满
+
+SKILL.md 的 description 是路由信号，不是文档。塞满实现细节会带来两件事：agent 每次请求都多花 token 解析，以及在不该激活的请求里被激活。描述控制在 150 token 内，只讲*何时*触发。
+
+### 忽略反模式
+
+正向指令（「用短段落」）不如负向约束（「禁止感叹号」「禁止用 kind of、sort of 打圆场」）有力。模型默认会往训练数据平均靠；反模式才是把输出从泛泛的拽向你真实语气的东西。我语气指南里的「避免」比「使用」更有用。
+
+### 跳过真实例句
+
+描述模式不如直接给模式例句。语气指南里的例句是从我现有文章里摘的，不是为指南现编的。Agent 需要看到目标输出*长什么样*，而不是「应该长什么样」的描述。
+
+### 把 skill 做太宽
+
+一个 skill 又想管「全站内容」又想管 code review、部署，会样样平庸。每个 skill 只负责一个域。website-content 只负责内容撰写，代码规范、部署流程、设计系统放别的 skill。
+
+### 忽略构建契约
+
+如果内容有 schema 校验（Zod、TypeScript、JSON Schema），要在 skill 里写清楚。否则 agent 会产出*看起来*对的 frontmatter，build 时报错。我是在修了三轮 `publishDate` 格式——agent 生成的是 `"February 23, 2026"` 而不是 ISO 8601 datetime——之后才学乖的。
+
+## 实际流程
+
+当我让 agent 写一条新项目条目时，它会按固定路径走：
+
+1. 读 SKILL.md 的 description，匹配「项目条目」
+2. 载入完整 SKILL.md，读流程说明
+3. 读 `references/voice-guide.md` 内化语气和用词
+4. 读 `references/content-schemas.md` 拿项目 frontmatter 规格
+5. 起草内容，再对自己的输出跑一遍语气检查清单
+6. 写入 `content/projects/[slug].mdx`
+
+结果是一份符合我结构习惯、用我词汇、遵守 schema、且落在正确目录的草稿——不用我重复任何约束。
+
+## 延伸
+
+Skill 可跨平台复用。同一套 `SKILL.md` 约定在 Cursor、Claude Code、GitHub Copilot 都能用。通过 [skills.sh](https://skills.sh) 发布后，别人可以用 `npx skills add` 安装，再按自己的语气和 schema 改。
+
+更底层的点是：*流程性知识*——你脑子里那种「这事我一般怎么干」——可以编码并共享。不是给人读的文档，而是给 agent 执行的结构化指令。

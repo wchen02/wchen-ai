@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCurrentLocale } from "@/components/LocaleProvider";
+import { resolveContentTokens } from "@/lib/formatting";
+import { getUiContent } from "@/lib/site-content";
 
 type Theme = "system" | "light" | "dark";
 
@@ -11,6 +14,8 @@ function getEffectiveTheme(theme: Theme): "light" | "dark" {
 }
 
 export default function ThemeToggle() {
+  const locale = useCurrentLocale();
+  const uiContent = getUiContent(locale);
   const [theme, setTheme] = useState<Theme>("system");
   const [mounted, setMounted] = useState(false);
 
@@ -33,7 +38,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button type="button" aria-label="Theme toggle" className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded">
+      <button type="button" aria-label={uiContent.themeToggle.staticLabel} className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded">
         <span className="w-[18px] h-[18px]" />
       </button>
     );
@@ -46,7 +51,14 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={cycleTheme}
-      aria-label={`Theme toggle, currently ${isDark ? "dark" : "light"} mode. Switch to ${isDark ? "light" : "dark"} mode.`}
+      aria-label={resolveContentTokens(uiContent.themeToggle.announcement, {
+        currentMode: isDark
+          ? uiContent.themeToggle.darkModeLabel
+          : uiContent.themeToggle.lightModeLabel,
+        nextMode: isDark
+          ? uiContent.themeToggle.lightModeLabel
+          : uiContent.themeToggle.darkModeLabel,
+      })}
       aria-pressed={isDark}
       className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
     >

@@ -16,13 +16,13 @@ export default function NotFound() {
       </p>
       <nav className="flex flex-wrap justify-center gap-4">
         <Link href="/" className="btn-primary">
-          Go home
+          {SITE_PROFILE.notFound.homeLabel}
         </Link>
         <Link href="/projects" className="btn-secondary">
-          Projects
+          {SITE_PROFILE.notFound.projectsLabel}
         </Link>
         <Link href="/writing" className="btn-secondary">
-          Writing
+          {SITE_PROFILE.notFound.writingLabel}
         </Link>
       </nav>
     </main>

@@ -1,0 +1,26 @@
+{
+  "common": {
+    "forbidden": "禁止访问",
+    "invalidSubmission": "提交无效",
+    "validationFailed": "验证失败",
+    "genericError": "发生了一些问题，请稍后再试。",
+    "newsletterHtmlTitle": "Newsletter"
+  },
+  "validation": {
+    "nameRequired": "姓名为必填项",
+    "invalidEmail": "邮箱地址无效",
+    "messageTooShort": "消息内容至少需要 10 个字符"
+  },
+  "contact": {
+    "successMessage": "感谢联系！我会尽快回复你。",
+    "developmentMessage": "开发模式：消息已收到，但未发送。",
+    "sendFailure": "发送消息失败，请稍后再试。"
+  },
+  "newsletter": {
+    "subscribeSuccess": "请检查你的邮箱以确认订阅。",
+    "subscribeFailure": "处理订阅失败，请稍后再试。",
+    "invalidConfirmationLink": "确认链接无效，请重新订阅。",
+    "expiredConfirmationLink": "该确认链接已过期，请重新订阅。",
+    "invalidUnsubscribeLink": "退订链接无效。"
+  }
+}

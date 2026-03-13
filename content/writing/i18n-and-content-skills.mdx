@@ -1,0 +1,38 @@
+---
+title: "How This Site's i18n Works — and How Two Agent Skills Keep It Fed"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["i18n", "nextjs", "skills", "content", "agents"]
+featured: false
+draft: false
+---
+
+I get asked how wchen.ai handles multiple languages and how I keep English, Spanish, and Chinese in sync without drowning in copy-paste. The short answer: the site is built around a clear content model, and two agent skills — website-content and content-translation — encode where everything lives and how to propagate it. The architecture does the heavy lifting; the skills make sure content and translations land in the right place every time.
+
+## How the i18n Is Built
+
+The site uses a locale-in-the-URL model. Every page that should be localized lives under `/[locale]/...` — for example `/en/about`, `/es/writing`, `/zh/projects`. The root routes (`/`, `/about`, `/writing`) are redirect shells. When you hit `/`, the app resolves your locale from a persisted cookie or from the `Accept-Language` header, then redirects you to `/en`, `/es`, or `/zh`. Once you're in a locale, the layout and every link stay in that locale. No hidden query params, no separate domains. One URL shape, one place to look.
+
+Content splits into two buckets. The first is locale-scoped JSON: site copy, nav labels, form placeholders, newsletter email copy, and system messages. Those live under `content/locales/<locale>/site/*.json`. At build time we import and validate them with Zod; the app calls `getLocaleContent(locale)` and gets a single bundle for that locale. No runtime loading, no missing keys. If a JSON file is invalid, the build fails. That keeps the contract strict and the UI predictable.
+
+The second bucket is MDX — writing and project entries. Here we use a locale-first directory with a shared fallback. For a given locale, the loader looks in `content/locales/<locale>/writing` and `content/locales/<locale>/projects`. If that locale directory exists, we use only the files in it. If it doesn't (or for the default locale, depending on how you seed content), we fall back to the shared `content/writing` and `content/projects` directories. So the canonical source of truth for a new essay can live once in `content/writing`; translated versions are created as sibling files under `content/locales/es/writing` and `content/locales/zh/writing`. The build doesn't merge files per slug; it chooses one directory per locale and lists whatever MDX files are there. That keeps the model simple: you either have a locale-specific set of articles and projects or you fall back to the shared set.
+
+Routing, links, and metadata all go through small helpers. Paths are prefixed with the current locale when rendering links; the sitemap and RSS generators run per locale; the search index is built once per locale. So the entire pipeline — from content on disk to the static assets we deploy — is locale-aware by default.
+
+## What the Website-Content Skill Does
+
+The website-content skill is the single place I (and any agent) look when creating or editing site copy and MDX. It spells out where to put homepage copy (locale JSON, not TSX), where to put about-page copy, and where writing and project entries live. It ties every content type to a schema and a voice guide so that new pages and new essays don't drift in structure or tone. It also defines the handoff: when a *shared* writing or project entry in `content/writing` or `content/projects` is finished, the skill says to run the content-translation skill next. That handoff is the bridge between "one canonical piece" and "same piece in every locale."
+
+Without that skill, I'd be constantly re-checking whether the about page lives in a component or in JSON, whether the next essay should go in `content/writing` or under a locale, and what frontmatter or JSON shape is required. With it, the agent has a single set of instructions that stay in sync with the codebase: file placement, schema, voice, and when to trigger translation.
+
+## What the Content-Translation Skill Does
+
+The content-translation skill runs only for shared MDX — files in `content/writing` and `content/projects`. It discovers target locales by listing `content/locales` and then, for each locale other than the source, writes or updates a translated file at `content/locales/<locale>/writing/<slug>.mdx` or `content/locales/<locale>/projects/<slug>.mdx`. It keeps frontmatter keys and structure intact, translates human-facing values (titles, body, motivation, problemAddressed, learnings), and leaves slugs, URLs, dates, and code blocks unchanged. Translation rules live in the skill and in a small translation-rules doc: preserve voice, preserve structure, no new claims or sections.
+
+So the flow is: I (or the agent) finish a new essay in `content/writing/foo.mdx`. The website-content skill says "now run content-translation." The content-translation skill reads the file, finds locales `en`, `es`, `zh`, and writes `content/locales/es/writing/foo.mdx` and `content/locales/zh/writing/foo.mdx`. The next build picks those up for the Spanish and Chinese sites; English might keep using the shared file or a dedicated `content/locales/en/writing` copy, depending on how the repo is set up. Either way, one source of truth, one handoff, and every locale gets a version.
+
+## Why This Combo Works
+
+The i18n design makes a simple promise: locale is explicit in the URL and in the content tree, and the build is deterministic per locale. The website-content skill makes a second promise: every content type has one right place and one set of rules, and when you're done with a shared entry, you hand off to translation. The content-translation skill makes a third: we don't translate ad hoc or in the wrong direction; we only translate from the canonical shared files into every locale directory, with consistent rules.
+
+Together, they remove the guesswork. I don't have to remember that the about page copy lives in JSON under `content/locales/<locale>/site/about.json`. I don't have to remember to create three files by hand when I publish one essay. The architecture encodes the model; the skills encode the workflow. That's how i18n and content stay in sync without the chaos — and how two small skill files do a lot of the work that would otherwise be manual and error-prone.

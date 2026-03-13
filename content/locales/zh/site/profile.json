@@ -1,0 +1,105 @@
+{
+  "siteName": "Wilson Chen",
+  "fullName": "Wensheng Chen",
+  "givenName": "Wilson",
+  "initials": "WC",
+  "brandMark": "WC.",
+  "role": "创始人与构建者",
+  "siteTitle": "Wilson Chen | 创始人与构建者",
+  "siteDescription": "Wilson Chen 的个人网站。创始人、构建者、软件工程师。",
+  "url": "https://wchen.ai",
+  "languageTag": "zh",
+  "locale": "zh-CN",
+  "ogLocale": "zh_CN",
+  "assets": {
+    "headshotPath": "/headshot.jpg",
+    "faviconPath": "/favicon.svg",
+    "defaultOgImagePath": "/og-default.svg",
+    "defaultOgImageAlt": "Wilson Chen | 创始人与构建者"
+  },
+  "socialLinks": [
+    {
+      "platform": "x",
+      "url": "https://x.com/wchen_ai",
+      "label": "X (Twitter)",
+      "handle": "@wchen_ai"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/in/wchen02/",
+      "label": "LinkedIn"
+    },
+    {
+      "platform": "github",
+      "url": "https://github.com/wchen02",
+      "label": "GitHub"
+    }
+  ],
+  "github": {
+    "username": "wchen02"
+  },
+  "rss": {
+    "title": "Wilson Chen | 写作",
+    "description": "关于工程、产品与软件构建的思考。",
+    "language": "zh-cn"
+  },
+  "navigation": {
+    "projectsLabel": "项目",
+    "writingLabel": "写作",
+    "aboutLabel": "关于",
+    "contactLabel": "联系",
+    "skipToContentLabel": "跳到正文",
+    "rssLabel": "通过 RSS 订阅",
+    "mainAriaLabel": "主导航"
+  },
+  "footer": {
+    "rightsLabel": "版权所有。"
+  },
+  "writingPage": {
+    "title": "写作与想法",
+    "intro": "这里记录我对工程、产品以及软件构建摩擦的持续思考。",
+    "metadataDescription": "关于构建、技术与开发者工具的思考与反思。",
+    "metadataTitle": "写作",
+    "openGraphAlt": "Wilson Chen - 写作"
+  },
+  "projectsPage": {
+    "title": "项目与探索",
+    "intro": "我构建的一系列应用、代理与实验，用来探索新想法并解决有意思的问题。",
+    "metadataDescription": "我构建过的内容，包括应用、代理与实验。",
+    "metadataTitle": "项目",
+    "openGraphAlt": "Wilson Chen - 项目"
+  },
+  "cta": {
+    "title": "想进一步聊聊这些想法吗？",
+    "description": "我一直很愿意和其他构建者与创始人交流。",
+    "buttonLabel": "开始对话"
+  },
+  "newsletter": {
+    "from": "Wilson Chen <newsletter@m.wchen.ai>",
+    "subject": "确认订阅 Wilson Chen 的写作",
+    "description": "当我发布新内容时会偶尔发送更新。无垃圾邮件，可随时退订。",
+    "successTitle": "请查看你的邮箱以确认订阅。",
+    "successDescription": "我们已经向你的收件箱发送了确认链接。",
+    "confirmedPageTitle": "订阅成功",
+    "confirmedTitle": "你已成功订阅",
+    "confirmedDescription": "感谢确认。今后当我发布新内容时，你会收到通知。",
+    "confirmedPrimaryCtaLabel": "查看写作归档",
+    "confirmedSecondaryCtaLabel": "返回首页",
+    "unsubscribedPageTitle": "已退订",
+    "unsubscribedTitle": "你已成功退订",
+    "unsubscribedDescription": "除非你再次订阅，否则将不会再收到后续 newsletter 邮件。",
+    "unsubscribedPrimaryCtaLabel": "查看写作归档",
+    "unsubscribedSecondaryCtaLabel": "返回首页"
+  },
+  "contact": {
+    "title": "联系",
+    "description": "你可以直接发邮件，或使用下面的表单联系我。我愿意讨论想法、合作以及一起构建未来。"
+  },
+  "notFound": {
+    "title": "页面未找到",
+    "description": "这个页面不存在，但这里还有很多内容值得探索。",
+    "homeLabel": "返回首页",
+    "projectsLabel": "项目",
+    "writingLabel": "写作"
+  }
+}

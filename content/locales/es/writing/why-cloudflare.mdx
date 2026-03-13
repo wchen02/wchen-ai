@@ -1,0 +1,66 @@
+---
+title: "Por qué construyo sobre Cloudflare"
+publishDate: "2026-02-23T12:00:00Z"
+theme: "Infrastructure"
+tags: ["cloudflare", "hosting", "infrastructure"]
+featured: false
+draft: false
+---
+
+Cada proyecto empieza con la misma decisión poco glamurosa: ¿dónde corre esto en realidad?
+
+La mayoría de desarrolladores trata el hosting como una casilla. Elige el predeterminado, despliega, sigue. Yo hacía lo mismo. Pero cuanto más construyo, más me doy cuenta de que tu plataforma de hosting no es solo infraestructura — es una *restricción arquitectónica* que moldea cada decisión posterior.
+
+Para este sitio y todo lo que publico, elegí Cloudflare. No porque estuviera de moda. Porque encaja con cómo creo que debería funcionar el software.
+
+## El problema con las opciones obvias
+
+El panorama del hosting se ha vuelto paradójicamente complejo. AWS te da más de 200 servicios y espera que los conectes como un ingeniero eléctrico. Vercel ofrece una experiencia pulida pero te acopla fuerte a sus opiniones de framework y tramos de precios.
+
+El hosting VPS tradicional te da control a costa de todo lo demás — vuelves a gestionar configs de nginx y certificados SSL a las 2 de la madrugada.
+
+Ninguno es *malo*. Pero todos fuerzan un trade-off entre simplicidad y control que no creo que deba existir.
+
+Lo que quería era algo distinto: una plataforma donde la infraestructura desaparezca de verdad. Donde no piense en servidores, regiones ni políticas de escalado. Donde el edge global no sea un add-on premium sino el *predeterminado*.
+
+## Lo que Cloudflare hace bien
+
+El modelo de Cloudflare se basa en una idea simple: la computación debe vivir donde están tus usuarios, no donde esté tu servidor.
+
+Su plataforma Workers ejecuta código en el edge — en más de 300 centros de datos en el mundo — sin cold starts, sin elegir región, sin planificar capacidad. Cuando despliego un Worker, está disponible en todas partes al instante. No es marketing. Es la arquitectura real.
+
+Para sitios estáticos, Cloudflare Pages me da exactamente lo que describí en mi texto sobre arquitectura static-first: archivos preconstruidos servidos desde el nodo edge más cercano. Sin servidor de origen. Sin sobrecarga de render dinámico. Solo bytes por el camino más corto hasta el navegador.
+
+Pero lo que me convenció no fue ninguna función en particular. Fue la *coherencia* de la plataforma.
+
+¿Necesitas almacenamiento clave-valor? KV está ahí, replicado globalmente. ¿Base de datos relacional? D1 ejecuta SQLite en el edge. ¿Almacenamiento de objetos? R2 es compatible con S3 y sin coste de egress. ¿Inferencia de IA? Workers AI ejecuta modelos en la misma red.
+
+Cada primitivo vive en el mismo ecosistema, comparte el mismo modelo de despliegue y habla el mismo idioma. No hay código de pegamento entre cinco dashboards de proveedores. No hay ceremonia de "ahora configura tus IAM roles".
+
+## La filosofía de fondo
+
+La razón más profunda por la que elegí Cloudflare es filosófica.
+
+Creo que la infraestructura debe ser invisible. La mejor plataforma de hosting es una que *olvidas* — no porque la ignores, sino porque te pide tan poca atención que puedes centrarte por completo en el producto.
+
+La arquitectura de Cloudflare lo encarna. Los Workers no tienen cold starts que afinar. Pages no tiene cachés de build que invalidar a mano. KV no tiene lag de replicación que diseñar. La plataforma absorbe complejidad en lugar de exponerla.
+
+Esto importa más de lo que la mayoría de desarrolladores cree. Cada hora en configurar infraestructura es una hora que no dedicas a lo que a tus usuarios les importa. Cada decisión arquitectónica impuesta por tu proveedor de hosting es una restricción que no elegiste.
+
+No quiero optimizar mi pipeline de despliegue. Quiero hacer push del código y que esté en vivo — global, al instante, fiable.
+
+## Los trade-offs
+
+No soy ingenuo. El ecosistema de Cloudflare es más joven que AWS. Algunos bordes son ásperos.
+
+D1 sigue madurando. El runtime de Workers no es Node.js — son isolates de V8, así que algunos paquetes npm no funcionan sin adaptación. La documentación, aunque mejora, a veces deja huecos que obligan a bucear en Discord.
+
+Son restricciones reales. Las acepto porque la alineación arquitectónica compensa la fricción.
+
+Cuando tu plataforma de hosting piensa como tú — edge-first, static-first, reacia a la complejidad — los bordes ásperos pasan a ser inconveniencias temporales, no desajustes de fondo.
+
+## Mirando adelante
+
+Cloudflare está construyendo algo ambicioso: una plataforma de aplicaciones completa en el edge. No solo hosting. No solo CDN. Un entorno de ejecución donde la distancia entre tu código y tu usuario se acerca a cero.
+
+Esa visión coincide con la mía. Quiero construir software que se sienta instantáneo, corra en todas partes y no le pida nada a quien lo usa. Elegir la base correcta no es una nota al pie técnica — es la primera decisión arquitectónica de verdad, y reverbera en todo lo que sigue.

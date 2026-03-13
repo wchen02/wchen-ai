@@ -1,13 +1,13 @@
-import siteProfile from "../../content/site/profile.json";
-import newsletterContent from "../../content/site/newsletter.json";
 import type {
   NewsletterEmailBrand,
   NewsletterEmailContent,
   NewsletterEmailContentSet,
-  NewsletterFooterContent,
-  NewsletterIssueDefaults,
   NewsletterIssueContent,
 } from "../../shared/newsletter-email";
+import { getLocaleContent } from "./content";
+import { localizePath } from "./i18n";
+import { DEFAULT_LOCALE, type SupportedLocale } from "./locales";
+import type { NewsletterContentSource, SiteProfile } from "./schemas";
 
 export type SocialPlatform = "x" | "linkedin" | "github";
 
@@ -16,91 +16,6 @@ export interface SocialLink {
   url: string;
   label: string;
   handle?: string;
-}
-
-export interface SiteProfile {
-  siteName: string;
-  fullName: string;
-  givenName: string;
-  initials: string;
-  brandMark: string;
-  role: string;
-  siteTitle: string;
-  siteDescription: string;
-  url: string;
-  locale: string;
-  assets: {
-    headshotPath: string;
-    faviconPath: string;
-    defaultOgImagePath: string;
-    defaultOgImageAlt: string;
-  };
-  socialLinks: SocialLink[];
-  github: {
-    username: string;
-  };
-  rss: {
-    title: string;
-    description: string;
-  };
-  navigation: {
-    projectsLabel: string;
-    writingLabel: string;
-    aboutLabel: string;
-    contactLabel: string;
-    skipToContentLabel: string;
-    rssLabel: string;
-  };
-  footer: {
-    rightsLabel: string;
-  };
-  writingPage: {
-    title: string;
-    intro: string;
-    metadataDescription: string;
-  };
-  projectsPage: {
-    title: string;
-    intro: string;
-    metadataDescription: string;
-  };
-  cta: {
-    title: string;
-    description: string;
-    buttonLabel: string;
-  };
-  newsletter: {
-    from: string;
-    subject: string;
-    description: string;
-    successTitle: string;
-    successDescription: string;
-    confirmedTitle: string;
-    confirmedDescription: string;
-  };
-  contact: {
-    title: string;
-    description: string;
-  };
-  notFound: {
-    title: string;
-    description: string;
-  };
-}
-
-interface NewsletterContentSource {
-  confirm: NewsletterEmailContent;
-  welcome: NewsletterEmailContent;
-  issueDefaults: NewsletterIssueDefaults;
-  recurring: {
-    digest: NewsletterIssueContent & {
-      subject: string;
-      itemsHeading?: string;
-      itemTypeLabels: Record<RecurringNewsletterType, string>;
-      itemActionLabels: Record<RecurringNewsletterType, string>;
-    };
-  };
-  footer: NewsletterFooterContent;
 }
 
 export type RecurringNewsletterType = "writing" | "project";
@@ -118,36 +33,70 @@ export interface ResolvedRecurringNewsletterEmailContent extends NewsletterIssue
   itemActionLabels: Record<RecurringNewsletterType, string>;
 }
 
-export const SITE_PROFILE = siteProfile as SiteProfile;
-export const NEWSLETTER_CONTENT = newsletterContent as NewsletterContentSource;
+const DEFAULT_CONTENT = getLocaleContent();
+
+export const SITE_PROFILE: SiteProfile = DEFAULT_CONTENT.profile;
+export const NEWSLETTER_CONTENT: NewsletterContentSource = DEFAULT_CONTENT.newsletter;
 export const SOCIAL_LINKS = SITE_PROFILE.socialLinks;
 export const SITE_URL = SITE_PROFILE.url.replace(/\/$/, "");
 export const SITE_ORIGIN = new URL(SITE_URL).origin;
 
-export function absoluteUrl(pathOrUrl: string): string {
+export function getSiteProfile(locale?: string): SiteProfile {
+  return getLocaleContent(locale).profile;
+}
+
+export function getNewsletterContentSource(locale?: string): NewsletterContentSource {
+  return getLocaleContent(locale).newsletter;
+}
+
+export function getSocialLinks(locale?: string): SocialLink[] {
+  return getSiteProfile(locale).socialLinks;
+}
+
+export function getSiteUrl(locale?: string): string {
+  return getSiteProfile(locale).url.replace(/\/$/, "");
+}
+
+export function getSiteOrigin(locale?: string): string {
+  return new URL(getSiteUrl(locale)).origin;
+}
+
+export function absoluteUrl(pathOrUrl: string, locale?: string): string {
   if (/^https?:\/\//.test(pathOrUrl)) {
     return pathOrUrl;
   }
 
-  return `${SITE_URL}${pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`}`;
+  const siteUrl = getSiteUrl(locale);
+  const normalizedPath = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  const localizedPath =
+    locale && normalizedPath.startsWith("/")
+      ? localizePath(locale as SupportedLocale, normalizedPath)
+      : normalizedPath;
+
+  return `${siteUrl}${localizedPath}`;
 }
 
-export function getNewsletterEmailBrand(siteUrl: string = SITE_URL): NewsletterEmailBrand {
+export function getNewsletterEmailBrand(
+  siteUrl: string = SITE_URL,
+  locale: string = DEFAULT_LOCALE
+): NewsletterEmailBrand {
   const normalizedSiteUrl = siteUrl.replace(/\/$/, "");
+  const siteProfile = getSiteProfile(locale);
+  const resolvedLocale = (locale || DEFAULT_LOCALE) as SupportedLocale;
 
   return {
-    siteName: SITE_PROFILE.siteName,
-    authorName: SITE_PROFILE.givenName,
-    description: SITE_PROFILE.newsletter.description,
-    homeUrl: normalizedSiteUrl,
-    writingUrl: `${normalizedSiteUrl}/writing`,
-    projectsUrl: `${normalizedSiteUrl}/projects`,
+    siteName: siteProfile.siteName,
+    authorName: siteProfile.givenName,
+    description: siteProfile.newsletter.description,
+    homeUrl: `${normalizedSiteUrl}/${resolvedLocale}`,
+    writingUrl: `${normalizedSiteUrl}${localizePath(resolvedLocale, "/writing")}`,
+    projectsUrl: `${normalizedSiteUrl}${localizePath(resolvedLocale, "/projects")}`,
   };
 }
 
-export function getNewsletterFromAddress(fromOverride: string | undefined): string {
+export function getNewsletterFromAddress(fromOverride: string | undefined, locale?: string): string {
   const normalized = fromOverride?.trim();
-  return normalized ? normalized : SITE_PROFILE.newsletter.from;
+  return normalized ? normalized : getSiteProfile(locale).newsletter.from;
 }
 
 export function getNewsletterUnsubscribeUrl(params: {
@@ -155,10 +104,14 @@ export function getNewsletterUnsubscribeUrl(params: {
   sig: string;
   siteUrl?: string;
   useLocalPage?: boolean;
+  locale?: string;
 }): string {
   const baseUrl = (params.siteUrl ?? SITE_URL).replace(/\/$/, "");
   const pathname = params.useLocalPage ? "/newsletter-unsubscribe" : "/api/newsletter-unsubscribe";
-  return `${baseUrl}${pathname}?email=${encodeURIComponent(params.email)}&sig=${params.sig}`;
+  const localizedPath = params.useLocalPage && params.locale
+    ? localizePath(params.locale as SupportedLocale, pathname)
+    : pathname;
+  return `${baseUrl}${localizedPath}?email=${encodeURIComponent(params.email)}&sig=${params.sig}`;
 }
 
 function resolveNewsletterTokens(value: string, tokens: Record<string, string>): string {
@@ -201,8 +154,12 @@ function resolveNewsletterSections(
   }));
 }
 
-export function getNewsletterEmailContent(siteUrl: string = SITE_URL): NewsletterEmailContentSet {
-  const brand = getNewsletterEmailBrand(siteUrl);
+export function getNewsletterEmailContent(
+  siteUrl: string = SITE_URL,
+  locale: string = DEFAULT_LOCALE
+): NewsletterEmailContentSet {
+  const newsletterContent = getNewsletterContentSource(locale);
+  const brand = getNewsletterEmailBrand(siteUrl, locale);
   const tokens = getNewsletterTokenMap(brand);
 
   const resolveContent = (content: NewsletterEmailContent): NewsletterEmailContent => ({
@@ -227,27 +184,27 @@ export function getNewsletterEmailContent(siteUrl: string = SITE_URL): Newslette
   });
 
   return {
-    confirm: resolveContent(NEWSLETTER_CONTENT.confirm),
-    welcome: resolveContent(NEWSLETTER_CONTENT.welcome),
+    confirm: resolveContent(newsletterContent.confirm),
+    welcome: resolveContent(newsletterContent.welcome),
     issueDefaults: {
-      preview: resolveNewsletterTokens(NEWSLETTER_CONTENT.issueDefaults.preview, tokens),
+      preview: resolveNewsletterTokens(newsletterContent.issueDefaults.preview, tokens),
       primaryActionLabel: resolveNewsletterTokens(
-        NEWSLETTER_CONTENT.issueDefaults.primaryActionLabel,
+        newsletterContent.issueDefaults.primaryActionLabel,
         tokens
       ),
     },
     footer: {
-      note: resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.note, tokens),
+      note: resolveNewsletterTokens(newsletterContent.footer.note, tokens),
       writingArchiveLabel: resolveNewsletterTokens(
-        NEWSLETTER_CONTENT.footer.writingArchiveLabel,
+        newsletterContent.footer.writingArchiveLabel,
         tokens
       ),
-      projectsArchiveLabel: NEWSLETTER_CONTENT.footer.projectsArchiveLabel
-        ? resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.projectsArchiveLabel, tokens)
+      projectsArchiveLabel: newsletterContent.footer.projectsArchiveLabel
+        ? resolveNewsletterTokens(newsletterContent.footer.projectsArchiveLabel, tokens)
         : undefined,
-      homeLabel: resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.homeLabel, tokens),
-      unsubscribeLabel: NEWSLETTER_CONTENT.footer.unsubscribeLabel
-        ? resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.unsubscribeLabel, tokens)
+      homeLabel: resolveNewsletterTokens(newsletterContent.footer.homeLabel, tokens),
+      unsubscribeLabel: newsletterContent.footer.unsubscribeLabel
+        ? resolveNewsletterTokens(newsletterContent.footer.unsubscribeLabel, tokens)
         : undefined,
     },
   };
@@ -256,17 +213,20 @@ export function getNewsletterEmailContent(siteUrl: string = SITE_URL): Newslette
 export function getRecurringNewsletterEmailContent(params: {
   itemCount: number;
   siteUrl?: string;
+  locale?: string;
 }): ResolvedRecurringNewsletterEmailContent {
-  const brand = getNewsletterEmailBrand(params.siteUrl ?? SITE_URL);
+  const locale = params.locale ?? DEFAULT_LOCALE;
+  const newsletterContent = getNewsletterContentSource(locale);
+  const brand = getNewsletterEmailBrand(params.siteUrl ?? SITE_URL, locale);
   const tokens = getNewsletterTokenMap(brand, { itemCount: params.itemCount });
-  const template = NEWSLETTER_CONTENT.recurring.digest;
+  const template = newsletterContent.recurring.digest;
 
   return {
     subject: resolveNewsletterTokens(template.subject, tokens),
     preview: resolveNewsletterTokens(template.preview, tokens),
     summary: resolveNewsletterTokens(template.summary, tokens),
     primaryActionLabel: resolveNewsletterTokens(
-      template.itemActionLabels.writing || NEWSLETTER_CONTENT.issueDefaults.primaryActionLabel,
+      template.itemActionLabels.writing || newsletterContent.issueDefaults.primaryActionLabel,
       tokens
     ),
     sections: resolveNewsletterSections(template.sections, tokens),
@@ -301,6 +261,6 @@ export function getAllowedOrigins(siteUrl: string = SITE_URL): string[] {
   return Array.from(origins);
 }
 
-export function getSocialHandle(platform: SocialPlatform): string | undefined {
-  return SOCIAL_LINKS.find((link) => link.platform === platform)?.handle;
+export function getSocialHandle(platform: SocialPlatform, locale?: string): string | undefined {
+  return getSocialLinks(locale).find((link) => link.platform === platform)?.handle;
 }

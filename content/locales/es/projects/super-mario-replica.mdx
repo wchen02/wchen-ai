@@ -1,0 +1,29 @@
+---
+title: "Super Mario Replica"
+date: "2025-03-10T00:00:00Z"
+status: "archived"
+type: ["app", "experiment"]
+motivation: "Quería construir un platformer estilo Super Mario y estresar un flujo completo spec-first y dirigido por agente — spec-kit para requisitos, vibe coding con Cursor y comandos personalizados para auto-revisión, tests y memoria — para ver hasta dónde podía llevarlo antes de tener que intervenir."
+problemAddressed: "Los proyectos construidos por agentes suelen salir con bugs ocultos y sin un siguiente paso claro. Quería ver si una spec de requisitos estructurada más comandos de agente para auto-revisión, tests unitarios, tests e2e blackbox y una memoria de pasos en SQLite podían reducir esa fricción y acabar reemplazando la necesidad de un operador humano."
+learnings: "El pipeline eliminó muchos bugs que habrían salido más tarde y demostró que specs estructuradas más los comandos de agente adecuados pueden cargar con la mayor parte del trabajo. Aún tuve que dirigir en ocasiones. La brecha se siente como comandos y puntos de decisión que faltan — más de ellos podrían acabar reemplazando la necesidad de un operador humano."
+github: "https://github.com/wchen02/platformer"
+featured: false
+---
+
+Construí un platformer estilo Super Mario en Godot en aproximadamente una semana. El juego en sí es una réplica — correr y saltar, monedas, bloques, los beats de siempre. El experimento real fue el flujo: una spec de requisitos completa por delante, un entorno de vibe code con Cursor, y un comando personalizado que permitía al agente auto-revisar el código, decidir el siguiente paso, ejecutar tests, ejecutar comprobaciones e2e blackbox y mantener el progreso en una base de datos SQLite. El repo tiene un [README detallado](https://github.com/wchen02/platformer) para quien quiera ejecutarlo o extenderlo.
+
+## Cómo ejecuté el experimento
+
+Di al proyecto una spec de requisitos completa con spec-kit para que el agente tuviera un contrato claro antes de escribir una sola línea. Luego monté el entorno de vibe code en Cursor y añadí un comando que orquestaba el bucle: el agente se auto-revisaba el código, elegía la siguiente acción, ejecutaba tests unitarios, ejecutaba tests e2e como blackbox y persistía el progreso en una base SQLite. La idea era comprimir la distancia entre "el agente escribió algo" y "sabemos que funciona" — y dar al agente suficiente contexto (vía memoria) para que pudiera tomar decisiones razonables de siguiente paso sin mí en el bucle cada vez.
+
+## Qué funcionó
+
+La configuración detectó muchos bugs que habrían aparecido más tarde en juego manual o en informes de usuarios. Que el agente ejecutara tests y comprobaciones e2e como parte de su propio bucle hizo que regresiones y problemas de integración salieran pronto. La spec actuó como fuente de verdad compartida; la memoria en SQLite permitió al agente referirse a lo que ya se había hecho. En la práctica, la combinación de spec-kit, vibe coding y estos comandos *sí* eliminó gran parte de la necesidad de intervención humana constante. Fue una señal clara de que el enfoque es viable.
+
+## Dónde tuve que intervenir
+
+Funcionó hasta cierto punto, pero no de punta a punta sin mí. Hubo momentos en que el agente habría dado vueltas en círculo o habría pasado por alto una decisión que requería criterio de producto o diseño. Tuve que dirigir — aclarar prioridades, corregir rumbo o desbloquear cuando el conjunto de comandos no cubría un escenario. La brecha no era tanto la capacidad del agente como la *cobertura* de comandos y reglas de decisión. Algunas situaciones siguen necesitando a un humano que diga "haz esto después" o "con esto ya terminamos".
+
+## Conclusión
+
+Fue un experimento muy bueno. El pipeline demostró que specs estructuradas más comandos de agente para revisión, tests y memoria te llevan casi todo el camino. No tuve que supervisar cada cambio. Lo que queda es rellenar huecos: más comandos, puntos de decisión más claros y mejor manejo de casos límite. Estoy convencido de que con suficientes de esos, la necesidad de un operador humano en el bucle podría acabar desapareciendo.

@@ -1,0 +1,105 @@
+{
+  "siteName": "Wilson Chen",
+  "fullName": "Wensheng Chen",
+  "givenName": "Wilson",
+  "initials": "WC",
+  "brandMark": "WC.",
+  "role": "Founder y Builder",
+  "siteTitle": "Wilson Chen | Founder y Builder",
+  "siteDescription": "Sitio personal de Wilson Chen. Founder, builder e ingeniero de software.",
+  "url": "https://wchen.ai",
+  "languageTag": "es",
+  "locale": "es-ES",
+  "ogLocale": "es_ES",
+  "assets": {
+    "headshotPath": "/headshot.jpg",
+    "faviconPath": "/favicon.svg",
+    "defaultOgImagePath": "/og-default.svg",
+    "defaultOgImageAlt": "Wilson Chen | Founder y Builder"
+  },
+  "socialLinks": [
+    {
+      "platform": "x",
+      "url": "https://x.com/wchen_ai",
+      "label": "X (Twitter)",
+      "handle": "@wchen_ai"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/in/wchen02/",
+      "label": "LinkedIn"
+    },
+    {
+      "platform": "github",
+      "url": "https://github.com/wchen02",
+      "label": "GitHub"
+    }
+  ],
+  "github": {
+    "username": "wchen02"
+  },
+  "rss": {
+    "title": "Wilson Chen | Writing",
+    "description": "Ideas sobre ingenieria, productos y software.",
+    "language": "es-es"
+  },
+  "navigation": {
+    "projectsLabel": "Proyectos",
+    "writingLabel": "Escritos",
+    "aboutLabel": "Sobre mi",
+    "contactLabel": "Contacto",
+    "skipToContentLabel": "Saltar al contenido",
+    "rssLabel": "Suscribirse por RSS",
+    "mainAriaLabel": "Principal"
+  },
+  "footer": {
+    "rightsLabel": "Todos los derechos reservados."
+  },
+  "writingPage": {
+    "title": "Writing e Ideas",
+    "intro": "Un registro vivo de como evolucionan mis ideas sobre ingenieria, productos y la friccion de crear software.",
+    "metadataDescription": "Ideas y reflexiones sobre construir, tecnologia y herramientas para developers.",
+    "metadataTitle": "Writing",
+    "openGraphAlt": "Wilson Chen - Writing"
+  },
+  "projectsPage": {
+    "title": "Proyectos y Exploraciones",
+    "intro": "Una coleccion de apps, agentes y experimentos que he construido para explorar ideas nuevas y resolver problemas interesantes.",
+    "metadataDescription": "Cosas que he construido, incluyendo apps, agentes y experimentos.",
+    "metadataTitle": "Proyectos",
+    "openGraphAlt": "Wilson Chen - Proyectos"
+  },
+  "cta": {
+    "title": "Te interesa conversar mas sobre esto?",
+    "description": "Siempre estoy abierto a conectar con builders y founders.",
+    "buttonLabel": "Empezar una conversacion"
+  },
+  "newsletter": {
+    "from": "Wilson Chen <newsletter@m.wchen.ai>",
+    "subject": "Confirma tu suscripcion a los escritos de Wilson Chen",
+    "description": "Actualizaciones ocasionales cuando publico algo nuevo. Sin spam, puedes darte de baja cuando quieras.",
+    "successTitle": "Revisa tu correo para confirmar tu suscripcion.",
+    "successDescription": "Te enviamos un enlace de confirmacion a tu bandeja de entrada.",
+    "confirmedPageTitle": "Suscrito",
+    "confirmedTitle": "Ya estas suscrito",
+    "confirmedDescription": "Gracias por confirmar. Recibiras noticias cuando publique algo nuevo.",
+    "confirmedPrimaryCtaLabel": "Leer el archivo de escritos",
+    "confirmedSecondaryCtaLabel": "Ir al inicio",
+    "unsubscribedPageTitle": "Suscripcion cancelada",
+    "unsubscribedTitle": "Te has dado de baja",
+    "unsubscribedDescription": "No recibiras futuros correos del newsletter a menos que vuelvas a suscribirte.",
+    "unsubscribedPrimaryCtaLabel": "Leer el archivo de escritos",
+    "unsubscribedSecondaryCtaLabel": "Ir al inicio"
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Escribeme por email o usa el formulario. Estoy abierto a ideas, colaboracion y a construir el futuro juntos."
+  },
+  "notFound": {
+    "title": "Pagina no encontrada",
+    "description": "Esta pagina no existe, pero hay mucho mas por explorar.",
+    "homeLabel": "Ir al inicio",
+    "projectsLabel": "Proyectos",
+    "writingLabel": "Escritos"
+  }
+}

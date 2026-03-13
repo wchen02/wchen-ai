@@ -1,0 +1,69 @@
+{
+  "confirm": {
+    "subject": "Confirm your subscription to {siteName}'s writing",
+    "preview": "Confirm your newsletter subscription.",
+    "title": "Confirm your subscription",
+    "intro": [
+      "Thanks for subscribing to {authorName}'s writing.",
+      "Please confirm your email address to start receiving occasional notes when something new is published."
+    ],
+    "primaryActionLabel": "Confirm subscription",
+    "secondaryActionPrefix": "Or copy and paste this link into your browser:",
+    "sections": [
+      {
+        "heading": "What to expect",
+        "paragraphs": [
+          "{newsletterDescription}",
+          "This confirmation link expires in 24 hours. If you did not request this, you can safely ignore this email."
+        ]
+      }
+    ]
+  },
+  "welcome": {
+    "subject": "You're subscribed to {siteName}'s writing",
+    "preview": "You're subscribed to {siteName}'s writing.",
+    "title": "You're subscribed",
+    "intro": [
+      "You're all set. {authorName} will send occasional updates when new writing is published.",
+      "Expect thoughtful notes on building software, developer tools, and what it takes to turn ideas into products."
+    ],
+    "primaryActionLabel": "Read the latest writing",
+    "secondaryActionLabel": "Browse the site",
+    "sections": [
+      {
+        "heading": "A quick note",
+        "paragraphs": [
+          "No spam, no constant drip campaign, and no pressure to stay subscribed if it stops being useful."
+        ]
+      }
+    ]
+  },
+  "issueDefaults": {
+    "preview": "A new update is live.",
+    "primaryActionLabel": "Read the update"
+  },
+  "recurring": {
+    "digest": {
+      "subject": "New on {siteName}",
+      "preview": "Fresh writing and project updates are live on {siteName}.",
+      "summary": "A few new things went live recently. Here's a quick digest of the latest writing and projects.",
+      "itemsHeading": "Latest updates",
+      "itemTypeLabels": {
+        "writing": "Writing",
+        "project": "Project"
+      },
+      "itemActionLabels": {
+        "writing": "Read the article",
+        "project": "See the project"
+      },
+      "footerNote": "{newsletterDescription}"
+    }
+  },
+  "footer": {
+    "note": "{newsletterDescription}",
+    "writingArchiveLabel": "Read the writing archive",
+    "projectsArchiveLabel": "Browse the projects archive",
+    "homeLabel": "Visit the site",
+    "unsubscribeLabel": "Unsubscribe"
+  }
+}

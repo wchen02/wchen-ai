@@ -9,6 +9,7 @@ import {
   getNewsletterEmailContent,
   getNewsletterFromAddress,
 } from "../../src/lib/site-config";
+import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -18,6 +19,7 @@ interface Env {
 }
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
+const systemContent = getSystemContent();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
@@ -48,7 +50,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
 
   if (!isAllowedOrigin(origin)) {
     return new Response(
-      JSON.stringify({ success: false, error: "Forbidden" }),
+      JSON.stringify({ success: false, error: systemContent.common.forbidden }),
       { status: 403, headers }
     );
   }
@@ -62,14 +64,14 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       const honeyIssue = issues.find((i) => i.path.includes("_honey"));
       if (honeyIssue) {
         return new Response(
-          JSON.stringify({ success: false, error: "Invalid submission" }),
+          JSON.stringify({ success: false, error: systemContent.common.invalidSubmission }),
           { status: 400, headers }
         );
       }
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Validation failed",
+          error: systemContent.common.validationFailed,
           details: issues.map((i) => ({ field: i.path.join("."), message: i.message })),
         }),
         { status: 400, headers }
@@ -83,7 +85,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     if (!secret || !apiKey) {
       console.warn("Newsletter not configured: set NEWSLETTER_SECRET + RESEND_API_KEY.");
       return new Response(
-        JSON.stringify({ success: true, message: "Check your email to confirm your subscription." }),
+        JSON.stringify({ success: true, message: systemContent.newsletter.subscribeSuccess }),
         { status: 200, headers }
       );
     }
@@ -111,13 +113,13 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     });
 
     return new Response(
-      JSON.stringify({ success: true, message: "Check your email to confirm your subscription." }),
+      JSON.stringify({ success: true, message: systemContent.newsletter.subscribeSuccess }),
       { status: 200, headers }
     );
   } catch (error) {
     console.error("Error processing newsletter subscription:", error);
     return new Response(
-      JSON.stringify({ success: false, error: "Failed to process subscription. Please try again later." }),
+      JSON.stringify({ success: false, error: systemContent.newsletter.subscribeFailure }),
       { status: 500, headers }
     );
   }

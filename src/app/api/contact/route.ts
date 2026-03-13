@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { ContactPayloadSchema } from "../../../../shared/contact";
+import { getSystemContent } from "@/lib/site-content";
+
+const systemContent = getSystemContent();
 
 function getMailgunBaseUrl(): string {
   return process.env.MAILGUN_EU === "1"
@@ -47,14 +50,14 @@ export async function POST(request: Request) {
       const honeyIssue = issues.find((i) => i.path.includes("_honey"));
       if (honeyIssue) {
         return NextResponse.json(
-          { success: false, error: "Invalid submission" },
+          { success: false, error: systemContent.common.invalidSubmission },
           { status: 400 }
         );
       }
       return NextResponse.json(
         {
           success: false,
-          error: "Validation failed",
+          error: systemContent.common.validationFailed,
           details: issues.map((i) => ({
             field: i.path.join("."),
             message: i.message,
@@ -87,27 +90,25 @@ export async function POST(request: Request) {
         const errBody = await mailRes.text();
         console.error("Mailgun error:", mailRes.status, errBody);
         return NextResponse.json(
-          { success: false, error: "Failed to send message. Please try again later." },
+          { success: false, error: systemContent.contact.sendFailure },
           { status: 500 }
         );
       }
       return NextResponse.json({
         success: true,
-        message:
-          "Thanks for reaching out! I'll get back to you soon.",
+      message: systemContent.contact.successMessage,
       });
     }
 
     // Dev / no Mailgun: accept but don't send
     return NextResponse.json({
       success: true,
-      message:
-        "Development mode: Message received but not sent.",
+      message: systemContent.contact.developmentMessage,
     });
   } catch (error) {
     console.error("Error processing contact form:", error);
     return NextResponse.json(
-      { success: false, error: "Failed to send message. Please try again later." },
+      { success: false, error: systemContent.contact.sendFailure },
       { status: 500 }
     );
   }

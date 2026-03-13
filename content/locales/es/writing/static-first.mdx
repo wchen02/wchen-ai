@@ -1,0 +1,24 @@
+---
+title: "Construir static-first en una era de dinamismo"
+publishDate: "2026-02-10T14:30:00Z"
+theme: "Architecture"
+tags: ["nextjs", "static", "performance"]
+featured: false
+draft: false
+---
+
+Hay una tendencia creciente a renderizar todo dinámicamente en el servidor. Con la llegada del edge computing, nos dicen que el render dinámico es básicamente gratis. Ejecuta una función en el edge, devuelve HTML en milisegundos y el usuario no lo nota. ¿Para qué molestarse con la generación estática?
+
+Pero la física sigue aplicando. Da igual lo rápida que sea tu edge function, nunca superará la velocidad de servir un archivo estático precompilado desde una CDN. Un archivo estático ya está ahí. Sin cold start, sin invocación de función, sin round-trip a base de datos. La petición llega al edge y los bytes están en el cable. Esa base es difícil de mejorar.
+
+Para este sitio personal elegí explícitamente un enfoque static-first. El sitio se genera una vez en build time. No hay hit a base de datos cuando cargas esta página. No hay servidor calculando el HTML. Cada ruta es un archivo. Los despliegues son triviales: sube la salida del build a una CDN y listo. Sin runtime que escalar, sin secretos que rotar en producción, sin "la function hizo timeout" a las 3 de la madrugada.
+
+La objeción obvia es: ¿y los datos dinámicos? Un blog puede ser estático, pero ¿y si quieres mostrar algo que cambia — actividad reciente, contadores en vivo, contenido por usuario?
+
+Quería mostrar mis contribuciones recientes de GitHub en la homepage. Tenía tres opciones. Fetch desde el cliente: simple, pero lento y propenso a spinners de carga. Fetch en el servidor por petición: datos frescos, pero entonces cada vista de página es dinámica y pierdo los beneficios de estático. O fetch *durante el proceso de build*. Un script corre como parte del build, tira los datos de la API, escribe a un archivo JSON en `public/`, y el frontend lo lee como cualquier otro asset estático. Los datos están tan frescos como el último deploy. Para algo como historial de contribuciones, es más que suficiente.
+
+Este enfoque híbrido — HTML estático más artefactos de datos estáticos — da la percepción de dinamismo con la fiabilidad inquebrantable del hosting estático. La página carga rápido. Los datos están ahí. Sin estados de carga, sin cascadas de fetch en el cliente. Si el JSON tiene unas horas, el coste es negligible para este caso.
+
+No todo proyecto puede o debe ser estático. Dashboards autenticados, colaboración en tiempo real y feeds verdaderamente personalizados necesitan servidor. Pero muchos sitios de contenido y marketing, docs y homepages personales no. La industria se ha inclinado hacia "hazlo dinámico y lo haremos rápido", y eso ha llevado a un default de server rendering y client hydration incluso cuando una snapshot en build time bastaría. El tooling es bueno. Los defaults son persuasivos. Es fácil echar mano de la opción dinámica sin preguntar si los datos necesitan de verdad estar vivos en cada petición.
+
+Así que la disciplina es esta: por defecto estático. Solo añade servidor o edge function cuando tengas una razón concreta — identidad de usuario, actualizaciones en tiempo real o datos que de verdad no pueden conocerse en build time. A veces la mejor decisión arquitectónica es decidir *no* usar la herramienta dinámica nueva y brillante. La CDN ya era la respuesta correcta; solo hay que dejar que haga su trabajo.

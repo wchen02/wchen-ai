@@ -1,0 +1,37 @@
+{
+  "common": {
+    "honeypotLabel": "Ignora este campo",
+    "invalidResponseError": "El servidor devolvio una respuesta invalida. Intentalo de nuevo.",
+    "unexpectedError": "Ocurrio un error inesperado. Intentalo de nuevo."
+  },
+  "newsletter": {
+    "title": "Mantente al tanto",
+    "emailLabel": "Correo electronico",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "submitLabel": "Suscribirse",
+    "submittingLabel": "Suscribiendo...",
+    "submitErrorFallback": "No se pudo completar la suscripcion"
+  },
+  "contact": {
+    "successTitle": "Mensaje enviado correctamente",
+    "successDescription": "Gracias por escribirme. Te respondere pronto.",
+    "resetLabel": "Enviar otro mensaje",
+    "submitLabel": "Enviar mensaje",
+    "submittingLabel": "Enviando...",
+    "submitErrorFallback": "No se pudo enviar el formulario",
+    "fields": {
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Jane Founder"
+      },
+      "email": {
+        "label": "Correo electronico",
+        "placeholder": "jane@example.com"
+      },
+      "message": {
+        "label": "Mensaje",
+        "placeholder": "Me encantaria colaborar en..."
+      }
+    }
+  }
+}

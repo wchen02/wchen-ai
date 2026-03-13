@@ -11,6 +11,7 @@ import {
   getNewsletterFromAddress,
   getNewsletterUnsubscribeUrl,
 } from "../../src/lib/site-config";
+import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -19,9 +20,11 @@ interface Env {
   NEWSLETTER_FROM?: string;
 }
 
+const systemContent = getSystemContent();
+
 function htmlResponse(body: string, status = 400): Response {
   return new Response(
-    `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Newsletter</title></head><body style="font-family:system-ui,sans-serif;max-width:480px;margin:4rem auto;padding:0 1rem;"><p>${body}</p></body></html>`,
+    `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${systemContent.common.newsletterHtmlTitle}</title></head><body style="font-family:system-ui,sans-serif;max-width:480px;margin:4rem auto;padding:0 1rem;"><p>${body}</p></body></html>`,
     { status, headers: { "Content-Type": "text/html;charset=utf-8" } }
   );
 }
@@ -34,7 +37,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   const sig = url.searchParams.get("sig");
 
   if (!email || !ts || !sig) {
-    return htmlResponse("Invalid confirmation link. Please try subscribing again.");
+    return htmlResponse(systemContent.newsletter.invalidConfirmationLink);
   }
 
   const secret = env.NEWSLETTER_SECRET;
@@ -44,18 +47,18 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
   if (!secret || !apiKey || !segmentId) {
     console.error("Newsletter confirm not configured");
-    return htmlResponse("Something went wrong. Please try again later.", 500);
+    return htmlResponse(systemContent.common.genericError, 500);
   }
 
   const now = Math.floor(Date.now() / 1000);
   const tokenAge = now - parseInt(ts, 10);
   if (isNaN(tokenAge) || tokenAge < 0 || tokenAge > NEWSLETTER_TOKEN_MAX_AGE_S) {
-    return htmlResponse("This confirmation link has expired. Please subscribe again.");
+    return htmlResponse(systemContent.newsletter.expiredConfirmationLink);
   }
 
   const expected = await hmacSign(secret, `${email}|${ts}`);
   if (!timingSafeEqual(sig, expected)) {
-    return htmlResponse("Invalid confirmation link. Please try subscribing again.");
+    return htmlResponse(systemContent.newsletter.invalidConfirmationLink);
   }
 
   try {
@@ -97,6 +100,6 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     return Response.redirect(new URL("/newsletter-confirmed", request.url).toString(), 302);
   } catch (error) {
     console.error("Error confirming newsletter subscription:", error);
-    return htmlResponse("Something went wrong. Please try again later.", 500);
+    return htmlResponse(systemContent.common.genericError, 500);
   }
 }

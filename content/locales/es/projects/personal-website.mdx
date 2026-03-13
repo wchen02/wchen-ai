@@ -1,0 +1,69 @@
+---
+title: "wchen.ai"
+date: "2026-02-22T00:00:00Z"
+status: "active"
+type: ["app"]
+motivation: "Necesitaba un lugar para pensar en público — un sitio que funcione como centro de construcción y reflexión, no un currículum con sección hero."
+problemAddressed: "La mayoría de sitios personales son o plantillas de portfolio sobreingeniadas o blogs minimalistas. Ninguno captura cómo piensa y trabaja realmente alguien que construye. Quería algo que escalara con mis ideas sin exigir un rediseño cada vez que añado contenido."
+learnings: "Especificar antes de codificar es el mayor multiplicador de fuerza cuando haces vibe coding. La hora que invertí en artefactos spec-kit ahorró tres horas de retrocesos durante la implementación. Además, la exportación estática con frontmatter validado por Zod detecta errores de contenido en build — no en producción."
+url: "https://wchen.ai"
+featured: true
+---
+
+Construí este sitio en un solo día con Cursor y spec-kit. El objetivo era claro: un hub público donde compartir proyectos, escritos y una forma de que la gente me contacte — sin la carga de un CMS, una base de datos o un pipeline de despliegue que requiera supervisión.
+
+## Cómo funciona
+
+El sitio es una aplicación Next.js exportada de forma estática. Cada página se pre-renderiza en build a HTML plano y se sirve desde la CDN de Cloudflare. Ningún servidor calcula nada al cargar una página. No se consulta base de datos. No se llama a ninguna API.
+
+El contenido vive como archivos MDX en un directorio `/content` — una carpeta para proyectos, otra para escritos. Cada archivo tiene frontmatter YAML validado por esquemas Zod en build. Si el frontmatter está mal formado, el build falla. Así los errores de contenido salen en desarrollo, no después del despliegue.
+
+```typescript
+const WritingSchema = z.object({
+  title: z.string(),
+  publishDate: z.string().datetime(),
+  theme: z.string(),
+  tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
+  draft: z.boolean().default(false),
+});
+```
+
+Datos dinámicos — como el historial de contribuciones de GitHub — se obtienen con un script pre-build que escribe el resultado en un archivo JSON estático. El frontend lee ese archivo como cualquier otro asset estático.
+
+## El flujo de vibe coding
+
+No monté este proyecto a mano. Describí lo que quería y dejé que Cursor — un editor de código nativo para IA — generara la implementación.
+
+Pero la clave fue *lo que vino antes del código*. Usé spec-kit, un flujo de especificación estructurado, para producir tres artefactos antes de tocar un solo componente:
+
+1. **spec.md** — qué debe lograr el sitio, para quién es y los criterios de aceptación
+2. **plan.md** — decisiones de arquitectura, estructura del proyecto, modelo de datos y justificación del stack
+3. **tasks.md** — desglose discreto de pasos de implementación que el agente pudiera ejecutar en secuencia
+
+Así el agente no adivinaba. Cuando le pedí construir la página índice de escritos, ya tenía en contexto el schema de contenido, los patrones de componentes y la estructura de archivos documentados. La especificación actuaba como contrato compartido entre yo y la IA.
+
+## Arquitectura
+
+```text
+/
+├── content/           # MDX fuente de verdad
+│   ├── projects/      # Narrativas de proyectos
+│   └── writing/       # Ensayos y reflexiones
+├── src/
+│   ├── app/           # Páginas App Router de Next.js
+│   ├── components/    # Componentes React
+│   └── lib/           # Schemas Zod, parsers MDX
+├── scripts/           # Pre-build: fetching de datos
+└── functions/         # Cloudflare Pages Functions (API de contacto)
+```
+
+El formulario de contacto es el único elemento dinámico. Lo maneja una Cloudflare Pages Function — una función edge que corre en la red de Cloudflare, dejando el resto del sitio puramente estático.
+
+El estilo usa Tailwind CSS. Las animaciones usan Framer Motion, cargado con lazy load para mantener el payload inicial de JS mínimo.
+
+## Qué haría distinto
+
+Invertiría más tiempo en la fase de especificación. Incluso con spec-kit, me encontré tomando microdecisiones durante la implementación que deberían haberse fijado de entrada — cosas como taxonomía de tags, convenciones de nombres de temas y límites de longitud de contenido. Esas decisiones son baratas en un documento de spec y caras de refactorizar en código.
+
+El flujo de vibe coding en sí aguantó bien. La restricción que lo hizo funcionar no fue la capacidad del modelo de IA — fue la calidad del contexto que le di antes de pedirle que construyera.

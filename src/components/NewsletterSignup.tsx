@@ -1,9 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { SITE_PROFILE } from "@/lib/site-config";
+import { useCurrentLocale } from "@/components/LocaleProvider";
+import { getFormsContent } from "@/lib/site-content";
+import { getSiteProfile } from "@/lib/site-config";
 
 export default function NewsletterSignup() {
+  const locale = useCurrentLocale();
+  const formsContent = getFormsContent(locale);
+  const siteProfile = getSiteProfile(locale);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
@@ -28,10 +33,10 @@ export default function NewsletterSignup() {
       const text = await response.text();
       const result = isJson
         ? (JSON.parse(text) as { error?: string })
-        : { error: "Server returned an invalid response. Please try again." };
+        : { error: formsContent.common.invalidResponseError };
 
       if (!response.ok) {
-        throw new Error(result?.error || "Failed to subscribe");
+        throw new Error(result?.error || formsContent.newsletter.submitErrorFallback);
       }
 
       formRef.current?.reset();
@@ -39,7 +44,7 @@ export default function NewsletterSignup() {
     } catch (error: unknown) {
       console.error(error);
       setStatus("error");
-      const errMessage = error instanceof Error ? error.message : "An unexpected error occurred. Please try again.";
+      const errMessage = error instanceof Error ? error.message : formsContent.common.unexpectedError;
       setErrorMessage(errMessage);
     }
   };
@@ -47,8 +52,8 @@ export default function NewsletterSignup() {
   if (status === "success") {
     return (
       <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
-        <p className="font-medium">{SITE_PROFILE.newsletter.successTitle}</p>
-        <p className="text-sm mt-1">{SITE_PROFILE.newsletter.successDescription}</p>
+        <p className="font-medium">{siteProfile.newsletter.successTitle}</p>
+        <p className="text-sm mt-1">{siteProfile.newsletter.successDescription}</p>
       </div>
     );
   }
@@ -56,26 +61,26 @@ export default function NewsletterSignup() {
   return (
     <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
       <div>
-        <h3 className="font-bold text-gray-900 dark:text-white">Stay in the loop</h3>
+        <h3 className="font-bold text-gray-900 dark:text-white">{formsContent.newsletter.title}</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          {SITE_PROFILE.newsletter.description}
+          {siteProfile.newsletter.description}
         </p>
       </div>
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
         <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
-          <label htmlFor="nl_honey">Ignore this field</label>
+          <label htmlFor="nl_honey">{formsContent.common.honeypotLabel}</label>
           <input type="text" id="nl_honey" name="_honey" tabIndex={-1} autoComplete="off" />
         </div>
         <div className="flex-1 flex flex-col min-w-0">
           <label htmlFor="nl_email" className="sr-only">
-            Email address
+            {formsContent.newsletter.emailLabel}
           </label>
           <input
             id="nl_email"
             type="email"
             name="email"
             required
-            placeholder="you@example.com"
+            placeholder={formsContent.newsletter.emailPlaceholder}
             disabled={status === "loading"}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-sm"
           />
@@ -85,7 +90,7 @@ export default function NewsletterSignup() {
           disabled={status === "loading"}
           className="btn-primary whitespace-nowrap text-sm"
         >
-          {status === "loading" ? "Subscribing..." : "Subscribe"}
+          {status === "loading" ? formsContent.newsletter.submittingLabel : formsContent.newsletter.submitLabel}
         </button>
       </form>
       {status === "error" && (

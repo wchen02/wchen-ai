@@ -1,0 +1,24 @@
+---
+title: "La fricción del email en sitios estáticos"
+publishDate: "2026-02-24T12:00:00Z"
+theme: "Infrastructure"
+tags: ["infrastructure", "mailgun", "static-sites"]
+featured: false
+draft: false
+---
+
+Añadir email a un sitio estático debería ser un problema resuelto.
+
+Solo necesitaba recibir envíos del formulario de contacto y enviar respuestas desde mi propio dominio. Suena simple. Sin embargo, el ecosistema de proveedores de email modernos se siente increíblemente fragmentado.
+
+Probé MailChannels al principio. Dicen manejar el spam mejor que las alternativas. Pero la física sigue aplicando — si la documentación es pobre y la experiencia de desarrollador está llena de fricción, los beneficios teóricos no importan. Pasé más tiempo peleando con la configuración que escribiendo código.
+
+¿Y Formspree? Es la recomendación por defecto para sitios estáticos.
+
+Pero Formspree es un endpoint de formularios, no una solución de correo. Restringe mucho las entregas gratuitas y no resuelve la otra mitad de la ecuación: *enviar* correos desde el dominio. Necesitaba enrutado de email bidireccional completo sin la sobrecarga de una bandeja dedicada.
+
+Así que volví a una solución antigua que ya había usado: Mailgun.
+
+Mailgun simplemente funciona. Da control completo sobre recepción y reglas de enrutado, haciendo trivial reenviar mensajes entrantes a mi bandeja personal. Gestiona la entrega saliente con la fiabilidad de una plataforma madura. La API es predecible, la documentación es exhaustiva y la experiencia de desarrollador se aparta de tu camino.
+
+A veces la mejor decisión arquitectónica no es la herramienta más nueva. Es la que resolvió en silencio el problema exacto que tienes hace una década.

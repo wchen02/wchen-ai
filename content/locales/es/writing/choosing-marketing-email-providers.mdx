@@ -1,0 +1,59 @@
+---
+title: "Elegir un proveedor de email para marketing"
+publishDate: "2026-02-27T12:00:00Z"
+theme: "Infrastructure"
+tags: ["email", "resend", "developer-tools", "newsletters"]
+featured: false
+draft: false
+---
+
+Elegir un proveedor de email para newsletter o drip de marketing parece que debería ser simple. Necesitas enviar correos, recoger suscriptores y quizá seguir aperturas. El mercado está abarrotado: Buttondown, Resend, ConvertKit, Mailgun y una docena más dicen resolverlo.
+
+Evalué en serio cuatro — Buttondown, Resend, ConvertKit y Mailgun — para un flujo API-first liderado por desarrolladores. Esta es la comparación que me importó y por qué me quedé con Resend.
+
+## Comparación
+
+|                        | **Buttondown**              | **Resend**                                | **ConvertKit**                    | **Mailgun**                               |
+|------------------------|-----------------------------|--------------------------------------------|-----------------------------------|--------------------------------------------|
+| **Enfoque principal**  | Newsletters, escritores      | Transaccional + marketing, desarrolladores| Creadores, marketers              | Transaccional + marketing, empresas       |
+| **API / DX**           | REST API, docs decentes     | API-first, SDKs (Node, React), docs geniales| REST API, orientado a creadores   | REST API madura, mucho config             |
+| **Modelo de precios**  | Por suscriptor             | Por email (tier gratis: 3k/mes)            | Por suscriptor, gratis hasta 1k   | Por email, tramos por volumen             |
+| **Código / automatización** | Bueno para automatización simple | Pensado para pipelines, React Email, webhooks | Forms + automatizaciones en UI    | Control total, más carga de ops           |
+| **Entregabilidad**     | Sólida para newsletters    | Fuerte, infra moderna                      | Fuerte para funnels de creadores | Nivel enterprise                          |
+| **Mejor encaje**       | Escritores en solitario, setup mínimo | Desarrolladores, apps, envíos programáticos | Creadores no técnicos, funnels    | Alto volumen, usuarios Mailgun existentes |
+
+## Buttondown
+
+**Pros:** Directo. Tienes un producto de newsletter que funciona: formulario de suscripción, borradores, programación y una API simple. Sin bloat. El precio escala con suscriptores, predecible. Bueno si quieres escribir en Markdown y enviar números sin pensar en entregabilidad o plantillas.
+
+**Contras:** El producto gira en torno al dashboard y el flujo de newsletter, no en *tu* código como fuente de verdad. La API es capaz pero no es el centro del diseño. Si quieres gestionar segmentos, triggers o flujos complejos desde tu app, vas contra la corriente. Dominios y branding personalizados existen pero se sienten secundarios frente a la experiencia "escritor en una caja".
+
+## Resend
+
+**Pros:** Hecho para desarrolladores. API-first significa que cada función es accesible desde código — sin huecos "solo en la UI". SDKs para Node y React (incluyendo React Email) hacen fácil componer emails en código y enviar en una llamada. Webhooks, dominios y logs de auditoría son de primera. El tier gratis (3.000 emails/mes) basta para enviar e iterar. La documentación es clara y el modelo mental es "envía emails desde tu app", no "gestiona un producto de email aparte".
+
+**Contras:** Más joven que Mailgun o ConvertKit. Menos plantillas prehechas y sin constructor visual de campañas; si quieres campañas drag-and-drop, usas React Email o construyes el tuyo. El producto está optimizado para quien se siente cómodo en código.
+
+## ConvertKit
+
+**Pros:** Fuerte para creadores y marketers. Forms, landing pages, tagging, automatizaciones y funnels están en el producto. La entregabilidad está afinada para newsletter y marketing. Si quieres diseñar secuencias y segmentos en una UI y tocar la API solo de vez en cuando, ConvertKit encaja.
+
+**Contras:** El centro de gravedad es la UI, no la API. Las automatizaciones y la lógica viven en su builder; hacer todo desde tu codebase es posible pero no lo predeterminado. Para un desarrollador que quiere poseer todo el flujo en código — signup, segmentos, triggers — la abstracción puede sentirse invertida. El precio es por suscriptor, así que el tamaño de la lista impulsa el coste más que el volumen de envío.
+
+## Mailgun
+
+**Pros:** Maduro, fiable y con todas las funciones. Lo uso para recibir y enrutar email entrante en este sitio; la API y la documentación son predecibles. Entregabilidad y herramientas de cumplimiento de nivel enterprise. Bueno cuando necesitas alto volumen, logs detallados y control total.
+
+**Contras:** El posicionamiento y la UX son más "infraestructura de email" que "producto amigable para desarrolladores". La configuración y los conceptos (dominios, routing, webhooks) son potentes pero más pesados. Para marketing o newsletters puramente salientes, es capaz pero no optimizado para ese caso como Resend o ConvertKit. Tienes flexibilidad y control; pagas en configuración y carga cognitiva.
+
+## Por qué elegí Resend
+
+Quería un proveedor *amigable para desarrolladores* y *API-first*.
+
+Amigable para desarrolladores, para mí, significa: puedo registrarme, añadir un dominio y enviar desde mi app en minutos. La documentación responde "cómo hago X desde código" sin mandarme al dashboard. Errores y webhooks están pensados para depurar. El SDK de Resend y la integración con React Email encajan. No tengo que salir del editor para diseñar o enviar una campaña.
+
+API-first significa que el producto no asume que el dashboard es donde ocurre el trabajo. Suscriptores, eventos y envíos son todos accesibles vía API. Puedo construir flujos de signup, segmentos y triggers en mi propio código y tratar Resend como la capa de entrega. Es la misma razón por la que prefiero infraestructura que se aparta: la mejor herramienta es la que implementa tu intención sin imponer otro flujo.
+
+Buttondown y ConvertKit son mejores si tu flujo es "gestiono mi lista y campañas en su UI". Mailgun es mejor si ya lo usas para correo transaccional o necesitas control y volumen máximos. Para construir una app o una newsletter liderada por desarrolladores donde el código es la fuente de verdad, Resend fue el encaje claro.
+
+Elegir un proveedor de email es una decisión pequeña en el gran esquema — pero es una con la que vives cada vez que añades un formulario de suscripción o envías una campaña. Elegir el que encaja con cómo trabajas se paga cada vez que no tienes que abrir otra pestaña para hacer algo que podría ser una llamada a función.

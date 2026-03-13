@@ -12,10 +12,10 @@ function main(): void {
 
   if (missing.length > 0) {
     console.warn(
-      "[validate-theme-descriptors] The following writing theme(s) have no descriptor in src/lib/theme-config.ts:",
+      "[validate-theme-descriptors] The following writing theme(s) have no descriptor in content/locales/en/site/ui.json:",
       missing.join(", ")
     );
-    console.warn("Add entries to THEME_DESCRIPTORS for consistent writing index UX.");
+    console.warn("Add entries to themeDescriptors for consistent writing index UX.");
     process.exit(1);
   }
 

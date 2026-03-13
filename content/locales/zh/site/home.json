@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "intro": "我是 Wensheng Chen，也常被叫作 Wilson。曾任 The Juicy Crab CTO；现在正在构建 [bestpos.io](https://bestpos.io) 和 AI 驱动的开发者工具。",
+    "paragraphs": [
+      "我目前正专注于探索人工智能与开发者工具的交叉地带，构建真正能够成为思维伙伴的系统。",
+      "我当下最核心的关注点，是通过具备上下文感知能力的代理，减少软件工程团队在意图与执行之间的摩擦。"
+    ],
+    "aboutLink": {
+      "href": "/about",
+      "label": "了解更多关于我和我的理念"
+    }
+  },
+  "currentFocus": {
+    "title": "当前关注的问题",
+    "description": "我现在最着迷的方向，以及我认为真正重要的问题。",
+    "paragraphs": [
+      "我最着迷的核心问题是知识碎片化。我们拥有的工具比以往任何时候都多，但上下文仍在不同平台之间不断流失。",
+      "我相信下一波真正重要的基础公司，会围绕如何把这些上下文整合进无缝、近乎隐形的工作流来构建，而不是继续制造更多仪表盘。"
+    ]
+  },
+  "selectedWork": {
+    "title": "精选项目",
+    "description": "这些项目与实验反映了我如何构建，以及我从中学到了什么。",
+    "viewAllLabel": "查看全部",
+    "emptyState": "暂无项目。"
+  },
+  "recentThinking": {
+    "title": "近期思考",
+    "description": "关于工程、产品以及公开构建的文章与笔记。",
+    "viewAllLabel": "查看全部",
+    "emptyState": "暂无写作内容。"
+  },
+  "activity": {
+    "title": "近期动态",
+    "description": "GitHub 上最近的开源与个人项目活动。"
+  }
+}

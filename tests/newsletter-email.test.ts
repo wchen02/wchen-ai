@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import fs from "fs";
 import path from "path";
-import newsletterContent from "../content/site/newsletter.json";
+import newsletterContent from "../content/locales/en/site/newsletter.json";
 
 import {
   createNewsletterIssueIdempotencyKey,
@@ -29,9 +29,9 @@ const brand = {
   siteName: "Wilson Chen",
   authorName: "Wilson",
   description: "Occasional updates when I publish new writing. No spam, unsubscribe anytime.",
-  homeUrl: "https://wchen.ai",
-  writingUrl: "https://wchen.ai/writing",
-  projectsUrl: "https://wchen.ai/projects",
+  homeUrl: "https://wchen.ai/en",
+  writingUrl: "https://wchen.ai/en/writing",
+  projectsUrl: "https://wchen.ai/en/projects",
 };
 
 describe("newsletter email templates", () => {
@@ -86,7 +86,7 @@ describe("newsletter email templates", () => {
           title: "Shipping before you're ready",
           summary: "A short note on why momentum matters more than polish at the beginning.",
           ctaLabel: issueContent.itemActionLabels.writing,
-          ctaUrl: "https://wchen.ai/writing/shipping-before-youre-ready",
+          ctaUrl: "https://wchen.ai/en/writing/shipping-before-youre-ready",
           typeLabel: issueContent.itemTypeLabels.writing,
         },
         {
@@ -94,7 +94,7 @@ describe("newsletter email templates", () => {
           title: "wchen.ai",
           summary: "A static-first personal site built to share projects, writing, and implementation notes.",
           ctaLabel: issueContent.itemActionLabels.project,
-          ctaUrl: "https://wchen.ai/projects/wchen-ai",
+          ctaUrl: "https://wchen.ai/en/projects/wchen-ai",
           typeLabel: issueContent.itemTypeLabels.project,
         },
       ],
@@ -139,7 +139,7 @@ describe("newsletter email templates", () => {
 });
 
 describe("newsletter shared wiring", () => {
-  const newsletterContentPath = path.resolve(__dirname, "../content/site/newsletter.json");
+  const newsletterContentPath = path.resolve(__dirname, "../content/locales/en/site/newsletter.json");
   const functionsSubscribePath = path.resolve(__dirname, "../functions/api/newsletter.ts");
   const nextSubscribePath = path.resolve(__dirname, "../src/app/api/newsletter/route.ts");
   const functionsConfirmPath = path.resolve(__dirname, "../functions/api/newsletter-confirm.ts");
@@ -192,7 +192,7 @@ describe("recurring newsletter state", () => {
       slug: "personal-website",
       title: "wchen.ai",
       summary: "A static-first site.",
-      ctaUrl: "https://wchen.ai/projects/personal-website",
+      ctaUrl: "https://wchen.ai/en/projects/personal-website",
       publishedAt: "2026-02-22T00:00:00Z",
     },
     {
@@ -200,7 +200,7 @@ describe("recurring newsletter state", () => {
       slug: "static-site-email",
       title: "The Friction of Static Site Email",
       summary: "Email on static sites is surprisingly awkward.",
-      ctaUrl: "https://wchen.ai/writing/static-site-email",
+      ctaUrl: "https://wchen.ai/en/writing/static-site-email",
       publishedAt: "2026-02-24T12:00:00Z",
     },
     {
@@ -208,7 +208,7 @@ describe("recurring newsletter state", () => {
       slug: "why-cloudflare",
       title: "Why Cloudflare",
       summary: "Cloudflare fits the stack.",
-      ctaUrl: "https://wchen.ai/writing/why-cloudflare",
+      ctaUrl: "https://wchen.ai/en/writing/why-cloudflare",
       publishedAt: "2026-02-28T12:00:00Z",
     },
   ].sort(compareRecurringCandidates);

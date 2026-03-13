@@ -1,0 +1,54 @@
+---
+title: "env-from-example"
+date: "2026-02-25T00:00:00Z"
+status: "active"
+type: ["tool", "library"]
+motivation: "我希望新开发者创建 .env 尽可能简单——不用复制粘贴瞎猜、不会在上了生产才发现配错、也不用靠口口相传才知道哪些变量是必填的。"
+problemAddressed: "入职流程通常是「把 .env.example 拷成 .env 再填空」。这种做法会以可预料的方式失败：有人留着占位符、有人打错 URL、有人忘了哪些变量必填，等到应用崩了或功能静默失效才发现。之前没有一款 CLI 能带着校验和防护，一步步带你完成环境搭建。"
+learnings: "用单一 schema.json（随包一起）做类型检测和校验，能让 CLI 行为可控。.env.example 里的注解（REQUIRED、TYPE、CONSTRAINTS）对作者是可选的，但能给工具足够结构去校验输入并自动生成密钥。--polish 会根据示例值推断并写入这些注解，结果成了最能推动采用的特性：团队可以从最简示例文件起步，原地升级即可获得校验和更好的提示。"
+url: "https://www.npmjs.com/package/@wchen.ai/env-from-example"
+github: "https://github.com/wchen02/env-from-example"
+featured: false
+---
+
+我做了 **env-from-example**——一个 npm 包和 CLI，根据 `.env.example` 生成 `.env`，带交互提示、类型校验、可选的密钥生成，以及基于 schema 的防护，让新开发者第一次就能得到正确环境，而不是事后排查错误配置。
+
+## 怎么用
+
+在放有 `.env.example` 的项目根目录执行。CLI 会读每条变量，根据注解检测或使用声明类型，提示补全缺失值，并可自动生成密钥（如 `SESSION_SECRET`）。一切由内置的 `schema.json` 驱动，仓库里不需要额外配置文件。
+
+```bash
+# No install required
+npx @wchen.ai/env-from-example
+
+# Non-interactive (CI, or accept defaults)
+npx env-from-example -y
+
+# Create .env.example if you don't have one
+npx env-from-example --init
+npx env-from-example --init .env   # from existing .env
+```
+
+`.env.example` 里的变量可以在上一行注释里加注解。注解是可选的——但一旦写上，工具就会校验输入并引导用户。
+
+```env
+# Database connection [REQUIRED] [TYPE: network/uri] Default: postgres://localhost:5432/myapp
+DATABASE_URL=postgres://localhost:5432/myapp
+
+# Application port [TYPE: integer] [CONSTRAINTS: min=3000,max=10000] Default: 3000
+PORT=3000
+```
+
+不想手写注解的话，用 `--polish` 会根据示例值推断类型和约束，并原地更新 `.env.example`。这样采用门槛低：先保留最简文件，跑一次 polish，就能白嫖校验和更好的提示。
+
+## 防护措施
+
+目标是让错误的 .env 值难以被提交。类型检查会拦住格式错误的 URL、非数字端口和无效枚举。必填变量在工具写入 `.env` 前必须非空。在 CI 里可以跑 `env-from-example --validate`，这样若有人改了 `.env` 导致不再符合 schema，流水线会失败。
+
+可选参数支持不同流程：`-e staging` 生成 `.env.staging`，`--dry-run` 只预览不写入，`--version patch` 升级 schema 版本并可同步 `package.json`。pre-commit 可以调 `--validate`；GitHub Actions 可以在跑测试前执行 `env-from-example -y -e test`，让测试环境始终从同一份真相生成。
+
+## 为什么用 @wchen.ai 发布
+
+我希望这个包放在自己可控、以后还能复用的 scope 下，方便做更多开发工具实验。名字就是字面意思：从 example 得到 env。不玩品牌花样——东西干啥就叫啥。
+
+包在 npm 上叫 `@wchen.ai/env-from-example`。作为 dev 依赖安装后在项目根执行 `npx env-from-example`，或不安装直接用 npx 也行。文档和 schema 在 [npm 页](https://www.npmjs.com/package/@wchen.ai/env-from-example) 和 [GitHub 仓库](https://github.com/wchen02/env-from-example)。

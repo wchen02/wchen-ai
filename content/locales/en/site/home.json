@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "intro": "I'm Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building [bestpos.io](https://bestpos.io) and AI-powered developer tools.",
+    "paragraphs": [
+      "I am currently exploring the intersection of artificial intelligence and developer tools, building systems that act as true thought partners.",
+      "My primary focus right now is on reducing friction between intention and execution for software engineering teams through context-aware agents."
+    ],
+    "aboutLink": {
+      "href": "/about",
+      "label": "More about me and my philosophy"
+    }
+  },
+  "currentFocus": {
+    "title": "Current Focus & Problems",
+    "description": "What I'm obsessed with now and the problems I believe matter.",
+    "paragraphs": [
+      "The core problem I am obsessed with is knowledge fragmentation. We have more tools than ever, yet context is continuously lost across platforms.",
+      "I believe the next wave of foundational companies will be built around unifying this context into seamless, invisible workflows rather than adding new dashboards."
+    ]
+  },
+  "selectedWork": {
+    "title": "Selected Work",
+    "description": "Projects and experiments that reflect how I build and what I've learned.",
+    "viewAllLabel": "View all",
+    "emptyState": "No projects added yet."
+  },
+  "recentThinking": {
+    "title": "Recent Thinking",
+    "description": "Essays and notes on engineering, products, and building in public.",
+    "viewAllLabel": "View all",
+    "emptyState": "No writing yet."
+  },
+  "activity": {
+    "title": "Activity",
+    "description": "Recent open-source and side-project activity on GitHub."
+  }
+}

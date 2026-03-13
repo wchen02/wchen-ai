@@ -6,19 +6,22 @@ Start with **[docs/quickstart.md](docs/quickstart.md)** for installation, enviro
 
 ## Template Entry Points
 
-Most personalization now lives in a few files:
+Most personalization now lives in a few content files:
 
-- `content/site/profile.json` for name, domain, socials, metadata defaults, and shared UI copy
-- `content/site/home.json` for homepage hero and section copy
-- `content/site/about.json` for biography, expertise, background, and principles
-- `content/site/newsletter.json` for newsletter subjects, previews, CTA labels, confirmation/welcome copy, and recurring issue email copy
+- `content/locales/en/site/profile.json` for name, domain, socials, metadata defaults, locale settings, and shared site identity
+- `content/locales/en/site/home.json` for homepage hero and section copy
+- `content/locales/en/site/about.json` for biography, expertise, background, and principles
+- `content/locales/en/site/newsletter.json` for newsletter subjects, previews, CTA labels, confirmation/welcome copy, and recurring issue email copy
+- `content/locales/en/site/ui.json` for shared UI strings, labels, status text, and theme descriptors
+- `content/locales/en/site/forms.json` for contact/newsletter form labels, placeholders, and button copy
+- `content/locales/en/site/system.json` for validation, API, and fallback status messages
 - `content/site/newsletter-state.json` for recurring newsletter send history
-- `content/projects/*.mdx` for seeded project entries
-- `content/writing/*.mdx` for seeded writing entries
+- `content/locales/<locale>/projects/*.mdx` for localized project entries, with fallback to `content/projects/*.mdx`
+- `content/locales/<locale>/writing/*.mdx` for localized writing entries, with fallback to `content/writing/*.mdx`
 - `public/headshot.jpg`, `public/og-default.svg`, and `public/favicon.svg` for replaceable brand assets
 - `.env.example` for the deploy-time integration contract
 
-Template users should be able to rebrand the site mostly by editing those files instead of touching TSX.
+To add another language, mirror the `content/locales/en/` structure under a new locale directory and add it to the locale registry in `src/lib/content.ts`.
 
 ## Contact form
 

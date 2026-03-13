@@ -1,0 +1,38 @@
+---
+title: "本站 i18n 是怎么做的，以及两个 agent skill 如何配合"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["i18n", "nextjs", "skills", "content", "agents"]
+featured: false
+draft: false
+---
+
+常有人问 wchen.ai 怎么做多语言、怎么在英文、西语和中文之间保持同步而不靠复制粘贴。简短回答：站点围绕一套清晰的内容模型来建，两个 agent skill——website-content 和 content-translation——规定内容放在哪、如何扩散。架构负责重活，两个 skill 负责让内容和译文每次都落到正确位置。
+
+## i18n 是怎么建的
+
+站点采用「locale 在 URL 里」的模型。需要本地化的页面都挂在 `/[locale]/...` 下，例如 `/en/about`、`/es/writing`、`/zh/projects`。根路径（`/`、`/about`、`/writing`）只是重定向壳：访问 `/` 时，应用根据持久化 cookie 或 `Accept-Language` 头解析出 locale，然后重定向到 `/en`、`/es` 或 `/zh`。进入某个 locale 后，布局和所有链接都保持在该 locale。没有隐藏 query、没有多域名。一种 URL 形态，一个查看入口。
+
+内容分两类。第一类是按 locale 的 JSON：站点文案、导航标签、表单占位、邮件文案、系统提示等，放在 `content/locales/<locale>/site/*.json`。构建时用 Zod 导入并校验；应用侧调用 `getLocaleContent(locale)` 拿到该 locale 的一个 bundle。无运行时加载、无缺 key。JSON 不合法则构建直接失败，契约严格、UI 可预期。
+
+第二类是 MDX：文章与项目条目。这里用「先按 locale 的目录 + 共享回退」。对给定 locale，加载器会看 `content/locales/<locale>/writing` 和 `content/locales/<locale>/projects`。若该 locale 目录存在，就只用其中的文件；若不存在（或默认 locale 按你种子内容的习惯），就回退到共享的 `content/writing` 和 `content/projects`。所以一篇新文章的正本可以只放在 `content/writing` 里；西语、中文等译本以同名文件形式出现在 `content/locales/es/writing`、`content/locales/zh/writing`。构建不会按 slug 合并文件，而是「每个 locale 选定一个目录，列出其中的 MDX」。模型保持简单：要么用该 locale 专属的一批文章/项目，要么用共享的那批。
+
+路由、链接、元数据都走小 helper。渲染链接时给 path 加上当前 locale；sitemap 和 RSS 按 locale 各生成一份；搜索索引也是按 locale 各建一份。整条流水线——从磁盘上的内容到最终部署的静态产物——默认都是 locale 感知的。
+
+## website-content 这个 skill 做什么
+
+website-content 是写站点文案和 MDX 时唯一要查的入口。它规定：首页文案放哪（按 locale 的 JSON，不是 TSX）、about 页文案放哪、文章和项目条目放哪；并把每种内容类型绑到 schema 和 voice 说明，避免新页面、新文章在结构或语气上跑偏。还规定了「交棒」时机：当 `content/writing` 或 `content/projects` 里的一篇*共享*文章或项目写完时，要接着跑 content-translation。这一交棒就是把「一份正本」变成「每个 locale 都有一份」的桥梁。
+
+没有这个 skill，就得反复确认 about 是在组件里还是 JSON 里、下一篇该放 `content/writing` 还是某 locale 下、frontmatter 或 JSON 形状要满足什么。有了它，agent 有一套和代码库一致的指令：文件位置、schema、语气，以及何时触发翻译。
+
+## content-translation 这个 skill 做什么
+
+content-translation 只处理共享 MDX——即 `content/writing` 和 `content/projects` 里的文件。它会扫描 `content/locales` 得到目标 locale，然后对除源 locale 外的每个 locale，在 `content/locales/<locale>/writing/<slug>.mdx` 或 `content/locales/<locale>/projects/<slug>.mdx` 写入或更新译文。frontmatter 的 key 和结构不变；只翻译面向人的字段（标题、正文、motivation、problemAddressed、learnings），slug、URL、日期、代码块一律保留。翻译规则写在 skill 和一份简短的 translation-rules 里：保持语气、保持结构、不增删论点或段落。
+
+流程就是：我（或 agent）在 `content/writing/foo.mdx` 写完一篇新文章；website-content 要求「接下来跑 content-translation」；content-translation 读该文件，发现 locale 有 `en`、`es`、`zh`，于是写出 `content/locales/es/writing/foo.mdx` 和 `content/locales/zh/writing/foo.mdx`。下次构建时西语、中文站会用到这些；英文可能继续用共享文件或单独的 `content/locales/en/writing` 副本，取决于仓库配置。无论哪种，都是一份正本、一次交棒、每个 locale 都有对应版本。
+
+## 为什么这套组合有效
+
+i18n 设计保证一件事：locale 显式体现在 URL 和内容树里，构建按 locale 确定。website-content 再保证一件事：每种内容类型有唯一「该放哪」和「该满足什么」，共享条目一写完就交给翻译。content-translation 再保证一件事：不随意翻译、不反着翻，只从共享正本翻到各 locale 目录，规则统一。
+
+三者一起，把「猜」去掉。不用记 about 页文案在 `content/locales/<locale>/site/about.json`；不用记发一篇文章要亲手建三份文件。架构编码的是模型，两个 skill 编码的是流程。i18n 和内容能同步、又不乱，靠的就是这个——两个小 skill 文件，扛掉了否则要手工且容易出错的那部分活。

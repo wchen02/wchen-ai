@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import { useCurrentLocale } from "@/components/LocaleProvider";
 import type { Project } from "@/lib/schemas";
+import { formatDate } from "@/lib/formatting";
+import { localizePath } from "@/lib/i18n";
 
 const STAGGER_DELAY = 0.06;
 
@@ -11,6 +14,7 @@ interface ProjectsListClientProps {
 }
 
 export default function ProjectsListClient({ projects }: ProjectsListClientProps) {
+  const locale = useCurrentLocale();
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -19,7 +23,7 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
         {projects.map((project) => (
           <Link
             key={project.slug}
-            href={`/projects/${project.slug}`}
+            href={localizePath(locale, `/projects/${project.slug}`)}
             className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors"
           >
             <div className="flex justify-between items-baseline">
@@ -27,7 +31,7 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
                 {project.title}
               </h3>
               <time dateTime={project.date} className="text-sm text-gray-500">
-                {new Date(project.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                {formatDate(project.date, { year: "numeric", month: "short" }, locale)}
               </time>
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
@@ -53,7 +57,7 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
             className="transition-[box-shadow] duration-200 hover:shadow-[0_4px_14px_-4px_rgba(16,185,129,0.2)] dark:hover:shadow-[0_4px_14px_-4px_rgba(16,185,129,0.15)]"
           >
             <Link
-              href={`/projects/${project.slug}`}
+              href={localizePath(locale, `/projects/${project.slug}`)}
               className="group flex flex-col gap-2 p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-800/50 transition-colors block"
             >
               <div className="flex justify-between items-baseline">
@@ -61,7 +65,7 @@ export default function ProjectsListClient({ projects }: ProjectsListClientProps
                   {project.title}
                 </h3>
                 <time dateTime={project.date} className="text-sm text-gray-500">
-                  {new Date(project.date).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
+                  {formatDate(project.date, { year: "numeric", month: "short" }, locale)}
                 </time>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">

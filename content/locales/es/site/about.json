@@ -1,0 +1,62 @@
+{
+  "metadataDescription": "Filosofia, intereses y trayectoria de Wilson Chen, founder y builder en la interseccion de la IA y las herramientas para developers.",
+  "intro": {
+    "title": "Sobre mi",
+    "description": "Soy Wensheng Chen; me dicen Wilson. Construyo cosas en la interseccion de la inteligencia artificial y las herramientas para developers. Esta pagina es una instantanea de lo que me impulsa, lo que me importa y como pienso sobre el trabajo."
+  },
+  "philosophy": {
+    "title": "Filosofia",
+    "paragraphs": [
+      "Creo que las mejores herramientas desaparecen. El software que vale la pena construir no exige atencion; elimina friccion con tanta suavidad que la gente olvida que esta ahi. Esa conviccion da forma a todo lo que hago.",
+      "Gran parte de la industria tecnologica optimiza para el engagement. A mi me interesa mas lo contrario: construir sistemas que ayuden a las personas a pasar menos tiempo en herramientas y mas tiempo en el trabajo que de verdad importa. La medida de un gran producto no es cuanto tiempo lo usa alguien, sino cuan rapido logra lo que queria hacer.",
+      "Tambien creo en construir en publico y pensar en voz alta. Escribir es como pongo a prueba mis ideas. Lanzar es como pongo a prueba mi intuicion. Ambas cosas son necesarias, y ninguna basta por si sola."
+    ]
+  },
+  "expertise": {
+    "title": "Intereses y Experiencia",
+    "description": "Los problemas que me atraen viven justo en la costura entre como piensa la gente y como funciona el software. Algunas areas a las que vuelvo una y otra vez:",
+    "items": [
+      {
+        "title": "Agentes con Contexto",
+        "description": "Construir sistemas de IA que entiendan el cuadro completo, no solo el prompt, sino la intencion, la historia y las restricciones alrededor de lo que una persona realmente necesita."
+      },
+      {
+        "title": "Developer Experience",
+        "description": "La distancia entre lo que un developer intenta hacer y lo que tiene que escribir sigue siendo demasiado grande. Me interesan las herramientas que cierran esa distancia sin agregar nuevas abstracciones que aprender."
+      },
+      {
+        "title": "Sistemas de Conocimiento",
+        "description": "Generamos mas contexto del que podemos retener. Me atraen los sistemas que capturan, conectan y muestran conocimiento justo en el momento en que resulta util."
+      },
+      {
+        "title": "Arquitectura Static-First",
+        "description": "Prefiero sistemas que son rapidos por defecto, predecibles al desplegar y resistentes al fallo. La complejidad debe ganarse, no heredarse."
+      }
+    ]
+  },
+  "background": {
+    "title": "Trayectoria",
+    "paragraphs": [
+      "Comence mi carrera en Financial Times, donde pase casi cinco anos como ingeniero trabajando en su plataforma digital. Esa experiencia me dio una apreciacion profunda por los sistemas que sirven a millones de lectores sin estorbarles.",
+      "Despues funde Innovative Web Services y fui CTO durante unos tres anos, construyendo soluciones web a medida para negocios que necesitaban algo mas que plantillas prehechas. Luego pase por varios roles de ingenieria en Zume, y despues como senior engineer en HubSpot y FullStory; cada etapa afino una parte distinta de como pienso sobre developer experience, pipelines de datos y calidad de producto.",
+      "Mas recientemente fui CTO en The Juicy Crab, donde lidere la estrategia tecnologica para una cadena de restaurantes en crecimiento. Hoy dirijo [bestpos.io](https://bestpos.io), una agencia de marketing para restaurantes, y [kloudeats.com](https://kloudeats.com), una plataforma de pedidos online first-party, mientras sigo construyendo herramientas para developers impulsadas por IA."
+    ]
+  },
+  "principles": {
+    "title": "Principios con los que Construyo",
+    "items": [
+      {
+        "principle": "Lanza primero, refina despues",
+        "detail": "El software funcionando ensena mas que cualquier documento de planificacion. Pon algo real frente a la gente lo antes posible."
+      },
+      {
+        "principle": "La complejidad debe ganarse",
+        "detail": "Cada abstraccion, servicio y dependencia debe justificar su existencia. Empieza por el camino mas simple."
+      },
+      {
+        "principle": "Las herramientas deben desaparecer",
+        "detail": "El mejor software es invisible. Si alguien tiene que pensar en la herramienta en vez de pensar en el trabajo, la herramienta ha fallado."
+      }
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "languageSwitcher": {
+    "label": "Idioma",
+    "ariaLabel": "Cambiar idioma"
+  },
+  "themeToggle": {
+    "staticLabel": "Cambiar tema",
+    "announcement": "Cambiar tema, actualmente en modo {currentMode}. Cambiar a modo {nextMode}.",
+    "lightModeLabel": "claro",
+    "darkModeLabel": "oscuro"
+  },
+  "tableOfContents": {
+    "ariaLabel": "Tabla de contenido",
+    "heading": "En esta pagina"
+  },
+  "shareButton": {
+    "ariaLabel": "Compartir o copiar enlace",
+    "copiedLabel": "Copiado"
+  },
+  "readNext": {
+    "heading": "Leer despues"
+  },
+  "searchWriting": {
+    "label": "Buscar escritos por titulo, tema o etiquetas",
+    "loadingPlaceholder": "Buscando escritos...",
+    "placeholder": "Busca por titulo, tema o etiquetas...",
+    "noResults": "No hay resultados para \"{query}\".",
+    "browseByThemeLabel": "Explorar por tema"
+  },
+  "writing": {
+    "themeNavAriaLabel": "Explorar por tema",
+    "emptyState": "No se encontraron escritos.",
+    "backToAllLabel": "Volver a todos los escritos",
+    "minuteReadLabel": "min de lectura",
+    "updatedPrefix": "Actualizado",
+    "notFoundTitle": "Escrito no encontrado",
+    "detailTitleTemplate": "{title} | {siteName}"
+  },
+  "projects": {
+    "filterByStatusLabel": "Filtrar por estado:",
+    "statusLabels": {
+      "all": "Todos",
+      "active": "Activo",
+      "archived": "Archivado",
+      "inProgress": "En progreso"
+    },
+    "typeLabels": {
+      "app": "App",
+      "agent": "Agente",
+      "experiment": "Experimento",
+      "skill": "Skill",
+      "library": "Libreria",
+      "tool": "Herramienta"
+    },
+    "emptyState": "No se encontraron proyectos.",
+    "filteredEmptyState": "Ningun proyecto coincide con el filtro actual.",
+    "clearFilterLabel": "Limpiar filtro y mostrar todos los proyectos",
+    "inProgressLabel": "En progreso",
+    "motivationLabel": "Motivacion",
+    "problemLabel": "Problema",
+    "learningsLabel": "Aprendizajes clave",
+    "readFullStoryLabel": "Leer la historia completa",
+    "backToAllLabel": "Volver a todos los proyectos",
+    "githubLabel": "GitHub",
+    "liveAppLabel": "App en vivo",
+    "notFoundTitle": "Proyecto no encontrado",
+    "detailTitleTemplate": "{title} | {siteName}"
+  },
+  "newsletterFlow": {
+    "confirmLoadingTitle": "Confirmando...",
+    "confirmLoadingMessage": "Confirmando tu suscripcion...",
+    "confirmErrorTitle": "No se pudo confirmar",
+    "unsubscribeLoadingTitle": "Dandote de baja...",
+    "unsubscribeLoadingMessage": "Te estamos dando de baja de futuros correos del newsletter...",
+    "unsubscribeErrorTitle": "No se pudo completar la baja"
+  },
+  "github": {
+    "noDataLabel": "No hay datos de contribuciones disponibles.",
+    "ariaLabel": "Grafico de contribuciones de GitHub que muestra {totalContributions} contribuciones en el ultimo ano a lo largo de los 100 dias mas recientes",
+    "summary": "{totalContributions} contribuciones en el ultimo ano",
+    "dayTitle": "{contributionCount} contribuciones el {date}"
+  },
+  "themeDescriptors": {
+    "Architecture": "Diseno de sistemas y enfoques static-first",
+    "Infrastructure": "Hosting, email y decisiones de plataforma",
+    "Workflow": "Como construimos y lanzamos",
+    "Developer Tools": "IA, agentes y experiencia de developer"
+  }
+}

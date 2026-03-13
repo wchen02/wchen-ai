@@ -1,8 +1,37 @@
 # Content Schemas & Frontmatter Reference
 
-All content lives in `/content/` as MDX files. Frontmatter is validated by Zod at build time — invalid frontmatter fails the build.
+The site now uses two content systems:
 
-## Writing Entry (`content/writing/[slug].mdx`)
+- Locale-scoped JSON bundles in `content/locales/<locale>/site/*.json` for site copy, UI labels, newsletter text, and system messages
+- MDX files for writing and project entries, loaded from locale-specific folders first and falling back to shared content in `content/writing` and `content/projects`
+
+Zod validation happens at build time. Invalid frontmatter or invalid locale JSON content fails the build.
+
+## Site Content Bundles (`content/locales/<locale>/site/*.json`)
+
+These files are the source of truth for page copy and UI strings. They are imported and validated in `src/lib/content.ts`.
+
+### Files
+
+- `profile.json`: site identity, metadata defaults, social links, nav labels, CTA copy, contact copy, not-found copy
+- `home.json`: homepage hero and section copy
+- `about.json`: about-page intro, philosophy, expertise, background, principles
+- `newsletter.json`: newsletter email templates, recurring digest labels, footer labels
+- `ui.json`: interface strings for components like language switcher, theme toggle, search, project detail labels
+- `forms.json`: form labels, placeholders, submission labels, success copy
+- `system.json`: validation and API/system fallback messages
+
+### Authoring rules for locale JSON
+
+- Preserve the existing object shape unless the schema is being intentionally updated
+- Translate content values, not key names
+- Keep route values unprefixed, for example `/about` instead of `/es/about`
+- Keep token placeholders intact, for example `{siteName}`, `{authorName}`, `{query}`
+- Prefer editing all supported locales together when changing shared product copy
+
+---
+
+## Writing Entry (`content/writing/[slug].mdx` or `content/locales/<locale>/writing/[slug].mdx`)
 
 ```yaml
 ---
@@ -17,10 +46,11 @@ draft: false                        # boolean. If true, excluded from build.
 ```
 
 ### Writing body constraints
-- **Length**: 200–1500 words (per spec)
+- **Length**: 200-1500 words (per spec)
 - **Format**: MDX (markdown + optional JSX components)
 - **Reading time**: Auto-calculated at build time from word count
-- **Slug**: Derived from filename (e.g. `static-first.mdx` → `/writing/static-first`)
+- **Slug**: Derived from filename (e.g. `static-first.mdx` -> `/writing/static-first`, localized at runtime when needed)
+- **Location**: Prefer `content/locales/<locale>/writing/[slug].mdx` for locale-specific pieces; use `content/writing/[slug].mdx` for shared/default content
 
 ### Writing body structure
 Typical pattern from existing content:
@@ -33,7 +63,7 @@ No H1 in body (title is rendered from frontmatter). Use H2 sparingly for structu
 
 ---
 
-## Project Entry (`content/projects/[slug].mdx`)
+## Project Entry (`content/projects/[slug].mdx` or `content/locales/<locale>/projects/[slug].mdx`)
 
 ```yaml
 ---
@@ -56,6 +86,10 @@ Typical pattern from existing content:
 2. "How it works" or "The Vision" section (H2 + technical explanation)
 3. Optional: "Architecture" or "Results" section
 4. Code snippets where relevant (TypeScript)
+
+### Project location rules
+- Prefer `content/locales/<locale>/projects/[slug].mdx` for locale-specific entries
+- Use `content/projects/[slug].mdx` for shared/default content that should act as fallback
 
 ### Narrative fields style guide
 - **motivation**: Start with "I wanted to..." or "I needed...". Focus on the personal itch.

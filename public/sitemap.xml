@@ -1,67 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wchen.ai</loc>
+    <loc>https://wchen.ai/en</loc>
     <lastmod>2026-03-13</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/about</loc>
+    <loc>https://wchen.ai/en/about</loc>
     <lastmod>2026-03-13</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/projects</loc>
+    <loc>https://wchen.ai/en/projects</loc>
     <lastmod>2026-03-13</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing</loc>
+    <loc>https://wchen.ai/en/writing</loc>
     <lastmod>2026-03-13</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/projects/env-from-example</loc>
+    <loc>https://wchen.ai/en/projects/env-from-example</loc>
     <lastmod>2026-02-25</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/projects/website-content-skill</loc>
+    <loc>https://wchen.ai/en/projects/website-content-skill</loc>
     <lastmod>2026-02-23</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/projects/personal-website</loc>
+    <loc>https://wchen.ai/en/projects/personal-website</loc>
     <lastmod>2026-02-22</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/projects/super-mario-replica</loc>
+    <loc>https://wchen.ai/en/projects/super-mario-replica</loc>
     <lastmod>2025-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/choosing-marketing-email-providers</loc>
+    <loc>https://wchen.ai/en/writing/choosing-marketing-email-providers</loc>
     <lastmod>2026-02-27</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/static-site-email</loc>
+    <loc>https://wchen.ai/en/writing/static-site-email</loc>
     <lastmod>2026-02-24</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/ditching-netlify</loc>
+    <loc>https://wchen.ai/en/writing/ditching-netlify</loc>
     <lastmod>2026-02-24</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/spec-kit-lessons</loc>
+    <loc>https://wchen.ai/en/writing/spec-kit-lessons</loc>
     <lastmod>2026-02-23</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/vibe-coding-in-a-day</loc>
+    <loc>https://wchen.ai/en/writing/vibe-coding-in-a-day</loc>
     <lastmod>2026-02-23</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/teaching-agents-your-voice</loc>
+    <loc>https://wchen.ai/en/writing/teaching-agents-your-voice</loc>
     <lastmod>2026-02-23</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/why-cloudflare</loc>
+    <loc>https://wchen.ai/en/writing/why-cloudflare</loc>
     <lastmod>2026-02-23</lastmod>
   </url>
   <url>
-    <loc>https://wchen.ai/writing/static-first</loc>
+    <loc>https://wchen.ai/en/writing/static-first</loc>
+    <lastmod>2026-02-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/about</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects/env-from-example</loc>
+    <lastmod>2026-02-25</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects/website-content-skill</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects/personal-website</loc>
+    <lastmod>2026-02-22</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects/super-mario-replica</loc>
+    <lastmod>2025-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/choosing-marketing-email-providers</loc>
+    <lastmod>2026-02-27</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/static-site-email</loc>
+    <lastmod>2026-02-24</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/ditching-netlify</loc>
+    <lastmod>2026-02-24</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/spec-kit-lessons</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/vibe-coding-in-a-day</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/teaching-agents-your-voice</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/why-cloudflare</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/static-first</loc>
+    <lastmod>2026-02-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/about</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects/env-from-example</loc>
+    <lastmod>2026-02-25</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects/website-content-skill</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects/personal-website</loc>
+    <lastmod>2026-02-22</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects/super-mario-replica</loc>
+    <lastmod>2025-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/choosing-marketing-email-providers</loc>
+    <lastmod>2026-02-27</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/static-site-email</loc>
+    <lastmod>2026-02-24</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/ditching-netlify</loc>
+    <lastmod>2026-02-24</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/spec-kit-lessons</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/vibe-coding-in-a-day</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/teaching-agents-your-voice</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/why-cloudflare</loc>
+    <lastmod>2026-02-23</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/static-first</loc>
     <lastmod>2026-02-10</lastmod>
   </url>
 </urlset>

@@ -1,9 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useOptionalLocale } from "@/components/LocaleProvider";
 import type { TOCItem } from "@/lib/mdx";
+import { getUiContent } from "@/lib/site-content";
 
-export default function TableOfContents({ headings }: { headings: TOCItem[] }) {
+export default function TableOfContents({
+  headings,
+  locale: localeProp,
+}: {
+  headings: TOCItem[];
+  locale?: string;
+}) {
+  const contextLocale = useOptionalLocale();
+  const locale = localeProp ?? contextLocale;
+  const uiContent = getUiContent(locale ?? undefined);
   const [activeId, setActiveId] = useState<string>(headings[0]?.id ?? "");
 
   useEffect(() => {
@@ -45,9 +56,9 @@ export default function TableOfContents({ headings }: { headings: TOCItem[] }) {
   if (headings.length < 3) return null;
 
   return (
-    <nav aria-label="Table of contents" className="border-l-2 border-gray-200 dark:border-gray-800 pl-4 mb-10">
+    <nav aria-label={uiContent.tableOfContents.ariaLabel} className="border-l-2 border-gray-200 dark:border-gray-800 pl-4 mb-10">
       <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-3">
-        On this page
+        {uiContent.tableOfContents.heading}
       </p>
       <ol className="space-y-1.5 text-sm">
         {headings.map((h) => (

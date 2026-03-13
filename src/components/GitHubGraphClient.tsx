@@ -1,7 +1,10 @@
 "use client";
 
 import { LazyMotion, domAnimation, m, useReducedMotion } from "framer-motion";
+import { useCurrentLocale } from "@/components/LocaleProvider";
 import type { GitHubContributions } from "@/lib/schemas";
+import { resolveContentTokens } from "@/lib/formatting";
+import { getUiContent } from "@/lib/site-content";
 
 const STAGGER_DELAY = 0.012;
 const MAX_STAGGER = 0.4;
@@ -11,10 +14,12 @@ interface GitHubGraphClientProps {
 }
 
 export default function GitHubGraphClient({ data }: GitHubGraphClientProps) {
+  const locale = useCurrentLocale();
+  const uiContent = getUiContent(locale);
   const prefersReducedMotion = useReducedMotion();
 
   if (!data || !data.weeks) {
-    return <div className="text-sm text-gray-500">No contribution data available.</div>;
+    return <div className="text-sm text-gray-500">{uiContent.github.noDataLabel}</div>;
   }
 
   const allDays = data.weeks.flatMap((w) => w.contributionDays);
@@ -25,10 +30,14 @@ export default function GitHubGraphClient({ data }: GitHubGraphClientProps) {
       <div
         className="flex flex-col gap-2"
         role="img"
-        aria-label={`GitHub contribution graph showing ${data.totalContributions} contributions in the last year across the most recent 100 days`}
+          aria-label={resolveContentTokens(uiContent.github.ariaLabel, {
+            totalContributions: data.totalContributions,
+          })}
       >
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          <span className="font-medium text-gray-900 dark:text-gray-100">{data.totalContributions}</span> contributions in the last year
+            {resolveContentTokens(uiContent.github.summary, {
+              totalContributions: data.totalContributions,
+            })}
         </div>
         <div className="flex flex-wrap gap-1" aria-hidden="true">
           {recentDays.map((day) => {
@@ -41,7 +50,10 @@ export default function GitHubGraphClient({ data }: GitHubGraphClientProps) {
             return (
               <div
                 key={day.date}
-                title={`${day.contributionCount} contributions on ${day.date}`}
+                title={resolveContentTokens(uiContent.github.dayTitle, {
+                  contributionCount: day.contributionCount,
+                  date: day.date,
+                })}
                 className={`w-3 h-3 rounded-sm ${bgColor}`}
               />
             );
@@ -56,10 +68,14 @@ export default function GitHubGraphClient({ data }: GitHubGraphClientProps) {
       <div
         className="flex flex-col gap-2"
         role="img"
-        aria-label={`GitHub contribution graph showing ${data.totalContributions} contributions in the last year across the most recent 100 days`}
+        aria-label={resolveContentTokens(uiContent.github.ariaLabel, {
+          totalContributions: data.totalContributions,
+        })}
       >
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          <span className="font-medium text-gray-900 dark:text-gray-100">{data.totalContributions}</span> contributions in the last year
+          {resolveContentTokens(uiContent.github.summary, {
+            totalContributions: data.totalContributions,
+          })}
         </div>
         <div className="flex flex-wrap gap-1" aria-hidden="true">
           {recentDays.map((day, i) => {
@@ -77,7 +93,10 @@ export default function GitHubGraphClient({ data }: GitHubGraphClientProps) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "-20px" }}
                 transition={{ duration: 0.25, delay, ease: "easeOut" }}
-                title={`${day.contributionCount} contributions on ${day.date}`}
+                title={resolveContentTokens(uiContent.github.dayTitle, {
+                  contributionCount: day.contributionCount,
+                  date: day.date,
+                })}
                 className={`w-3 h-3 rounded-sm ${bgColor}`}
               />
             );

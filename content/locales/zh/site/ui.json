@@ -1,0 +1,89 @@
+{
+  "languageSwitcher": {
+    "label": "语言",
+    "ariaLabel": "切换语言"
+  },
+  "themeToggle": {
+    "staticLabel": "主题切换",
+    "announcement": "主题切换，当前为 {currentMode} 模式。切换到 {nextMode} 模式。",
+    "lightModeLabel": "浅色",
+    "darkModeLabel": "深色"
+  },
+  "tableOfContents": {
+    "ariaLabel": "目录",
+    "heading": "本页内容"
+  },
+  "shareButton": {
+    "ariaLabel": "分享或复制链接",
+    "copiedLabel": "已复制！"
+  },
+  "readNext": {
+    "heading": "继续阅读"
+  },
+  "searchWriting": {
+    "label": "按标题、主题或标签搜索写作",
+    "loadingPlaceholder": "正在搜索写作...",
+    "placeholder": "按标题、主题或标签搜索...",
+    "noResults": "没有找到 “{query}” 的结果。",
+    "browseByThemeLabel": "按主题浏览"
+  },
+  "writing": {
+    "themeNavAriaLabel": "按主题浏览",
+    "emptyState": "没有找到写作内容。",
+    "backToAllLabel": "返回全部写作",
+    "minuteReadLabel": "分钟阅读",
+    "updatedPrefix": "更新于",
+    "notFoundTitle": "未找到文章",
+    "detailTitleTemplate": "{title} | {siteName}"
+  },
+  "projects": {
+    "filterByStatusLabel": "按状态筛选：",
+    "statusLabels": {
+      "all": "全部",
+      "active": "活跃",
+      "archived": "归档",
+      "inProgress": "进行中"
+    },
+    "typeLabels": {
+      "app": "应用",
+      "agent": "代理",
+      "experiment": "实验",
+      "skill": "技能",
+      "library": "库",
+      "tool": "工具"
+    },
+    "emptyState": "没有找到项目。",
+    "filteredEmptyState": "当前筛选条件下没有匹配的项目。",
+    "clearFilterLabel": "清除筛选并显示全部项目",
+    "inProgressLabel": "进行中",
+    "motivationLabel": "动机",
+    "problemLabel": "问题",
+    "learningsLabel": "关键收获",
+    "readFullStoryLabel": "阅读全文",
+    "backToAllLabel": "返回全部项目",
+    "githubLabel": "GitHub",
+    "liveAppLabel": "在线应用",
+    "notFoundTitle": "未找到项目",
+    "detailTitleTemplate": "{title} | {siteName}"
+  },
+  "newsletterFlow": {
+    "confirmLoadingTitle": "确认中...",
+    "confirmLoadingMessage": "正在确认你的订阅...",
+    "confirmErrorTitle": "确认失败",
+    "unsubscribeLoadingTitle": "退订中...",
+    "unsubscribeLoadingMessage": "正在为你取消后续 newsletter 邮件订阅...",
+    "unsubscribeErrorTitle": "退订失败"
+  },
+  "github": {
+    "noDataLabel": "没有可用的贡献数据。",
+    "ariaLabel": "GitHub 贡献图，显示最近一年中最近 100 天的 {totalContributions} 次贡献",
+    "summary": "最近一年共有 {totalContributions} 次贡献",
+    "dayTitle": "{date} 有 {contributionCount} 次贡献"
+  },
+  "themeDescriptors": {
+    "Architecture": "系统设计与静态优先方法",
+    "Infrastructure": "托管、邮件与平台选择",
+    "Workflow": "我们如何构建与交付",
+    "Developer Tools": "AI、代理与开发者体验"
+  }
+}

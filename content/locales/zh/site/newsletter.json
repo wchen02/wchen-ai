@@ -1,0 +1,69 @@
+{
+  "confirm": {
+    "subject": "确认订阅 {siteName} 的写作",
+    "preview": "确认你的 newsletter 订阅。",
+    "title": "确认你的订阅",
+    "intro": [
+      "感谢订阅 {authorName} 的写作。",
+      "请确认你的邮箱地址，以便在有新内容发布时收到不定期更新。"
+    ],
+    "primaryActionLabel": "确认订阅",
+    "secondaryActionPrefix": "或者复制下面的链接到浏览器中打开：",
+    "sections": [
+      {
+        "heading": "你将收到什么",
+        "paragraphs": [
+          "{newsletterDescription}",
+          "该确认链接会在 24 小时后失效。如果这不是你的操作，可以直接忽略此邮件。"
+        ]
+      }
+    ]
+  },
+  "welcome": {
+    "subject": "你已订阅 {siteName} 的写作",
+    "preview": "你已订阅 {siteName} 的写作。",
+    "title": "订阅成功",
+    "intro": [
+      "一切设置完成。{authorName} 会在有新写作发布时向你发送不定期更新。",
+      "你将收到关于软件构建、开发者工具，以及把想法变成产品所需过程的深入笔记。"
+    ],
+    "primaryActionLabel": "阅读最新文章",
+    "secondaryActionLabel": "浏览网站",
+    "sections": [
+      {
+        "heading": "补充说明",
+        "paragraphs": [
+          "不会有垃圾邮件，不会有高频营销流程，如果它不再对你有用，也没有任何压力继续订阅。"
+        ]
+      }
+    ]
+  },
+  "issueDefaults": {
+    "preview": "有新的更新已上线。",
+    "primaryActionLabel": "查看更新"
+  },
+  "recurring": {
+    "digest": {
+      "subject": "{siteName} 有新内容",
+      "preview": "{siteName} 上有新的写作和项目更新。",
+      "summary": "最近上线了一些新内容。这里是最新写作与项目的简短摘要。",
+      "itemsHeading": "最新更新",
+      "itemTypeLabels": {
+        "writing": "写作",
+        "project": "项目"
+      },
+      "itemActionLabels": {
+        "writing": "阅读文章",
+        "project": "查看项目"
+      },
+      "footerNote": "{newsletterDescription}"
+    }
+  },
+  "footer": {
+    "note": "{newsletterDescription}",
+    "writingArchiveLabel": "查看写作归档",
+    "projectsArchiveLabel": "浏览项目归档",
+    "homeLabel": "访问网站",
+    "unsubscribeLabel": "退订"
+  }
+}

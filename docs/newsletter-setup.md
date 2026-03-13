@@ -12,13 +12,13 @@ The newsletter system is designed to behave like the rest of this template repo:
 
 Update these files first:
 
-- `content/site/newsletter.json`: source of truth for confirmation, welcome, and recurring newsletter email copy
+- `content/locales/en/site/newsletter.json`: source of truth for confirmation, welcome, and recurring newsletter email copy
 - `content/site/newsletter-state.json`: tracks which writing and project slugs have already been sent as recurring emails
-- `content/site/profile.json`: brand metadata such as site name, author name, base URL, and default from-address
-- `content/writing/*.mdx`: published writing entries eligible for recurring sends
-- `content/projects/*.mdx`: published project entries eligible for recurring sends
+- `content/locales/en/site/profile.json`: brand metadata such as site name, author name, base URL, locale values, and default from-address
+- `content/locales/<locale>/writing/*.mdx`: localized writing entries eligible for recurring sends, with fallback to `content/writing/*.mdx`
+- `content/locales/<locale>/projects/*.mdx`: localized project entries eligible for recurring sends, with fallback to `content/projects/*.mdx`
 
-`content/site/newsletter.json` is where template users should change subjects, previews, CTA labels, section headings, footer copy, and recurring writing/project email language.
+`content/locales/en/site/newsletter.json` is where template users should change subjects, previews, CTA labels, section headings, footer copy, and recurring writing/project email language.
 
 ## Environment Variables
 
@@ -37,7 +37,7 @@ What each one does:
 - `RESEND_API_KEY`: used for confirmation, welcome, and recurring sends
 - `RESEND_SEGMENT_ID`: the confirmed subscriber segment used as the recurring-send audience
 - `NEWSLETTER_SECRET`: signs and verifies double opt-in confirmation links
-- `NEWSLETTER_FROM`: optional override for the sender address; otherwise the value from `content/site/profile.json` is used
+- `NEWSLETTER_FROM`: optional override for the sender address; otherwise the value from `content/locales/en/site/profile.json` is used
 
 To find the segment ID in Resend:
 
@@ -81,7 +81,7 @@ Important: the current workflow does **not** sync newsletter variables from GitH
 The signup flow uses Resend plus a signed confirmation link:
 
 1. `POST /api/newsletter` validates the email address and sends the confirmation email.
-2. The confirmation email is rendered from `content/site/newsletter.json`.
+2. The confirmation email is rendered from `content/locales/en/site/newsletter.json`.
 3. The confirmation link hits `GET /api/newsletter-confirm`.
 4. The contact is added to the configured Resend segment.
 5. A welcome email is sent using the same content-driven email layer.
@@ -113,9 +113,9 @@ pnpm run newsletter:send-recurring
 The script:
 
 1. loads `content/site/newsletter-state.json`
-2. loads published writings and projects from `content/`
+2. loads published writings and projects from `content/locales/<locale>/` when available, with fallback to the legacy `content/` root
 3. selects all unsent items deterministically using oldest-unsent-first order
-4. renders one recurring digest email for the unsent writing/project items using `content/site/newsletter.json`
+4. renders one recurring digest email for the unsent writing/project items using `content/locales/en/site/newsletter.json`
 5. fetches confirmed subscribers from the configured Resend segment
 6. sends the email in batches
 7. updates `content/site/newsletter-state.json` for every included item only after the send succeeds

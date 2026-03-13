@@ -10,8 +10,10 @@ import {
   getNewsletterEmailContent,
   getNewsletterFromAddress,
 } from "@/lib/site-config";
+import { getSystemContent } from "@/lib/site-content";
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
+const systemContent = getSystemContent();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
@@ -42,7 +44,7 @@ export async function POST(request: Request) {
 
   if (!isAllowedOrigin(origin)) {
     return new Response(
-      JSON.stringify({ success: false, error: "Forbidden" }),
+      JSON.stringify({ success: false, error: systemContent.common.forbidden }),
       { status: 403, headers }
     );
   }
@@ -58,7 +60,7 @@ export async function POST(request: Request) {
       const honeyIssue = issues.find((issue) => issue.path.includes("_honey"));
       if (honeyIssue) {
         return NextResponse.json(
-          { success: false, error: "Invalid submission" },
+          { success: false, error: systemContent.common.invalidSubmission },
           { status: 400, headers }
         );
       }
@@ -66,7 +68,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: "Validation failed",
+          error: systemContent.common.validationFailed,
           details: issues.map((issue) => ({
             field: issue.path.join("."),
             message: issue.message,
@@ -84,7 +86,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: true,
-          message: "Check your email to confirm your subscription.",
+          message: systemContent.newsletter.subscribeSuccess,
         },
         { status: 200, headers }
       );
@@ -121,7 +123,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: "Check your email to confirm your subscription.",
+        message: systemContent.newsletter.subscribeSuccess,
       },
       { status: 200, headers }
     );
@@ -130,7 +132,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to process subscription. Please try again later.",
+        error: systemContent.newsletter.subscribeFailure,
       },
       { status: 500, headers }
     );

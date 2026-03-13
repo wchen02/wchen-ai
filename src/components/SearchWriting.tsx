@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useCurrentLocale } from "@/components/LocaleProvider";
+import { resolveContentTokens } from "@/lib/formatting";
+import { localizePath } from "@/lib/i18n";
+import { getUiContent } from "@/lib/site-content";
 
 interface SearchEntry {
   slug: string;
@@ -25,17 +29,19 @@ function matchQuery(entry: SearchEntry, q: string): boolean {
 }
 
 export default function SearchWriting() {
+  const locale = useCurrentLocale();
+  const uiContent = getUiContent(locale);
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchIndex | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/search-index.json")
+    fetch(`/locales/${locale}/search-index.json`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("No index"))))
       .then((data: SearchIndex) => setIndex(data))
       .catch(() => setIndex({ writings: [], themes: [] }))
       .finally(() => setLoading(false));
-  }, []);
+  }, [locale]);
 
   const results = useMemo(() => {
     if (!index || !query.trim()) return null;
@@ -47,12 +53,12 @@ export default function SearchWriting() {
     return (
       <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
         <label htmlFor="writing-search" className="sr-only">
-          Search writing by title, theme, or tags
+          {uiContent.searchWriting.label}
         </label>
         <input
           id="writing-search"
           type="search"
-          placeholder="Search writing…"
+          placeholder={uiContent.searchWriting.loadingPlaceholder}
           disabled
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 text-sm"
         />
@@ -66,14 +72,14 @@ export default function SearchWriting() {
     <div className="space-y-3">
       <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
         <label htmlFor="writing-search" className="sr-only">
-          Search writing by title, theme, or tags
+          {uiContent.searchWriting.label}
         </label>
         <input
           id="writing-search"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by title, theme, or tags…"
+          placeholder={uiContent.searchWriting.placeholder}
           aria-describedby={showResults ? "search-results-desc" : undefined}
           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-neutral-900 text-gray-900 dark:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 text-sm"
         />
@@ -86,7 +92,7 @@ export default function SearchWriting() {
               {results.map((entry) => (
                 <li key={entry.slug}>
                   <Link
-                    href={`/writing/${entry.slug}`}
+                    href={localizePath(locale, `/writing/${entry.slug}`)}
                     className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
                   >
                     {entry.title}
@@ -97,10 +103,12 @@ export default function SearchWriting() {
             </ul>
           ) : (
             <>
-              <p className="text-gray-600 dark:text-gray-400">No results for &quot;{query.trim()}&quot;.</p>
+              <p className="text-gray-600 dark:text-gray-400">
+                {resolveContentTokens(uiContent.searchWriting.noResults, { query: query.trim() })}
+              </p>
               <p className="text-sm mt-2">
                 <a href="#theme-nav" className="text-emerald-600 dark:text-emerald-400 hover:underline">
-                  Browse by theme
+                  {uiContent.searchWriting.browseByThemeLabel}
                 </a>
               </p>
             </>

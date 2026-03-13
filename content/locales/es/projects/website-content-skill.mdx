@@ -1,0 +1,101 @@
+---
+title: "website-content skill"
+date: "2026-02-23T00:00:00Z"
+status: "active"
+type: ["agent", "skill"]
+motivation: "Quería que mi agente de IA dejara de escribir como un comunicado de prensa y empezara a escribir como yo — misma voz, mismo frontmatter, mismos patrones estructurales — sin tener que reexplicar esas restricciones en cada sesión."
+problemAddressed: "Cada vez que pedía a un agente que escribiera contenido para mi sitio, el resultado sonaba hueco. Gramática correcta, cero personalidad. El modelo caía en relleno corporativo porque no tenía restricciones contra las que trabajar. Re-promptear mis preferencias de voz en cada sesión no era sostenible."
+learnings: "La revelación progresiva es la decisión arquitectónica que hace prácticos los skills. Cargar una descripción de ~100 tokens para enrutar, luego el SKILL.md completo, luego los archivos de referencia bajo demanda — mantiene el coste de contexto negligible incluso con docenas de skills instalados. Además, codificar la voz es más difícil que codificar el schema. Acertar con los anti-patrones (qué evitar) importa más que los patrones positivos."
+featured: false
+---
+
+Construí un skill reutilizable para agentes que enseña a Cursor a escribir contenido para este sitio — entradas de blog, entradas de proyectos, copy de páginas — con mi voz, siguiendo mis schemas y usando mis patrones estructurales. El skill se publica en [skills.sh](https://skills.sh) y funciona en cualquier plataforma de código con IA que soporte la convención `SKILL.md`.
+
+## Cómo funciona
+
+El skill es un directorio con un archivo raíz `SKILL.md` y un subdirectorio `references/` con dos documentos especializados. El agente lee estos archivos en un orden concreto — una decisión de diseño llamada *revelación progresiva*.
+
+```text
+website-content/
+├── SKILL.md              # Router + flujo (se lee primero)
+└── references/
+    ├── voice-guide.md    # Patrones de frase, vocabulario, tono
+    ├── content-schemas.md # Especificaciones Zod de frontmatter, restricciones de cuerpo
+    └── page-patterns.md  # Referencia de layout y componentes
+```
+
+**Capa 1: SKILL.md** — El agente lee la descripción del frontmatter YAML (~100 tokens) para decidir si el skill es relevante. Si encaja, se carga el archivo completo. Esta capa define *cuándo* activarse, *qué flujo seguir* y *dónde van los archivos*. Incluye también una checklist de voz — un conjunto de comprobaciones booleanas que el agente aplica a su propia salida antes de presentar el borrador.
+
+**Capa 2: Guía de voz** — Patrones a nivel de frase extraídos de mi escritura existente. No orientación abstracta tipo "sé conversacional". Sino: hábitos estructurales concretos (anclas declarativas cortas seguidas de desarrollo), preferencias de vocabulario (`build`, `ship`, `friction` — no `leverage`, `synergy`, `innovative`), restricciones de párrafo (1-3 frases, cada una avanza exactamente una idea) y prohibiciones explícitas (sin signos de exclamación, sin emojis en el cuerpo).
+
+**Capa 3: Content schemas** — Definiciones de frontmatter validadas con Zod para cada tipo de contenido. El schema de writing exige `title`, `publishDate`, `theme` y `tags`. El schema de project exige `motivation`, `problemAddressed`, `status` y `type`. No son sugerencias de estilo — son contratos en build. Un frontmatter mal formado hace fallar la exportación estática de Next.js.
+
+```typescript
+const ProjectSchema = z.object({
+  title: z.string(),
+  date: z.string().datetime(),
+  status: z.enum(["active", "archived", "in-progress"]),
+  type: z.array(z.enum(["app", "agent", "experiment"])).min(1),
+  motivation: z.string().min(10),
+  problemAddressed: z.string().min(10),
+  learnings: z.string().optional(),
+  url: z.string().url().optional(),
+  github: z.string().url().optional(),
+  featured: z.boolean().default(false),
+});
+```
+
+## Decisiones de arquitectura
+
+**¿Por qué archivos separados en lugar de un SKILL.md enorme?** Economía de contexto. Solo la guía de voz son 83 líneas. El content schema son 85. Meterlo todo en un solo archivo obligaría al agente a cargar ~250 líneas de instrucciones en cada activación, aunque solo necesite el schema para una entrada de proyecto. Dividir en archivos de referencia hace que el agente cargue la guía de voz *solo cuando escribe prosa* y los page patterns *solo cuando edita copy a nivel de página*.
+
+**¿Por qué frontmatter YAML en SKILL.md?** Los campos `name` y `description` sirven de mecanismo de enrutado. El agente escanea estos campos en todos los skills instalados para decidir cuál activar. Una descripción precisa — "Usar cuando el usuario pida escribir una nueva entrada de writing, crear una entrada de proyecto o diga 'escribe contenido para' el sitio" — evita activaciones falsas y hace que el skill se dispare con la intención correcta.
+
+**¿Por qué una checklist de voz?** Los agentes tienden a derivar. Incluso con una guía de voz detallada, el modelo puede caer en lenguaje evasivo ("creo que tal vez") o añadir un signo de exclamación al final de una sección. La checklist actúa como auto-auditoría — restricciones concretas y comprobables que el agente aplica a su propia salida antes de devolver el borrador.
+
+## Errores habituales a evitar
+
+Construir un skill de contenido suena directo, pero me topé con varias trampas que me hicieron perder tiempo de verdad.
+
+### Escribir guías abstractas en lugar de patrones concretos
+
+"Sé conversacional" no le sirve a un agente. "Párrafos de 1-3 frases, cada uno avanza exactamente una idea, termina con convicción no con resumen" es accionable. Cada instrucción de la guía de voz tiene que ser *falsificable* — el agente debe poder mirar su salida y decidir sí o no si ha cumplido.
+
+### Sobrecargar el campo description
+
+La descripción del SKILL.md es una señal de enrutado, no documentación. Si la llenas de detalles de implementación, se rompen dos cosas: el agente malgasta tokens parseándola en cada petición, y puede activarse en peticiones donde no debería. Mantén la descripción bajo 150 tokens y centrada solo en *cuándo* debe dispararse el skill.
+
+### Olvidar los anti-patrones
+
+Las instrucciones positivas ("usa párrafos cortos") son más débiles que las restricciones negativas ("nunca signos de exclamación", "nunca matizar con 'kind of' o 'sort of'"). Los modelos tienden al promedio de sus datos de entrenamiento. Los anti-patrones son lo que alejan la salida de lo genérico y la acercan a tu voz real. La sección "Evitar" de mi guía de voz vale más que la sección "Usar".
+
+### Saltarse ejemplos reales
+
+Las descripciones de patrones son menos efectivas que ejemplos de esos patrones en acción. La guía de voz incluye ejemplos citados sacados directamente de mi escritura existente — no ejemplos sintéticos que escribí para la guía. El agente tiene que ver cómo es *de verdad* la salida objetivo, no una descripción de cómo debería ser.
+
+### Hacer el skill demasiado amplio
+
+Un solo skill que intente cubrir "todo el contenido del sitio, más code review, más despliegue" producirá resultados mediocres en todos los frentes. Acota cada skill a un dominio. El skill website-content se encarga de la autoría de contenido y nada más. Convenciones de código, procedimientos de despliegue y reglas del design system pertenecen a skills separados.
+
+### Ignorar el contrato de build
+
+Si tu contenido tiene validación de schema — Zod, TypeScript, JSON Schema — encódelo en el skill. Sin esto, el agente producirá frontmatter que *parece* correcto pero falla en build. Lo aprendí tras tres rondas corrigiendo formatos de `publishDate` que el agente generó como `"February 23, 2026"` en lugar de strings datetime ISO 8601.
+
+## El flujo en la práctica
+
+Cuando le digo al agente que escriba una nueva entrada de proyecto, sigue un camino determinista:
+
+1. Lee la descripción del SKILL.md, hace match con "entrada de proyecto"
+2. Carga el SKILL.md completo, lee las instrucciones de flujo
+3. Lee `references/voice-guide.md` para internalizar tono y vocabulario
+4. Lee `references/content-schemas.md` para obtener la spec de frontmatter del proyecto
+5. Redacta el contenido, luego aplica la checklist de voz a su propia salida
+6. Escribe el archivo en `content/projects/[slug].mdx`
+
+El resultado es un borrador que sigue mis patrones estructurales, usa mi vocabulario, respeta mi schema y coloca el archivo en el directorio correcto — sin que yo reexplique nada.
+
+## Dónde va esto
+
+El skill es portable entre plataformas. La misma convención `SKILL.md` funciona en Cursor, Claude Code y GitHub Copilot. Publicarlo en [skills.sh](https://skills.sh) permite que cualquiera lo instale con `npx skills add` y lo adapte a su propia voz y schemas.
+
+El patrón más profundo es que el *conocimiento procedural* — el tipo de entendimiento institucional que llevas en la cabeza sobre cómo haces las cosas — se puede codificar y compartir. No como documentación que leen humanos, sino como instrucciones estructuradas que ejecutan los agentes.

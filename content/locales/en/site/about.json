@@ -1,0 +1,62 @@
+{
+  "metadataDescription": "Philosophy, interests, and background of Wilson Chen, founder and builder at the intersection of AI and developer tools.",
+  "intro": {
+    "title": "About",
+    "description": "I'm Wensheng Chen; I go by Wilson. I build things at the intersection of artificial intelligence and developer tools. This page is a snapshot of what drives me, what I care about, and how I think about the work."
+  },
+  "philosophy": {
+    "title": "Philosophy",
+    "paragraphs": [
+      "I believe the best tools disappear. The software worth building doesn't demand attention; it removes friction so quietly that people forget it's there. That conviction shapes everything I work on.",
+      "Most of the technology industry optimizes for engagement. I'm more interested in the opposite: building systems that help people spend less time in tools and more time in the work that matters to them. The measure of a great product isn't how long someone uses it; it's how quickly they achieve what they set out to do.",
+      "I also believe in building in public and thinking out loud. Writing is how I stress-test ideas. Shipping is how I stress-test intuition. Both are necessary, and neither is sufficient alone."
+    ]
+  },
+  "expertise": {
+    "title": "Interests & Expertise",
+    "description": "The problems I gravitate toward sit at the seam between how people think and how software works. A few areas I keep returning to:",
+    "items": [
+      {
+        "title": "Context-Aware Agents",
+        "description": "Building AI systems that understand the full picture, not just the prompt, but the intent, history, and surrounding constraints that shape what someone actually needs."
+      },
+      {
+        "title": "Developer Experience",
+        "description": "The gap between what a developer intends and what they have to type is still too wide. I'm interested in tooling that closes that gap without adding new abstractions to learn."
+      },
+      {
+        "title": "Knowledge Systems",
+        "description": "We generate more context than we can retain. I'm drawn to systems that capture, connect, and surface knowledge at the moment it's actually useful."
+      },
+      {
+        "title": "Static-First Architecture",
+        "description": "I favor systems that are fast by default, predictable to deploy, and resilient to failure. Complexity should be earned, not inherited."
+      }
+    ]
+  },
+  "background": {
+    "title": "Background",
+    "paragraphs": [
+      "I started my career at the Financial Times, where I spent close to five years as an engineer working across their digital platform. That experience gave me a deep appreciation for systems that serve millions of readers without getting in the way.",
+      "From there I founded Innovative Web Services and served as CTO for about three years, building custom web solutions for businesses that needed more than off-the-shelf templates could offer. After that I moved through a series of engineering roles at Zume, then as a senior engineer at HubSpot and FullStory, each sharpening a different part of how I think about developer experience, data pipelines, and product quality.",
+      "Most recently I served as CTO at The Juicy Crab, where I led the technology strategy for a growing restaurant group. Today I run [bestpos.io](https://bestpos.io), a restaurant marketing agency, and [kloudeats.com](https://kloudeats.com), a first-party online ordering platform, while continuing to build AI-powered developer tools on the side."
+    ]
+  },
+  "principles": {
+    "title": "Principles I Build By",
+    "items": [
+      {
+        "principle": "Ship, then refine",
+        "detail": "Working software teaches you more than planning documents. Get something real in front of people early."
+      },
+      {
+        "principle": "Complexity must be earned",
+        "detail": "Every abstraction, service, and dependency should justify its existence. Default to the simpler path."
+      },
+      {
+        "principle": "Tools should disappear",
+        "detail": "The best software is invisible. If someone has to think about the tool instead of the work, the tool has failed."
+      }
+    ]
+  }
+}

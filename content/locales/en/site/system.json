@@ -1,0 +1,26 @@
+{
+  "common": {
+    "forbidden": "Forbidden",
+    "invalidSubmission": "Invalid submission",
+    "validationFailed": "Validation failed",
+    "genericError": "Something went wrong. Please try again later.",
+    "newsletterHtmlTitle": "Newsletter"
+  },
+  "validation": {
+    "nameRequired": "Name is required",
+    "invalidEmail": "Invalid email address",
+    "messageTooShort": "Message must be at least 10 characters"
+  },
+  "contact": {
+    "successMessage": "Thanks for reaching out! I'll get back to you soon.",
+    "developmentMessage": "Development mode: Message received but not sent.",
+    "sendFailure": "Failed to send message. Please try again later."
+  },
+  "newsletter": {
+    "subscribeSuccess": "Check your email to confirm your subscription.",
+    "subscribeFailure": "Failed to process subscription. Please try again later.",
+    "invalidConfirmationLink": "Invalid confirmation link. Please try subscribing again.",
+    "expiredConfirmationLink": "This confirmation link has expired. Please subscribe again.",
+    "invalidUnsubscribeLink": "Invalid unsubscribe link."
+  }
+}

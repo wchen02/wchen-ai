@@ -1,0 +1,54 @@
+---
+title: "Dejando Netlify"
+publishDate: "2026-02-24T10:00:00Z"
+theme: "Infrastructure"
+tags: ["netlify", "cloudflare", "hosting", "infrastructure"]
+featured: false
+draft: false
+---
+
+Usé Netlify durante años. Fue la primera plataforma que hizo que desplegar un sitio estático fuera sin esfuerzo — git push, esperar treinta segundos, listo. Durante mucho tiempo, eso bastaba.
+
+Luego ya no.
+
+## Muerte por mil cortes
+
+Netlify no falló de forma catastrófica. Se erosionó poco a poco. El tier gratuito tuvo restricciones más silenciosas. Los minutos de build pasaron a ser algo que vigilaba en lugar de ignorar. Los tramos de precios empezaron a optimizar para equipos y empresas, y la experiencia del desarrollador en solitario — lo que hacía de Netlify *Netlify* — pasó a territorio de después.
+
+Pero el precio no fue lo que me empujó. Fue la dirección de la plataforma.
+
+Netlify siguió añadiendo funciones que no pedí. Edge functions que parecían encajadas. Una capa de base de datos graph que resolvía un problema que nunca había tenido. Blobstore, identity, forms — cada uno un primitivo a medias integrado que requería su propio modelo mental, su propia madriguera de documentación, su propio set de gotchas.
+
+La plataforma se convirtió en un buffet de funciones donde nada sabía a que viniera de la misma cocina.
+
+## El problema de coherencia
+
+Lo que quería era simple: desplegar archivos estáticos rápido, ejecutar una función serverless cuando hiciera falta y guardar el dato ocasional. Tres primitivos. Netlify los tenía los tres — técnicamente. Pero parecían tres productos distintos cosidos bajo un mismo dashboard.
+
+Netlify Functions corrían sobre AWS Lambda por debajo. Edge Functions sobre Deno Deploy. La CDN era propia de Netlify, pero el blob storage era otra abstracción. Cada capa tenía distintas características de cold start, distintos límites de tamaño, distintas historias de depuración.
+
+Pasé más tiempo navegando *qué primitivo de Netlify usar* que construyendo funciones. Eso huele mal. Cuando tu plataforma de hosting exige investigación arquitectónica antes de escribir un handler, la abstracción ha fallado.
+
+## Lo que Cloudflare hizo obvio
+
+Pasarme a Cloudflare no fue una migración lateral. Fue una simplificación.
+
+Workers, KV, Pages, R2 — todos corren en la misma red, comparten el mismo modelo de despliegue y operan bajo el mismo runtime. Cuando escribo una Pages Function, es un Worker. Cuando guardo datos en KV, son accesibles desde el mismo Worker. No hay desajuste de impedancia entre primitivos porque se diseñaron como *un sistema*, no encajados a base de adquisiciones y partnerships.
+
+La diferencia se notó de forma visceral al desplegar este sitio. En Netlify, un deploy era pushear a una rama, esperar el build, esperar que la config de la edge function fuera correcta y comprobar si las reglas de redirect se parseaban en el orden adecuado. En Cloudflare Pages, hago push y está en vivo — global, en una red en la que ya confío con mi DNS.
+
+Sin ansiedad por minutos de build. Sin lotería de cold start de edge function. Sin lenguaje de reglas de redirect que se comporta distinto en producción que en preview.
+
+## El giro del vendor lock-in
+
+La sabiduría convencional dice que cambiar de plataforma es arriesgado por el vendor lock-in. Pero yo ya estaba en lock-in con Netlify — su sintaxis de redirects, sus convenciones de routing de funciones, su formato de config de deploy. Toda plataforma tiene lock-in. La pregunta es si estás encerrado en una *buena arquitectura* o una *cómoda*.
+
+El lock-in de Cloudflare es el modelo de isolates V8 y la API de Workers. Eso está más cerca de estándares web que lo que ofrecía Netlify. Si Cloudflare desapareciera mañana, mis Workers necesitarían refactor, pero mi modelo mental — edge-first, static-first, serverless — se trasladaría a cualquier sitio. El lock-in de Netlify estaba en detalles de tuberías que no me enseñaron nada portable.
+
+## La parte callada
+
+Lo más difícil de dejar Netlify fue admitir que me había quedado pequeño. Netlify era genuinamente bueno cuando solo necesitaba hosting estático con un pipeline de CI agradable. En cuanto quise que mi hosting fuera una *plataforma de aplicaciones* — ejecutar compute, guardar datos, manejar forms en el edge — se notaron las costuras.
+
+No creo que Netlify sea malo. Creo que optimizó para un desarrollador distinto del que me convertí. Quería ser la rampa amigable. Yo quería una base sobre la que construir años sin topar un techo que obligara a migrar *de nuevo*.
+
+Cloudflare es esa base. No porque sea perfecto, sino porque su arquitectura y la mía apuntan en la misma dirección.

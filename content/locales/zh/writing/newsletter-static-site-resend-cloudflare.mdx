@@ -1,0 +1,32 @@
+---
+title: "用 Resend 和 Cloudflare 从静态站发 newsletter"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["newsletter", "resend", "cloudflare", "static-sites"]
+featured: false
+draft: false
+---
+
+静态站不会在有人打开页面时跑代码，这正是目的。但 newsletter 需要动态：接收订阅、发确认邮件、处理点击、把联系人加进列表、发欢迎信。那怎么既保持站点静态，又完整掌控整个流程？
+
+我的做法是：用 Resend 发信，用 Cloudflare Pages Functions 提供那一小块 API。HTML 预构建、从 edge 提供；真正在请求时执行的只有几条路由：校验入参、签名 token、调 Resend。没有要维护的服务器，没有单独部署的后端。
+
+## 逻辑落在哪里
+
+站点是 Next.js 静态导出，部署在 Cloudflare Pages。每一页都是一个文件。访客打开首页或某篇文章时，拿到的是 CDN 上的静态字节，什么都不执行。
+
+Newsletter 订阅不同。表单提交到 `/api/newsletter`。这条路径不是静态文件。Cloudflare Pages 会触发一个 Function（和支撑 Pages 的 Workers 同一套运行时），执行 `functions/api/newsletter.ts` 里的逻辑：解析 body、校验邮箱、用 HMAC 和时间戳生成带签名的确认链接，再调 Resend API 发确认邮件，然后给客户端返回结果。没有数据库、没有队列，只有几个环境变量：`RESEND_API_KEY`、`NEWSLETTER_SECRET`，以及可选的 `NEWSLETTER_FROM`。
+
+用户点确认链接时，请求打到 `/api/newsletter-confirm`。又是另一个 Pages Function：校验签名和时间戳，通过 Resend API 把联系人加入对应 segment，再通过 Resend 发欢迎邮件，最后重定向到静态的「已确认」页面。邮件文案（主题、正文、页脚）都来自 locale JSON：`content/locales/.../site/newsletter.json`。Functions 只做薄薄一层：读内容、用共享模板渲染邮件、把结果交给 Resend。
+
+## 为什么是这个形态
+
+我希望站点保持静态优先：没有常驻 Node 服务、没有长期进程。Cloudflare Pages 正好满足：静态资源 + 只在请求命中 API 路径时跑一点服务端逻辑，其余流量全是 CDN。
+
+Resend 合适是因为 API 优先。我不需要靠后台设计活动或编排流程，只需要「发一封邮件」和「把联系人加进 segment」，各一次 HTTP 调用。确认信和欢迎信都在代码里用和站点 copy 同一套内容文件拼出来，一次构建、同一套部署。
+
+定期摘要发送（「最近更新」那种）根本不在 edge 上跑。在 CI（或本地）部署后跑一个脚本：读已发布的文章和项目列表、拼出一封 digest、从 Resend 拉取 segment 联系人、分批发送。脚本用同一套 Resend API 和同一套内容驱动的模板。没有服务器上的 cron，没有要配的 Lambda，只是流水线里在「有新内容发布」时执行的一步。
+
+## 小结
+
+你可以既拥有完全静态的站点，又有一条真正的 newsletter。动态部分只有几条 API 路由：校验、签名、转交给 Resend。平台（Cloudflare）只在被调用时在 edge 执行这些路由；其余——页面、文案、模板——都在仓库里，构建一次即可。我要的就是这种架构：默认静态，只留一小条明确的缝，给那件不得不动态的事。

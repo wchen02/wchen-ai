@@ -1,0 +1,54 @@
+---
+title: "告别 Netlify"
+publishDate: "2026-02-24T10:00:00Z"
+theme: "Infrastructure"
+tags: ["netlify", "cloudflare", "hosting", "infrastructure"]
+featured: false
+draft: false
+---
+
+我用 Netlify 用了好几年。它是第一个让部署静态站几乎零负担的平台——git push、等三十秒、完事。很长时间里这就够了。
+
+后来不够了。
+
+## 千刀万剐
+
+Netlify 没有崩盘，是一点点被侵蚀。免费档限制悄悄变严，build 分钟数从可以忽略变成要盯着看，定价开始围着团队和企业转，单人开发体验——当年让 Netlify 成为 *Netlify* 的东西——变成了次要。
+
+但推我走的不是价格，是平台方向。
+
+Netlify 不断加我没要的功能：像是硬塞上去的 edge functions、我从来没遇到过的图数据库层、Blobstore、identity、forms——每个都是半集成的原语，各自一套心智模型、文档坑和坑点。
+
+平台变成了功能自助餐，没有一道菜像一个厨房做出来的。
+
+## 一致性问题
+
+我想要的很简单：快速部署静态文件、需要时跑个 serverless 函数、偶尔存点数据。三种原语。Netlify 技术上都有——但像三个产品用同一个 dashboard 缝在一起。
+
+Netlify Functions 底层跑在 AWS Lambda，Edge Functions 跑在 Deno Deploy，CDN 是 Netlify 自己的，blob 又是另一层抽象。每层冷启动特性、体积限制、调试故事都不一样。
+
+我花在「该用 Netlify 的哪个原语」上的时间比写功能还多。这是设计坏味道：托管平台要你先做架构调研才能写一个 handler，抽象就失败了。
+
+## Cloudflare 让什么变明显
+
+迁到 Cloudflare 不是平迁，是简化。
+
+Workers、KV、Pages、R2 都在同一张网上、同一套部署模型、同一个运行时。写一个 Pages Function 就是 Worker；往 KV 存数据，同一个 Worker 就能读。原语之间没有阻抗不匹配，因为它们本来就是一个系统设计出来的，不是收购和合作拼出来的。
+
+部署这个站时差别特别直观。在 Netlify：推分支、等 build、盼着 edge function 配置没错、再检查 redirect 规则解析顺序。在 Cloudflare Pages：push 就上线——全球、在我已经拿来管 DNS 的那张网上。
+
+没有 build 分钟焦虑，没有 edge function 冷启动抽奖，没有「生产里和 preview 里行为不一样的」redirect 规则语言。
+
+## 厂商锁定的另一面
+
+常识说换平台有 vendor lock-in 风险。但我早就被 Netlify 锁定了——它的 redirect 语法、函数路由约定、部署配置格式。每个平台都有锁定，区别是你被锁在*好架构*里还是*方便*里。
+
+Cloudflare 的锁定是 V8 isolate 模型和 Workers API，比 Netlify 提供的任何东西都更接近 Web 标准。如果 Cloudflare 明天消失，我的 Workers 要重写，但心智模型——edge 优先、静态优先、serverless——可以带到别处。Netlify 的锁定在管道细节里，没教会我任何可迁移的东西。
+
+## 难说出口的那句
+
+离开 Netlify 最难的是承认：我长大了，它不够用了。当我只想要「静态托管 + 顺手的 CI」时，Netlify 真的很好。一旦我希望托管变成*应用平台*——跑计算、存数据、在 edge 处理表单——接缝就露出来了。
+
+我不觉得 Netlify 差。我觉得它为一个和我后来不一样的那类开发者优化了。它想做友好的入口；我想要一个能建很多年、不用再撞一次天花板再迁一次的地基。
+
+Cloudflare 是那个地基。不是因为它完美，而是它的架构和我的指向同一个方向。

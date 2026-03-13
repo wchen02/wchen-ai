@@ -1,0 +1,69 @@
+---
+title: "wchen.ai"
+date: "2026-02-22T00:00:00Z"
+status: "active"
+type: ["app"]
+motivation: "我需要一个可以公开思考的地方——一个充当「盖楼和想事」枢纽的站点，而不是带英雄区的大号简历。"
+problemAddressed: "多数个人站要么是过度设计的作品集模板，要么是极简博客，都抓不住一个 builder 实际怎么想、怎么干活。我想要的是能跟着想法一起长、不用每次加内容就重做一版的东西。"
+learnings: "先定规格再写代码，是 vibe coding 时最大的杠杆。花在 spec-kit 产出上的那一小时，在实现阶段少走了三小时的弯路。另外，静态导出配合 Zod 校验的 frontmatter，能在构建阶段就发现内容错误，而不是上了生产才爆。"
+url: "https://wchen.ai"
+featured: true
+---
+
+这个站是我用 Cursor 和 spec-kit 一天搭出来的。目标很直接：一个对外枢纽，能发项目、写东西、让人找到我——没有 CMS、没有数据库、也没有需要人盯的部署流水线。
+
+## 怎么运作
+
+站点是静态导出的 Next.js 应用。每页在构建时预渲染成纯 HTML，由 Cloudflare CDN 提供。你打开页面时没有服务器在算东西，不查库，不调 API。
+
+内容以 MDX 文件形式放在 `/content` 下，一个目录给项目、一个给写作。每个文件有 YAML frontmatter，在构建时用 Zod schema 校验；frontmatter 不合法就直接 build 失败，所以内容问题在开发阶段就会暴露，不会拖到上线后。
+
+```typescript
+const WritingSchema = z.object({
+  title: z.string(),
+  publishDate: z.string().datetime(),
+  theme: z.string(),
+  tags: z.array(z.string()).default([]),
+  featured: z.boolean().default(false),
+  draft: z.boolean().default(false),
+});
+```
+
+像 GitHub 贡献记录这类动态数据，由构建前脚本拉取并写入静态 JSON，前端当普通静态资源读就行。
+
+## Vibe coding 流程
+
+项目骨架不是我手搭的。我描述想要什么，交给 Cursor——一个 AI 优先的代码编辑器——生成实现。
+
+关键在*写代码之前*。我用 spec-kit 做结构化规格，先产出三件东西，再动任何一个组件：
+
+1. **spec.md** — 站点要达成什么、给谁用、验收标准
+2. **plan.md** — 架构取舍、项目结构、数据模型、技术选型理由
+3. **tasks.md** — 可被 agent 按顺序执行的实现步骤拆解
+
+这样 agent 不用猜。当我让它做写作索引页时，内容 schema、组件套路、文件结构都已经在上下文里了。规格成了我和 AI 之间的共享契约。
+
+## 架构
+
+```text
+/
+├── content/           # MDX 内容源
+│   ├── projects/      # 项目叙事
+│   └── writing/       # 文章与随想
+├── src/
+│   ├── app/           # Next.js App Router 页面
+│   ├── components/    # React 组件
+│   └── lib/           # Zod schema、MDX 解析
+├── scripts/           # 构建前拉数据
+└── functions/         # Cloudflare Pages Functions（联系 API）
+```
+
+唯一带动态的是联系表单，由 Cloudflare Pages Function 处理——跑在 Cloudflare 上的 edge 函数，其余全是静态。
+
+样式用 Tailwind，动效用 Framer Motion，懒加载以控制首屏 JS 体积。
+
+## 会改进的地方
+
+我会在规格阶段多花时间。即使用了 spec-kit，实现时还是有不少微决策本该事先定好——比如 tag 分类、主题命名、内容长度约束。这些在 spec 里定成本低，在代码里改成本高。
+
+Vibe coding 流程本身是撑住了。真正起作用的不全是模型能力，而是写代码之前给它的上下文质量。

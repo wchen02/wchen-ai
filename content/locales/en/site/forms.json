@@ -1,0 +1,37 @@
+{
+  "common": {
+    "honeypotLabel": "Ignore this field",
+    "invalidResponseError": "Server returned an invalid response. Please try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
+  },
+  "newsletter": {
+    "title": "Stay in the loop",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "submitLabel": "Subscribe",
+    "submittingLabel": "Subscribing...",
+    "submitErrorFallback": "Failed to subscribe"
+  },
+  "contact": {
+    "successTitle": "Message sent successfully!",
+    "successDescription": "Thanks for reaching out. I'll get back to you soon.",
+    "resetLabel": "Send another message",
+    "submitLabel": "Send Message",
+    "submittingLabel": "Sending...",
+    "submitErrorFallback": "Failed to submit form",
+    "fields": {
+      "name": {
+        "label": "Name",
+        "placeholder": "Jane Founder"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "jane@example.com"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "I'd love to collaborate on..."
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from './schemas';
+import { DEFAULT_LOCALE } from './locales';
 
 export interface TOCItem {
   id: string;
@@ -44,8 +45,23 @@ export function extractExcerpt(mdxContent: string, maxLength = EXCERPT_LENGTH): 
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 const GITHUB_DATA_PATH = path.join(process.cwd(), 'public', 'github-contributions.json');
-const PROJECTS_DIR = path.join(CONTENT_DIR, 'projects');
-const WRITING_DIR = path.join(CONTENT_DIR, 'writing');
+
+function getLocaleContentRoot(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DIR): string {
+  const normalizedLocale = locale.trim().toLowerCase().replace(/_/g, '-');
+  return path.join(baseContentDir, 'locales', normalizedLocale);
+}
+
+function getProjectsDir(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DIR): string {
+  const localeDir = path.join(getLocaleContentRoot(locale, baseContentDir), 'projects');
+  const legacyDir = path.join(baseContentDir, 'projects');
+  return fs.existsSync(localeDir) ? localeDir : legacyDir;
+}
+
+function getWritingDir(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DIR): string {
+  const localeDir = path.join(getLocaleContentRoot(locale, baseContentDir), 'writing');
+  const legacyDir = path.join(baseContentDir, 'writing');
+  return fs.existsSync(localeDir) ? localeDir : legacyDir;
+}
 
 // Helper to get raw file content
 function getFileContent(directory: string, filename: string) {
@@ -70,12 +86,13 @@ function assertUniqueSlugs(filenames: string[], contentType: string): void {
   }
 }
 
-export function getProjects(): Project[] {
-  const filenames = getMdxFilenames(PROJECTS_DIR);
+export function getProjects(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DIR): Project[] {
+  const projectsDir = getProjectsDir(locale, baseContentDir);
+  const filenames = getMdxFilenames(projectsDir);
   assertUniqueSlugs(filenames, 'project');
   
   const projects = filenames.map((filename): Project => {
-    const rawContent = getFileContent(PROJECTS_DIR, filename);
+    const rawContent = getFileContent(projectsDir, filename);
     const { data, content } = matter(rawContent);
     const slug = filename.replace(/\.mdx?$/, '');
     
@@ -88,15 +105,20 @@ export function getProjects(): Project[] {
   return projects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export function getProjectBySlug(slug: string): Project | null {
+export function getProjectBySlug(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+  baseContentDir = CONTENT_DIR
+): Project | null {
   try {
+    const projectsDir = getProjectsDir(locale, baseContentDir);
     const filename = `${slug}.mdx`;
     // Try to read .mdx first, then .md
     let rawContent;
     try {
-      rawContent = getFileContent(PROJECTS_DIR, filename);
+      rawContent = getFileContent(projectsDir, filename);
     } catch {
-      rawContent = getFileContent(PROJECTS_DIR, `${slug}.md`);
+      rawContent = getFileContent(projectsDir, `${slug}.md`);
     }
     
     const { data, content } = matter(rawContent);
@@ -108,12 +130,13 @@ export function getProjectBySlug(slug: string): Project | null {
   }
 }
 
-export function getWritings(): Writing[] {
-  const filenames = getMdxFilenames(WRITING_DIR);
+export function getWritings(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DIR): Writing[] {
+  const writingDir = getWritingDir(locale, baseContentDir);
+  const filenames = getMdxFilenames(writingDir);
   assertUniqueSlugs(filenames, 'writing');
   
   const writings = filenames.map((filename): Writing => {
-    const rawContent = getFileContent(WRITING_DIR, filename);
+    const rawContent = getFileContent(writingDir, filename);
     const { data, content } = matter(rawContent);
     const slug = filename.replace(/\.mdx?$/, '');
     
@@ -146,8 +169,13 @@ export function getGitHubContributions(): GitHubContributions | null {
   }
 }
 
-export function getRelatedWritings(currentSlug: string, limit = 3): Writing[] {
-  const all = getWritings();
+export function getRelatedWritings(
+  currentSlug: string,
+  limit = 3,
+  locale = DEFAULT_LOCALE,
+  baseContentDir = CONTENT_DIR
+): Writing[] {
+  const all = getWritings(locale, baseContentDir);
   const current = all.find((w) => w.slug === currentSlug);
   if (!current) return all.slice(0, limit);
 
@@ -170,14 +198,19 @@ export function getRelatedWritings(currentSlug: string, limit = 3): Writing[] {
   return scored.slice(0, limit).map((s) => s.writing);
 }
 
-export function getWritingBySlug(slug: string): Writing | null {
+export function getWritingBySlug(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+  baseContentDir = CONTENT_DIR
+): Writing | null {
   try {
+    const writingDir = getWritingDir(locale, baseContentDir);
     const filename = `${slug}.mdx`;
     let rawContent;
     try {
-      rawContent = getFileContent(WRITING_DIR, filename);
+      rawContent = getFileContent(writingDir, filename);
     } catch {
-      rawContent = getFileContent(WRITING_DIR, `${slug}.md`);
+      rawContent = getFileContent(writingDir, `${slug}.md`);
     }
     
     const { data, content } = matter(rawContent);

@@ -11,6 +11,9 @@ import {
   getNewsletterFromAddress,
   getNewsletterUnsubscribeUrl,
 } from "@/lib/site-config";
+import { getSystemContent } from "@/lib/site-content";
+
+const systemContent = getSystemContent();
 
 export async function POST(request: Request) {
   const payload = (await request.json()) as {
@@ -24,7 +27,7 @@ export async function POST(request: Request) {
 
   if (!email || !ts || !sig) {
     return NextResponse.json(
-      { success: false, error: "Invalid confirmation link. Please try subscribing again." },
+      { success: false, error: systemContent.newsletter.invalidConfirmationLink },
       { status: 400 }
     );
   }
@@ -38,7 +41,7 @@ export async function POST(request: Request) {
 
   if (!secret || !apiKey || !segmentId) {
     return NextResponse.json(
-      { success: false, error: "Something went wrong. Please try again later." },
+      { success: false, error: systemContent.common.genericError },
       { status: 500 }
     );
   }
@@ -46,7 +49,7 @@ export async function POST(request: Request) {
   const tokenAge = Math.floor(Date.now() / 1000) - Number.parseInt(ts, 10);
   if (Number.isNaN(tokenAge) || tokenAge < 0 || tokenAge > NEWSLETTER_TOKEN_MAX_AGE_S) {
     return NextResponse.json(
-      { success: false, error: "This confirmation link has expired. Please subscribe again." },
+      { success: false, error: systemContent.newsletter.expiredConfirmationLink },
       { status: 400 }
     );
   }
@@ -54,7 +57,7 @@ export async function POST(request: Request) {
   const expected = await hmacSign(secret, `${email}|${ts}`);
   if (!timingSafeEqual(sig, expected)) {
     return NextResponse.json(
-      { success: false, error: "Invalid confirmation link. Please try subscribing again." },
+      { success: false, error: systemContent.newsletter.invalidConfirmationLink },
       { status: 400 }
     );
   }
@@ -101,7 +104,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error confirming newsletter subscription locally:", error);
     return NextResponse.json(
-      { success: false, error: "Something went wrong. Please try again later." },
+      { success: false, error: systemContent.common.genericError },
       { status: 500 }
     );
   }

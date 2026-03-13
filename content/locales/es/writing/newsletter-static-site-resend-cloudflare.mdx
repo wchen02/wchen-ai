@@ -1,0 +1,32 @@
+---
+title: "Enviar newsletter desde un sitio estático con Resend y Cloudflare"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["newsletter", "resend", "cloudflare", "static-sites"]
+featured: false
+draft: false
+---
+
+Un sitio estático no ejecuta código cuando alguien visita una página. Ese es el punto. Pero una newsletter exige dinámica: aceptar suscripciones, enviar un correo de confirmación, manejar el clic, añadir el contacto a una lista, enviar la bienvenida. ¿Cómo mantener el sitio estático y aun así controlar todo el flujo?
+
+Lo hago con Resend para el envío y Cloudflare Pages Functions para la mínima superficie de API. El HTML se pregenera y se sirve desde el edge. El único código que corre en tiempo de petición vive en unos pocos manejadores de ruta que validan entrada, firman tokens y llaman a Resend. Sin servidor que mantener. Sin backend aparte que desplegar.
+
+## Dónde ocurre el trabajo
+
+El sitio es una exportación estática de Next.js en Cloudflare Pages. Cada página es un archivo. Cuando un visitante carga la portada o un artículo, recibe bytes del CDN. No se ejecuta nada.
+
+La suscripción a la newsletter es distinta. El formulario hace POST a `/api/newsletter`. Esa ruta no es un archivo estático. Cloudflare Pages invoca una Function — el mismo runtime de Workers que respalda Pages — y ejecuta el manejador en `functions/api/newsletter.ts`. El manejador parsea el body, valida el email, construye un enlace de confirmación firmado con HMAC y timestamp, y llama a la API de Resend para enviar el correo de confirmación. Respuesta al cliente. Sin base de datos, sin cola. Solo unas variables de entorno: `RESEND_API_KEY`, `NEWSLETTER_SECRET` y opcionalmente `NEWSLETTER_FROM`.
+
+Cuando el usuario hace clic en el enlace, la petición llega a `/api/newsletter-confirm`. Otra Pages Function. Verifica firma y timestamp, añade el contacto a un segmento de Resend vía su API y envía el correo de bienvenida, también por Resend. Luego redirige a una página estática de "confirmado". Todo el copy del email — asuntos, cuerpo, pie — sale del JSON de locale en `content/locales/.../site/newsletter.json`. Las Functions son finas: cargan ese contenido, renderizan el email con plantillas compartidas y pasan el resultado a Resend.
+
+## Por qué esta forma
+
+Quería que el sitio siguiera siendo estático por defecto. Sin servidor Node, sin proceso siempre activo. Cloudflare Pages me da exactamente eso: estáticos más la posibilidad de ejecutar un poco de lógica server-side solo cuando una petición toca una ruta de API. El resto del tráfico es CDN puro.
+
+Resend encaja porque es API-first. No necesito un panel para diseñar campañas o gestionar flujos. Necesito enviar un correo y añadir un contacto a un segmento. Ambas cosas son una llamada HTTP. Los correos de confirmación y bienvenida se componen en código a partir de los mismos archivos de contenido que usa el sitio para el copy. Una fuente de verdad, el mismo deploy.
+
+Los envíos recurrentes de digest — el "esto es lo nuevo" — no corren en el edge. Un script se ejecuta en CI (o en local) tras un deploy: lee la lista de escritos y proyectos publicados, arma un digest, obtiene los contactos del segmento desde Resend y envía por lotes. El script usa la misma API de Resend y las mismas plantillas basadas en contenido. Sin cron en un servidor. Sin Lambda que configurar. Solo un paso en el pipeline que corre cuando se publica contenido nuevo.
+
+## Conclusión
+
+Puedes tener un sitio totalmente estático y una newsletter real. La superficie dinámica es mínima: unas pocas rutas de API que validan, firman y delegan en Resend. La plataforma (Cloudflare) ejecuta esas rutas en el edge solo cuando se invocan. Todo lo demás — páginas, copy, plantillas — vive en el repo y se construye una vez. Esa es la arquitectura que quiero: estático por defecto, con una costura pequeña y explícita para lo único que tiene que ser dinámico.

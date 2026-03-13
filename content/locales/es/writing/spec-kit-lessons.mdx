@@ -1,0 +1,68 @@
+---
+title: "Lecciones de Spec-Kit: Borrador Antes de Especificar, Alcance Antes de Construir"
+publishDate: "2026-02-23T23:00:00Z"
+theme: "Workflow"
+tags: ["spec-kit", "agents", "cursor", "workflow"]
+featured: false
+draft: false
+---
+
+La primera vez que usé spec-kit, le pasé un párrafo vago sobre lo que quería y pulsé ejecutar. La spec que produjo era técnicamente válida — y prácticamente inútil. Demasiado amplia, demasiado ambiciosa, demasiado desconectada de lo que un agente de código podría ejecutar en una sola sesión.
+
+El problema no era la herramienta. Era mi entrada.
+
+Después de docenas de ejecuciones de spec-kit en varios proyectos, he desarrollado un flujo que produce resultados mejores de forma consistente. La idea central es contraintuitiva: el trabajo más importante ocurre *antes* de tocar spec-kit, y *después* de que el agente termina de escribir código.
+
+## Redacta cada fase con un chatbot primero
+
+Spec-kit sigue un pipeline estructurado — especificar, planificar, implementar. Cada fase consume la salida de la anterior. Si tu especificación inicial es difusa, esa difusión se amplifica en cada paso siguiente.
+
+La solución es simple: redacta cada fase en un chatbot de propósito general como ChatGPT antes de ejecutarla en spec-kit. Describe qué quieres construir. Deja que el chatbot haga preguntas de clarificación. Itera sobre la descripción hasta que esté ajustada — requisitos concretos, restricciones claras, no-objetivos explícitos.
+
+Cuando construí este sitio, mi primer instinto fue volcarlo todo en una sola ejecución de spec-kit: "Necesito un sitio personal con homepage, página about, sección de writing, sección de projects, pipeline de contenido MDX con frontmatter validado con Zod, datos de contribuciones de GitHub fetcheados en build time, formulario de contacto con Cloudflare Worker, export estático y despliegue en Cloudflare Pages." Eso fue lo que metí en `/speckit.specify`.
+
+Si hubiera tenido esa conversación con ChatGPT primero, me habría hecho las preguntas que me salté. ¿Cuál es el schema de contenido para entradas de writing frente a entradas de projects? ¿Tienen la misma forma de frontmatter? ¿Cómo se actualiza el dato de GitHub — rebuild programado o disparo manual? ¿El formulario de contacto necesita rate limiting? ¿Campos honeypot? ¿Qué validación va server-side frente a client-side? Export estático significa que no hay server components en runtime — ¿lo has tenido en cuenta en tu estrategia de data fetching?
+
+Esas preguntas me habrían obligado a tomar decisiones *antes* de que existiera la spec, no descubrirlas a mitad de implementación cuando el agente ya iba por la tarea ocho y adivinando.
+
+Lo mismo aplica a la fase de planificación. Después de que spec-kit genera una spec, lleva esa spec a un chatbot y pregunta: "¿Es este alcance realista para una sola sesión de implementación? ¿Qué falta? ¿Qué debería cortar?" Luego mete la versión refinada en `/speckit.plan`.
+
+Piensa en el chatbot como *compañero de reflexión* y en spec-kit como *marco de ejecución*. Cada uno tiene un rol. No los confundas.
+
+## Nunca planifiques una función tan grande que no puedas enviarla de una vez
+
+Este es el error que más tiempo me costó. Especifiqué este sitio entero — homepage, about, sección writing, sección projects, pipeline MDX, integración GitHub, formulario de contacto, despliegue — como una sola ejecución de spec-kit. Spec-kit produjo un plan. El plan tenía más de veinte tareas. Para la tarea doce, el contexto del agente estaba obsoleto, suposiciones anteriores habían derivado, y el codebase estaba a medias y era doloroso depurar. La utilidad de parsing de contenido no coincidía con el schema de frontmatter que el agente había definido seis tareas antes. La server action del formulario usaba patrones que contradecían la decisión de export estático. Componentes referenciaban props que ya no existían.
+
+El codebase compilaba. Nada funcionaba junto de verdad.
+
+La regla que sigo ahora: si una función no se puede implementar, probar y verificar en una sola sesión enfocada, es demasiado grande. Divídela antes de especificarla — no después.
+
+Aquí el chatbot vuelve a ganarse el sueldo. Toma tu idea de función y pregunta: "Divide esto en los incrementos más pequeños posibles donde cada uno deje el codebase en un estado funcional."
+
+Buenos incrementos son:
+
+- **Modulares.** Cada pieza tiene un límite claro. Una utilidad de parsing que lee MDX y valida frontmatter contra un schema Zod es modular. "Construir un sitio personal" no lo es.
+- **Reversibles.** Si el incremento no funciona, puedes quitarlo sin romper en cascada. Añadir una página índice `/writing` es reversible. Reestructurar todo tu modelo de contenido a mitad de build para soportar un nuevo tipo de página no lo es.
+- **Incrementales.** Cada pieza se apoya en la anterior y aporta progreso visible. Primero el scaffolding del proyecto con homepage funcionando. Luego el schema de contenido y la capa de parsing. Luego la sección writing. Luego la sección projects. Cada paso produce algo que puedes desplegar y verificar.
+
+Si pudiera rehacer este sitio, lo dividiría en ejecuciones separadas de spec-kit: (1) scaffolding Next.js con export estático, layout y homepage funcionando, (2) estructura de directorios de contenido MDX con schemas Zod para entradas writing y project, (3) utilidades de parsing que validan y transforman MDX en datos tipados, (4) páginas índice y detalle de writing consumiendo contenido parseado, (5) páginas índice y detalle de projects con su propio schema y layout, (6) página about con secciones estructuradas, (7) datos de contribuciones GitHub fetcheados en build time y renderizados como artefacto estático, (8) formulario de contacto con función edge en Cloudflare Worker, (9) pipeline de despliegue en Cloudflare Pages. Nueve ejecuciones enfocadas en lugar de una spec gigante. Cada una dejando el sitio en estado desplegable. Cada una lo bastante pequeña para que el agente no pierda el hilo de sus propias decisiones.
+
+## Usa el agente para verificar, no solo construir
+
+Esto es lo que casi todo el mundo se salta. Cuando el agente termina de implementar un conjunto de tareas, pasan a la siguiente función. Pero los agentes de código derivan. Toman decisiones que suenan razonables pero violan sutilmente tus requisitos originales o las convenciones del proyecto.
+
+Uso Cursor para verificar el codebase una y otra vez contra dos cosas: el *requisito* (¿la implementación coincide con lo especificado?) y la *constitución* (¿el código cumple las reglas y patrones del proyecto?).
+
+En la práctica, eso significa hacer al agente preguntas explícitas de verificación entre incrementos. "Lee la spec de la capa de parsing de contenido. Ahora lee la implementación. ¿El schema Zod coincide con lo que espera la página índice de writing? ¿Hay campos en el frontmatter que nadie consume? ¿Hay componentes que importan tipos definidos de otra forma en un incremento anterior?" Esto detecta la deriva pronto — antes de que se convierta en deuda arquitectónica.
+
+La comprobación de constitución es similar. Cada proyecto tiene convenciones — patrones de nombres, estructura de archivos, estilo de manejo de errores, patrones de componentes. Las tengo documentadas en archivos de reglas que el agente puede consultar. Después de cada pasada de implementación, pregunto: "Revisa los archivos cambiados en esta sesión según las reglas del proyecto. Señala lo que no cumpla."
+
+Este bucle de verificación — construir, comprobar contra spec, comprobar contra constitución, corregir, continuar — es lo que convierte una sesión productiva en un flujo fiable de forma consistente.
+
+## El efecto compuesto
+
+Ninguna de estas prácticas es revolucionaria por sí sola. Redacta antes de especificar. Alcance pequeño. Verifica sin parar. Pero juntas transforman spec-kit de un generador de especificaciones en un *flujo de ingeniería fiable*.
+
+Los agentes son lo bastante potentes para construir casi todo lo que describas. El cuello de botella nunca fue su capacidad — fue la calidad de lo que les pedía construir, y si comprobaba su trabajo contra el estándar que me importaba.
+
+Precisión entra, precisión sale. Esa es la lección que spec-kit no deja de enseñarme.

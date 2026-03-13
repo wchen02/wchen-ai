@@ -1,0 +1,37 @@
+{
+  "common": {
+    "honeypotLabel": "忽略此字段",
+    "invalidResponseError": "服务器返回了无效响应。请重试。",
+    "unexpectedError": "发生了意外错误。请重试。"
+  },
+  "newsletter": {
+    "title": "保持更新",
+    "emailLabel": "邮箱地址",
+    "emailPlaceholder": "you@example.com",
+    "submitLabel": "订阅",
+    "submittingLabel": "订阅中...",
+    "submitErrorFallback": "订阅失败"
+  },
+  "contact": {
+    "successTitle": "消息发送成功！",
+    "successDescription": "感谢联系，我会尽快回复你。",
+    "resetLabel": "再发一条消息",
+    "submitLabel": "发送消息",
+    "submittingLabel": "发送中...",
+    "submitErrorFallback": "表单提交失败",
+    "fields": {
+      "name": {
+        "label": "姓名",
+        "placeholder": "Jane Founder"
+      },
+      "email": {
+        "label": "邮箱",
+        "placeholder": "jane@example.com"
+      },
+      "message": {
+        "label": "消息",
+        "placeholder": "我想聊聊合作这件事..."
+      }
+    }
+  }
+}

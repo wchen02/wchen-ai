@@ -1,0 +1,32 @@
+---
+title: "Sending a Newsletter From a Static Site With Resend and Cloudflare"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["newsletter", "resend", "cloudflare", "static-sites"]
+featured: false
+draft: false
+---
+
+A static site doesn't run code when someone hits a page. That's the point. But a newsletter requires dynamics: accept a signup, send a confirmation email, handle the click, add the contact to a list, send a welcome. So how do you keep the site static and still own the full flow?
+
+I do it with Resend for delivery and Cloudflare Pages Functions for the tiny API surface. The HTML is pre-built and served from the edge. The only code that runs at request time lives in a handful of route handlers that validate input, sign tokens, and call Resend. No server to maintain. No separate backend to deploy.
+
+## Where the Work Happens
+
+The site is a Next.js static export on Cloudflare Pages. Every page is a file. When a visitor loads the homepage or a writing piece, they get bytes from the CDN. Nothing executes.
+
+Newsletter signup is different. The form posts to `/api/newsletter`. That path is not a static file. Cloudflare Pages invokes a Function — the same Workers runtime that backs Pages — and runs the handler in `functions/api/newsletter.ts`. The handler parses the body, validates the email, builds a signed confirmation link with an HMAC and a timestamp, and calls Resend's API to send the confirmation email. Response back to the client. No database, no queue. Just a few environment variables: `RESEND_API_KEY`, `NEWSLETTER_SECRET`, and optionally `NEWSLETTER_FROM`.
+
+When the user clicks the link, the request hits `/api/newsletter-confirm`. Another Pages Function. It verifies the signature and timestamp, adds the contact to a Resend segment via their API, and sends the welcome email, again through Resend. Then it redirects to a static "you're confirmed" page. All email copy — subject lines, body text, footer — comes from locale JSON under `content/locales/.../site/newsletter.json`. The Functions are thin: they load that content, render the email with shared templates, and hand the result to Resend.
+
+## Why This Shape
+
+I wanted the site to stay static-first. No Node server, no always-on process. Cloudflare Pages gives me exactly that: static assets plus the ability to run a small amount of server-side logic only when a request hits an API path. The rest of the traffic is pure CDN.
+
+Resend fits because it's API-first. I don't need a dashboard to design campaigns or manage flows. I need to send an email and add a contact to a segment. Both are one HTTP call. The confirmation and welcome emails are composed in code from the same content files the site uses for copy. One source of truth, same deploy.
+
+Recurring digest sends — the "here's what's new" email — don't run on the edge at all. A script runs in CI (or locally) after a deploy: it reads the list of published writing and projects, builds a digest, fetches the segment's contacts from Resend, and sends in batches. The script uses the same Resend API and the same content-driven templates. No cron on a server. No Lambda to configure. Just a step in the pipeline that runs when new content is shipped.
+
+## The Takeaway
+
+You can have a fully static site and a real newsletter. The dynamic surface is minimal: a few API routes that validate, sign, and delegate to Resend. The platform (Cloudflare) runs those routes at the edge only when they're called. Everything else — pages, copy, templates — lives in the repo and is built once. That's the architecture I want: static by default, with a small, explicit seam for the one thing that has to be dynamic.

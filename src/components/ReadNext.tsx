@@ -1,17 +1,26 @@
 import WritingCard from "@/components/WritingCard";
 import type { Writing } from "@/lib/schemas";
+import { getUiContent } from "@/lib/site-content";
 
-export default function ReadNext({ writings }: { writings: Writing[] }) {
+export default function ReadNext({
+  writings,
+  locale,
+}: {
+  writings: Writing[];
+  locale?: string;
+}) {
   if (writings.length === 0) return null;
+
+  const uiContent = getUiContent(locale);
 
   return (
     <section className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
-        Read Next
+        {uiContent.readNext.heading}
       </h2>
       <div className="flex flex-col gap-2 -mx-5">
         {writings.map((w) => (
-          <WritingCard key={w.slug} writing={w} />
+          <WritingCard key={w.slug} writing={w} locale={locale} />
         ))}
       </div>
     </section>

@@ -5,6 +5,7 @@
  */
 import fs from "fs";
 import path from "path";
+import { DEFAULT_LOCALE } from "../src/lib/locales";
 
 const OUT = path.join(process.cwd(), "out");
 
@@ -14,10 +15,20 @@ interface CheckResult {
   missing: string[];
 }
 
+function resolveHtmlPath(...relativePaths: string[]): string | null {
+  for (const relativePath of relativePaths) {
+    const fullPath = path.join(OUT, relativePath);
+    if (fs.existsSync(fullPath)) {
+      return relativePath;
+    }
+  }
+  return null;
+}
+
 function readHtml(relativePath: string): string | null {
-  const full = path.join(OUT, relativePath);
+  const fullPath = path.join(OUT, relativePath);
   try {
-    return fs.readFileSync(full, "utf8");
+    return fs.readFileSync(fullPath, "utf8");
   } catch {
     return null;
   }
@@ -38,7 +49,7 @@ function checkPage(route: string, htmlPath: string, checks: { name: string; test
 }
 
 function getOneWritingSlug(): string | null {
-  const writingDir = path.join(process.cwd(), "out", "writing");
+  const writingDir = path.join(process.cwd(), "out", DEFAULT_LOCALE, "writing");
   if (!fs.existsSync(writingDir)) return null;
   const files = fs.readdirSync(writingDir).filter((f) => f.endsWith(".html"));
   if (files.length === 0) return null;
@@ -62,23 +73,59 @@ function main(): void {
     { name: "canonical", test: /<link[^>]+rel=["']canonical["']/ },
   ];
 
-  results.push(checkPage("home", "index.html", metaChecks));
+  const homePath = resolveHtmlPath(`${DEFAULT_LOCALE}.html`, path.join(DEFAULT_LOCALE, "index.html"));
+  results.push(
+    homePath
+      ? checkPage("home", homePath, metaChecks)
+      : { route: "home", ok: false, missing: ["Localized home export not found"] }
+  );
 
-  results.push(checkPage("about", "about.html", [
-    ...metaChecks,
-    { name: "Person JSON-LD", test: /"@type"\s*:\s*["']Person["']/ },
-  ]));
+  const aboutPath = resolveHtmlPath(
+    path.join(DEFAULT_LOCALE, "about.html"),
+    path.join(DEFAULT_LOCALE, "about", "index.html")
+  );
+  results.push(
+    aboutPath
+      ? checkPage("about", aboutPath, [
+          ...metaChecks,
+          { name: "Person JSON-LD", test: /"@type"\s*:\s*["']Person["']/ },
+        ])
+      : { route: "about", ok: false, missing: ["Localized about export not found"] }
+  );
 
-  results.push(checkPage("writing index", "writing.html", metaChecks));
-  results.push(checkPage("projects index", "projects.html", metaChecks));
+  const writingIndexPath = resolveHtmlPath(
+    path.join(DEFAULT_LOCALE, "writing.html"),
+    path.join(DEFAULT_LOCALE, "writing", "index.html")
+  );
+  results.push(
+    writingIndexPath
+      ? checkPage("writing index", writingIndexPath, metaChecks)
+      : { route: "writing index", ok: false, missing: ["Localized writing index export not found"] }
+  );
+
+  const projectsIndexPath = resolveHtmlPath(
+    path.join(DEFAULT_LOCALE, "projects.html"),
+    path.join(DEFAULT_LOCALE, "projects", "index.html")
+  );
+  results.push(
+    projectsIndexPath
+      ? checkPage("projects index", projectsIndexPath, metaChecks)
+      : { route: "projects index", ok: false, missing: ["Localized projects index export not found"] }
+  );
 
   const writingSlug = getOneWritingSlug();
   if (writingSlug) {
+    const writingDetailPath = resolveHtmlPath(
+      path.join(DEFAULT_LOCALE, "writing", `${writingSlug}.html`),
+      path.join(DEFAULT_LOCALE, "writing", writingSlug, "index.html")
+    );
     results.push(
-      checkPage(`writing/${writingSlug}`, path.join("writing", `${writingSlug}.html`), [
-        ...metaChecks,
-        { name: "Article JSON-LD", test: /"@type"\s*:\s*["']Article["']/ },
-      ])
+      writingDetailPath
+        ? checkPage(`writing/${writingSlug}`, writingDetailPath, [
+            ...metaChecks,
+            { name: "Article JSON-LD", test: /"@type"\s*:\s*["']Article["']/ },
+          ])
+        : { route: `writing/${writingSlug}`, ok: false, missing: ["Localized writing detail export not found"] }
     );
   } else {
     results.push({ route: "writing (one)", ok: false, missing: ["No writing slug found in out/writing"] });

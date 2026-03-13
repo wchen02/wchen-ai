@@ -1,0 +1,56 @@
+---
+title: "Enseñar a un agente tu voz"
+publishDate: "2026-02-23T18:00:00Z"
+theme: "Developer Tools"
+tags: ["skills", "agents", "cursor", "content"]
+featured: false
+draft: false
+---
+
+Estás leyendo un artículo escrito por un agente de IA. Pero suena a mí.
+
+No es casualidad. Construí una [skill](/projects/website-content-skill) — un conjunto de instrucciones reutilizables — que enseña al agente a escribir con mi voz, seguir mis esquemas de contenido y estructurar las entradas como yo lo haría. Este artículo es a la vez la explicación y la prueba.
+
+## El problema real no es la capacidad
+
+Cada vez que pedía a un agente que escribiera un artículo, el resultado sonaba a comunicado de prensa. Gramática correcta. Voz hueca. Lleno de relleno corporativo y signos de exclamación que yo nunca usaría.
+
+El instinto es culpar al modelo. Pero el modelo puede escribir en cualquier voz — solo que no sabe *cuál* usar. Sin restricciones, recurre al promedio de sus datos de entrenamiento: seguro, genérico, corporativo. La ausencia de dirección *es* la dirección.
+
+Esta idea cambió cómo pienso en trabajar con agentes. El cuello de botella no es la inteligencia. Es el contexto. Y el contexto no es algo que pasas una vez — es algo que *codificas* para que persista en cada interacción.
+
+## La voz es más difícil de codificar de lo que crees
+
+El esquema es fácil. Una definición Zod para el frontmatter — campos obligatorios, tipos, reglas de validación — es precisa y verificable. O la salida cumple o el build falla. No hay ambigüedad.
+
+La voz es un problema distinto. ¿Cómo le dices a un agente que tus párrafos son cortos, tus frases son declarativas, usas cursiva para reframes pero nunca solo para énfasis, y prefieres borrar un párrafo que añadir un signo de exclamación?
+
+La respuesta a la que llegué: *ejemplos antes que descripciones*. Decirle a un agente "sé conversacional" no produce nada útil. Mostrarle cinco pasajes citados de tu escritura real — con anotaciones sobre qué hace característico a cada uno — produce una salida que casi conservarías tal cual.
+
+La otra idea fue que *los anti-patrones importan más que los patrones*. Las instrucciones positivas ("usa párrafos cortos") son fáciles de que el modelo se desvíe. Las restricciones negativas ("nunca uses signos de exclamación", "nunca titubees con 'kind of' o 'sort of'") son líneas claras. Alejan la salida de lo genérico con más fiabilidad que cualquier cantidad de guía positiva.
+
+## Las restricciones como dirección creativa
+
+Hay una dinámica contraintuitiva en juego. Cuantas más restricciones añadí a la skill, mejor fue la salida. No porque más reglas produjeran una escritura más rígida — sino porque las restricciones *eliminan las decisiones para las que el modelo es peor*.
+
+Un agente sin restricciones se angustia con el tono. ¿Este párrafo debe ser formal? ¿Casual? ¿Entusiasta? Sin una señal, parte la diferencia y produce algo que no suena como nadie en particular.
+
+Un agente restringido no enfrenta esa decisión. La guía de voz dice: primera persona, sin titubeos, termina con convicción. El esquema dice: 1-3 frases por párrafo, sin H1. La lista dice: verifica antes de devolver. Cada restricción elimina una clase de salida genérica.
+
+Esto refleja cómo pienso en el diseño de producto. Los mejores productos no son los que tienen más funciones — son los que menos decisiones dejan al usuario. Las skills funcionan igual para los agentes.
+
+## La capa meta
+
+Este artículo fue escrito con la skill que describe. Le dije al agente que usara la skill `website-content` para escribir sobre enseñar a los agentes tu voz. El agente leyó mi guía de voz, interiorizó mi esquema de contenido y produjo un borrador que sigue mis patrones estructurales — provocación al inicio, posición en el medio, convicción al cierre.
+
+No dicté frases. *Enseñé al sistema cómo pienso sobre la escritura*, y lo dejé ejecutar.
+
+Esa distinción importa. El valor de una skill no es que genere texto por ti. Es que captura *conocimiento procedural* — el tipo de entendimiento institucional que normalmente solo vive en tu cabeza — y lo hace reproducible.
+
+## Más allá del contenido
+
+La implicación es más amplia que la escritura. Cualquier flujo repetible donde te encuentres re-explicando contexto a un agente es candidato para este enfoque. Estándares de code review. Procedimientos de despliegue. Convenciones de base de datos. Reglas del design system.
+
+La pregunta interesante no es "¿pueden los agentes hacer esto?" — claramente pueden. La pregunta interesante es: ¿qué conocimiento llevas en la cabeza que nunca has escrito, porque ningún humano necesitaba que estuviera escrito? Ese conocimiento es exactamente lo que les falta a los agentes.
+
+Las skills son cómo cierras esa brecha. No escribiendo documentación para humanos, sino escribiendo *instrucciones de operación* para agentes. El formato es un archivo `SKILL.md`. El ecosistema es [skills.sh](https://skills.sh). Lo difícil no es la herramienta — es la introspección necesaria para articular qué haces realmente, cómo piensas realmente y por qué tu forma es distinta de la predeterminada.

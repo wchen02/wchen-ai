@@ -1,0 +1,37 @@
+{
+  "hero": {
+    "intro": "Soy Wensheng Chen; me dicen Wilson. Antes fui CTO en The Juicy Crab; ahora estoy construyendo [bestpos.io](https://bestpos.io) y herramientas de developer impulsadas por IA.",
+    "paragraphs": [
+      "Ahora mismo estoy explorando la interseccion entre inteligencia artificial y herramientas para developers, construyendo sistemas que funcionen como verdaderos socios de pensamiento.",
+      "Mi enfoque principal hoy es reducir la friccion entre intencion y ejecucion para equipos de ingenieria de software mediante agentes conscientes del contexto."
+    ],
+    "aboutLink": {
+      "href": "/about",
+      "label": "Mas sobre mi y mi filosofia"
+    }
+  },
+  "currentFocus": {
+    "title": "Enfoque Actual y Problemas",
+    "description": "Lo que me obsesiona ahora y los problemas que creo que importan.",
+    "paragraphs": [
+      "El problema central que mas me obsesiona es la fragmentacion del conocimiento. Tenemos mas herramientas que nunca, y aun asi el contexto se pierde de forma continua entre plataformas.",
+      "Creo que la siguiente ola de companias fundamentales se construira alrededor de unificar ese contexto en flujos de trabajo invisibles y fluidos, no alrededor de agregar mas dashboards."
+    ]
+  },
+  "selectedWork": {
+    "title": "Trabajo Seleccionado",
+    "description": "Proyectos y experimentos que reflejan como construyo y lo que he aprendido.",
+    "viewAllLabel": "Ver todo",
+    "emptyState": "Todavia no hay proyectos."
+  },
+  "recentThinking": {
+    "title": "Pensamiento Reciente",
+    "description": "Ensayos y notas sobre ingenieria, productos y construir en publico.",
+    "viewAllLabel": "Ver todo",
+    "emptyState": "Todavia no hay escritos."
+  },
+  "activity": {
+    "title": "Actividad",
+    "description": "Actividad reciente en GitHub de open source y side projects."
+  }
+}

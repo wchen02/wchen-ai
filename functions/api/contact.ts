@@ -1,5 +1,6 @@
 import { ContactPayloadSchema } from "../../shared/contact";
 import { getAllowedOrigins } from "../../src/lib/site-config";
+import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
   CONTACT_TO_EMAIL?: string;
@@ -12,6 +13,7 @@ interface Env {
 }
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
+const systemContent = getSystemContent();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
@@ -86,7 +88,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
 
   if (!isAllowedOrigin(origin)) {
     return new Response(
-      JSON.stringify({ success: false, error: "Forbidden" }),
+      JSON.stringify({ success: false, error: systemContent.common.forbidden }),
       { status: 403, headers }
     );
   }
@@ -100,7 +102,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       const honeyIssue = issues.find(i => i.path.includes("_honey"));
       if (honeyIssue) {
         return new Response(
-          JSON.stringify({ success: false, error: "Invalid submission" }),
+          JSON.stringify({ success: false, error: systemContent.common.invalidSubmission }),
           { status: 400, headers }
         );
       }
@@ -108,7 +110,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       return new Response(
         JSON.stringify({
           success: false,
-          error: "Validation failed",
+          error: systemContent.common.validationFailed,
           details: issues.map(i => ({ field: i.path.join("."), message: i.message })),
         }),
         { status: 400, headers }
@@ -138,7 +140,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
         throw new Error(`Mailgun responded with ${mailRes.status}`);
       }
       return new Response(
-        JSON.stringify({ success: true, message: "Thanks for reaching out! I'll get back to you soon." }),
+        JSON.stringify({ success: true, message: systemContent.contact.successMessage }),
         { status: 200, headers }
       );
     }
@@ -147,14 +149,14 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       "No contact delivery configured: set CONTACT_TO_EMAIL + MAILGUN_API_KEY + MAILGUN_DOMAIN."
     );
     return new Response(
-      JSON.stringify({ success: true, message: "Development mode: Message received but not sent." }),
+      JSON.stringify({ success: true, message: systemContent.contact.developmentMessage }),
       { status: 200, headers }
     );
 
   } catch (error) {
     console.error("Error processing contact form:", error);
     return new Response(
-      JSON.stringify({ success: false, error: "Failed to send message. Please try again later." }),
+      JSON.stringify({ success: false, error: systemContent.contact.sendFailure }),
       { status: 500, headers }
     );
   }

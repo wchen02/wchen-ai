@@ -1,0 +1,16 @@
+---
+title: "Hola desde pruebas"
+publishDate: "2026-03-13T00:00:00Z"
+theme: "Pruebas"
+tags: ["i18n", "tests"]
+featured: false
+draft: false
+---
+
+Este archivo confirma que el cargador de escritos puede leer contenido desde una ruta localizada no predeterminada. La meta no es escribir un ensayo memorable, sino darle al cargador suficiente cuerpo para que la prueba se parezca a una entrada real y no active advertencias pensadas para contenido demasiado corto.
+
+Cuando una base de contenido se vuelve multilenguaje, el riesgo mas comun no es una gran ruptura visible, sino una regresion silenciosa. Un helper vuelve a asumir que todo vive en el locale predeterminado. Una ruta se arma con una carpeta fija. Una pagina resuelve bien el JSON pero sigue leyendo el MDX desde la ubicacion antigua. Todas esas fallas parecen pequenas cuando se miran aisladas, pero juntas rompen la promesa principal del template: cambiar el idioma editando contenido en `content/` en lugar de reescribir componentes.
+
+Por eso esta entrada existe dentro de un directorio `content/locales/es/`. La prueba valida que el cargador pueda descubrir archivos bajo una ruta localizada, leer el frontmatter correcto, derivar el slug esperado, calcular campos como el extracto y devolver el resultado como contenido publicable. Si alguien cambia la logica de resolucion de rutas y la vuelve a fijar en ingles, esta prueba deberia fallar de inmediato.
+
+Tambien sirve para recordar algo mas importante: la internacionalizacion no empieza en el router. Empieza en las fuentes de contenido, en los contratos de datos y en las utilidades compartidas que deciden de donde sale cada palabra que llega a la interfaz.

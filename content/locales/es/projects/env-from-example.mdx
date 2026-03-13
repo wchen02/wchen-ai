@@ -1,0 +1,54 @@
+---
+title: "env-from-example"
+date: "2026-02-25T00:00:00Z"
+status: "active"
+type: ["tool", "library"]
+motivation: "Quería que crear un .env para un desarrollador nuevo fuera lo más sencillo posible: sin copiar y pegar a ciegas, sin valores incorrectos que solo salen en producción, sin conocimiento tribal sobre qué variables son obligatorias."
+problemAddressed: "Incorporar a alguien suele significar 'copiar .env.example a .env y rellenar los huecos.' Eso falla de formas predecibles: la gente deja placeholders, escribe mal las URLs, olvida qué variables son obligatorias y solo descubre los errores cuando la app crashea o una función falla en silencio. No existía un único CLI que guiara el setup con validación y guardarraíles integrados."
+learnings: "La detección de tipos y la validación a partir de un único schema.json — empaquetado con el paquete — mantienen al CLI bajo control. Las anotaciones en .env.example (REQUIRED, TYPE, CONSTRAINTS) son opcionales para los autores pero dan al tool estructura suficiente para validar la entrada y generar secretos automáticamente. El flag --polish que infiere y añade esas anotaciones resultó ser la función que hace que la adopción cuaje: los equipos pueden empezar con un archivo de ejemplo mínimo y mejorarlo in situ."
+url: "https://www.npmjs.com/package/@wchen.ai/env-from-example"
+github: "https://github.com/wchen02/env-from-example"
+featured: false
+---
+
+Construí **env-from-example** — un paquete npm y CLI que genera `.env` a partir de `.env.example` con prompts, validación de tipos, generación opcional de secretos y un guardarraíl basado en schema para que los desarrolladores nuevos tengan un entorno correcto al primer intento en lugar de depurar una config mala después.
+
+## Cómo funciona
+
+Lo ejecutas desde la raíz del proyecto donde está `.env.example`. El CLI lee cada variable, detecta o usa los tipos declarados en las anotaciones, pide los valores que faltan y puede generar secretos automáticamente (p. ej. `SESSION_SECRET`). Todo se rige por un `schema.json` empaquetado; no hace falta ningún archivo de config extra en tu repo.
+
+```bash
+# No hace falta instalar
+npx @wchen.ai/env-from-example
+
+# No interactivo (CI, o aceptar valores por defecto)
+npx env-from-example -y
+
+# Crear .env.example si no tienes uno
+npx env-from-example --init
+npx env-from-example --init .env   # desde un .env existente
+```
+
+Las variables en `.env.example` pueden anotarse en el comentario encima de la línea. Esas anotaciones son opcionales — pero cuando están presentes, la herramienta valida la entrada y guía al usuario.
+
+```env
+# Database connection [REQUIRED] [TYPE: network/uri] Default: postgres://localhost:5432/myapp
+DATABASE_URL=postgres://localhost:5432/myapp
+
+# Application port [TYPE: integer] [CONSTRAINTS: min=3000,max=10000] Default: 3000
+PORT=3000
+```
+
+Si no quieres escribir anotaciones a mano, `--polish` infiere tipos y restricciones a partir de los valores de ejemplo y actualiza `.env.example` in situ. Así la barrera de adopción sigue baja: empieza con un archivo mínimo, ejecuta polish una vez y obtienes validación y mejores prompts sin esfuerzo.
+
+## Guardarraíles
+
+El objetivo era hacer difícil commitear valores incorrectos en .env. La comprobación de tipos detecta URLs mal formadas, puertos no numéricos y enums inválidos. Las variables obligatorias tienen que ser no vacías antes de que la herramienta escriba `.env`. En CI puedes ejecutar `env-from-example --validate` para que el pipeline falle si alguien cambió `.env` de forma que ya no cumple el schema.
+
+Flags opcionales cubren distintos flujos: `-e staging` para `.env.staging`, `--dry-run` para previsualizar sin escribir, `--version patch` para subir la versión del schema y opcionalmente sincronizar `package.json`. Los pre-commit hooks pueden llamar a `--validate`; GitHub Actions puede ejecutar `env-from-example -y -e test` antes de los tests para que el entorno de pruebas se genere siempre desde la misma fuente de verdad.
+
+## Por qué publicar bajo @wchen.ai
+
+Quería que el paquete viviera bajo un scope que controlo y puedo reutilizar para otros experimentos de herramientas de desarrollo. El nombre es descriptivo: obtienes env a partir del example. Sin piruetas de branding — la cosa hace lo que dice.
+
+El paquete está en npm como `@wchen.ai/env-from-example`. Instálalo como dependencia de desarrollo y ejecuta `npx env-from-example` desde la raíz del proyecto, o usa npx sin instalar. La documentación y el schema están en la [página de npm](https://www.npmjs.com/package/@wchen.ai/env-from-example) y en el [repositorio de GitHub](https://github.com/wchen02/env-from-example).

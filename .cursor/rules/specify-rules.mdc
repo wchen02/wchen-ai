@@ -1,35 +1,61 @@
 # wchen.ai Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-02-22
+Auto-generated from all feature plans. Last updated: 2026-03-13
 
 ## Active Technologies
-- TypeScript 5, Next.js 16.1.6, React 19.2.3 + Tailwind CSS 4, Framer Motion, Zod 4, next-mdx-remote 6, gray-matter (002-site-persona-improvements)
-- localStorage (theme preference), Cloudflare Pages Functions (newsletter) (002-site-persona-improvements)
-- TypeScript 5.x, Node (build), React 19, Next.js 16 + Next.js (static export), next-mdx-remote, Tailwind CSS 4, Framer Motion, Zod, gray-matter, rehype-slug, remark-gfm (003-website-improvements)
-- File-based only — content in `/content` (MDX), no database; optional static JSON search index generated at build time (003-website-improvements)
-
-- TypeScript (strict) with Next.js (App Router) + Next.js, React, Tailwind CSS, Framer Motion (lazy loaded), Zod (frontmatter validation) (001-personal-website)
+- TypeScript 5, Next.js 16.1.6, React 19.2.3, Tailwind CSS 4, Framer Motion, Zod 4, next-mdx-remote 6, gray-matter, rehype-slug, remark-gfm
+- `pnpm` scripts for local development, linting, tests, typechecking, and build-time content generation
+- Cloudflare Pages Functions for API endpoints and newsletter flows
+- File-based content system: locale-scoped site JSON bundles in `content/locales/<locale>/site/*.json`, shared MDX content in `content/writing` and `content/projects`, plus optional locale-specific MDX overrides in `content/locales/<locale>/{writing,projects}`
+- Static asset generation via `scripts/` into `public/` for RSS, sitemap, robots, search index, and GitHub contribution data
 
 ## Project Structure
 
 ```text
+content/
+  locales/<locale>/site/*.json
+  locales/<locale>/{writing,projects}/
+  writing/
+  projects/
 src/
+  app/[locale]/
+  components/
+  lib/
+functions/
+public/
+scripts/
+shared/
 tests/
+e2e/
+docs/
 ```
 
 ## Commands
 
-npm test && npm run lint
+Use `pnpm`, not `npm`.
+
+- `pnpm dev`
+- `pnpm lint`
+- `pnpm test`
+- `pnpm typecheck`
+- `pnpm build`
+- `pnpm test:e2e`
 
 ## Code Style
 
-TypeScript (strict) with Next.js (App Router): Follow standard conventions
+TypeScript (strict) with Next.js App Router. Follow existing project conventions and keep content/schema changes aligned across locale JSON, MDX loaders, generators, and tests.
 
 ## Recent Changes
-- 003-website-improvements: Added TypeScript 5.x, Node (build), React 19, Next.js 16 + Next.js (static export), next-mdx-remote, Tailwind CSS 4, Framer Motion, Zod, gray-matter, rehype-slug, remark-gfm
-- 002-site-persona-improvements: Added TypeScript 5, Next.js 16.1.6, React 19.2.3 + Tailwind CSS 4, Framer Motion, Zod 4, next-mdx-remote 6, gray-matter
-
-- 001-personal-website: Added TypeScript (strict) with Next.js (App Router) + Next.js, React, Tailwind CSS, Framer Motion (lazy loaded), Zod (frontmatter validation)
+- Added locale-aware app routes under `src/app/[locale]/...` with redirect shells for bare routes
+- Moved site copy into locale JSON bundles under `content/locales/<locale>/site/*.json`
+- Added locale-aware content loading with fallback from `content/locales/<locale>/{writing,projects}` to shared `content/{writing,projects}`
+- Added localized search index outputs under `public/locales/<locale>/search-index.json`
+- Expanded tests and generators to cover localized content loading and localized output generation
 
 <!-- MANUAL ADDITIONS START -->
+When updating content architecture, keep agent-facing docs and skills in sync with:
+- `src/lib/content.ts`
+- `src/lib/site-content.ts`
+- `src/lib/mdx.ts`
+- `src/lib/locales.ts`
 <!-- MANUAL ADDITIONS END -->

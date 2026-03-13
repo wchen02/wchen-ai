@@ -1,11 +1,14 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+const defaultLocale = "en";
+const defaultBasePath = `/${defaultLocale}`;
+
 const CRITICAL_ROUTES = [
-  { path: "/", name: "home" },
-  { path: "/about", name: "about" },
-  { path: "/writing", name: "writing index" },
-  { path: "/projects", name: "projects index" },
+  { path: defaultBasePath, name: "home" },
+  { path: `${defaultBasePath}/about`, name: "about" },
+  { path: `${defaultBasePath}/writing`, name: "writing index" },
+  { path: `${defaultBasePath}/projects`, name: "projects index" },
 ];
 
 test.describe("Accessibility (axe-core)", () => {
@@ -19,8 +22,8 @@ test.describe("Accessibility (axe-core)", () => {
   }
 
   test("one writing page has no critical a11y violations", async ({ page }) => {
-    await page.goto("/writing");
-    const firstLink = page.locator('a[href^="/writing/"]').first();
+    await page.goto(`${defaultBasePath}/writing`);
+    const firstLink = page.locator(`a[href^="${defaultBasePath}/writing/"]`).first();
     const href = await firstLink.getAttribute("href");
     if (!href) {
       test.skip();

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getProjects, getWritings, extractExcerpt } from '@/lib/mdx';
+import { SUPPORTED_LOCALES } from '@/lib/locales';
 
 function toDateString(isoDate: string): string {
   return isoDate.split('T')[0];
@@ -84,8 +85,9 @@ describe('Sitemap completeness', () => {
   it('sitemap should cover all content pages', () => {
     const projects = getProjects();
     const writings = getWritings();
-    const staticPages = ['', '/projects', '/writing'];
-    const totalExpected = staticPages.length + projects.length + writings.length;
+    const staticPagesPerLocale = 4;
+    const totalExpected =
+      SUPPORTED_LOCALES.length * (staticPagesPerLocale + projects.length + writings.length);
     expect(totalExpected).toBeGreaterThanOrEqual(7);
   });
 });
