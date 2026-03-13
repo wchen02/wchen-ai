@@ -22,7 +22,7 @@ export default function ArticleWithTOC({ backLink, header, children, tocHeadings
           {header}
 
           {showToc && (
-            <div className="md:hidden sticky top-16 z-10 py-3 -mx-6 px-6 bg-background border-b border-gray-200 dark:border-gray-800">
+            <div className="md:hidden py-3 -mx-6 px-6 bg-background border-b border-gray-200 dark:border-gray-800">
               <TableOfContents headings={tocHeadings} />
             </div>
           )}

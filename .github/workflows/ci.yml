@@ -12,6 +12,9 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      RESEND_SEGMENT_ID: ${{ secrets.RESEND_SEGMENT_ID }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -58,7 +61,7 @@ jobs:
           GH_USERNAME: ${{ github.repository_owner }}
 
       - name: Send recurring newsletter
-        if: github.ref == 'refs/heads/main' && secrets.RESEND_API_KEY != '' && secrets.RESEND_SEGMENT_ID != ''
+        if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''
         run: pnpm run newsletter:send-recurring
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -66,7 +69,7 @@ jobs:
           NEWSLETTER_FROM: ${{ vars.NEWSLETTER_FROM }}
 
       - name: Detect newsletter state changes
-        if: github.ref == 'refs/heads/main' && secrets.RESEND_API_KEY != '' && secrets.RESEND_SEGMENT_ID != ''
+        if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''
         id: newsletter_state
         run: |
           if git diff --quiet -- content/site/newsletter-state.json; then
