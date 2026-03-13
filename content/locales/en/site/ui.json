@@ -15,7 +15,19 @@
   },
   "shareButton": {
     "ariaLabel": "Share or copy link",
-    "copiedLabel": "Copied!"
+    "copiedLabel": "Copied!",
+    "copyLink": "Copy link",
+    "copyLinkAriaLabel": "Copy link to clipboard",
+    "email": "Email",
+    "emailAriaLabel": "Share via email",
+    "twitter": "X (Twitter)",
+    "twitterAriaLabel": "Share on X (Twitter)",
+    "linkedIn": "LinkedIn",
+    "linkedInAriaLabel": "Share on LinkedIn",
+    "facebook": "Facebook",
+    "facebookAriaLabel": "Share on Facebook",
+    "nativeShare": "Share with device",
+    "nativeShareAriaLabel": "Open device share options"
   },
   "readNext": {
     "heading": "Read Next"

@@ -234,6 +234,18 @@ export const UiContentSchema = z.object({
   shareButton: z.object({
     ariaLabel: z.string().min(1),
     copiedLabel: z.string().min(1),
+    copyLink: z.string().min(1),
+    copyLinkAriaLabel: z.string().min(1),
+    email: z.string().min(1),
+    emailAriaLabel: z.string().min(1),
+    twitter: z.string().min(1),
+    twitterAriaLabel: z.string().min(1),
+    linkedIn: z.string().min(1),
+    linkedInAriaLabel: z.string().min(1),
+    facebook: z.string().min(1),
+    facebookAriaLabel: z.string().min(1),
+    nativeShare: z.string().min(1),
+    nativeShareAriaLabel: z.string().min(1),
   }),
   readNext: z.object({
     heading: z.string().min(1),

@@ -78,7 +78,7 @@ export default function GiscusComments({
           {heading}
         </h2>
       )}
-      <div ref={containerRef} className="giscus-container min-h-[200px]" />
+      <div ref={containerRef} className="giscus-container min-w-0 min-h-[200px] overflow-x-auto" />
     </section>
   );
 }

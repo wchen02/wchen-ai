@@ -105,6 +105,7 @@ export default async function LocalizedWritingPage({
     notFound();
   }
 
+  const shareDescription = extractExcerpt(writing.content);
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -112,7 +113,7 @@ export default async function LocalizedWritingPage({
     author: { "@type": "Person", name: siteProfile.siteName, url: siteProfile.url },
     datePublished: writing.publishDate,
     ...(writing.updatedAt ? { dateModified: writing.updatedAt } : {}),
-    description: extractExcerpt(writing.content),
+    description: shareDescription,
     url: absoluteUrl(`/writing/${slug}`, resolvedLocale),
     image: writing.ogImage ?? metadataDefaults.defaultOgImageUrl,
   };
@@ -122,7 +123,7 @@ export default async function LocalizedWritingPage({
   const discussionTerm = `Writing: ${writing.title} (${resolvedLocale})`;
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -155,7 +156,11 @@ export default async function LocalizedWritingPage({
                 {getThemeLabel(writing.theme, resolvedLocale)}
               </span>
               <span>•</span>
-              <ShareButton url={absoluteUrl(`/writing/${slug}`, resolvedLocale)} title={writing.title} />
+              <ShareButton
+                url={absoluteUrl(`/writing/${slug}`, resolvedLocale)}
+                title={writing.title}
+                description={shareDescription}
+              />
             </div>
             {writing.tags && writing.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
@@ -188,7 +193,7 @@ export default async function LocalizedWritingPage({
           </>
         }
       >
-        <div className="prose dark:prose-invert prose-emerald max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
+        <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-p:leading-relaxed prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
           <MDXRemote
             source={writing.content}
             options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }}

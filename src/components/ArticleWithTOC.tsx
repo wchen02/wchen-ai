@@ -31,7 +31,7 @@ export default function ArticleWithTOC({
         {header}
 
         {showToc && (
-          <div className="xl:hidden py-3 -mx-6 px-6 bg-background border-b border-gray-200 dark:border-gray-800">
+          <div className="xl:hidden py-3 -mx-4 sm:-mx-6 px-4 sm:px-6 bg-background border-b border-gray-200 dark:border-gray-800">
             <TableOfContents headings={tocHeadings} locale={locale} />
           </div>
         )}

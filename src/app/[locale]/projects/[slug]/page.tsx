@@ -103,7 +103,7 @@ export default async function LocalizedProjectPage({
   const discussionTerm = `Project: ${project.title} (${resolvedLocale})`;
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24">
       <ArticleWithTOC
         locale={resolvedLocale}
         backLink={
@@ -138,6 +138,7 @@ export default async function LocalizedProjectPage({
               <ShareButton
                 url={absoluteUrl(`/projects/${slug}`, resolvedLocale)}
                 title={project.title}
+                description={project.problemAddressed}
               />
               {(project.github || project.url) && <span>•</span>}
               {project.github && (
@@ -203,7 +204,7 @@ export default async function LocalizedProjectPage({
             </section>
           )}
         </div>
-        <div className="prose dark:prose-invert prose-emerald max-w-none prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
+        <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
           <MDXRemote source={project.content} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
         </div>
       </ArticleWithTOC>

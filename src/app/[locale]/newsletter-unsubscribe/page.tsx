@@ -60,7 +60,7 @@ function NewsletterUnsubscribeContent() {
   }, [genericError, locale, queryString, router]);
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-24 md:py-32 text-center">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
         {status === "loading"
           ? uiContent.newsletterFlow.unsubscribeLoadingTitle
@@ -76,7 +76,7 @@ function NewsletterUnsubscribeFallback() {
   const uiContent = getUiContent(locale);
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-24 md:py-32 text-center">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
         {uiContent.newsletterFlow.unsubscribeLoadingTitle}
       </h1>

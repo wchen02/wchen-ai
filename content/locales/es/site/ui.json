@@ -15,7 +15,19 @@
   },
   "shareButton": {
     "ariaLabel": "Compartir o copiar enlace",
-    "copiedLabel": "Copiado"
+    "copiedLabel": "Copiado",
+    "copyLink": "Copiar enlace",
+    "copyLinkAriaLabel": "Copiar enlace al portapapeles",
+    "email": "Correo",
+    "emailAriaLabel": "Compartir por correo",
+    "twitter": "X (Twitter)",
+    "twitterAriaLabel": "Compartir en X (Twitter)",
+    "linkedIn": "LinkedIn",
+    "linkedInAriaLabel": "Compartir en LinkedIn",
+    "facebook": "Facebook",
+    "facebookAriaLabel": "Compartir en Facebook",
+    "nativeShare": "Compartir con el dispositivo",
+    "nativeShareAriaLabel": "Abrir opciones de compartir del dispositivo"
   },
   "readNext": {
     "heading": "Leer despues"

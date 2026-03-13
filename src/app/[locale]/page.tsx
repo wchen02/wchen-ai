@@ -73,7 +73,7 @@ export default async function LocalizedHomePage({
   const githubData = getGitHubContributions();
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-16">
       <div className="relative min-h-[420px] [contain:layout] overflow-hidden" data-hero>
         <div
           className="absolute inset-0 -z-10 opacity-[0.02] dark:opacity-[0.04] pointer-events-none [background-image:linear-gradient(var(--grid-color,#e5e7eb)_1px,transparent_1px),linear-gradient(90deg,var(--grid-color,#e5e7eb)_1px,transparent_1px)] [background-size:24px_24px] [--grid-color:theme(colors.gray.300)] dark:[--grid-color:theme(colors.neutral.700)]"
