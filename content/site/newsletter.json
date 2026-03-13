@@ -43,36 +43,19 @@
     "primaryActionLabel": "Read the update"
   },
   "recurring": {
-    "writing": {
-      "subject": "New writing: {entryTitle}",
-      "preview": "A new essay is live on {siteName}.",
-      "summary": "{entrySummary}",
-      "primaryActionLabel": "Read the essay",
-      "sections": [
-        {
-          "heading": "Why this one is worth your time",
-          "paragraphs": [
-            "{entrySummary}",
-            "If it resonates, the writing archive has more notes on building software, developer tools, and turning ideas into products."
-          ]
-        }
-      ],
-      "footerNote": "{newsletterDescription}"
-    },
-    "project": {
-      "subject": "New project: {entryTitle}",
-      "preview": "A new project is live on {siteName}.",
-      "summary": "{entrySummary}",
-      "primaryActionLabel": "See the project",
-      "sections": [
-        {
-          "heading": "What shipped",
-          "paragraphs": [
-            "{entrySummary}",
-            "You can explore the project details, links, and implementation notes on the site."
-          ]
-        }
-      ],
+    "digest": {
+      "subject": "New on {siteName}",
+      "preview": "Fresh writing and project updates are live on {siteName}.",
+      "summary": "A few new things went live recently. Here's a quick digest of the latest writing and projects.",
+      "itemsHeading": "Latest updates",
+      "itemTypeLabels": {
+        "writing": "Writing",
+        "project": "Project"
+      },
+      "itemActionLabels": {
+        "writing": "Read the essay",
+        "project": "See the project"
+      },
       "footerNote": "{newsletterDescription}"
     }
   },

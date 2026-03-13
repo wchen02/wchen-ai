@@ -106,6 +106,13 @@ export function selectNextRecurringNewsletterCandidate(
   return candidates.find((candidate) => !hasNewsletterBeenSent(state, candidate)) ?? null;
 }
 
+export function selectUnsentRecurringNewsletterCandidates(
+  candidates: RecurringNewsletterCandidate[],
+  state: NewsletterSendState
+): RecurringNewsletterCandidate[] {
+  return candidates.filter((candidate) => !hasNewsletterBeenSent(state, candidate));
+}
+
 export function markRecurringNewsletterSent(
   state: NewsletterSendState,
   candidate: Pick<RecurringNewsletterCandidate, "type" | "slug">,
@@ -133,4 +140,16 @@ export function markRecurringNewsletterSent(
     ...state,
     projects: [...state.projects, record],
   };
+}
+
+export function markRecurringNewsletterCandidatesSent(
+  state: NewsletterSendState,
+  candidates: Array<Pick<RecurringNewsletterCandidate, "type" | "slug">>,
+  sentAt: string,
+  subject: string
+): NewsletterSendState {
+  return candidates.reduce(
+    (nextState, candidate) => markRecurringNewsletterSent(nextState, candidate, sentAt, subject),
+    state
+  );
 }

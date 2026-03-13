@@ -18,8 +18,8 @@ import {
 import {
   compareRecurringCandidates,
   getRecurringNewsletterCandidates,
-  markRecurringNewsletterSent,
-  selectNextRecurringNewsletterCandidate,
+  markRecurringNewsletterCandidatesSent,
+  selectUnsentRecurringNewsletterCandidates,
   type NewsletterSendState,
   type RecurringNewsletterCandidate,
 } from "../src/lib/newsletter-recurring";
@@ -66,14 +66,9 @@ describe("newsletter email templates", () => {
     expect(result.text).toContain("No spam");
   });
 
-  it("renders a reusable issue/update email template", async () => {
+  it("renders a reusable issue/update digest email template", async () => {
     const issueContent = getRecurringNewsletterEmailContent({
-      type: "writing",
-      entry: {
-        entryTitle: "Shipping before you're ready",
-        entrySummary: "A short note on why momentum matters more than polish at the beginning.",
-        entryUrl: "https://wchen.ai/writing/shipping-before-youre-ready",
-      },
+      itemCount: 2,
       siteUrl: "https://wchen.ai",
     });
     const result = await renderNewsletterIssueEmail({
@@ -81,36 +76,33 @@ describe("newsletter email templates", () => {
       content: issueContent,
       footer: resolvedContent.footer,
       subjectLine: issueContent.subject,
-      ctaUrl: "https://wchen.ai/writing/shipping-before-youre-ready",
+      entries: [
+        {
+          type: "writing",
+          title: "Shipping before you're ready",
+          summary: "A short note on why momentum matters more than polish at the beginning.",
+          ctaLabel: issueContent.itemActionLabels.writing,
+          ctaUrl: "https://wchen.ai/writing/shipping-before-youre-ready",
+          typeLabel: issueContent.itemTypeLabels.writing,
+        },
+        {
+          type: "project",
+          title: "wchen.ai",
+          summary: "A static-first personal site built to share projects, writing, and implementation notes.",
+          ctaLabel: issueContent.itemActionLabels.project,
+          ctaUrl: "https://wchen.ai/projects/wchen-ai",
+          typeLabel: issueContent.itemTypeLabels.project,
+        },
+      ],
     });
 
-    expect(result.html).toContain("New writing: Shipping before you&#x27;re ready");
-    expect(result.text).toContain(issueContent.primaryActionLabel);
-    expect(result.text).toContain("WHY THIS ONE IS WORTH YOUR TIME");
+    expect(result.html).toContain("New on Wilson Chen");
+    expect(result.html).toContain("Shipping before you&#x27;re ready");
+    expect(result.html).toContain("wchen.ai");
+    expect(result.text).toContain((issueContent.itemsHeading ?? "").toUpperCase());
+    expect(result.text).toContain(issueContent.itemActionLabels.writing);
+    expect(result.text).toContain(issueContent.itemActionLabels.project);
     expect(result.text).toContain(resolvedContent.footer.projectsArchiveLabel ?? "");
-  });
-
-  it("renders a project announcement with project-specific recurring copy", async () => {
-    const issueContent = getRecurringNewsletterEmailContent({
-      type: "project",
-      entry: {
-        entryTitle: "wchen.ai",
-        entrySummary: "A static-first personal site built to share projects, writing, and implementation notes.",
-        entryUrl: "https://wchen.ai/projects/wchen-ai",
-      },
-      siteUrl: "https://wchen.ai",
-    });
-    const result = await renderNewsletterIssueEmail({
-      brand,
-      content: issueContent,
-      footer: resolvedContent.footer,
-      subjectLine: issueContent.subject,
-      ctaUrl: "https://wchen.ai/projects/wchen-ai",
-    });
-
-    expect(result.html).toContain("New project: wchen.ai");
-    expect(result.text).toContain("WHAT SHIPPED");
-    expect(result.text).toContain("See the project");
   });
 
   it("builds a stable idempotency key per confirmation event", () => {
@@ -119,10 +111,16 @@ describe("newsletter email templates", () => {
     );
   });
 
-  it("builds a stable idempotency key per recurring batch", () => {
-    expect(createNewsletterIssueIdempotencyKey("writing", "shipping-before-youre-ready", 1)).toBe(
-      "newsletter-issue/writing/shipping-before-youre-ready/batch-2"
-    );
+  it("builds a stable idempotency key per recurring digest batch", () => {
+    expect(
+      createNewsletterIssueIdempotencyKey(
+        [
+          { type: "writing", slug: "shipping-before-youre-ready" },
+          { type: "project", slug: "wchen-ai" },
+        ],
+        1
+      )
+    ).toBe("newsletter-issue/digest/e007f7bf552657bf/batch-2");
   });
 
   it("falls back to the default from address when NEWSLETTER_FROM is empty", () => {
@@ -209,13 +207,14 @@ describe("recurring newsletter state", () => {
     },
   ].sort(compareRecurringCandidates);
 
-  it("selects the oldest unsent candidate first", () => {
+  it("selects unsent candidates in deterministic order", () => {
     const state: NewsletterSendState = {
       writing: [],
       projects: [],
     };
 
-    expect(selectNextRecurringNewsletterCandidate(candidates, state)?.slug).toBe("personal-website");
+    expect(selectUnsentRecurringNewsletterCandidates(candidates, state).map((candidate) => candidate.slug))
+      .toEqual(["personal-website", "static-site-email", "why-cloudflare"]);
   });
 
   it("skips sent items and preserves send records without duplicates", () => {
@@ -229,26 +228,35 @@ describe("recurring newsletter state", () => {
         },
       ],
     };
-    const nextCandidate = selectNextRecurringNewsletterCandidate(candidates, state);
+    const unsentCandidates = selectUnsentRecurringNewsletterCandidates(candidates, state);
 
-    expect(nextCandidate?.slug).toBe("static-site-email");
+    expect(unsentCandidates.map((candidate) => candidate.slug)).toEqual([
+      "static-site-email",
+      "why-cloudflare",
+    ]);
 
-    const markedOnce = markRecurringNewsletterSent(
+    const markedOnce = markRecurringNewsletterCandidatesSent(
       state,
-      { type: "writing", slug: "static-site-email" },
+      [
+        { type: "writing", slug: "static-site-email" },
+        { type: "writing", slug: "why-cloudflare" },
+      ],
       "2026-03-02T00:00:00Z",
-      "New writing: The Friction of Static Site Email"
+      "New on Wilson Chen"
     );
-    const markedTwice = markRecurringNewsletterSent(
+    const markedTwice = markRecurringNewsletterCandidatesSent(
       markedOnce,
-      { type: "writing", slug: "static-site-email" },
+      [
+        { type: "writing", slug: "static-site-email" },
+        { type: "writing", slug: "why-cloudflare" },
+      ],
       "2026-03-03T00:00:00Z",
-      "New writing: The Friction of Static Site Email"
+      "New on Wilson Chen"
     );
 
-    expect(markedOnce.writing).toHaveLength(1);
-    expect(markedTwice.writing).toHaveLength(1);
-    expect(markedTwice.writing[0]?.subject).toContain("New writing");
+    expect(markedOnce.writing).toHaveLength(2);
+    expect(markedTwice.writing).toHaveLength(2);
+    expect(markedTwice.writing.every((record) => record.subject === "New on Wilson Chen")).toBe(true);
   });
 
   it("builds deterministic candidates from the content loaders", () => {

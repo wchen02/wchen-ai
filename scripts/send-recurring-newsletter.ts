@@ -7,8 +7,8 @@ import {
 import {
   getRecurringNewsletterCandidates,
   loadNewsletterSendState,
-  markRecurringNewsletterSent,
-  selectNextRecurringNewsletterCandidate,
+  markRecurringNewsletterCandidatesSent,
+  selectUnsentRecurringNewsletterCandidates,
   writeNewsletterSendState,
 } from "../src/lib/newsletter-recurring";
 import {
@@ -57,9 +57,9 @@ async function main(): Promise<void> {
 
   const state = loadNewsletterSendState();
   const candidates = getRecurringNewsletterCandidates();
-  const candidate = selectNextRecurringNewsletterCandidate(candidates, state);
+  const unsentCandidates = selectUnsentRecurringNewsletterCandidates(candidates, state);
 
-  if (!candidate) {
+  if (unsentCandidates.length === 0) {
     console.log("No unsent recurring newsletter items found.");
     return;
   }
@@ -80,19 +80,21 @@ async function main(): Promise<void> {
   const brand = getNewsletterEmailBrand();
   const footer = getNewsletterEmailContent().footer;
   const issueContent = getRecurringNewsletterEmailContent({
-    type: candidate.type,
-    entry: {
-      entryTitle: candidate.title,
-      entrySummary: candidate.summary,
-      entryUrl: candidate.ctaUrl,
-    },
+    itemCount: unsentCandidates.length,
   });
   const rendered = await renderNewsletterIssueEmail({
     brand,
     content: issueContent,
     footer,
     subjectLine: issueContent.subject,
-    ctaUrl: candidate.ctaUrl,
+    entries: unsentCandidates.map((candidate) => ({
+      type: candidate.type,
+      title: candidate.title,
+      summary: candidate.summary,
+      ctaLabel: issueContent.itemActionLabels[candidate.type],
+      ctaUrl: candidate.ctaUrl,
+      typeLabel: issueContent.itemTypeLabels[candidate.type],
+    })),
   });
   const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
   const recipientBatches = chunk(recipients, RESEND_BATCH_SIZE);
@@ -105,16 +107,21 @@ async function main(): Promise<void> {
       subject: issueContent.subject,
       html: rendered.html,
       text: rendered.text,
-      idempotencyKey: createNewsletterIssueIdempotencyKey(candidate.type, candidate.slug, batchIndex),
+      idempotencyKey: createNewsletterIssueIdempotencyKey(unsentCandidates, batchIndex),
     });
   }
 
   const sentAt = new Date().toISOString();
-  const nextState = markRecurringNewsletterSent(state, candidate, sentAt, issueContent.subject);
+  const nextState = markRecurringNewsletterCandidatesSent(
+    state,
+    unsentCandidates,
+    sentAt,
+    issueContent.subject
+  );
   writeNewsletterSendState(nextState);
 
   console.log(
-    `Sent recurring newsletter for ${candidate.type} "${candidate.slug}" to ${recipients.length} subscribers.`
+    `Sent recurring newsletter digest with ${unsentCandidates.length} items to ${recipients.length} subscribers.`
   );
 }
 

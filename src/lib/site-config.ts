@@ -93,8 +93,12 @@ interface NewsletterContentSource {
   welcome: NewsletterEmailContent;
   issueDefaults: NewsletterIssueDefaults;
   recurring: {
-    writing: NewsletterIssueContent & { subject: string };
-    project: NewsletterIssueContent & { subject: string };
+    digest: NewsletterIssueContent & {
+      subject: string;
+      itemsHeading?: string;
+      itemTypeLabels: Record<RecurringNewsletterType, string>;
+      itemActionLabels: Record<RecurringNewsletterType, string>;
+    };
   };
   footer: NewsletterFooterContent;
 }
@@ -109,6 +113,9 @@ export interface RecurringNewsletterEntryTokens {
 
 export interface ResolvedRecurringNewsletterEmailContent extends NewsletterIssueContent {
   subject: string;
+  itemsHeading?: string;
+  itemTypeLabels: Record<RecurringNewsletterType, string>;
+  itemActionLabels: Record<RecurringNewsletterType, string>;
 }
 
 export const SITE_PROFILE = siteProfile as SiteProfile;
@@ -149,17 +156,25 @@ function resolveNewsletterTokens(value: string, tokens: Record<string, string>):
 
 function getNewsletterTokenMap(
   brand: NewsletterEmailBrand,
-  entry?: RecurringNewsletterEntryTokens
+  options?: {
+    entry?: RecurringNewsletterEntryTokens;
+    itemCount?: number;
+  }
 ): Record<string, string> {
   return {
     siteName: brand.siteName,
     authorName: brand.authorName,
     newsletterDescription: brand.description,
-    ...(entry
+    ...(options?.entry
       ? {
-          entryTitle: entry.entryTitle,
-          entrySummary: entry.entrySummary,
-          entryUrl: entry.entryUrl,
+          entryTitle: options.entry.entryTitle,
+          entrySummary: options.entry.entrySummary,
+          entryUrl: options.entry.entryUrl,
+        }
+      : {}),
+    ...(options?.itemCount !== undefined
+      ? {
+          itemCount: String(options.itemCount),
         }
       : {}),
   };
@@ -225,20 +240,33 @@ export function getNewsletterEmailContent(siteUrl: string = SITE_URL): Newslette
 }
 
 export function getRecurringNewsletterEmailContent(params: {
-  type: RecurringNewsletterType;
-  entry: RecurringNewsletterEntryTokens;
+  itemCount: number;
   siteUrl?: string;
 }): ResolvedRecurringNewsletterEmailContent {
   const brand = getNewsletterEmailBrand(params.siteUrl ?? SITE_URL);
-  const tokens = getNewsletterTokenMap(brand, params.entry);
-  const template = NEWSLETTER_CONTENT.recurring[params.type];
+  const tokens = getNewsletterTokenMap(brand, { itemCount: params.itemCount });
+  const template = NEWSLETTER_CONTENT.recurring.digest;
 
   return {
     subject: resolveNewsletterTokens(template.subject, tokens),
     preview: resolveNewsletterTokens(template.preview, tokens),
     summary: resolveNewsletterTokens(template.summary, tokens),
-    primaryActionLabel: resolveNewsletterTokens(template.primaryActionLabel, tokens),
+    primaryActionLabel: resolveNewsletterTokens(
+      template.itemActionLabels.writing || NEWSLETTER_CONTENT.issueDefaults.primaryActionLabel,
+      tokens
+    ),
     sections: resolveNewsletterSections(template.sections, tokens),
+    itemsHeading: template.itemsHeading
+      ? resolveNewsletterTokens(template.itemsHeading, tokens)
+      : undefined,
+    itemTypeLabels: {
+      writing: resolveNewsletterTokens(template.itemTypeLabels.writing, tokens),
+      project: resolveNewsletterTokens(template.itemTypeLabels.project, tokens),
+    },
+    itemActionLabels: {
+      writing: resolveNewsletterTokens(template.itemActionLabels.writing, tokens),
+      project: resolveNewsletterTokens(template.itemActionLabels.project, tokens),
+    },
     footerNote: template.footerNote
       ? resolveNewsletterTokens(template.footerNote, tokens)
       : undefined,

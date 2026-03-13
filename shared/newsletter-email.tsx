@@ -77,6 +77,7 @@ interface NewsletterShellProps {
   primaryAction?: NewsletterEmailAction;
   secondaryAction?: NewsletterEmailAction;
   secondaryActionText?: string;
+  children?: ReactNode;
 }
 
 const colors = {
@@ -99,8 +100,10 @@ function NewsletterEmailShell({
   primaryAction,
   secondaryAction,
   secondaryActionText,
+  children,
 }: NewsletterShellProps) {
   const sections = content.sections ?? [];
+  const hasBodyContent = Boolean(children) || sections.length > 0;
 
   return (
     <Html>
@@ -139,7 +142,9 @@ function NewsletterEmailShell({
             </Text>
           ) : null}
 
-          {sections.length > 0 ? <Hr style={dividerStyle} /> : null}
+          {hasBodyContent ? <Hr style={dividerStyle} /> : null}
+
+          {children}
 
           {sections.map((section) => (
             <Section key={`${section.heading ?? "section"}-${section.paragraphs.join("|")}`}>
@@ -192,7 +197,16 @@ export interface NewsletterIssueEmailInput {
   content: NewsletterIssueContent;
   footer: NewsletterFooterContent;
   subjectLine: string;
+  entries: NewsletterIssueEntry[];
+}
+
+export interface NewsletterIssueEntry {
+  type: "writing" | "project";
+  title: string;
+  summary: string;
+  ctaLabel: string;
   ctaUrl: string;
+  typeLabel?: string;
 }
 
 async function renderNewsletterTemplate(
@@ -213,13 +227,14 @@ export function createNewsletterWelcomeIdempotencyKey(email: string, tokenId?: s
 }
 
 export function createNewsletterIssueIdempotencyKey(
-  type: "writing" | "project",
-  slug: string,
+  entries: Array<Pick<NewsletterIssueEntry, "type"> & { slug: string }>,
   batchIndex?: number
 ): string {
+  const digestId = createStableDigestId(entries.map((entry) => `${entry.type}/${entry.slug}`).join("|"));
+
   return batchIndex === undefined
-    ? `newsletter-issue/${type}/${slug}`
-    : `newsletter-issue/${type}/${slug}/batch-${batchIndex + 1}`;
+    ? `newsletter-issue/digest/${digestId}`
+    : `newsletter-issue/digest/${digestId}/batch-${batchIndex + 1}`;
 }
 
 export async function renderNewsletterConfirmEmail(params: {
@@ -279,6 +294,8 @@ export async function renderNewsletterWelcomeEmail(params: {
 export async function renderNewsletterIssueEmail(
   params: NewsletterIssueEmailInput
 ): Promise<RenderedNewsletterEmail> {
+  const itemsHeading = (params.content as NewsletterIssueContent & { itemsHeading?: string }).itemsHeading;
+
   return renderNewsletterTemplate(
     <NewsletterEmailShell
       brand={params.brand}
@@ -287,16 +304,33 @@ export async function renderNewsletterIssueEmail(
         preview: params.content.preview,
         title: params.subjectLine,
         intro: [params.content.summary],
-        primaryActionLabel: params.content.primaryActionLabel,
         sections: params.content.sections,
         footerNote: params.content.footerNote,
       }}
       footer={params.footer}
-      primaryAction={{
-        label: params.content.primaryActionLabel,
-        url: params.ctaUrl,
-      }}
-    />
+    >
+      {params.entries.length > 0 ? (
+        <Section>
+          {itemsHeading ? (
+            <Heading as="h2" style={sectionHeadingStyle}>
+              {itemsHeading}
+            </Heading>
+          ) : null}
+          {params.entries.map((entry) => (
+            <Section key={`${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
+              <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
+              <Heading as="h3" style={issueTitleStyle}>
+                {entry.title}
+              </Heading>
+              <Text style={paragraphStyle}>{entry.summary}</Text>
+              <Button href={entry.ctaUrl} style={secondaryButtonStyle}>
+                {entry.ctaLabel}
+              </Button>
+            </Section>
+          ))}
+        </Section>
+      ) : null}
+    </NewsletterEmailShell>
   );
 }
 
@@ -372,6 +406,36 @@ const sectionHeadingStyle = {
   margin: "0 0 12px",
 };
 
+const issueCardStyle = {
+  border: `1px solid ${colors.border}`,
+  borderRadius: "16px",
+  margin: "0 0 16px",
+  padding: "20px",
+};
+
+const issueTypeStyle = {
+  color: colors.muted,
+  fontSize: "12px",
+  fontWeight: "600",
+  letterSpacing: "0.08em",
+  margin: "0 0 8px",
+  textTransform: "uppercase" as const,
+};
+
+const issueTitleStyle = {
+  color: colors.text,
+  fontSize: "22px",
+  fontWeight: "700",
+  lineHeight: "1.3",
+  margin: "0 0 12px",
+};
+
+const secondaryButtonStyle = {
+  ...primaryButtonStyle,
+  display: "inline-block",
+  marginTop: "4px",
+};
+
 const dividerStyle = {
   borderColor: colors.border,
   margin: "28px 0",
@@ -388,3 +452,18 @@ const linkStyle = {
   color: colors.text,
   textDecoration: "underline",
 };
+
+function createStableDigestId(value: string): string {
+  let hashA = 5381;
+  let hashB = 52711;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const code = value.charCodeAt(index);
+    hashA = (hashA * 33) ^ code;
+    hashB = (hashB * 31) ^ code;
+  }
+
+  return `${(hashA >>> 0).toString(16).padStart(8, "0")}${(hashB >>> 0)
+    .toString(16)
+    .padStart(8, "0")}`;
+}

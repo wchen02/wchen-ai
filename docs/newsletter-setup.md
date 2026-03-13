@@ -114,16 +114,16 @@ The script:
 
 1. loads `content/site/newsletter-state.json`
 2. loads published writings and projects from `content/`
-3. selects the next unsent item deterministically using oldest-unsent-first order
-4. renders the recurring writing/project email using `content/site/newsletter.json`
+3. selects all unsent items deterministically using oldest-unsent-first order
+4. renders one recurring digest email for the unsent writing/project items using `content/site/newsletter.json`
 5. fetches confirmed subscribers from the configured Resend segment
 6. sends the email in batches
-7. updates `content/site/newsletter-state.json` only after the send succeeds
+7. updates `content/site/newsletter-state.json` for every included item only after the send succeeds
 
 Important behavior:
 
 - only non-draft writing entries are eligible
-- recurring sends are one-at-a-time, not “blast every unsent item”
+- recurring sends bundle all currently unsent writings and projects into one mixed digest email
 - if there is no eligible content or no configured newsletter env, the script exits without changing state
 
 ## CI Behavior
