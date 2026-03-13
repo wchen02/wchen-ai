@@ -1,0 +1,18 @@
+---
+title: "Comments Without a Backend"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["giscus", "comments", "static-sites", "github"]
+featured: false
+draft: false
+---
+
+I wanted a comment section on writing and project pages without running a database or a custom API.
+
+Static sites are great until you need state that lives somewhere. Comments are exactly that—someone else's data, attached to your content. The obvious options are either heavy (Disqus, with ads and tracking) or a rabbit hole (self-hosted Commento, moderation, spam). I did not want to operate another service or pay for a comment SaaS that would outlive my interest in maintaining it.
+
+GitHub already has identity, threading, and moderation. Discussions are first-class in any public repo. So I treated comments as *discussions mapped to each page*—one discussion per article or project, titled so I can see at a glance which piece it belongs to. The widget that renders on the site is [Giscus](https://giscus.app): it embeds GitHub Discussions via a script. No backend on my side. No new tables. Commenters sign in with GitHub and reply there; the thread shows up in the repo's Discussions tab.
+
+Setup is env vars and a one-time Giscus app install. If those are missing, the comments section does not render. No errors, no placeholder—the page just omits the block. That keeps the default experience clean for forks or previews that do not configure comments.
+
+The widget respects the site theme (light or dark) and uses a stable discussion identifier so each locale and each piece gets its own thread. I get to keep the site static and the stack minimal, while still giving readers a place to respond where they already have an identity.
