@@ -8,7 +8,8 @@ const base = "/en";
 test.describe("Newsletter subscription", () => {
   test("subscription form submits and shows success or error feedback", async ({ page }) => {
     await page.goto(`${base}/writing`);
-    await expect(page.getByRole("heading", { name: formsEn.newsletter.title })).toBeVisible();
+    await page.getByRole("button", { name: formsEn.newsletter.title }).click();
+    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
 
     const emailInput = page.getByLabel(formsEn.newsletter.emailLabel);
     await emailInput.fill("e2e-subscriber@example.com");
@@ -24,6 +25,7 @@ test.describe("Newsletter subscription", () => {
 
   test("subscription form has accessible email field and submit button", async ({ page }) => {
     await page.goto(`${base}/writing`);
+    await page.getByRole("button", { name: formsEn.newsletter.title }).click();
     await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
     await expect(
       page.getByRole("button", { name: new RegExp(formsEn.newsletter.submitLabel, "i") })

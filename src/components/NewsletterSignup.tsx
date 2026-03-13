@@ -5,7 +5,12 @@ import { useCurrentLocale } from "@/components/LocaleProvider";
 import { getFormsContent } from "@/lib/site-content";
 import { getSiteProfile } from "@/lib/site-config";
 
-export default function NewsletterSignup() {
+type NewsletterSignupProps = {
+  /** Lighter chrome when embedded in the footer slideout */
+  variant?: "default" | "slideout";
+};
+
+export default function NewsletterSignup({ variant = "default" }: NewsletterSignupProps) {
   const locale = useCurrentLocale();
   const formsContent = getFormsContent(locale);
   const siteProfile = getSiteProfile(locale);
@@ -49,9 +54,22 @@ export default function NewsletterSignup() {
     }
   };
 
+  const wrapperClass =
+    variant === "slideout"
+      ? "rounded-xl border-0 bg-transparent p-0 space-y-4"
+      : "rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4";
+
   if (status === "success") {
     return (
-      <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
+      <div
+        role="status"
+        aria-live="polite"
+        className={
+          variant === "slideout"
+            ? "p-4 md:p-5 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300"
+            : "p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300"
+        }
+      >
         <p className="font-medium">{siteProfile.newsletter.successTitle}</p>
         <p className="text-sm mt-1">{siteProfile.newsletter.successDescription}</p>
       </div>
@@ -59,14 +77,24 @@ export default function NewsletterSignup() {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
-      <div>
-        <h3 className="font-bold text-gray-900 dark:text-white">{formsContent.newsletter.title}</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+    <div className={wrapperClass}>
+      {variant === "slideout" ? (
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           {siteProfile.newsletter.description}
         </p>
-      </div>
-      <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+      ) : (
+        <div>
+          <h3 className="font-bold text-gray-900 dark:text-white">{formsContent.newsletter.title}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            {siteProfile.newsletter.description}
+          </p>
+        </div>
+      )}
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-3 sm:flex-row sm:items-end"
+      >
         <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
           <label htmlFor="nl_honey">{formsContent.common.honeypotLabel}</label>
           <input type="text" id="nl_honey" name="_honey" tabIndex={-1} autoComplete="off" />

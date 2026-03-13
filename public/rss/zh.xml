@@ -6,7 +6,7 @@
     <description>关于工程、产品与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 14:13:43 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 14:31:09 GMT</lastBuildDate>
     
     <item>
       <title><![CDATA[本站 i18n 是怎么做的，以及两个 agent skill 如何配合]]></title>

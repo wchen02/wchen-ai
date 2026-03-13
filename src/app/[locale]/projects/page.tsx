@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProjectsFilter from "@/components/ProjectsFilter";
+import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
 import { getProjects } from "@/lib/mdx";
@@ -81,6 +82,7 @@ export default async function LocalizedProjectsPage({
       <SectionReveal className="pt-8">
         <ReachOutCTA locale={resolvedLocale} />
       </SectionReveal>
+      <NewsletterSlideout />
     </main>
   );
 }

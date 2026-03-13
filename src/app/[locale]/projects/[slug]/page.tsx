@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
+import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import ShareButton from "@/components/ShareButton";
 import { extractHeadings, getProjectBySlug, getProjects, type TOCItem } from "@/lib/mdx";
@@ -190,6 +191,7 @@ export default async function LocalizedProjectPage({
           <MDXRemote source={project.content} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
         </div>
       </ArticleWithTOC>
+      <NewsletterSlideout />
     </main>
   );
 }

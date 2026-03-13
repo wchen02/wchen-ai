@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import NewsletterSignup from "@/components/NewsletterSignup";
+import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SearchWriting from "@/components/SearchWriting";
 import SectionReveal from "@/components/SectionReveal";
@@ -106,18 +106,6 @@ export default async function LocalizedWritingIndexPage({
         </header>
       </SectionReveal>
 
-      <SectionReveal className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900/50">
-        <NewsletterSignup />
-        <p className="text-sm text-gray-600 dark:text-gray-400 shrink-0">
-          <a
-            href={`/rss/${resolvedLocale}.xml`}
-            className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
-          >
-            {siteProfile.navigation.rssLabel}
-          </a>
-        </p>
-      </SectionReveal>
-
       <SectionReveal>
         <SearchWriting />
       </SectionReveal>
@@ -173,6 +161,7 @@ export default async function LocalizedWritingIndexPage({
       <SectionReveal className="pt-8">
         <ReachOutCTA locale={resolvedLocale} />
       </SectionReveal>
+      <NewsletterSlideout />
     </main>
   );
 }

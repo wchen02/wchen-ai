@@ -12,6 +12,7 @@ import uiEn from "../content/locales/en/site/ui.json";
 import uiEs from "../content/locales/es/site/ui.json";
 import uiZh from "../content/locales/zh/site/ui.json";
 import formsEs from "../content/locales/es/site/forms.json";
+import formsZh from "../content/locales/zh/site/forms.json";
 
 const LOCALES = ["en", "es", "zh"] as const;
 const baseURL = "http://localhost:4173";
@@ -136,11 +137,16 @@ test.describe("i18n: RSS feeds", () => {
     }
   });
 
-  test("writing page RSS link is locale-specific", async ({ page }) => {
-    await page.goto("/es/writing");
-    await expect(page.getByRole("main").locator('a[href="/rss/es.xml"]')).toBeVisible();
-    await page.goto("/zh/writing");
-    await expect(page.getByRole("main").locator('a[href="/rss/zh.xml"]')).toBeVisible();
+  test("writing page RSS link is locale-specific (in newsletter slideout)", async ({ page }) => {
+    const openSlideoutAndExpectRss = async (path: string, rssHref: string, toggleName: string) => {
+      await page.goto(path);
+      await page.evaluate(() => sessionStorage.removeItem("newsletter-slideout-expanded"));
+      await page.reload();
+      await page.getByRole("button", { name: toggleName }).click();
+      await expect(page.getByRole("main").locator(`a[href="${rssHref}"]`)).toBeVisible();
+    };
+    await openSlideoutAndExpectRss("/es/writing", "/rss/es.xml", formsEs.newsletter.title);
+    await openSlideoutAndExpectRss("/zh/writing", "/rss/zh.xml", formsZh.newsletter.title);
   });
 
   test("each locale RSS feed returns 200 and contains items", async ({ request }) => {
@@ -174,6 +180,7 @@ test.describe("i18n: RSS feeds", () => {
 test.describe("i18n: Newsletter", () => {
   test("newsletter signup on es shows Spanish form labels", async ({ page }) => {
     await page.goto("/es/writing");
+    await page.getByRole("button", { name: formsEs.newsletter.title }).click();
     await expect(page.getByRole("heading", { name: formsEs.newsletter.title })).toBeVisible();
     await expect(page.getByLabel(formsEs.newsletter.emailLabel)).toBeVisible();
   });

@@ -5,7 +5,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
-import NewsletterSignup from "@/components/NewsletterSignup";
+import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import ReadNext from "@/components/ReadNext";
 import ShareButton from "@/components/ShareButton";
@@ -172,9 +172,6 @@ export default async function LocalizedWritingPage({
         footer={
           <>
             <ReadNext writings={getRelatedWritings(slug, 3, resolvedLocale)} locale={resolvedLocale} />
-            <div className="mt-12">
-              <NewsletterSignup />
-            </div>
             <ReachOutCTA locale={resolvedLocale} />
           </>
         }
@@ -186,6 +183,7 @@ export default async function LocalizedWritingPage({
           />
         </div>
       </ArticleWithTOC>
+      <NewsletterSlideout />
     </main>
   );
 }
