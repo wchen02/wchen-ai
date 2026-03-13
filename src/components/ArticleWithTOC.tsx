@@ -27,7 +27,11 @@ export default function ArticleWithTOC({
     <>
       <div className="mb-8">{backLink}</div>
 
-      <div className="md:grid md:grid-cols-[1fr_200px] md:gap-10 lg:gap-12">
+      <div
+        className={
+          showToc ? "md:grid md:grid-cols-[1fr_200px] md:gap-10 lg:gap-12" : ""
+        }
+      >
         <article className="min-w-0 space-y-12">
           {header}
 
