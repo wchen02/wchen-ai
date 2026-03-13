@@ -22,5 +22,9 @@
     "invalidConfirmationLink": "Enlace de confirmacion invalido. Vuelve a suscribirte.",
     "expiredConfirmationLink": "Este enlace de confirmacion ha expirado. Vuelve a suscribirte.",
     "invalidUnsubscribeLink": "Enlace de baja invalido."
+  },
+  "comments": {
+    "postSuccess": "Gracias por tu comentario. Puede aparecer en breve.",
+    "postFailure": "No se pudo publicar el comentario. Intentalo de nuevo mas tarde."
   }
 }

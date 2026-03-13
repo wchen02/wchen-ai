@@ -22,5 +22,9 @@
     "invalidConfirmationLink": "Invalid confirmation link. Please try subscribing again.",
     "expiredConfirmationLink": "This confirmation link has expired. Please subscribe again.",
     "invalidUnsubscribeLink": "Invalid unsubscribe link."
+  },
+  "comments": {
+    "postSuccess": "Thanks for your comment. It may appear after a short delay.",
+    "postFailure": "Could not post comment. Please try again later."
   }
 }

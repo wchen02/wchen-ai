@@ -66,6 +66,19 @@
     "notFoundTitle": "未找到项目",
     "detailTitleTemplate": "{title} | {siteName}"
   },
+  "comments": {
+    "heading": "评论",
+    "emptyState": "暂无评论。来写下第一条吧。",
+    "nameLabel": "姓名",
+    "namePlaceholder": "你的名字",
+    "emailLabel": "邮箱（选填）",
+    "emailPlaceholder": "you@example.com",
+    "bodyLabel": "评论",
+    "bodyPlaceholder": "写下你的想法...",
+    "submitLabel": "发布评论",
+    "submittingLabel": "发布中...",
+    "submitErrorFallback": "出了点问题，请重试。"
+  },
   "newsletterFlow": {
     "confirmLoadingTitle": "确认中...",
     "confirmLoadingMessage": "正在确认你的订阅...",

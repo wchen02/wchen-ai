@@ -284,6 +284,19 @@ export const UiContentSchema = z.object({
     notFoundTitle: z.string().min(1),
     detailTitleTemplate: z.string().min(1),
   }),
+  comments: z.object({
+    heading: z.string().min(1),
+    emptyState: z.string().min(1),
+    nameLabel: z.string().min(1),
+    namePlaceholder: z.string().min(1),
+    emailLabel: z.string().min(1).optional(),
+    emailPlaceholder: z.string().min(1).optional(),
+    bodyLabel: z.string().min(1),
+    bodyPlaceholder: z.string().min(1),
+    submitLabel: z.string().min(1),
+    submittingLabel: z.string().min(1),
+    submitErrorFallback: z.string().min(1),
+  }),
   newsletterFlow: z.object({
     confirmLoadingTitle: z.string().min(1),
     confirmLoadingMessage: z.string().min(1),
@@ -364,6 +377,10 @@ export const SystemContentSchema = z.object({
     invalidConfirmationLink: z.string().min(1),
     expiredConfirmationLink: z.string().min(1),
     invalidUnsubscribeLink: z.string().min(1),
+  }),
+  comments: z.object({
+    postSuccess: z.string().min(1),
+    postFailure: z.string().min(1),
   }),
 });
 

@@ -66,6 +66,19 @@
     "notFoundTitle": "Project Not Found",
     "detailTitleTemplate": "{title} | {siteName}"
   },
+  "comments": {
+    "heading": "Comments",
+    "emptyState": "No comments yet. Be the first to share your thoughts.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailLabel": "Email (optional)",
+    "emailPlaceholder": "you@example.com",
+    "bodyLabel": "Comment",
+    "bodyPlaceholder": "Share your thoughts...",
+    "submitLabel": "Post comment",
+    "submittingLabel": "Posting...",
+    "submitErrorFallback": "Something went wrong. Please try again."
+  },
   "newsletterFlow": {
     "confirmLoadingTitle": "Confirming...",
     "confirmLoadingMessage": "Confirming your subscription...",

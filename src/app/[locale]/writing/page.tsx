@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
-import ReachOutCTA from "@/components/ReachOutCTA";
 import SearchWriting from "@/components/SearchWriting";
 import SectionReveal from "@/components/SectionReveal";
 import WritingCard from "@/components/WritingCard";
@@ -158,9 +157,6 @@ export default async function LocalizedWritingIndexPage({
         </SectionReveal>
       )}
 
-      <SectionReveal className="pt-8">
-        <ReachOutCTA locale={resolvedLocale} />
-      </SectionReveal>
       <NewsletterSlideout />
     </main>
   );

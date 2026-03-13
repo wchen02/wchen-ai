@@ -354,3 +354,45 @@ test.describe("Metadata and document", () => {
     });
   }
 });
+
+test.describe("Theme toggle and comment color theme", () => {
+  test("theme toggle adds and removes dark class on document", async ({ page }) => {
+    await page.goto("/en");
+    const html = page.locator("html");
+    const themeButton = page.getByRole("button", { name: /theme toggle/i });
+    await expect(themeButton).toBeVisible();
+
+    const hasDarkBefore = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+    await themeButton.click();
+    const hasDarkAfterFirst = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+    expect(hasDarkAfterFirst).toBe(!hasDarkBefore);
+
+    await themeButton.click();
+    const hasDarkAfterSecond = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+    expect(hasDarkAfterSecond).toBe(hasDarkBefore);
+  });
+
+  test("on page with comments, giscus script data-theme matches site theme and updates after toggle", async ({
+    page,
+  }) => {
+    await page.goto("/en/writing/static-first");
+    const container = page.locator(".giscus-container");
+    const script = container.locator('script[src="https://giscus.app/client.js"]');
+
+    const hasComments = (await script.count()) > 0;
+    test.skip(!hasComments, "Comments section not rendered (GISCUS_* unset)");
+
+    const isDarkBefore = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+    const expectedThemeBefore = isDarkBefore ? "dark_dimmed" : "light";
+    await expect(script).toHaveAttribute("data-theme", expectedThemeBefore);
+
+    const themeButton = page.getByRole("button", { name: /theme toggle/i });
+    await themeButton.click();
+    await page.waitForTimeout(300);
+
+    const isDarkAfter = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+    const expectedThemeAfter = isDarkAfter ? "dark_dimmed" : "light";
+    const scriptAfter = container.locator('script[src="https://giscus.app/client.js"]');
+    await expect(scriptAfter).toHaveAttribute("data-theme", expectedThemeAfter);
+  });
+});

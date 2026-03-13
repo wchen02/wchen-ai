@@ -22,5 +22,9 @@
     "invalidConfirmationLink": "确认链接无效，请重新订阅。",
     "expiredConfirmationLink": "该确认链接已过期，请重新订阅。",
     "invalidUnsubscribeLink": "退订链接无效。"
+  },
+  "comments": {
+    "postSuccess": "感谢留言，评论可能会稍后显示。",
+    "postFailure": "评论提交失败，请稍后再试。"
   }
 }

@@ -181,8 +181,8 @@ test.describe("i18n: Newsletter", () => {
   test("newsletter signup on es shows Spanish form labels", async ({ page }) => {
     await page.goto("/es/writing");
     await page.getByRole("button", { name: formsEs.newsletter.title }).click();
-    await expect(page.getByRole("heading", { name: formsEs.newsletter.title })).toBeVisible();
     await expect(page.getByLabel(formsEs.newsletter.emailLabel)).toBeVisible();
+    await expect(page.getByRole("button", { name: formsEs.newsletter.submitLabel })).toBeVisible();
   });
 
   test("newsletter confirm page route exists and uses locale", async ({ page }) => {

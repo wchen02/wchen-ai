@@ -1,0 +1,63 @@
+/* Custom light theme for Giscus to match site (emerald accent, gray palette).
+   Based on GitHub Primer light theme variables; overrides for canvas, accent, and buttons. */
+main {
+  /* Primer light base (simplified) */
+  --color-prettylights-syntax-comment: #6e7781;
+  --color-prettylights-syntax-constant: #0550ae;
+  --color-prettylights-syntax-entity: #8250df;
+  --color-prettylights-syntax-storage-modifier-import: #24292f;
+  --color-prettylights-syntax-entity-tag: #116329;
+  --color-prettylights-syntax-keyword: #cf222e;
+  --color-prettylights-syntax-string: #0a3069;
+  --color-prettylights-syntax-variable: #953800;
+  --color-prettylights-syntax-markup-list: #3b2300;
+  --color-prettylights-syntax-markup-heading: #0550ae;
+  --color-prettylights-syntax-markup-italic: #24292f;
+  --color-prettylights-syntax-markup-bold: #24292f;
+  --color-prettylights-syntax-markup-deleted-text: #82071e;
+  --color-prettylights-syntax-markup-deleted-bg: #ffebe9;
+  --color-prettylights-syntax-markup-inserted-text: #116329;
+  --color-prettylights-syntax-markup-inserted-bg: #dafbe1;
+  --color-prettylights-syntax-constant-other-reference-link: #0a3069;
+  /* Buttons – site gray/emerald */
+  --color-btn-text: #111827;
+  --color-btn-bg: #f3f4f6;
+  --color-btn-border: #e5e7eb;
+  --color-btn-shadow: 0 1px 0 rgb(0 0 0 / 4%);
+  --color-btn-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 25%);
+  --color-btn-hover-bg: #e5e7eb;
+  --color-btn-hover-border: #d1d5db;
+  --color-btn-active-bg: #d1d5db;
+  --color-btn-active-border: #d1d5db;
+  --color-btn-primary-text: #fff;
+  --color-btn-primary-bg: #059669;
+  --color-btn-primary-border: #047857;
+  --color-btn-primary-shadow: 0 1px 0 rgb(0 0 0 / 10%);
+  --color-btn-primary-hover-bg: #047857;
+  --color-btn-primary-hover-border: #047857;
+  --color-btn-primary-selected-bg: #047857;
+  --color-btn-primary-disabled-text: rgb(255 255 255 / 80%);
+  --color-btn-primary-disabled-bg: #6ee7b7;
+  --color-btn-primary-disabled-border: #d1d5db;
+  /* Canvas & text – site grays */
+  --color-fg-default: #111827;
+  --color-fg-muted: #6b7280;
+  --color-fg-subtle: #9ca3af;
+  --color-canvas-default: #ffffff;
+  --color-canvas-overlay: #ffffff;
+  --color-canvas-inset: #f9fafb;
+  --color-canvas-subtle: #f3f4f6;
+  --color-border-default: #e5e7eb;
+  --color-border-muted: #f3f4f6;
+  /* Accent – emerald to match site */
+  --color-accent-fg: #059669;
+  --color-accent-emphasis: #059669;
+  --color-accent-muted: rgb(5 150 105 / 40%);
+  --color-accent-subtle: #d1fae5;
+  --color-success-fg: #047857;
+  --color-danger-fg: #dc2626;
+  --color-danger-subtle: #fee2e2;
+  --color-neutral-muted: rgb(107 114 128 / 20%);
+  --color-social-reaction-bg-hover: #f3f4f6;
+  --color-social-reaction-bg-reacted-hover: #d1fae5;
+}

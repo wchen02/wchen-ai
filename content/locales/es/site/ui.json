@@ -66,6 +66,19 @@
     "notFoundTitle": "Proyecto no encontrado",
     "detailTitleTemplate": "{title} | {siteName}"
   },
+  "comments": {
+    "heading": "Comentarios",
+    "emptyState": "Aun no hay comentarios. Se el primero en compartir tu opinion.",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "emailLabel": "Correo (opcional)",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "bodyLabel": "Comentario",
+    "bodyPlaceholder": "Comparte tu opinion...",
+    "submitLabel": "Publicar comentario",
+    "submittingLabel": "Publicando...",
+    "submitErrorFallback": "Algo salio mal. Intentalo de nuevo."
+  },
   "newsletterFlow": {
     "confirmLoadingTitle": "Confirmando...",
     "confirmLoadingMessage": "Confirmando tu suscripcion...",

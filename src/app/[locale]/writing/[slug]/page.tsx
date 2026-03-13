@@ -5,8 +5,8 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
+import GiscusComments from "@/components/GiscusComments";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
-import ReachOutCTA from "@/components/ReachOutCTA";
 import ReadNext from "@/components/ReadNext";
 import ShareButton from "@/components/ShareButton";
 import {
@@ -22,6 +22,7 @@ import { localizePath } from "@/lib/i18n";
 import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization";
 import { resolveLocale, SUPPORTED_LOCALES } from "@/lib/locales";
 import { absoluteUrl, getSiteProfile } from "@/lib/site-config";
+import { getGiscusConfig } from "@/lib/giscus-config";
 import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 
@@ -117,6 +118,8 @@ export default async function LocalizedWritingPage({
   };
 
   const tocHeadings = extractHeadings(writing.content);
+  const giscusConfig = getGiscusConfig();
+  const discussionTerm = `Writing: ${writing.title} (${resolvedLocale})`;
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12 md:py-24">
@@ -172,7 +175,16 @@ export default async function LocalizedWritingPage({
         footer={
           <>
             <ReadNext writings={getRelatedWritings(slug, 3, resolvedLocale)} locale={resolvedLocale} />
-            <ReachOutCTA locale={resolvedLocale} />
+            {giscusConfig && (
+              <GiscusComments
+                discussionTerm={discussionTerm}
+                repo={giscusConfig.repo}
+                repoId={giscusConfig.repoId}
+                categoryId={giscusConfig.categoryId}
+                category={giscusConfig.category}
+                heading={uiContent.comments.heading}
+              />
+            )}
           </>
         }
       >

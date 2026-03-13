@@ -4,8 +4,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
+import GiscusComments from "@/components/GiscusComments";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
-import ReachOutCTA from "@/components/ReachOutCTA";
 import ShareButton from "@/components/ShareButton";
 import { extractHeadings, getProjectBySlug, getProjects, type TOCItem } from "@/lib/mdx";
 import { formatDate, resolveContentTokens } from "@/lib/formatting";
@@ -15,6 +15,7 @@ import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization
 import { resolveLocale, SUPPORTED_LOCALES } from "@/lib/locales";
 import { absoluteUrl, getSiteProfile } from "@/lib/site-config";
 import { getUiContent } from "@/lib/site-content";
+import { getGiscusConfig } from "@/lib/giscus-config";
 
 export async function generateStaticParams() {
   return SUPPORTED_LOCALES.flatMap((locale) =>
@@ -98,6 +99,8 @@ export default async function LocalizedProjectPage({
       : []),
   ];
   const tocHeadings = [...fixedSections, ...extractHeadings(project.content)];
+  const giscusConfig = getGiscusConfig();
+  const discussionTerm = `Project: ${project.title} (${resolvedLocale})`;
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12 md:py-24">
@@ -161,7 +164,20 @@ export default async function LocalizedProjectPage({
           </header>
         }
         tocHeadings={tocHeadings}
-        footer={<ReachOutCTA locale={resolvedLocale} />}
+        footer={
+          <>
+            {giscusConfig && (
+              <GiscusComments
+                discussionTerm={discussionTerm}
+                repo={giscusConfig.repo}
+                repoId={giscusConfig.repoId}
+                categoryId={giscusConfig.categoryId}
+                category={giscusConfig.category}
+                heading={uiContent.comments.heading}
+              />
+            )}
+          </>
+        }
       >
         <div className="bg-gray-50 dark:bg-neutral-900 rounded-xl p-6 md:p-8 space-y-6 border border-gray-100 dark:border-gray-800">
           <section id="the-motivation">
