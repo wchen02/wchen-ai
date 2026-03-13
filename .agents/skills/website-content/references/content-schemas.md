@@ -2,8 +2,8 @@
 
 The site now uses two content systems:
 
-- Locale-scoped JSON bundles in `content/locales/<locale>/site/*.json` for site copy, UI labels, newsletter text, and system messages
-- MDX files for writing and project entries, loaded from locale-specific folders first and falling back to shared content in `content/writing` and `content/projects`
+- Locale-scoped JSON bundles in `content/locales/<locale>/site/*.json` for site copy, UI labels, newsletter text, and system messages (supported locales: en, es, zh; see `src/lib/locales.ts`)
+- MDX files for writing and project entries: for each locale, the app uses *either* `content/locales/<locale>/writing` or `content/writing` (and similarly `.../projects` or `content/projects`). If the locale folder exists, only that folder is used; otherwise the shared folder is used. No merging. See `src/lib/mdx.ts` (`getWritingDir`, `getProjectsDir`).
 
 Zod validation happens at build time. Invalid frontmatter or invalid locale JSON content fails the build.
 

@@ -67,3 +67,9 @@ El estilo usa Tailwind CSS. Las animaciones usan Framer Motion, cargado con lazy
 Invertiría más tiempo en la fase de especificación. Incluso con spec-kit, me encontré tomando microdecisiones durante la implementación que deberían haberse fijado de entrada — cosas como taxonomía de tags, convenciones de nombres de temas y límites de longitud de contenido. Esas decisiones son baratas en un documento de spec y caras de refactorizar en código.
 
 El flujo de vibe coding en sí aguantó bien. La restricción que lo hizo funcionar no fue la capacidad del modelo de IA — fue la calidad del contexto que le di antes de pedirle que construyera.
+
+## Actualizaciones recientes
+
+La documentación de contenido refleja ya cómo el sitio carga copy y MDX. El skill website-content y content-schemas dejan claro: el copy del sitio es solo JSON por locale en `content/locales/<locale>/site/`; para escritos y proyectos la app usa *o* la carpeta del locale *o* la carpeta compartida, sin mezclar. Si existe `content/locales/es/writing`, español ve solo esa. Si no, usa `content/writing`. Igual para proyectos. Ese comportamiento ya estaba en código; el skill y las referencias lo describen para que agentes y yo no asumamos un fallback que mezcle.
+
+Entraron nuevos ensayos — validación en build como producto, el coste de la UI genérica y el diseño por agentes, GitHub como backend, revelación progresiva en skills de agentes, newsletter recurrente como paso de build — con traducción al español y al chino. El proyecto del skill home-about-refresh está documentado. El copy del menú compartir está localizado: etiquetas de copiar enlace, email, X, LinkedIn, Facebook y compartir nativo viven en `ui.json` para en, es y zh, así el menú habla el idioma correcto.

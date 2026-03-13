@@ -94,6 +94,12 @@ When I tell the agent to write a new project entry, it follows a deterministic p
 
 The result is a draft that follows my structural patterns, uses my vocabulary, respects my schema, and places the file in the right directory — without me re-explaining any of it.
 
+## Recent changes
+
+I tightened the skill and content-schemas so the content model is unambiguous. Site copy is locale-scoped JSON only under `content/locales/<locale>/site/*.json`; there is no shared source for home, about, or UI. For writing and projects, each locale uses *either* that locale’s folder *or* the shared folder — no merging. Shared `content/writing` and `content/projects` are the canonical default; the content-translation skill produces locale copies after I finish a shared entry. I also documented that `content/site/newsletter-state.json` is script-managed and should not be edited for copy.
+
+The voice checklist and content-schemas now reference Zod in `src/lib/schemas.ts` and the validate scripts (`validate-links`, `validate-theme-descriptors`, `validate-metadata`) so the agent knows invalid content fails the build. Clearer boundaries mean the agent stops guessing where files go and what not to touch.
+
 ## Where This Goes
 
 The skill is portable across platforms. The same `SKILL.md` convention works in Cursor, Claude Code, and GitHub Copilot. Publishing through [skills.sh](https://skills.sh) means anyone can install it with `npx skills add` and adapt it to their own voice and schemas.

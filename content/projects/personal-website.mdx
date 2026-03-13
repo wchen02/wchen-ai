@@ -67,3 +67,9 @@ Styling uses Tailwind CSS. Animations use Framer Motion, lazy-loaded to keep the
 I'd spend more time on the specification phase. Even with spec-kit, I found myself making micro-decisions during implementation that should have been captured upfront — things like tag taxonomy, theme naming conventions, and content length constraints. Those decisions are cheap to make in a spec document and expensive to refactor in code.
 
 The vibe coding workflow itself held up well. The constraint that made it work wasn't the AI model's capability — it was the quality of context I gave it before asking it to build.
+
+## Recent updates
+
+Content and docs have caught up with how the site actually loads copy and MDX. The website-content skill and content-schemas now state clearly: site copy is locale JSON only under `content/locales/<locale>/site/`; for writing and projects the app uses *either* a locale folder or the shared folder, no merging. If `content/locales/es/writing` exists, Spanish sees only that. Otherwise it falls back to `content/writing`. Same for projects. That behavior was already in code; the skill and references now match it so agents and I don't assume fallback merging.
+
+New essays went in — build-time validation as product, the cost of generic UI and agent design, GitHub as backend, progressive disclosure in agent skills, recurring newsletter as a build step — with Spanish and Chinese translations. The home-about-refresh skill project is documented. Share UI copy is fully localized: copy link, email, X, LinkedIn, Facebook, and native share labels live in `ui.json` for en, es, and zh so the share menu speaks the right language.

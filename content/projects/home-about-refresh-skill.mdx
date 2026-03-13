@@ -1,0 +1,48 @@
+---
+title: "home-about-refresh skill"
+date: "2026-03-13T12:00:00Z"
+status: "active"
+type: ["agent", "skill"]
+motivation: "I wanted the homepage and about page to stay aligned with what I actually write and build — without manually rewriting hero copy, current focus, or philosophy every time I ship new content."
+problemAddressed: "Home and about drift. You add writing entries and project entries; the main pages still say last quarter's focus or a generic tagline. Manually syncing is tedious and easy to forget. The corpus is the source of truth, but nothing was pulling from it into the locale JSON that drives the site."
+learnings: "Corpus-as-source-of-truth works when you define explicit extraction rules. Mapping theme, tags, motivation, problemAddressed, and learnings to specific home.json and about.json blocks makes the refresh deterministic. Reusing the website-content voice guide and page patterns keeps the output on-brand without duplicating instructions."
+featured: false
+---
+
+I built an agent skill that updates the homepage and about page from the content corpus — writings and projects — so hero copy, current focus, philosophy, expertise, and principles stay in sync with what I publish. No manual rewrite. No drift.
+
+## How It Works
+
+The skill is a single `SKILL.md` plus a small reference: `references/corpus-signals.md`. When the user says "refresh the home page" or "sync home and about with my writing," the agent follows a fixed workflow.
+
+**1. Gather corpus signal.** Read a representative set of writings from `content/writing/*.mdx` (and optionally locale-specific writing) — prefer recent and `featured: true`. From each piece: `theme`, `tags`, and one or two concrete convictions or reframes from the body. Then read projects from `content/projects/*.mdx`, prefer `featured` and `status: active` or `in-progress`. From each: `motivation`, `problemAddressed`, `learnings`, `type`, and recurring problem areas. Synthesize: current themes, problems the site owner cares about, principles that repeat, expertise that shows up in both writing and projects.
+
+**2. Decide scope.** Single locale (e.g. only `content/locales/en/site/`) or all locales. For all locales, update the default first, then each other locale with the same structural changes; preserve existing translations where meaning still fits.
+
+**3. Update home.json.** Hero intro and paragraphs align with current role, product, and what the site owner is exploring. Current focus title, description, and paragraphs come from the main problem area and thesis in the corpus. Section titles and descriptions for selectedWork / recentThinking stay as-is unless the user asks to change them.
+
+**4. Update about.json.** Intro description matches current positioning. Philosophy: three paragraphs from convictions and reframes in the corpus. Expertise: up to four cards derived from recurring themes and project problem areas. Principles: three items from writing conclusions and project learnings. Background only changes if new roles or context appear elsewhere.
+
+**5. Preserve voice.** The skill depends on the website-content skill's voice guide and page patterns. First person throughout. No corporate filler, hedging, exclamation points, or emojis. Paragraphs 1–3 sentences; one idea per paragraph.
+
+The agent never invokes the content-translation skill for these JSON files — that skill is for MDX only. For multi-locale refresh, the agent updates each locale's `home.json` and `about.json` directly, preserving or replacing strings as the new focus requires.
+
+## Why Corpus as Source of Truth
+
+Home and about are *summaries*. They should answer: what does this person build, what do they care about, and how do they think? The real answers live in the writing and project entries. Treating the corpus as the source of truth means the main pages don't go stale. Add a batch of essays on agent skills and static pipelines — run the refresh — hero and current focus reflect that. Ship a new project; expertise and principles can pull from its learnings.
+
+The alternative is manual curation. That works until you forget, or you're in a hurry, and the homepage still says something you wrote six months ago. The skill inverts the dependency: the corpus is primary; home and about are derived views.
+
+## Design Choices
+
+**Reuse, don't duplicate.** The skill doesn't redefine voice or page structure. It points at the website-content skill's `voice-guide.md` and `page-patterns.md`. One place for tone and section order; the refresh skill only adds *what to extract* and *where it goes*.
+
+**Explicit mapping.** `corpus-signals.md` is a reference table: from writings take theme, tags, key convictions; from projects take motivation, problemAddressed, learnings, type. Map them to specific keys in home.json and about.json. No guesswork. The agent follows the table, so output is consistent across runs.
+
+**On-demand, not scheduled.** The skill runs when the user asks. No cron, no "every deploy." That keeps the surface small — no new moving parts in the build — and matches how often home/about actually need to change: after a meaningful batch of new or updated content.
+
+**Evidence over invention.** The synthesis rules in corpus-signals say: prefer evidence from the corpus; don't add claims the corpus doesn't support. Recurrence wins — themes and principles that appear in multiple pieces get reflected first. That keeps the refresh honest. The main pages stay a compressed view of what's already there, not a new story.
+
+## Where This Fits
+
+The home-about-refresh skill sits next to the website-content skill. One teaches the agent how to write and where to put it; the other teaches the agent how to pull from that body of work into the locale site copy. Together they keep the site coherent: same voice, same structure, and main pages that actually reflect what you ship.

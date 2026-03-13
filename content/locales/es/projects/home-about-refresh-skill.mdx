@@ -1,0 +1,48 @@
+---
+title: "home-about-refresh skill"
+date: "2026-03-13T12:00:00Z"
+status: "active"
+type: ["agent", "skill"]
+motivation: "Quería que la homepage y la página about se mantuvieran alineadas con lo que realmente escribo y construyo — sin reescribir a mano el hero, el foco actual o la filosofía cada vez que publico contenido nuevo."
+problemAddressed: "Home y about se desfasan. Añades entradas de escritura y de proyectos; las páginas principales siguen diciendo el foco del trimestre pasado o un eslogan genérico. Sincronizar a mano es tedioso y fácil de olvidar. El corpus es la fuente de verdad, pero nada extraía de él hacia el JSON de locale que impulsa el sitio."
+learnings: "Corpus como fuente de verdad funciona cuando defines reglas de extracción explícitas. Mapear theme, tags, motivation, problemAddressed y learnings a bloques concretos de home.json y about.json hace el refresh determinista. Reusar la guía de voz y los page patterns de website-content mantiene la salida on-brand sin duplicar instrucciones."
+featured: false
+---
+
+Construí un skill de agente que actualiza la homepage y la página about desde el corpus de contenido — escritos y proyectos — para que el hero, el foco actual, la filosofía, la expertise y los principios sigan en sync con lo que publico. Sin reescritura manual. Sin deriva.
+
+## Cómo funciona
+
+El skill es un solo `SKILL.md` más una referencia pequeña: `references/corpus-signals.md`. Cuando el usuario dice "refresca la home" o "sincroniza home y about con mi escritura," el agente sigue un flujo fijo.
+
+**1. Reunir señal del corpus.** Leer un conjunto representativo de escritos de `content/writing/*.mdx` (y opcionalmente escritura por locale) — preferir recientes y `featured: true`. De cada pieza: `theme`, `tags`, y una o dos convicciones o reframes concretos del cuerpo. Luego leer proyectos de `content/projects/*.mdx`, preferir `featured` y `status: active` o `in-progress`. De cada uno: `motivation`, `problemAddressed`, `learnings`, `type`, y áreas de problema recurrentes. Sintetizar: temas actuales, problemas que le importan al autor del sitio, principios que se repiten, expertise que aparece en escritura y proyectos.
+
+**2. Decidir alcance.** Un solo locale (p. ej. solo `content/locales/en/site/`) o todos los locales. Para todos, actualizar primero el por defecto, luego cada otro locale con los mismos cambios estructurales; preservar traducciones existentes donde el significado siga encajando.
+
+**3. Actualizar home.json.** Intro y párrafos del hero alineados con el rol actual, producto y qué explora el autor. Título, descripción y párrafos de current focus salen del área de problema principal y la tesis en el corpus. Los títulos y descripciones de sección para selectedWork / recentThinking se quedan como están salvo que el usuario pida cambiarlos.
+
+**4. Actualizar about.json.** Descripción de intro que encaje con el posicionamiento actual. Filosofía: tres párrafos a partir de convicciones y reframes del corpus. Expertise: hasta cuatro tarjetas derivadas de temas recurrentes y áreas de problema de proyectos. Principios: tres ítems a partir de conclusiones de escritos y learnings de proyectos. Background solo cambia si aparecen nuevos roles o contexto en otro sitio.
+
+**5. Preservar voz.** El skill depende de la guía de voz y los page patterns del skill website-content. Primera persona en todo. Sin relleno corporativo, hedging, signos de exclamación ni emojis. Párrafos de 1–3 frases; una idea por párrafo.
+
+El agente nunca invoca el skill de content-translation para estos JSON — ese skill es solo para MDX. Para refresh multi-locale, el agente actualiza `home.json` y `about.json` de cada locale directamente, preservando o reemplazando cadenas según exija el nuevo foco.
+
+## Por qué el corpus como fuente de verdad
+
+Home y about son *resúmenes*. Deberían responder: qué construye esta persona, qué le importa, cómo piensa. Las respuestas reales están en las entradas de escritura y proyectos. Tratar el corpus como fuente de verdad hace que las páginas principales no se queden obsoletas. Añades un lote de ensayos sobre skills de agentes y pipelines estáticos — ejecutas el refresh — hero y current focus lo reflejan. Publicas un proyecto nuevo; expertise y principios pueden extraer de sus learnings.
+
+La alternativa es curación manual. Funciona hasta que lo olvidas, o vas con prisa, y la homepage sigue diciendo algo que escribiste hace seis meses. El skill invierte la dependencia: el corpus es primario; home y about son vistas derivadas.
+
+## Decisiones de diseño
+
+**Reusar, no duplicar.** El skill no redefine voz ni estructura de página. Apunta a `voice-guide.md` y `page-patterns.md` del skill website-content. Un solo lugar para tono y orden de secciones; el skill de refresh solo añade *qué extraer* y *dónde va*.
+
+**Mapeo explícito.** `corpus-signals.md` es una tabla de referencia: de escritos tomar theme, tags, convicciones clave; de proyectos tomar motivation, problemAddressed, learnings, type. Mapearlos a claves concretas en home.json y about.json. Sin adivinar. El agente sigue la tabla, así que la salida es consistente entre ejecuciones.
+
+**Bajo demanda, no programado.** El skill se ejecuta cuando el usuario lo pide. Sin cron, sin "cada deploy." Eso mantiene la superficie pequeña — sin piezas nuevas en el build — y encaja con la frecuencia con la que home/about necesitan cambiar de verdad: tras un lote significativo de contenido nuevo o actualizado.
+
+**Evidencia sobre invención.** Las reglas de síntesis en corpus-signals dicen: preferir evidencia del corpus; no añadir afirmaciones que el corpus no respalde. La recurrencia gana — temas y principios que aparecen en varias piezas se reflejan primero. Eso mantiene el refresh honesto. Las páginas principales siguen siendo una vista comprimida de lo que ya está ahí, no una historia nueva.
+
+## Dónde encaja esto
+
+El skill home-about-refresh va junto al skill website-content. Uno enseña al agente a escribir y dónde ponerlo; el otro enseña a extraer de ese cuerpo de trabajo hacia el copy de sitio por locale. Juntos mantienen el sitio coherente: misma voz, misma estructura, y páginas principales que reflejan de verdad lo que publicas.

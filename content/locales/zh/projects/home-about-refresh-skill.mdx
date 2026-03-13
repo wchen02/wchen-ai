@@ -1,0 +1,48 @@
+---
+title: "home-about-refresh skill"
+date: "2026-03-13T12:00:00Z"
+status: "active"
+type: ["agent", "skill"]
+motivation: "我希望首页和 about 页能一直和我实际在写、在做的内容对齐——不用每次发新内容都亲手改 hero、当前重心或哲学那几段。"
+problemAddressed: "首页和 about 会漂移。你加了写作和项目条目，主站文案还停留在上季度的重心或一句通用口号。手动同步又烦又容易忘。语料才是事实来源，但没有任何东西从语料抽到驱动站点的 locale JSON 里。"
+learnings: "把语料当单一事实来源是可行的，前提是你把「抽什么」写清楚。把 theme、tags、motivation、problemAddressed、learnings 映射到 home.json 和 about.json 里具体块，刷新就变成确定性的。复用 website-content 的语气指南和页面结构，输出能保持品牌感又不用重复写一遍说明。"
+featured: false
+---
+
+我写了一个 agent skill，用内容语料——写作和项目——去更新首页和 about 页，让 hero、当前重心、哲学、专长和原则都跟发布内容保持同步。不用手改。不漂移。
+
+## 怎么运作
+
+Skill 就是一个 `SKILL.md` 加一份小参考：`references/corpus-signals.md`。用户说「刷新首页」或「把 home 和 about 跟我的写作同步」时，agent 按固定流程走。
+
+**1. 收集语料信号。** 从 `content/writing/*.mdx`（以及可选的按 locale 的写作）里读一批有代表性的文章——优先最近的和 `featured: true`。每篇抽：`theme`、`tags`，以及正文里一两条具体主张或 reframe。再读 `content/projects/*.mdx` 里的项目，优先 `featured` 且 `status: active` 或 `in-progress`。每个抽：`motivation`、`problemAddressed`、`learnings`、`type`，以及反复出现的问题领域。综合出：当前主题、站主关心的问题、重复出现的原则、在写作和项目里都出现的专长。
+
+**2. 定范围。** 只改一个 locale（例如只动 `content/locales/en/site/`）还是所有 locale。若改所有，先改默认 locale，再按同样结构改其他 locale；意思没变的保留原有翻译。
+
+**3. 更新 home.json。** Hero 的 intro 和段落对齐当前角色、产品和站主在探索什么。Current focus 的标题、描述和段落来自语料里的主要问题领域和论点。selectedWork / recentThinking 的区块标题和描述维持不动，除非用户要求改。
+
+**4. 更新 about.json。** Intro 描述匹配当前定位。哲学：三段，来自语料里的主张和 reframe。专长：最多四张卡片，由反复出现的主题和项目的 problemAddressed 推导。原则：三条，来自文章结论和项目 learnings。背景只在语料或别处出现新角色、新语境时才改。
+
+**5. 保持语气。** 本 skill 依赖 website-content skill 的 voice-guide 和 page-patterns。全文第一人称。不用企业腔、不 hedging、不用感叹号、不用 emoji。段落 1–3 句，一段一个意思。
+
+Agent 从不为这些 JSON 调用 content-translation skill——那个 skill 只负责 MDX。多 locale 刷新时，agent 直接改每个 locale 的 `home.json` 和 `about.json`，按新重心保留或替换文案。
+
+## 为什么语料是事实来源
+
+首页和 about 是*摘要*。它们该回答：这人做什么、关心什么、怎么想。真正答案在写作和项目条目里。把语料当事实来源，主站就不会过期。你发了一波讲 agent 技能和静态流水线的文章——跑一次 refresh——hero 和 current focus 就跟着变。发了一个新项目，专长和原则可以从它的 learnings 里抽。
+
+否则就得靠人工维护。能撑到你忘了一次或赶时间，首页还挂着半年前写的那句。
+
+## 设计取舍
+
+**复用不重复。** 本 skill 不重定义语气或页面结构，只引用 website-content 的 `voice-guide.md` 和 `page-patterns.md`。语气和区块顺序只在一处定义；refresh skill 只负责「抽什么」和「写进哪」。
+
+**映射写死。** `corpus-signals.md` 是一张表：从写作抽 theme、tags、关键主张；从项目抽 motivation、problemAddressed、learnings、type；对到 home.json 和 about.json 的具体 key。不猜。Agent 按表执行，输出每次一致。
+
+**按需跑，不按表跑。** Skill 只在用户说「刷新」时跑。没有 cron、没有「每次 deploy」。这样 build 里没有新零件，也符合 home/about 真正需要更新的节奏：发完一批新内容或改完一批条目之后。
+
+**证据优先于编造。** corpus-signals 里的综合规则说：优先用语料里的证据；语料撑不住的别往上写。重复出现的主题和原则先上首页和 about。这样 refresh 不会乱发挥，主站始终是已有内容的压缩视图。
+
+## 放在哪
+
+home-about-refresh skill 和 website-content skill 是一对。一个教 agent 怎么写、放哪；一个教怎么从已有内容抽到 locale 站点文案里。一起用，站点就一致：同一套语气、同一套结构，主站真的反映你发出去的东西。

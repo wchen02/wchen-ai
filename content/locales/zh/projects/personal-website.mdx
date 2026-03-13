@@ -67,3 +67,9 @@ const WritingSchema = z.object({
 我会在规格阶段多花时间。即使用了 spec-kit，实现时还是有不少微决策本该事先定好——比如 tag 分类、主题命名、内容长度约束。这些在 spec 里定成本低，在代码里改成本高。
 
 Vibe coding 流程本身是撑住了。真正起作用的不全是模型能力，而是写代码之前给它的上下文质量。
+
+## 近期更新
+
+内容和文档已经和站点实际加载文案与 MDX 的方式对齐。website-content 技能和 content-schemas 里写清楚了：站点文案只来自各 locale 的 JSON（`content/locales/<locale>/site/`）；写作和项目要么用该 locale 的目录，要么用共享目录，不做合并。有 `content/locales/zh/writing` 就用它，没有才回退到 `content/writing`，项目同理。行为本来就是这样，技能和参考文档现在一致，避免我或 agent 误以为会做回退合并。
+
+新文章已加入——构建时校验当产品、泛用 UI 与 agent 设计的代价、GitHub 当后端、技能里的渐进式披露、定期 newsletter 当构建步骤——并做了西语和中文翻译。home-about-refresh 技能项目已写进项目页。分享菜单的文案已全部本地化：复制链接、邮件、X、LinkedIn、Facebook 和系统分享的标签都在 en、es、zh 的 `ui.json` 里，分享菜单会按语言显示。

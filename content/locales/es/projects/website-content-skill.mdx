@@ -94,6 +94,12 @@ Cuando le digo al agente que escriba una nueva entrada de proyecto, sigue un cam
 
 El resultado es un borrador que sigue mis patrones estructurales, usa mi vocabulario, respeta mi schema y coloca el archivo en el directorio correcto — sin que yo reexplique nada.
 
+## Cambios recientes
+
+Ajusté el skill y los content-schemas para que el modelo de contenido sea inequívoco. El copy del sitio es solo JSON por locale bajo `content/locales/<locale>/site/*.json`; no hay fuente compartida para home, about ni UI. Para writing y projects, cada locale usa *o* la carpeta de ese locale *o* la carpeta compartida — sin mezclar. `content/writing` y `content/projects` compartidos son el default canónico; el skill de content-translation genera las copias por locale cuando termino una entrada compartida. También dejé documentado que `content/site/newsletter-state.json` lo gestiona un script y no debe editarse para copy.
+
+La checklist de voz y los content-schemas ahora referencian Zod en `src/lib/schemas.ts` y los scripts de validación (`validate-links`, `validate-theme-descriptors`, `validate-metadata`) para que el agente sepa que contenido inválido hace fallar el build. Límites más claros implican que el agente deja de adivinar dónde van los archivos y qué no tocar.
+
 ## Dónde va esto
 
 El skill es portable entre plataformas. La misma convención `SKILL.md` funciona en Cursor, Claude Code y GitHub Copilot. Publicarlo en [skills.sh](https://skills.sh) permite que cualquiera lo instale con `npx skills add` y lo adapte a su propia voz y schemas.

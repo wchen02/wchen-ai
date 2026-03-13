@@ -7,8 +7,8 @@ description: Write, rewrite, or improve content for the site owner's personal we
 
 Write content for the site in the site owner's voice. The site splits content into two buckets:
 
-- Locale-scoped JSON bundles for site copy under `content/locales/<locale>/site/*.json`
-- MDX entries for writing and projects, loaded locale-first with fallback to shared content in `content/writing` and `content/projects`
+- **Site copy**: Locale-scoped JSON only under `content/locales/<locale>/site/*.json`. The app loads these via `src/lib/content.ts`; there is no shared `content/site/` source for home, about, or UI copy. Supported locales: `en`, `es`, `zh` (see `src/lib/locales.ts`).
+- **Writing and projects**: MDX entries. For each locale, the app uses *either* that locale’s folder *or* the shared folder—not both. If `content/locales/<locale>/writing` exists, that locale sees only files in it; otherwise it uses `content/writing`. Same for projects: `content/locales/<locale>/projects` or else `content/projects`. Shared entries in `content/writing` and `content/projects` are the canonical default; use the content-translation skill to produce locale-specific copies after creating or updating them.
 
 ## Before Writing
 
@@ -103,15 +103,17 @@ Key constraints:
 
 ### Shared Site Copy
 
-Use these locale-scoped JSON files when the request is not an MDX entry:
+All editable site copy lives under `content/locales/<locale>/site/`. Use these files when the request is not an MDX entry:
 
-- `content/locales/<locale>/site/profile.json`: site identity, metadata defaults, nav labels, CTA copy, contact copy
+- `content/locales/<locale>/site/profile.json`: site identity, metadata defaults, nav labels, CTA copy, contact copy, not-found copy
 - `content/locales/<locale>/site/home.json`: homepage hero and section copy
 - `content/locales/<locale>/site/about.json`: about-page copy
 - `content/locales/<locale>/site/newsletter.json`: newsletter email subjects, previews, button labels, recurring digest copy
-- `content/locales/<locale>/site/ui.json`: shared UI strings, labels, status text, theme descriptors
+- `content/locales/<locale>/site/ui.json`: shared UI strings (language switcher, theme toggle, share button, search, writing/project labels)
 - `content/locales/<locale>/site/forms.json`: contact/newsletter form labels, placeholders, button copy
 - `content/locales/<locale>/site/system.json`: validation, API, and fallback system messages
+
+Do not edit `content/site/newsletter-state.json` for copy—it is managed by the recurring-newsletter build script and tracks which slugs have been sent.
 
 ## Translation Handoff
 
@@ -134,24 +136,26 @@ Run this check against every piece of content before finalizing:
 - [ ] Every paragraph advances one idea
 - [ ] Paragraphs are 1-3 sentences when writing prose
 - [ ] The ending lands on conviction, not recap
-- [ ] Frontmatter or JSON shape matches the active schema
+- [ ] Frontmatter or JSON shape matches the active schema (Zod in `src/lib/schemas.ts`; invalid content fails the build; see also `scripts/validate-links.ts`, `validate-theme-descriptors.ts`, `validate-metadata.ts`)
 
 ## File Placement
 
 ```text
 content/
-  writing/[slug].mdx                      -> Shared/default writing entries
-  projects/[slug].mdx                     -> Shared/default project entries
-  locales/<locale>/site/
-    profile.json                          -> Site identity, nav, CTA, metadata, contact
+  writing/[slug].mdx                      -> Shared/default writing entries (canonical)
+  projects/[slug].mdx                     -> Shared/default project entries (canonical)
+  site/
+    newsletter-state.json                 -> Script-managed; do not edit for copy
+  locales/<locale>/site/                   -> Locales: en, es, zh
+    profile.json                          -> Site identity, nav, CTA, metadata, contact, not-found
     home.json                             -> Homepage copy
     about.json                            -> About-page copy
     newsletter.json                       -> Newsletter email and flow copy
-    ui.json                               -> Shared UI strings
+    ui.json                               -> Shared UI strings (share, search, theme, etc.)
     forms.json                            -> Form labels and placeholders
     system.json                           -> Validation and system messages
-  locales/<locale>/writing/[slug].mdx     -> Locale-specific writing entries
-  locales/<locale>/projects/[slug].mdx    -> Locale-specific project entries
+  locales/<locale>/writing/[slug].mdx     -> Locale-specific writing (used when present instead of shared)
+  locales/<locale>/projects/[slug].mdx    -> Locale-specific projects (used when present instead of shared)
 src/app/[locale]/
   page.tsx                                -> Homepage renderer
   about/page.tsx                          -> About-page renderer
