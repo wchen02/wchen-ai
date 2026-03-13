@@ -38,6 +38,7 @@ export interface NewsletterFooterContent {
   writingArchiveLabel: string;
   projectsArchiveLabel?: string;
   homeLabel: string;
+  unsubscribeLabel?: string;
 }
 
 export interface NewsletterEmailContent {
@@ -77,6 +78,7 @@ interface NewsletterShellProps {
   primaryAction?: NewsletterEmailAction;
   secondaryAction?: NewsletterEmailAction;
   secondaryActionText?: string;
+  unsubscribeAction?: NewsletterEmailAction;
   children?: ReactNode;
 }
 
@@ -100,6 +102,7 @@ function NewsletterEmailShell({
   primaryAction,
   secondaryAction,
   secondaryActionText,
+  unsubscribeAction,
   children,
 }: NewsletterShellProps) {
   const sections = content.sections ?? [];
@@ -181,6 +184,13 @@ function NewsletterEmailShell({
               {footer.homeLabel}
             </Link>
           </Text>
+          {unsubscribeAction && footer.unsubscribeLabel ? (
+            <Text style={footerStyle}>
+              <Link href={unsubscribeAction.url} style={linkStyle}>
+                {footer.unsubscribeLabel}
+              </Link>
+            </Text>
+          ) : null}
         </Container>
       </Body>
     </Html>
@@ -198,6 +208,7 @@ export interface NewsletterIssueEmailInput {
   footer: NewsletterFooterContent;
   subjectLine: string;
   entries: NewsletterIssueEntry[];
+  unsubscribeUrl?: string;
 }
 
 export interface NewsletterIssueEntry {
@@ -228,13 +239,12 @@ export function createNewsletterWelcomeIdempotencyKey(email: string, tokenId?: s
 
 export function createNewsletterIssueIdempotencyKey(
   entries: Array<Pick<NewsletterIssueEntry, "type"> & { slug: string }>,
-  batchIndex?: number
+  recipient?: string
 ): string {
   const digestId = createStableDigestId(entries.map((entry) => `${entry.type}/${entry.slug}`).join("|"));
+  const recipientSuffix = recipient ? `/${recipient.trim().toLowerCase()}` : "";
 
-  return batchIndex === undefined
-    ? `newsletter-issue/digest/${digestId}`
-    : `newsletter-issue/digest/${digestId}/batch-${batchIndex + 1}`;
+  return `newsletter-issue/digest/${digestId}${recipientSuffix}`;
 }
 
 export async function renderNewsletterConfirmEmail(params: {
@@ -265,6 +275,7 @@ export async function renderNewsletterWelcomeEmail(params: {
   brand: NewsletterEmailBrand;
   content: NewsletterEmailContent;
   footer: NewsletterFooterContent;
+  unsubscribeUrl?: string;
 }): Promise<RenderedNewsletterEmail> {
   return renderNewsletterTemplate(
     <NewsletterEmailShell
@@ -284,6 +295,14 @@ export async function renderNewsletterWelcomeEmail(params: {
           ? {
               label: params.content.secondaryActionLabel,
               url: params.brand.homeUrl,
+            }
+          : undefined
+      }
+      unsubscribeAction={
+        params.unsubscribeUrl && params.footer.unsubscribeLabel
+          ? {
+              label: params.footer.unsubscribeLabel,
+              url: params.unsubscribeUrl,
             }
           : undefined
       }
@@ -308,6 +327,14 @@ export async function renderNewsletterIssueEmail(
         footerNote: params.content.footerNote,
       }}
       footer={params.footer}
+      unsubscribeAction={
+        params.unsubscribeUrl && params.footer.unsubscribeLabel
+          ? {
+              label: params.footer.unsubscribeLabel,
+              url: params.unsubscribeUrl,
+            }
+          : undefined
+      }
     >
       {params.entries.length > 0 ? (
         <Section>

@@ -150,6 +150,17 @@ export function getNewsletterFromAddress(fromOverride: string | undefined): stri
   return normalized ? normalized : SITE_PROFILE.newsletter.from;
 }
 
+export function getNewsletterUnsubscribeUrl(params: {
+  email: string;
+  sig: string;
+  siteUrl?: string;
+  useLocalPage?: boolean;
+}): string {
+  const baseUrl = (params.siteUrl ?? SITE_URL).replace(/\/$/, "");
+  const pathname = params.useLocalPage ? "/newsletter-unsubscribe" : "/api/newsletter-unsubscribe";
+  return `${baseUrl}${pathname}?email=${encodeURIComponent(params.email)}&sig=${params.sig}`;
+}
+
 function resolveNewsletterTokens(value: string, tokens: Record<string, string>): string {
   return value.replace(/\{([a-zA-Z0-9]+)\}/g, (_match, key) => tokens[key] ?? `{${key}}`);
 }
@@ -235,6 +246,9 @@ export function getNewsletterEmailContent(siteUrl: string = SITE_URL): Newslette
         ? resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.projectsArchiveLabel, tokens)
         : undefined,
       homeLabel: resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.homeLabel, tokens),
+      unsubscribeLabel: NEWSLETTER_CONTENT.footer.unsubscribeLabel
+        ? resolveNewsletterTokens(NEWSLETTER_CONTENT.footer.unsubscribeLabel, tokens)
+        : undefined,
     },
   };
 }

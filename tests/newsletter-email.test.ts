@@ -55,15 +55,19 @@ describe("newsletter email templates", () => {
   });
 
   it("renders the welcome email with the expected subject copy", async () => {
+    const unsubscribeUrl = "https://wchen.ai/api/newsletter-unsubscribe?email=reader%40example.com&sig=abc";
     const result = await renderNewsletterWelcomeEmail({
       brand,
       content: resolvedContent.welcome,
       footer: resolvedContent.footer,
+      unsubscribeUrl,
     });
 
     expect(resolvedContent.welcome.subject).toContain("You're subscribed");
     expect(result.html).toContain(resolvedContent.welcome.primaryActionLabel ?? "");
     expect(result.text).toContain("No spam");
+    expect(result.html).toContain(`href="${unsubscribeUrl.replaceAll("&", "&amp;")}"`);
+    expect(result.text).toContain(resolvedContent.footer.unsubscribeLabel ?? "");
   });
 
   it("renders a reusable issue/update digest email template", async () => {
@@ -94,15 +98,17 @@ describe("newsletter email templates", () => {
           typeLabel: issueContent.itemTypeLabels.project,
         },
       ],
+      unsubscribeUrl: "https://wchen.ai/api/newsletter-unsubscribe?email=reader%40example.com&sig=abc",
     });
 
     expect(result.html).toContain("New on Wilson Chen");
     expect(result.html).toContain("Shipping before you&#x27;re ready");
     expect(result.html).toContain("wchen.ai");
     expect(result.text).toContain((issueContent.itemsHeading ?? "").toUpperCase());
-    expect(result.text).toContain(issueContent.itemActionLabels.writing);
+    expect(result.text).toContain("Read the article");
     expect(result.text).toContain(issueContent.itemActionLabels.project);
     expect(result.text).toContain(resolvedContent.footer.projectsArchiveLabel ?? "");
+    expect(result.text).toContain(resolvedContent.footer.unsubscribeLabel ?? "");
   });
 
   it("builds a stable idempotency key per confirmation event", () => {
@@ -111,16 +117,16 @@ describe("newsletter email templates", () => {
     );
   });
 
-  it("builds a stable idempotency key per recurring digest batch", () => {
+  it("builds a stable idempotency key per recurring digest recipient", () => {
     expect(
       createNewsletterIssueIdempotencyKey(
         [
           { type: "writing", slug: "shipping-before-youre-ready" },
           { type: "project", slug: "wchen-ai" },
         ],
-        1
+        "Reader@example.com"
       )
-    ).toBe("newsletter-issue/digest/e007f7bf552657bf/batch-2");
+    ).toBe("newsletter-issue/digest/e007f7bf552657bf/reader@example.com");
   });
 
   it("falls back to the default from address when NEWSLETTER_FROM is empty", () => {

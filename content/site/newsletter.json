@@ -53,7 +53,7 @@
         "project": "Project"
       },
       "itemActionLabels": {
-        "writing": "Read the essay",
+        "writing": "Read the article",
         "project": "See the project"
       },
       "footerNote": "{newsletterDescription}"
@@ -63,6 +63,7 @@
     "note": "{newsletterDescription}",
     "writingArchiveLabel": "Read the writing archive",
     "projectsArchiveLabel": "Browse the projects archive",
-    "homeLabel": "Visit the site"
+    "homeLabel": "Visit the site",
+    "unsubscribeLabel": "Unsubscribe"
   }
 }

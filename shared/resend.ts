@@ -8,6 +8,7 @@ export interface ResendEmailRequest {
   html: string;
   text?: string;
   idempotencyKey?: string;
+  headers?: Record<string, string>;
 }
 
 export interface ResendContact {
@@ -27,6 +28,7 @@ export async function sendResendEmail({
   html,
   text,
   idempotencyKey,
+  headers,
 }: ResendEmailRequest): Promise<void> {
   const response = await fetch(`${RESEND_API_BASE}/emails`, {
     method: "POST",
@@ -41,6 +43,7 @@ export async function sendResendEmail({
       subject,
       html,
       ...(text ? { text } : {}),
+      ...(headers ? { headers } : {}),
     }),
   });
 
@@ -119,5 +122,27 @@ export async function listResendContactsBySegment(params: {
     if (!after) {
       return contacts;
     }
+  }
+}
+
+export async function updateResendContact(params: {
+  apiKey: string;
+  email: string;
+  unsubscribed?: boolean;
+}): Promise<void> {
+  const response = await fetch(`${RESEND_API_BASE}/contacts/${encodeURIComponent(params.email)}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${params.apiKey}`,
+    },
+    body: JSON.stringify({
+      ...(params.unsubscribed !== undefined ? { unsubscribed: params.unsubscribed } : {}),
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Resend contact update error (${response.status}): ${errorBody}`);
   }
 }

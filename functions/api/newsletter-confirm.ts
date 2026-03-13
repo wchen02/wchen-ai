@@ -9,6 +9,7 @@ import {
   getNewsletterEmailBrand,
   getNewsletterEmailContent,
   getNewsletterFromAddress,
+  getNewsletterUnsubscribeUrl,
 } from "../../src/lib/site-config";
 
 interface Env {
@@ -62,10 +63,17 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
     const brand = getNewsletterEmailBrand(SITE_URL);
     const newsletterContent = getNewsletterEmailContent(SITE_URL);
+    const unsubscribeSig = await hmacSign(secret, email);
+    const unsubscribeUrl = getNewsletterUnsubscribeUrl({
+      email,
+      sig: unsubscribeSig,
+      siteUrl: SITE_URL,
+    });
     const welcomeEmail = await renderNewsletterWelcomeEmail({
       brand,
       content: newsletterContent.welcome,
       footer: newsletterContent.footer,
+      unsubscribeUrl,
     });
 
     try {
@@ -77,6 +85,10 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         html: welcomeEmail.html,
         text: welcomeEmail.text,
         idempotencyKey: createNewsletterWelcomeIdempotencyKey(email, ts),
+        headers: {
+          "List-Unsubscribe": `<${unsubscribeUrl}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
       });
     } catch (error) {
       console.error("Error sending newsletter welcome email:", error);

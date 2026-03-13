@@ -9,6 +9,7 @@ import {
   getNewsletterEmailBrand,
   getNewsletterEmailContent,
   getNewsletterFromAddress,
+  getNewsletterUnsubscribeUrl,
 } from "@/lib/site-config";
 
 export async function POST(request: Request) {
@@ -62,10 +63,18 @@ export async function POST(request: Request) {
     await upsertResendContact({ apiKey, email, segmentId });
 
     const newsletterContent = getNewsletterEmailContent(requestUrl.origin);
+    const unsubscribeSig = await hmacSign(secret, email);
+    const unsubscribeUrl = getNewsletterUnsubscribeUrl({
+      email,
+      sig: unsubscribeSig,
+      siteUrl: requestUrl.origin,
+      useLocalPage: true,
+    });
     const welcomeEmail = await renderNewsletterWelcomeEmail({
       brand,
       content: newsletterContent.welcome,
       footer: newsletterContent.footer,
+      unsubscribeUrl,
     });
 
     try {
@@ -77,6 +86,12 @@ export async function POST(request: Request) {
         html: welcomeEmail.html,
         text: welcomeEmail.text,
         idempotencyKey: createNewsletterWelcomeIdempotencyKey(email, ts),
+        headers: {
+          "List-Unsubscribe": `<${requestUrl.origin}/api/newsletter-unsubscribe-local?email=${encodeURIComponent(
+            email
+          )}&sig=${unsubscribeSig}>`,
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+        },
       });
     } catch (error) {
       console.error("Error sending newsletter welcome email locally:", error);

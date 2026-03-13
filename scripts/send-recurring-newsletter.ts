@@ -3,6 +3,7 @@ import {
   getNewsletterEmailContent,
   getNewsletterFromAddress,
   getRecurringNewsletterEmailContent,
+  getNewsletterUnsubscribeUrl,
 } from "../src/lib/site-config";
 import {
   getRecurringNewsletterCandidates,
@@ -15,19 +16,8 @@ import {
   createNewsletterIssueIdempotencyKey,
   renderNewsletterIssueEmail,
 } from "../shared/newsletter-email";
+import { hmacSign } from "../shared/newsletter-crypto";
 import { listResendContactsBySegment, sendResendEmail } from "../shared/resend";
-
-const RESEND_BATCH_SIZE = 50;
-
-function chunk<T>(items: T[], size: number): T[][] {
-  const chunks: T[][] = [];
-
-  for (let index = 0; index < items.length; index += size) {
-    chunks.push(items.slice(index, index + size));
-  }
-
-  return chunks;
-}
 
 function getUniqueDeliverableRecipients(emails: string[]): string[] {
   const seen = new Set<string>();
@@ -49,9 +39,12 @@ function getUniqueDeliverableRecipients(emails: string[]): string[] {
 async function main(): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;
+  const secret = process.env.NEWSLETTER_SECRET;
 
-  if (!apiKey || !segmentId) {
-    console.log("Skipping recurring newsletter send: RESEND_API_KEY or RESEND_SEGMENT_ID is not set.");
+  if (!apiKey || !segmentId || !secret) {
+    console.log(
+      "Skipping recurring newsletter send: RESEND_API_KEY, RESEND_SEGMENT_ID, or NEWSLETTER_SECRET is not set."
+    );
     return;
   }
 
@@ -82,32 +75,43 @@ async function main(): Promise<void> {
   const issueContent = getRecurringNewsletterEmailContent({
     itemCount: unsentCandidates.length,
   });
-  const rendered = await renderNewsletterIssueEmail({
-    brand,
-    content: issueContent,
-    footer,
-    subjectLine: issueContent.subject,
-    entries: unsentCandidates.map((candidate) => ({
-      type: candidate.type,
-      title: candidate.title,
-      summary: candidate.summary,
-      ctaLabel: issueContent.itemActionLabels[candidate.type],
-      ctaUrl: candidate.ctaUrl,
-      typeLabel: issueContent.itemTypeLabels[candidate.type],
-    })),
-  });
+  const digestEntries = unsentCandidates.map((candidate) => ({
+    type: candidate.type,
+    title: candidate.title,
+    summary: candidate.summary,
+    ctaLabel: issueContent.itemActionLabels[candidate.type],
+    ctaUrl: candidate.ctaUrl,
+    typeLabel: issueContent.itemTypeLabels[candidate.type],
+  }));
   const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
-  const recipientBatches = chunk(recipients, RESEND_BATCH_SIZE);
 
-  for (const [batchIndex, batch] of recipientBatches.entries()) {
+  for (const recipient of recipients) {
+    const unsubscribeSig = await hmacSign(secret, recipient);
+    const unsubscribeUrl = getNewsletterUnsubscribeUrl({
+      email: recipient,
+      sig: unsubscribeSig,
+    });
+    const rendered = await renderNewsletterIssueEmail({
+      brand,
+      content: issueContent,
+      footer,
+      subjectLine: issueContent.subject,
+      entries: digestEntries,
+      unsubscribeUrl,
+    });
+
     await sendResendEmail({
       apiKey,
       from,
-      to: batch,
+      to: recipient,
       subject: issueContent.subject,
       html: rendered.html,
       text: rendered.text,
-      idempotencyKey: createNewsletterIssueIdempotencyKey(unsentCandidates, batchIndex),
+      idempotencyKey: createNewsletterIssueIdempotencyKey(unsentCandidates, recipient),
+      headers: {
+        "List-Unsubscribe": `<${unsubscribeUrl}>`,
+        "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      },
     });
   }
 
