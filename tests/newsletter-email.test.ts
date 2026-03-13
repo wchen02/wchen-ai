@@ -158,6 +158,26 @@ describe("newsletter shared wiring", () => {
     expect(newsletterContent.confirm.subject).toContain("{siteName}");
   });
 
+  it("exposes all required email types: confirmation, welcome, recurring digest", () => {
+    const content = getNewsletterEmailContent("https://wchen.ai");
+    expect(content.confirm).toBeDefined();
+    expect(content.confirm.subject).toBeTruthy();
+    expect(content.confirm.title).toBeTruthy();
+    expect(content.confirm.primaryActionLabel).toBeTruthy();
+    expect(content.welcome).toBeDefined();
+    expect(content.welcome.subject).toBeTruthy();
+    expect(content.welcome.title).toBeTruthy();
+    expect(content.welcome.intro).toBeDefined();
+    expect(Array.isArray(content.welcome.intro)).toBe(true);
+    expect(content.issueDefaults).toBeDefined();
+    expect(content.issueDefaults.primaryActionLabel).toBeTruthy();
+    expect(content.footer?.unsubscribeLabel).toBeTruthy();
+    expect(newsletterContent.recurring?.digest).toBeDefined();
+    expect(newsletterContent.recurring.digest.subject).toBeTruthy();
+    expect(newsletterContent.recurring.digest.itemTypeLabels?.writing).toBeTruthy();
+    expect(newsletterContent.recurring.digest.itemTypeLabels?.project).toBeTruthy();
+  });
+
   it("subscribe handlers render the shared confirmation template", () => {
     const functionsSource = fs.readFileSync(functionsSubscribePath, "utf8");
     const nextSource = fs.readFileSync(nextSubscribePath, "utf8");

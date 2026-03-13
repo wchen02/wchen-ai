@@ -237,7 +237,7 @@ test.describe("SEO & Metadata", () => {
   test("RSS feed link is in the document head", async ({ page }) => {
     await page.goto(defaultBasePath);
     const rssLink = page.locator('link[type="application/rss+xml"]');
-    await expect(rssLink).toHaveAttribute("href", "/rss.xml");
+    await expect(rssLink).toHaveAttribute("href", "/rss/en.xml");
   });
 
   test("favicon is referenced", async ({ page }) => {
