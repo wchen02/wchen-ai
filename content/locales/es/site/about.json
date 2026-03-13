@@ -7,9 +7,9 @@
   "philosophy": {
     "title": "Filosofia",
     "paragraphs": [
-      "Creo que las mejores herramientas desaparecen. El software que vale la pena construir no exige atencion; elimina friccion con tanta suavidad que la gente olvida que esta ahi. Esa conviccion da forma a todo lo que hago.",
+      "Creo que las mejores herramientas desaparecen. El software que vale la pena construir no exige atencion; elimina friccion con tanta suavidad que la gente olvida que esta ahi. Priorizo lo estatico: recursos precompilados desde una CDN, datos en build cuando sea posible, y solo entonces anado superficie dinamica donde haga falta.",
       "Gran parte de la industria tecnologica optimiza para el engagement. A mi me interesa mas lo contrario: construir sistemas que ayuden a las personas a pasar menos tiempo en herramientas y mas tiempo en el trabajo que de verdad importa. La medida de un gran producto no es cuanto tiempo lo usa alguien, sino cuan rapido logra lo que queria hacer.",
-      "Tambien creo en construir en publico y pensar en voz alta. Escribir es como pongo a prueba mis ideas. Lanzar es como pongo a prueba mi intuicion. Ambas cosas son necesarias, y ninguna basta por si sola."
+      "Tambien creo en construir en publico y pensar en voz alta. Escribir es como pongo a prueba mis ideas. Lanzar es como pongo a prueba mi intuicion. Con los agentes, el cuello de botella ha pasado de la ejecucion a la articulacion; los developers que piensan con mas claridad llevan ventaja. Especificacion antes de codigo es el multiplicador de fuerza."
     ]
   },
   "expertise": {
@@ -18,11 +18,11 @@
     "items": [
       {
         "title": "Agentes con Contexto",
-        "description": "Construir sistemas de IA que entiendan el cuadro completo, no solo el prompt, sino la intencion, la historia y las restricciones alrededor de lo que una persona realmente necesita."
+        "description": "Construir sistemas de IA que entiendan el cuadro completo — intencion, historia y restricciones — y codificar voz y conocimiento procedural para que los agentes actuen como socios de pensamiento, no asistentes genericos."
       },
       {
         "title": "Developer Experience",
-        "description": "La distancia entre lo que un developer intenta hacer y lo que tiene que escribir sigue siendo demasiado grande. Me interesan las herramientas que cierran esa distancia sin agregar nuevas abstracciones que aprender."
+        "description": "La distancia entre lo que un developer intenta hacer y lo que tiene que hacer sigue siendo demasiado grande. Construyo herramientas que cierran esa brecha: validacion, guardarrailes y flujos spec-first sin abstracciones nuevas que aprender."
       },
       {
         "title": "Sistemas de Conocimiento",
@@ -30,7 +30,7 @@
       },
       {
         "title": "Arquitectura Static-First",
-        "description": "Prefiero sistemas que son rapidos por defecto, predecibles al desplegar y resistentes al fallo. La complejidad debe ganarse, no heredarse."
+        "description": "Prefiero sistemas rapidos por defecto, predecibles al desplegar y resistentes al fallo. Priorizo lo estatico; anado servidor o funcion en el edge solo cuando hay una razon concreta."
       }
     ]
   },
@@ -50,8 +50,8 @@
         "detail": "El software funcionando ensena mas que cualquier documento de planificacion. Pon algo real frente a la gente lo antes posible."
       },
       {
-        "principle": "La complejidad debe ganarse",
-        "detail": "Cada abstraccion, servicio y dependencia debe justificar su existencia. Empieza por el camino mas simple."
+        "principle": "Especificacion antes de codigo",
+        "detail": "Al construir con agentes, la calidad del resultado depende de la calidad de la especificacion. La hora invertida en la spec ahorra horas de retrocesos."
       },
       {
         "principle": "Las herramientas deben desaparecer",

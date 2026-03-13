@@ -1,9 +1,9 @@
 {
   "hero": {
-    "intro": "I'm Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building [bestpos.io](https://bestpos.io) and AI-powered developer tools.",
+    "intro": "I'm Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com), and AI-powered developer tools.",
     "paragraphs": [
-      "I am currently exploring the intersection of artificial intelligence and developer tools, building systems that act as true thought partners.",
-      "My primary focus right now is on reducing friction between intention and execution for software engineering teams through context-aware agents."
+      "I am currently exploring the intersection of artificial intelligence and developer tools — encoding context and voice so agents execute as thought partners, and defaulting to static-first systems that stay fast and predictable.",
+      "My primary focus is reducing friction between intention and execution: context-aware agents, spec-first workflows where the bottleneck is articulation not implementation, and tooling that closes the gap without adding new abstractions."
     ],
     "aboutLink": {
       "href": "/about",
@@ -14,8 +14,8 @@
     "title": "Current Focus & Problems",
     "description": "What I'm obsessed with now and the problems I believe matter.",
     "paragraphs": [
-      "The core problem I am obsessed with is knowledge fragmentation. We have more tools than ever, yet context is continuously lost across platforms.",
-      "I believe the next wave of foundational companies will be built around unifying this context into seamless, invisible workflows rather than adding new dashboards."
+      "The core problem I am obsessed with is knowledge fragmentation and missing context. We have more tools than ever, yet context is lost across platforms — and when we hand work to agents, they default to generic output because they don't have our voice and constraints encoded.",
+      "I believe the next wave will come from unifying context into seamless workflows and from encoding procedural knowledge so that agents and tools act as thought partners. The bottleneck has moved from execution to articulation; the developers who think most clearly will have the edge."
     ]
   },
   "selectedWork": {

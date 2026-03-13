@@ -1,9 +1,9 @@
 {
   "hero": {
-    "intro": "Soy Wensheng Chen; me dicen Wilson. Antes fui CTO en The Juicy Crab; ahora estoy construyendo [bestpos.io](https://bestpos.io) y herramientas de developer impulsadas por IA.",
+    "intro": "Soy Wensheng Chen; me dicen Wilson. Antes fui CTO en The Juicy Crab; ahora construyo [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com) y herramientas para developers impulsadas por IA.",
     "paragraphs": [
-      "Ahora mismo estoy explorando la interseccion entre inteligencia artificial y herramientas para developers, construyendo sistemas que funcionen como verdaderos socios de pensamiento.",
-      "Mi enfoque principal hoy es reducir la friccion entre intencion y ejecucion para equipos de ingenieria de software mediante agentes conscientes del contexto."
+      "Estoy explorando la interseccion entre inteligencia artificial y herramientas para developers: codificar contexto y voz para que los agentes actuen como socios de pensamiento, y priorizar sistemas static-first que sigan siendo rapidos y predecibles.",
+      "Mi enfoque principal es reducir la friccion entre intencion y ejecucion: agentes conscientes del contexto, flujos spec-first donde el cuello de botella es la articulacion no la implementacion, y herramientas que cierran la brecha sin agregar abstracciones nuevas."
     ],
     "aboutLink": {
       "href": "/about",
@@ -14,8 +14,8 @@
     "title": "Enfoque Actual y Problemas",
     "description": "Lo que me obsesiona ahora y los problemas que creo que importan.",
     "paragraphs": [
-      "El problema central que mas me obsesiona es la fragmentacion del conocimiento. Tenemos mas herramientas que nunca, y aun asi el contexto se pierde de forma continua entre plataformas.",
-      "Creo que la siguiente ola de companias fundamentales se construira alrededor de unificar ese contexto en flujos de trabajo invisibles y fluidos, no alrededor de agregar mas dashboards."
+      "El problema central que mas me obsesiona es la fragmentacion del conocimiento y la ausencia de contexto. Tenemos mas herramientas que nunca, pero el contexto se pierde entre plataformas; y cuando delegamos en agentes, su salida es generica porque no tienen codificada nuestra voz ni nuestras restricciones.",
+      "Creo que la siguiente ola vendra de unificar contexto en flujos fluidos y de codificar conocimiento procedural para que agentes y herramientas actuen como socios de pensamiento. El cuello de botella ha pasado de la ejecucion a la articulacion; los developers que piensan con mas claridad llevan ventaja."
     ]
   },
   "selectedWork": {

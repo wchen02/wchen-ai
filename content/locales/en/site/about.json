@@ -7,9 +7,9 @@
   "philosophy": {
     "title": "Philosophy",
     "paragraphs": [
-      "I believe the best tools disappear. The software worth building doesn't demand attention; it removes friction so quietly that people forget it's there. That conviction shapes everything I work on.",
+      "I believe the best tools disappear. The software worth building doesn't demand attention; it removes friction so quietly that people forget it's there. I default to static: pre-compiled assets from a CDN, build-time data when possible, and only then add dynamic surface where it's actually needed.",
       "Most of the technology industry optimizes for engagement. I'm more interested in the opposite: building systems that help people spend less time in tools and more time in the work that matters to them. The measure of a great product isn't how long someone uses it; it's how quickly they achieve what they set out to do.",
-      "I also believe in building in public and thinking out loud. Writing is how I stress-test ideas. Shipping is how I stress-test intuition. Both are necessary, and neither is sufficient alone."
+      "I also believe in building in public and thinking out loud. Writing is how I stress-test ideas. Shipping is how I stress-test intuition. The bottleneck in working with agents has moved from execution to articulation — the developers who think most clearly have the edge. Specification before code is the force multiplier."
     ]
   },
   "expertise": {
@@ -18,11 +18,11 @@
     "items": [
       {
         "title": "Context-Aware Agents",
-        "description": "Building AI systems that understand the full picture, not just the prompt, but the intent, history, and surrounding constraints that shape what someone actually needs."
+        "description": "Building AI systems that understand the full picture — intent, history, and constraints — and encoding voice and procedural knowledge so agents execute as thought partners, not generic assistants."
       },
       {
         "title": "Developer Experience",
-        "description": "The gap between what a developer intends and what they have to type is still too wide. I'm interested in tooling that closes that gap without adding new abstractions to learn."
+        "description": "The gap between what a developer intends and what they have to do is still too wide. I build tooling that closes that gap: validation, guardrails, and spec-first workflows without new abstractions to learn."
       },
       {
         "title": "Knowledge Systems",
@@ -30,7 +30,7 @@
       },
       {
         "title": "Static-First Architecture",
-        "description": "I favor systems that are fast by default, predictable to deploy, and resilient to failure. Complexity should be earned, not inherited."
+        "description": "I favor systems that are fast by default, predictable to deploy, and resilient to failure. Default to static; add a server or edge function only when there's a concrete reason."
       }
     ]
   },
@@ -50,8 +50,8 @@
         "detail": "Working software teaches you more than planning documents. Get something real in front of people early."
       },
       {
-        "principle": "Complexity must be earned",
-        "detail": "Every abstraction, service, and dependency should justify its existence. Default to the simpler path."
+        "principle": "Specification before code",
+        "detail": "When building with agents, the quality of the output is bounded by the quality of the spec. The hour on spec saves hours of backtracking."
       },
       {
         "principle": "Tools should disappear",
