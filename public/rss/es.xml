@@ -6,8 +6,32 @@
     <description>Ideas sobre ingenieria, productos y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 16:47:58 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 17:30:33 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Validación en build como producto]]></title>
+      <link>https://wchen.ai/es/writing/build-time-validation-as-product</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/build-time-validation-as-product</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA["Fallar en producción" es lo por defecto. Un enlace roto se publica. Un typo en un descriptor de tema se cuela. Falta un campo obligatorio en el frontmatter y el build sigue—hasta que una página se…]]></description>
+      <category>Architecture</category>
+    </item>
+    <item>
+      <title><![CDATA[El coste de lo genérico: UI por defecto y diseño generado por agentes]]></title>
+      <link>https://wchen.ai/es/writing/cost-of-generic-ui-agent-design</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/cost-of-generic-ui-agent-design</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Has visto el mismo sitio cien veces. Mismas esquinas redondeadas, mismas tarjetas gris sobre blanco, mismo hero con gradiente y CTA. Se ve bien. También se parece a todos los productos que salieron…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[GitHub como tu backend]]></title>
+      <link>https://wchen.ai/es/writing/github-as-your-backend</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/github-as-your-backend</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Puedes montar un sitio estático con comentarios y actividad sin tener una base de datos ni una API. El truco es tratar GitHub como el backend que nunca tienes que operar. Identidad, almacenamiento y…]]></description>
+      <category>Infrastructure</category>
+    </item>
     <item>
       <title><![CDATA[Cómo funciona la i18n de este sitio (y cómo dos skills de agente la mantienen al día)]]></title>
       <link>https://wchen.ai/es/writing/i18n-and-content-skills</link>
@@ -22,6 +46,22 @@
       <guid isPermaLink="true">https://wchen.ai/es/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[Un sitio estático no ejecuta código cuando alguien visita una página. Ese es el punto. Pero una newsletter exige dinámica: aceptar suscripciones, enviar un correo de confirmación, manejar el clic,…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Revelación progresiva en skills de agentes]]></title>
+      <link>https://wchen.ai/es/writing/progressive-disclosure-agent-skills</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/progressive-disclosure-agent-skills</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Cuanto más metes en un skill, más útil se vuelve — hasta que deja de serlo. Un solo SKILL.md que intente cubrir cada tipo de contenido, esquema y regla de voz puede llegar a cientos de líneas. El…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Newsletter recurrente como paso de build]]></title>
+      <link>https://wchen.ai/es/writing/recurring-newsletter-as-build-step</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/recurring-newsletter-as-build-step</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[La mayoría de consejos para enviar un digest recurrente asumen que necesitas un programador. Un cron, una Lambda a intervalos, o un servicio que ejecute "cada martes a las 9." Tiene sentido si tu…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

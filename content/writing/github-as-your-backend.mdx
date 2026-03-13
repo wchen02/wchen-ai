@@ -1,0 +1,26 @@
+---
+title: "GitHub as Your Backend"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["github", "giscus", "static-sites"]
+featured: false
+draft: false
+---
+
+You can run a static site with comments and activity without running a database or an API. The trick is to treat GitHub as the backend you never have to operate.
+
+Identity, storage, and activity usually mean auth, a database, and something that updates in real time. For a personal site or a small project, that's a lot of moving parts.
+
+I wanted readers to comment and I wanted to show recent work—without standing up another service or paying for a comment SaaS. So I unified both behind the same platform: GitHub.
+
+Comments come from [Giscus](https://giscus.app). It embeds GitHub Discussions into the page. Each article or project gets one discussion; commenters sign in with GitHub and reply there. No tables, no moderation UI of my own—just the repo's Discussions tab.
+
+The contribution graph is the other half. I fetch it at build time via the GraphQL API, write the result to a JSON file in `public/`, and the homepage reads it like any other static asset. Same identity, same platform. One place for who said what and what got done.
+
+The tradeoffs are explicit. Only people with a GitHub account can comment. If that's your audience—developers, open-source contributors, technical readers—it's a reasonable constraint.
+
+The contribution data is as fresh as the last deploy. I'm not showing live activity; I'm showing a snapshot from the last build. For a personal site, that's enough. Nobody needs a real-time feed of my commits.
+
+So the backend is GitHub: identity via OAuth and usernames, storage via Discussions and the API, activity via the contribution calendar. I don't run it. I don't scale it. I don't patch it.
+
+The site stays static, the stack stays minimal, and the only thing I maintain is the content and the build. For a lot of small sites, that's the right trade—one platform you don't run, and a deploy that stays boring.

@@ -6,8 +6,32 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss/en.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 16:47:58 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 17:30:33 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Build-Time Validation as a Product]]></title>
+      <link>https://wchen.ai/en/writing/build-time-validation-as-product</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/build-time-validation-as-product</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA["Fail in production" is the default. A broken link ships. A typo in a theme descriptor slips through. Frontmatter is missing a required field and the build still runs—until a page renders wrong or a…]]></description>
+      <category>Architecture</category>
+    </item>
+    <item>
+      <title><![CDATA[The Cost of Generic: Default UI and Agent-Generated Design]]></title>
+      <link>https://wchen.ai/en/writing/cost-of-generic-ui-agent-design</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/cost-of-generic-ui-agent-design</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[You've seen the same site a hundred times. Same rounded corners, same gray-on-white cards, same hero with a gradient and a CTA. It looks fine. It also looks like every other product that shipped last…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[GitHub as Your Backend]]></title>
+      <link>https://wchen.ai/en/writing/github-as-your-backend</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/github-as-your-backend</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[You can run a static site with comments and activity without running a database or an API. The trick is to treat GitHub as the backend you never have to operate. Identity, storage, and activity…]]></description>
+      <category>Infrastructure</category>
+    </item>
     <item>
       <title><![CDATA[How This Site's i18n Works — and How Two Agent Skills Keep It Fed]]></title>
       <link>https://wchen.ai/en/writing/i18n-and-content-skills</link>
@@ -22,6 +46,22 @@
       <guid isPermaLink="true">https://wchen.ai/en/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[A static site doesn't run code when someone hits a page. That's the point. But a newsletter requires dynamics: accept a signup, send a confirmation email, handle the click, add the contact to a list,…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Progressive Disclosure in Agent Skills]]></title>
+      <link>https://wchen.ai/en/writing/progressive-disclosure-agent-skills</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/progressive-disclosure-agent-skills</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[The more you put into a skill, the more useful it becomes — until it isn't. A single SKILL.md that tries to cover every content type, schema, and voice rule can run to hundreds of lines. The agent…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Recurring Newsletter as a Build Step]]></title>
+      <link>https://wchen.ai/en/writing/recurring-newsletter-as-build-step</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/recurring-newsletter-as-build-step</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Most advice for sending a recurring digest assumes you need a scheduler. A cron job, a Lambda on a timer, or a hosted service that runs "every Tuesday at 9." That makes sense if your content lives in…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

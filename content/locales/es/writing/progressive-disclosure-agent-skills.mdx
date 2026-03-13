@@ -1,0 +1,44 @@
+---
+title: "Revelación progresiva en skills de agentes"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["skills", "agents", "cursor", "context"]
+featured: false
+draft: false
+---
+
+Cuanto más metes en un skill, más útil se vuelve — hasta que deja de serlo. Un solo SKILL.md que intente cubrir cada tipo de contenido, esquema y regla de voz puede llegar a cientos de líneas. El agente lo carga todo por adelantado. El presupuesto de tokens se quema. Las partes que importan para *esta* tarea se pierden en el ruido.
+
+Estructuro los skills de modo que el archivo principal sea un *enrutador*, no un vertedero. Le dice al agente qué existe y cuándo leer el resto. Los detalles viven en referencias que se cargan bajo demanda. Así el contexto se mantiene ajustado y el comportamiento predecible.
+
+## SKILL.md como enrutador
+
+El skill website-content es un buen ejemplo. El SKILL.md principal describe qué hace el skill, qué tipos de contenido existen y dónde van los archivos. *No* incluye en línea la guía de voz completa ni los esquemas de contenido completos. En su lugar dice: antes de escribir, lee `references/voice-guide.md` y `references/content-schemas.md`. Para texto de página, lee también `references/page-patterns.md`.
+
+Así, cuando pides al agente que escriba un post, carga el skill, ve "entrada de escritura → leer voice-guide y content-schemas" y solo entonces trae esos archivos. Cuando le pides actualizar la página about, carga el skill y page-patterns también. El agente nunca paga el coste de voice-guide o content-schemas si la tarea es "cambiar la etiqueta del botón del newsletter."
+
+Eso es revelación progresiva. El archivo de nivel superior responde "¿qué puede hacer este skill y qué necesito para *esta* tarea?" Las referencias responden "¿cómo lo hago en detalle?" Carga estas últimas solo cuando la tarea las requiere.
+
+## Por qué el uso de tokens se mantiene bajo
+
+Las ventanas de contexto son grandes, pero no son gratis. Cada token que pones delante del modelo podría haberse usado para salida, cadena de pensamiento o resultados de herramientas. Si tu skill tiene 200 líneas y solo 30 son relevantes para la petición actual, sigues enviando 200 líneas — y quemas presupuesto en instrucciones que el agente no está usando.
+
+Dividir en un enrutador fino más referencias bajo demanda cambia la cuenta. El enrutador se queda en contexto; las referencias se cargan una vez por tarea. El *estado estable* es "enrutador + uno o dos archivos de referencia" en lugar de "un blob gigante." Para un skill que cubre escritura, proyectos, homepage, about y traspaso de traducción, esa diferencia es sustancial.
+
+Hay un segundo beneficio: el agente tiene menos probabilidad de mezclar instrucciones de flujos no relacionados. Cuando todo está en un archivo, el modelo puede aplicar por error restricciones de "página about" a una entrada de escritura o al revés. Cuando el skill dice "para entradas de escritura, lee content-schemas y voice-guide," el límite es explícito. El agente sigue un camino en lugar de mezclar todos.
+
+## Cuándo dividir en más capas
+
+La revelación progresiva tiene rendimientos decrecientes si te pasas fragmentando. Referencias diminutas de un párrafo añaden coste de navegación sin ahorrar muchos tokens. ¿Cuándo merece la pena añadir otra capa?
+
+**Cuando una sola referencia se alarga.** Si `content-schemas.md` crece hasta cubrir cinco tipos de contenido en profundidad, plantéate dividirla en `content-schemas-writing.md` y `content-schemas-projects.md`, y que el enrutador apunte al correcto según la tarea. La misma idea para la voz: si la guía de voz se convierte en un librito, divide por tipo de contenido o por "reglas" vs "ejemplos."
+
+**Cuando tienes audiencias o flujos distintos.** Si el mismo skill lo usan "escribe un post" y "ejecuta el pipeline de traducción," y cada flujo necesita un subconjunto distinto de documentos, el enrutador puede ramificar: "para entradas nuevas de escritura/proyecto, lee A y B; para traducción, lee C y D." Así cada ejecución se mantiene centrada.
+
+**Cuando el orden de carga importa.** Algunos skills tienen dependencias — p. ej. "lee el esquema antes de la guía de voz para saber qué campos existen." El enrutador puede especificar el orden: "1. content-schemas, 2. voice-guide, 3. continuar." Así el agente no infiere el orden por nombres de archivo ni lee las cosas en la secuencia equivocada.
+
+**Cuando no.** Si el skill es pequeño y casi cada tarea necesita casi todo, un solo archivo basta. La revelación progresiva es una herramienta para mantener *grandes* skills manejables. No fragmentes un skill de 50 líneas en cuatro de 15 solo por hacerlo.
+
+## Conclusión
+
+Los skills son instrucciones de operación para agentes. Cuanto mejor codifiquen *qué hacer cuándo*, menos tiene que adivinar el agente y menos tienes que repetirte. Poner "cuándo cargar qué" en el archivo principal del skill lo convierte en un enrutador. Las referencias contienen la profundidad. Eso mantiene bajo el uso de tokens, deja claros los límites de la tarea y hace obvio cuándo añadir otra capa: cuando una referencia se hace demasiado grande, cuando los flujos divergen o cuando el orden importa. Construye skills que revelen de forma progresiva, y tanto tú como el agente tendréis una señal más clara.

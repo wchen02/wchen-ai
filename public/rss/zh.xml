@@ -6,8 +6,32 @@
     <description>关于工程、产品与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 16:47:58 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 17:30:33 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[把构建时校验当产品]]></title>
+      <link>https://wchen.ai/zh/writing/build-time-validation-as-product</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/build-time-validation-as-product</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[「在生产环境出错」是默认状态。坏链照样上线，主题描述里有个 typo 没人发现，frontmatter 少必填字段 build 照样跑——直到某页渲染错或 feed 崩了。错误在用户打开页面或你几周后才发现时出现，那时问题已经上线、被缓存，更难回溯。 改成在构建时失败。把校验当成内容流水线的一等公民。有问题就不让 build 成功。不部署、不「下个 PR…]]></description>
+      <category>Architecture</category>
+    </item>
+    <item>
+      <title><![CDATA[泛用设计的代价：默认 UI 与 agent 生成的设计]]></title>
+      <link>https://wchen.ai/zh/writing/cost-of-generic-ui-agent-design</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/cost-of-generic-ui-agent-design</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[同一个站你看过一百遍了。一样的圆角、一样的灰底白卡、一样的渐变 hero 加 CTA。不难看，但也和上季度上线的每一个产品长得差不多。 这和内容上的老问题一样：没有约束的 agent 产出泛用文案。同样的逻辑正在 UI 上重演。默认组件库和没被教过你约束的 agent，会收敛到同一套视觉语言。泛用的代价不是「丑」——是没有区分度。看不出谁做的、为什么做的。 默认值是你没做过的选择 当你用一套…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[把 GitHub 当后端]]></title>
+      <link>https://wchen.ai/zh/writing/github-as-your-backend</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/github-as-your-backend</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[你可以跑一个带评论和动态的静态站，而不跑数据库也不跑 API。做法就是把 GitHub 当成你从不用运维的后端。 身份、存储、动态通常意味着鉴权、数据库和某种实时更新。对个人站或小项目来说，零件太多了。 我希望读者能评论，也希望展示近期工作——又不想再起一个服务或为评论 SaaS 付费。所以把这两块都统一到同一平台：GitHub。 评论来自 Giscus。它把 GitHub…]]></description>
+      <category>Infrastructure</category>
+    </item>
     <item>
       <title><![CDATA[本站 i18n 是怎么做的，以及两个 agent skill 如何配合]]></title>
       <link>https://wchen.ai/zh/writing/i18n-and-content-skills</link>
@@ -22,6 +46,22 @@
       <guid isPermaLink="true">https://wchen.ai/zh/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[静态站不会在有人打开页面时跑代码，这正是目的。但 newsletter 需要动态：接收订阅、发确认邮件、处理点击、把联系人加进列表、发欢迎信。那怎么既保持站点静态，又完整掌控整个流程？ 我的做法是：用 Resend 发信，用 Cloudflare Pages Functions 提供那一小块 API。HTML 预构建、从 edge 提供；真正在请求时执行的只有几条路由：校验入参、签名…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[技能中的渐进式披露]]></title>
+      <link>https://wchen.ai/zh/writing/progressive-disclosure-agent-skills</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/progressive-disclosure-agent-skills</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[技能里塞得越多就越有用——直到不再有用。一个 SKILL.md 想把每种内容类型、每种 schema、每种语气规则都写进去，可以轻松上百行。Agent 会一次性全加载。Token 预算被烧掉，真正和当前任务相关的部分淹没在噪音里。 我设计技能时，让主文件当路由器，不当垃圾桶。它告诉 agent 有哪些东西、什么时候再读其余部分。细节放在按需加载的引用里。这样上下文更紧、行为更可预期。…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[把定期 newsletter 当成构建步骤]]></title>
+      <link>https://wchen.ai/zh/writing/recurring-newsletter-as-build-step</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/recurring-newsletter-as-build-step</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[多数「发定期摘要」的建议都假设你需要一个调度器：cron、定时触发的 Lambda，或托管服务「每周二 9 点跑」。如果你的内容在 CMS 里全天更新、你只想在固定时间抓一版，那没问题。但若站点是静态的、内容只在部署时变化，调度器就是错误的抽象。 我把摘要当成 CI 里的一步，紧接在站点 build 和 deploy 之后。一个脚本——叫 send-recurring-newsletter…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

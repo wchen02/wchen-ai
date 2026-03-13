@@ -1,0 +1,28 @@
+---
+title: "Recurring Newsletter as a Build Step"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["newsletter", "static-sites", "ci"]
+featured: false
+draft: false
+---
+
+Most advice for sending a recurring digest assumes you need a scheduler. A cron job, a Lambda on a timer, or a hosted service that runs "every Tuesday at 9." That makes sense if your content lives in a CMS that updates all day and you want to snapshot it on a fixed schedule. But if your site is static and your content only changes when you deploy, a scheduler is the wrong abstraction.
+
+I run the digest as a step in CI, right after the site build and deploy. A script—call it `send-recurring-newsletter` or whatever fits your pipeline—runs once per deploy. It reads the list of published writing and projects from the same source the site uses, builds the digest HTML from shared templates, fetches the subscriber list from the email provider's API, and sends. No cron. No Lambda. No "run this function every N hours" configuration. The trigger is *deploy*, not *time*.
+
+When That's Enough
+
+It's enough when your content is deploy-bound. You publish by merging and deploying. The digest is "what shipped in this deploy." Readers get an email when there is something new, not when the clock says so. The cadence follows your ship cadence. If you deploy weekly, they get a weekly digest. If you deploy after every post, they get one per post. The script is idempotent in the sense that it sends one digest per run; you run it once per deploy, so you send once per deploy.
+
+You also need an email provider that exposes an API for sending and for listing or segmenting subscribers. Resend, SendGrid, Mailchimp, and many others do. The script calls the API. No need for the provider to run your code on a schedule.
+
+When You'd Need a Scheduler
+
+You need a scheduler when the event that should trigger the digest is *time*, not *deploy*. Examples: a daily summary of activity that accumulated during the day, a weekly roundup that must go out every Monday regardless of whether you shipped, or content that is updated by other systems (CMS, e-commerce) and you want to snapshot it on a fixed interval. Then you have a real need for cron, Lambda + EventBridge, or a hosted cron service. The key question is: what is the trigger? If the trigger is "when I deploy," CI is the right place. If the trigger is "every Tuesday," you need something that knows what day it is.
+
+How It Keeps the Stack Static
+
+Running the digest in CI keeps the production surface static. The site is still just files on a CDN. The only code that runs in production—if you have any—is the minimal API surface for signup and confirmation. The digest script runs in the same environment that runs your build: your CI runner. It uses the same repo, the same content files, the same env vars (with the addition of an API key for the email provider). No new moving parts in production. No new services to secure, monitor, or pay for. No cold starts at 3 a.m. The script runs when you push; it finishes; the deploy is done. Static site, static pipeline, one less thing that runs on a timer.
+
+I prefer that trade. The digest is "what's new since last deploy," and the trigger is the deploy itself. When that matches how you work, a build step is simpler than a scheduler and keeps your stack exactly as static as you want it.

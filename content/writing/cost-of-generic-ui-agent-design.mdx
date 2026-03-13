@@ -1,0 +1,44 @@
+---
+title: "The Cost of Generic: Default UI and Agent-Generated Design"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["design", "agents", "constraints", "ui"]
+featured: false
+draft: false
+---
+
+You've seen the same site a hundred times. Same rounded corners, same gray-on-white cards, same hero with a gradient and a CTA. It looks fine. It also looks like every other product that shipped last quarter.
+
+The pattern is familiar from content: unconstrained agents produce generic copy. The same dynamic is playing out in UI. Default component libraries and agents that aren't taught your constraints converge on the same visual language. The cost of generic isn't that it's bad—it's that it's *undifferentiated*. You can't tell who built it or why.
+
+## Defaults Are a Choice You Didn't Make
+
+When you reach for a UI kit—Tailwind UI, shadcn, Radix primitives with no theming—you get consistency. You also get the average of everyone else's choices. Spacing, type scale, border radius, and color are decided by the library author or by the model's training distribution. That's useful when you want to move fast and don't care about identity. It's a trap when you want a product that feels like *yours*.
+
+Agents amplify the effect. Ask one to build a dashboard or a landing page and it will compose from the same primitives it has seen everywhere: the card, the badge, the modal. Without design tokens or a style guide, the agent has no signal for what "your" UI looks like. So it produces the mean. Same as the content problem: no direction *is* a direction—toward the center.
+
+## Constraints Improve Both Humans and Agents
+
+The fix isn't to avoid libraries or agents. It's to add constraints that narrow the space of valid output.
+
+Design tokens are the obvious lever. A single source of truth for color, spacing, typography, and radius gives humans a guardrail and gives agents a *spec*.
+
+When the token says "primary is #0f172a" and "card radius is 0.375rem," the agent doesn't have to invent; it composes within the system. The output stays on-brand because the brand is encoded.
+
+Patterns and anti-patterns matter as much for UI as for voice. "Use the compact variant for tables" is a pattern; "never use more than two accent colors in one view" is an anti-pattern.
+
+Both reduce the number of decisions the agent (or the junior dev) has to make. Fewer decisions in the wrong places mean less drift toward generic.
+
+I've seen this in practice. Projects with a small, explicit design token set and a short list of do's and don'ts ship UI that feels intentional. Projects that rely on "make it look good" or raw component libraries ship UI that looks like a template. The difference isn't talent. It's *constraints*.
+
+## Teaching Agents Your UI Voice
+
+The same idea from teaching agents your writing voice applies to product and interface. You don't hand the agent a blank canvas and hope. You give it a system: tokens, component usage rules, and examples of what "done" looks like.
+
+You document anti-patterns so the agent knows what to avoid. You run a checklist—contrast, hierarchy, consistency—before calling the output finished.
+
+That work pays off for humans too. A design system that's good enough for an agent to follow is usually good enough for a team to follow. The discipline of writing down your constraints forces you to decide what you actually care about.
+
+Defaults are no longer invisible; they're explicit. You can change them.
+
+The cost of generic is optional. Default UI and unconstrained agents will keep producing same-looking sites until we treat design like we're starting to treat content: as something that benefits from *encoded intent*. Tokens, patterns, anti-patterns. Not less freedom—clearer boundaries so that what gets built inside them actually looks like you.

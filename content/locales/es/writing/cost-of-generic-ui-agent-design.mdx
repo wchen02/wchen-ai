@@ -1,0 +1,44 @@
+---
+title: "El coste de lo genérico: UI por defecto y diseño generado por agentes"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["design", "agents", "constraints", "ui"]
+featured: false
+draft: false
+---
+
+Has visto el mismo sitio cien veces. Mismas esquinas redondeadas, mismas tarjetas gris sobre blanco, mismo hero con gradiente y CTA. Se ve bien. También se parece a todos los productos que salieron el trimestre pasado.
+
+El patrón es familiar en contenido: los agentes sin restricciones producen texto genérico. La misma dinámica se está repitiendo en la UI. Las librerías de componentes por defecto y los agentes a los que no se les enseñan tus restricciones convergen en el mismo lenguaje visual. El coste de lo genérico no es que sea malo—es que es *indiferenciado*. No se distingue quién lo hizo ni por qué.
+
+## Los valores por defecto son una elección que no hiciste
+
+Cuando usas un kit de UI—Tailwind UI, shadcn, primitivos de Radix sin tematización—obtienes consistencia. También obtienes la media de las elecciones de todos los demás. Espaciado, escala tipográfica, radio de borde y color los decide el autor de la librería o la distribución de entrenamiento del modelo. Eso sirve cuando quieres ir rápido y no te importa la identidad. Es una trampa cuando quieres un producto que se sienta *tuyo*.
+
+Los agentes amplifican el efecto. Pide a uno que construya un dashboard o una landing y compondrá con los mismos primitivos que ha visto por todas partes: la tarjeta, la insignia, el modal. Sin tokens de diseño ni guía de estilo, el agente no tiene señal de cómo es "tu" UI. Así que produce la media. Igual que el problema del contenido: no dar dirección *es* una dirección—hacia el centro.
+
+## Las restricciones mejoran tanto a humanos como a agentes
+
+La solución no es evitar librerías ni agentes. Es añadir restricciones que acoten el espacio de salida válida.
+
+Los design tokens son la palanca obvia. Una única fuente de verdad para color, espaciado, tipografía y radio da a las personas una barrera y da a los agentes una *especificación*.
+
+Cuando el token dice "primary es #0f172a" y "card radius es 0.375rem," el agente no tiene que inventar; compone dentro del sistema. La salida se mantiene on-brand porque la marca está codificada.
+
+Los patrones y anti-patrones importan tanto para la UI como para la voz. "Usa la variante compacta para tablas" es un patrón; "nunca uses más de dos colores de acento en una vista" es un anti-patrón.
+
+Ambos reducen las decisiones que el agente (o el dev junior) tiene que tomar. Menos decisiones en los sitios equivocados significan menos deriva hacia lo genérico.
+
+Lo he visto en la práctica. Proyectos con un conjunto pequeño y explícito de design tokens y una lista corta de sí y no sacan una UI que se siente intencionada. Proyectos que dependen de "que se vea bien" o de librerías de componentes en crudo sacan una UI que parece una plantilla. La diferencia no es talento. Son las *restricciones*.
+
+## Enseñar a los agentes tu voz de UI
+
+La misma idea de enseñar a los agentes tu voz de escritura aplica al producto y a la interfaz. No le das al agente un lienzo en blanco y esperas. Le das un sistema: tokens, reglas de uso de componentes y ejemplos de cómo se ve "hecho."
+
+Documentas anti-patrones para que el agente sepa qué evitar. Pasas una checklist—contraste, jerarquía, consistencia—antes de dar la salida por terminada.
+
+Ese trabajo también compensa para las personas. Un design system que es lo bastante bueno para que un agente lo siga suele ser lo bastante bueno para que un equipo lo siga. La disciplina de escribir tus restricciones te obliga a decidir qué te importa de verdad.
+
+Los valores por defecto ya no son invisibles; son explícitos. Puedes cambiarlos.
+
+El coste de lo genérico es opcional. La UI por defecto y los agentes sin restricciones seguirán produciendo sitios que se ven igual hasta que tratemos el diseño como estamos empezando a tratar el contenido: como algo que se beneficia de *intención codificada*. Tokens, patrones, anti-patrones. No menos libertad—límites más claros para que lo que se construye dentro realmente se parezca a ti.

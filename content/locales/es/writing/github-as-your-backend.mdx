@@ -1,0 +1,26 @@
+---
+title: "GitHub como tu backend"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["github", "giscus", "static-sites"]
+featured: false
+draft: false
+---
+
+Puedes montar un sitio estático con comentarios y actividad sin tener una base de datos ni una API. El truco es tratar GitHub como el backend que nunca tienes que operar.
+
+Identidad, almacenamiento y actividad suelen implicar auth, una base de datos y algo que se actualice en tiempo real. Para un sitio personal o un proyecto pequeño, son muchas piezas.
+
+Quería que los lectores pudieran comentar y quería mostrar trabajo reciente—sin levantar otro servicio ni pagar por un SaaS de comentarios. Así que unifiqué ambas cosas en la misma plataforma: GitHub.
+
+Los comentarios vienen de [Giscus](https://giscus.app). Incrusta GitHub Discussions en la página. Cada artículo o proyecto tiene una discusión; quien comenta inicia sesión con GitHub y responde ahí. Sin tablas, sin UI de moderación propia—solo la pestaña Discussions del repo.
+
+La gráfica de contribuciones es la otra mitad. La obtengo en tiempo de build vía la API GraphQL, escribo el resultado en un JSON en `public/`, y la homepage lo lee como cualquier otro asset estático. Misma identidad, misma plataforma. Un solo sitio para quién dijo qué y qué se hizo.
+
+Los tradeoffs son explícitos. Solo quien tiene cuenta de GitHub puede comentar. Si esa es tu audiencia—desarrolladores, contribuidores open-source, lectores técnicos—es una restricción razonable.
+
+Los datos de contribución están tan frescos como el último deploy. No muestro actividad en vivo; muestro una instantánea del último build. Para un sitio personal basta. Nadie necesita un feed en tiempo real de mis commits.
+
+Así que el backend es GitHub: identidad vía OAuth y nombres de usuario, almacenamiento vía Discussions y la API, actividad vía el calendario de contribuciones. No lo opero. No lo escalo. No le aplico parches.
+
+El sitio se queda estático, la pila se queda mínima, y lo único que mantengo es el contenido y el build. Para muchos sitios pequeños, ese es el trade correcto—una plataforma que no operas, y un deploy que se queda aburrido.

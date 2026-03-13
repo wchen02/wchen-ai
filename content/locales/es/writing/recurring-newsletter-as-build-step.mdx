@@ -1,0 +1,28 @@
+---
+title: "Newsletter recurrente como paso de build"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Infrastructure"
+tags: ["newsletter", "static-sites", "ci"]
+featured: false
+draft: false
+---
+
+La mayoría de consejos para enviar un digest recurrente asumen que necesitas un programador. Un cron, una Lambda a intervalos, o un servicio que ejecute "cada martes a las 9." Tiene sentido si tu contenido vive en un CMS que se actualiza todo el día y quieres hacer una instantánea en un horario fijo. Pero si tu sitio es estático y tu contenido solo cambia cuando haces deploy, un programador es la abstracción equivocada.
+
+Ejecuto el digest como un paso en CI, justo después del build y deploy del sitio. Un script—llámalo `send-recurring-newsletter` o lo que encaje en tu pipeline—se ejecuta una vez por deploy. Lee la lista de escritos y proyectos publicados de la misma fuente que usa el sitio, construye el HTML del digest desde plantillas compartidas, obtiene la lista de suscriptores de la API del proveedor de email y envía. Sin cron. Sin Lambda. Sin configuración de "ejecuta esta función cada N horas." El disparador es *deploy*, no *tiempo*.
+
+Cuándo basta
+
+Basta cuando tu contenido está ligado al deploy. Publicas haciendo merge y deploy. El digest es "lo que salió en este deploy." Los lectores reciben un email cuando hay algo nuevo, no cuando el reloj lo dice. El ritmo sigue tu ritmo de publicación. Si haces deploy semanal, reciben digest semanal. Si haces deploy tras cada post, reciben uno por post. El script es idempotente en el sentido de que envía un digest por ejecución; lo ejecutas una vez por deploy, así que envías una vez por deploy.
+
+También necesitas un proveedor de email que exponga una API para enviar y para listar o segmentar suscriptores. Resend, SendGrid, Mailchimp y otros muchos lo hacen. El script llama a la API. No hace falta que el proveedor ejecute tu código en un horario.
+
+Cuándo necesitarías un programador
+
+Necesitas un programador cuando el evento que debe disparar el digest es *tiempo*, no *deploy*. Ejemplos: un resumen diario de actividad acumulada durante el día, un roundup semanal que debe salir cada lunes sin importar si publicaste, o contenido actualizado por otros sistemas (CMS, e-commerce) del que quieres una instantánea en un intervalo fijo. Entonces sí necesitas cron, Lambda + EventBridge o un servicio de cron alojado. La pregunta clave es: ¿cuál es el disparador? Si el disparador es "cuando hago deploy," CI es el sitio correcto. Si el disparador es "cada martes," necesitas algo que sepa qué día es.
+
+Cómo mantiene la pila estática
+
+Ejecutar el digest en CI mantiene la superficie de producción estática. El sitio sigue siendo solo archivos en un CDN. El único código que corre en producción—si tienes alguno—es la superficie mínima de API para registro y confirmación. El script del digest corre en el mismo entorno que ejecuta tu build: tu runner de CI. Usa el mismo repo, los mismos archivos de contenido, las mismas variables de entorno (más una API key del proveedor de email). Sin piezas nuevas en producción. Sin servicios nuevos que asegurar, monitorizar o pagar. Sin cold starts a las 3 de la mañana. El script corre cuando haces push; termina; el deploy está hecho. Sitio estático, pipeline estático, una cosa menos que corre en un temporizador.
+
+Prefiero ese trade. El digest es "qué hay de nuevo desde el último deploy," y el disparador es el deploy mismo. Cuando eso encaja con cómo trabajas, un paso de build es más simple que un programador y mantiene tu pila tan estática como quieras.

@@ -1,0 +1,44 @@
+---
+title: "Progressive Disclosure in Agent Skills"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Developer Tools"
+tags: ["skills", "agents", "cursor", "context"]
+featured: false
+draft: false
+---
+
+The more you put into a skill, the more useful it becomes — until it isn't. A single SKILL.md that tries to cover every content type, schema, and voice rule can run to hundreds of lines. The agent loads it all up front. Token budget burns. The parts that matter for *this* task get lost in the noise.
+
+I structure skills so that the main file is a *router*, not a dump. It tells the agent what exists and when to read the rest. The details live in references that are loaded on demand. That keeps context tight and behavior predictable.
+
+## SKILL.md as Router
+
+The website-content skill is a good example. The main SKILL.md describes what the skill does, which content types exist, and where files go. It does *not* inline the full voice guide or the full content schemas. Instead, it says: before writing, read `references/voice-guide.md` and `references/content-schemas.md`. For page-level copy, also read `references/page-patterns.md`.
+
+So when you ask the agent to write a blog post, it loads the skill, sees "writing entry → read voice-guide and content-schemas," and only then pulls in those files. When you ask it to update the about page, it loads the skill and page-patterns too. The agent never pays the cost of voice-guide or content-schemas if the task is "change the newsletter button label."
+
+That's progressive disclosure. The top-level file answers "what can this skill do and what do I need for *this* task?" The references answer "how do I do it in detail?" Load the latter only when the task requires them.
+
+## Why Token Use Stays Down
+
+Context windows are large, but they're not free. Every token you put in front of the model could have been used for output, chain-of-thought, or tool results. If your skill is 200 lines and only 30 are relevant to the current request, you still send 200 lines — and burn budget on instructions the agent isn't using.
+
+Splitting into a thin router plus on-demand references changes the math. The router stays in context; references are loaded once for the task. The *steady state* is "router + one or two reference files" instead of "one giant blob." For a skill that covers writing, projects, homepage, about, and translation handoff, that difference is substantial.
+
+There's a second benefit: the agent is less likely to mix instructions from unrelated flows. When everything is in one file, the model might accidentally apply "about page" constraints to a writing entry or vice versa. When the skill says "for writing entries, read content-schemas and voice-guide," the boundary is explicit. The agent follows a path instead of blending all paths.
+
+## When to Split Into More Layers
+
+Progressive disclosure has diminishing returns if you over-split. Tiny one-paragraph references add navigation cost without saving many tokens. So when is it worth adding another layer?
+
+**When a single reference gets long.** If `content-schemas.md` grows to cover five content types in depth, consider splitting it into `content-schemas-writing.md` and `content-schemas-projects.md`, and have the router point to the right one based on task. Same idea for voice: if the voice guide becomes a small book, split by content type or by "rules" vs "examples."
+
+**When you have distinct audiences or workflows.** If the same skill is used by "write a post" and "run the translation pipeline," and each workflow needs a different subset of docs, the router can branch: "for new writing/project entries, read A and B; for translation, read C and D." That keeps each run focused.
+
+**When loading order matters.** Some skills have dependencies — e.g. "read the schema before the voice guide so you know which fields exist." The router can spell out the order: "1. content-schemas, 2. voice-guide, 3. proceed." That way the agent doesn't infer order from file names or read things in the wrong sequence.
+
+**When you don't.** If the skill is small and every task needs almost everything, one file is fine. Progressive disclosure is a tool for keeping *large* skills manageable. Don't fragment a 50-line skill into four 15-line files just for the sake of it.
+
+## Conviction
+
+Skills are operating instructions for agents. The better they encode *what to do when*, the less the agent has to guess and the less you have to repeat yourself. Putting "when to load what" in the main skill file turns it into a router. The references hold the depth. That keeps token use down, keeps task boundaries clear, and makes it obvious when to add another layer: when a reference gets too big, when workflows diverge, or when order matters. Build skills that disclose progressively, and both you and the agent get a clearer signal.

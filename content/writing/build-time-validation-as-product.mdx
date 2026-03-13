@@ -1,0 +1,32 @@
+---
+title: "Build-Time Validation as a Product"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Architecture"
+tags: ["validation", "static-sites", "zod", "dx"]
+featured: false
+draft: false
+---
+
+"Fail in production" is the default. A broken link ships. A typo in a theme descriptor slips through. Frontmatter is missing a required field and the build still runs—until a page renders wrong or a feed breaks. The error shows up when a user hits the page or when you notice it weeks later. By then the mistake is live, cached, and harder to trace back.
+
+Fail at build instead. Treat validation as a first-class part of the content pipeline. If something is wrong, the build does not succeed. No deploy, no "we'll fix it in the next PR." The author gets a clear error and a file path. Fix it, push again, and the pipeline stays trustworthy.
+
+That shift—from "hope nothing broke" to "the pipeline refuses to ship broken"—is what I mean by build-time validation as a product. The product is not the content. The product is *confidence that what ships is valid*. A small set of scripts can deliver that.
+
+**What to validate**
+
+Links, theme descriptors, metadata, and frontmatter. Validate internal links so no writing or project page points at a slug that does not exist. Validate theme descriptors so every theme referenced in frontmatter exists in your theme list or UI config. Validate metadata so Open Graph, titles, and descriptions are present and within length. Validate frontmatter with a schema—Zod is a natural fit—so required fields exist, types are correct, and tags or themes are from an allowed set.
+
+Each validator is a script: `validate-links`, `validate-theme-descriptors`, `validate-metadata`, `validate-frontmatter`. Run them in CI or as a pre-build step. If any fails, the build fails. No silent drift.
+
+**Design for clear errors**
+
+The worst validator is the one that says "validation failed" and nothing else. Authors need to know *what* broke and *where*. Emit the file path, the field or line, and the rule that failed. "Missing required field `theme` in content/writing/my-post.mdx" beats "Invalid frontmatter." If you use Zod, customize error messages or use `.refine()` with a message that names the file and the expectation. Stack traces are for developers; content authors need a single sentence that tells them exactly what to fix.
+
+Structure output so it is scannable: one line per violation, or a short summary plus a list. In a CI log, the author should see the failure in under ten seconds and know which file to open.
+
+**Why it pays off**
+
+Once validators are in place, authors can move fast. Refactor slugs, rename themes, change frontmatter shape—the pipeline enforces the contract and refuses to ship mistakes. New contributors get immediate feedback: fix the error, and the build goes green. No tribal knowledge; the build *is* the check.
+
+I treat build-time validation as a product because it changes the default. The default stops being "ship and hope." It becomes "the system will not ship until it is valid." That is the product—a content pipeline you can trust, and errors that tell you exactly what to fix.

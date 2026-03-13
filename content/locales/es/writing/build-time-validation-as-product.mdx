@@ -1,0 +1,32 @@
+---
+title: "Validación en build como producto"
+publishDate: "2026-03-13T12:00:00Z"
+theme: "Architecture"
+tags: ["validation", "static-sites", "zod", "dx"]
+featured: false
+draft: false
+---
+
+"Fallar en producción" es lo por defecto. Un enlace roto se publica. Un typo en un descriptor de tema se cuela. Falta un campo obligatorio en el frontmatter y el build sigue—hasta que una página se renderiza mal o un feed se rompe. El error aparece cuando un usuario abre la página o cuando lo notas semanas después. Para entonces el fallo está en vivo, cacheado y es más difícil rastrear.
+
+Falla en el build en su lugar. Trata la validación como una parte de primera clase del pipeline de contenido. Si algo está mal, el build no tiene éxito. No hay deploy, no hay "lo arreglamos en el siguiente PR." El autor recibe un error claro y una ruta de archivo. Arregla, vuelve a hacer push, y el pipeline se mantiene fiable.
+
+Ese cambio—de "esperar que no se haya roto nada" a "el pipeline se niega a publicar lo roto"—es lo que quiero decir con validación en build como producto. El producto no es el contenido. El producto es *la confianza en que lo que se publica es válido*. Un conjunto pequeño de scripts puede entregar eso.
+
+**Qué validar**
+
+Enlaces, descriptores de tema, metadatos y frontmatter. Valida enlaces internos para que ninguna página de escritura o proyecto apunte a un slug que no exista. Valida descriptores de tema para que cada tema referenciado en el frontmatter exista en tu lista de temas o en la config de la UI. Valida metadatos para que Open Graph, títulos y descripciones estén presentes y dentro de longitud. Valida el frontmatter con un esquema—Zod encaja de forma natural—para que los campos obligatorios existan, los tipos sean correctos y las etiquetas o temas pertenezcan a un conjunto permitido.
+
+Cada validador es un script: `validate-links`, `validate-theme-descriptors`, `validate-metadata`, `validate-frontmatter`. Ejecútalos en CI o como paso previo al build. Si alguno falla, el build falla. Sin deriva silenciosa.
+
+**Diseña para errores claros**
+
+El peor validador es el que dice "validación fallida" y nada más. Los autores necesitan saber *qué* se rompió y *dónde*. Emite la ruta del archivo, el campo o línea y la regla que falló. "Campo obligatorio `theme` faltante en content/writing/my-post.mdx" gana a "Frontmatter inválido." Si usas Zod, personaliza los mensajes de error o usa `.refine()` con un mensaje que nombre el archivo y la expectativa. Los stack traces son para desarrolladores; los autores de contenido necesitan una sola frase que les diga exactamente qué arreglar.
+
+Estructura la salida para que sea escaneable: una línea por violación, o un resumen corto más una lista. En un log de CI, el autor debería ver el fallo en menos de diez segundos y saber qué archivo abrir.
+
+**Por qué compensa**
+
+Una vez los validadores están en su sitio, los autores pueden moverse rápido. Refactorizar slugs, renombrar temas, cambiar la forma del frontmatter—el pipeline hace cumplir el contrato y se niega a publicar errores. Los nuevos contribuidores reciben feedback inmediato: arregla el error y el build pasa a verde. Sin conocimiento tribal; el build *es* la comprobación.
+
+Trato la validación en build como producto porque cambia el valor por defecto. El valor por defecto deja de ser "publicar y esperar." Pasa a ser "el sistema no publicará hasta que sea válido." Eso es el producto—un pipeline de contenido en el que puedes confiar, y errores que te dicen exactamente qué arreglar.
