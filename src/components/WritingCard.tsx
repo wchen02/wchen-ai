@@ -3,6 +3,7 @@ import { type Writing } from "@/lib/schemas";
 import { formatDate } from "@/lib/formatting";
 import { localizePath } from "@/lib/i18n";
 import { resolveLocale } from "@/lib/locales";
+import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 
 function isUpdated(writing: Writing): boolean {
@@ -54,7 +55,7 @@ export default function WritingCard({
         <span>{writing.readingTimeMinutes} {uiContent.writing.minuteReadLabel}</span>
         <span>•</span>
         <span className="font-medium text-emerald-600 dark:text-emerald-400">
-          {writing.theme}
+          {getThemeLabel(writing.theme, locale)}
         </span>
       </div>
 

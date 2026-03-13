@@ -22,6 +22,7 @@ import { localizePath } from "@/lib/i18n";
 import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization";
 import { resolveLocale, SUPPORTED_LOCALES } from "@/lib/locales";
 import { absoluteUrl, getSiteProfile } from "@/lib/site-config";
+import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 
 export async function generateStaticParams() {
@@ -148,7 +149,7 @@ export default async function LocalizedWritingPage({
               </span>
               <span>•</span>
               <span className="font-medium text-emerald-600 dark:text-emerald-400">
-                {writing.theme}
+                {getThemeLabel(writing.theme, resolvedLocale)}
               </span>
               <span>•</span>
               <ShareButton url={absoluteUrl(`/writing/${slug}`, resolvedLocale)} title={writing.title} />

@@ -299,6 +299,7 @@ export const UiContentSchema = z.object({
     dayTitle: z.string().min(1),
   }),
   themeDescriptors: z.record(z.string().min(1), z.string().min(1)),
+  themeLabels: z.record(z.string().min(1), z.string().min(1)),
 });
 
 export const FormsContentSchema = z.object({

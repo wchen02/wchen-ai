@@ -102,7 +102,7 @@ export default async function LocaleLayout({
               </a>
             ))}
             <a
-              href="/rss.xml"
+              href={`/rss/${locale}.xml`}
               className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
             >
               {siteProfile.navigation.rssLabel}

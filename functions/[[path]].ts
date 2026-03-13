@@ -15,6 +15,13 @@ export async function onRequest(context: EventContext<Env, string, unknown>) {
   }
 
   const url = new URL(request.url);
+
+  // Legacy RSS URL: redirect to default-locale feed (static export does not run next.config redirects)
+  if (url.pathname === "/rss.xml") {
+    url.pathname = "/rss/en.xml";
+    return Response.redirect(url.toString(), 302);
+  }
+
   if (!shouldRedirectBarePath(url.pathname)) {
     return next();
   }

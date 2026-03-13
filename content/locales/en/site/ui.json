@@ -85,5 +85,11 @@
     "Infrastructure": "Hosting, email, and platform choices",
     "Workflow": "How we build and ship",
     "Developer Tools": "AI, agents, and developer experience"
+  },
+  "themeLabels": {
+    "Architecture": "Architecture",
+    "Infrastructure": "Infrastructure",
+    "Workflow": "Workflow",
+    "Developer Tools": "Developer Tools"
   }
 }

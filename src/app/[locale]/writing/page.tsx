@@ -10,7 +10,7 @@ import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization
 import { resolveLocale } from "@/lib/locales";
 import { getSiteProfile } from "@/lib/site-config";
 import { getUiContent } from "@/lib/site-content";
-import { getThemeDescriptor } from "@/lib/theme-config";
+import { getThemeDescriptor, getThemeLabel } from "@/lib/theme-config";
 import type { Writing } from "@/lib/schemas";
 
 function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
@@ -110,7 +110,7 @@ export default async function LocalizedWritingIndexPage({
         <NewsletterSignup />
         <p className="text-sm text-gray-600 dark:text-gray-400 shrink-0">
           <a
-            href="/rss.xml"
+            href={`/rss/${resolvedLocale}.xml`}
             className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
           >
             {siteProfile.navigation.rssLabel}
@@ -135,7 +135,7 @@ export default async function LocalizedWritingIndexPage({
                 href={`#theme-${theme.toLowerCase().replace(/\s+/g, "-")}`}
                 className="px-3 py-1 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
               >
-                {theme}
+                {getThemeLabel(theme, resolvedLocale)}
               </a>
             ))}
           </nav>
@@ -150,7 +150,7 @@ export default async function LocalizedWritingIndexPage({
             className="space-y-6 scroll-mt-24"
           >
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-              {theme}
+              {getThemeLabel(theme, resolvedLocale)}
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {getThemeDescriptor(theme, resolvedLocale)}

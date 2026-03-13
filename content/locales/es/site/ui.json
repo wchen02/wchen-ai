@@ -85,5 +85,11 @@
     "Infrastructure": "Hosting, email y decisiones de plataforma",
     "Workflow": "Como construimos y lanzamos",
     "Developer Tools": "IA, agentes y experiencia de developer"
+  },
+  "themeLabels": {
+    "Architecture": "Arquitectura",
+    "Infrastructure": "Infraestructura",
+    "Workflow": "Flujo de trabajo",
+    "Developer Tools": "Herramientas de desarrollo"
   }
 }

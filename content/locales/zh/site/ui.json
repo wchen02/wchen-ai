@@ -85,5 +85,11 @@
     "Infrastructure": "托管、邮件与平台选择",
     "Workflow": "我们如何构建与交付",
     "Developer Tools": "AI、代理与开发者体验"
+  },
+  "themeLabels": {
+    "Architecture": "架构",
+    "Infrastructure": "基础设施",
+    "Workflow": "工作流",
+    "Developer Tools": "开发者工具"
   }
 }

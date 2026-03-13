@@ -12,7 +12,7 @@ interface Env {
   NEWSLETTER_SECRET?: string;
 }
 
-function getLocaleFromRequest(request: Request): string {
+export function getLocaleFromRequest(request: Request): string {
   const url = new URL(request.url);
   const localeParam = url.searchParams.get("locale");
   return localeParam
@@ -28,31 +28,33 @@ function htmlResponse(body: string, status = 400, locale?: string): Response {
   );
 }
 
-async function unsubscribe(request: Request, env: Env): Promise<Response> {
+export async function unsubscribe(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
   const email = url.searchParams.get("email");
   const sig = url.searchParams.get("sig");
   const preferredLocale = getLocaleFromRequest(request);
   const systemContent = getSystemContent(preferredLocale);
 
+  const jsonError = (message: string, status: number) =>
+    request.method === "POST"
+      ? new Response(JSON.stringify({ success: false, error: message }), {
+          status,
+          headers: { "Content-Type": "application/json" },
+        })
+      : htmlResponse(message, status, preferredLocale);
+
   if (!email || !sig) {
-    return request.method === "POST"
-      ? new Response("", { status: 400 })
-      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink, 400, preferredLocale);
+    return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
   if (!env.NEWSLETTER_SECRET || !env.RESEND_API_KEY) {
     console.error("Newsletter unsubscribe not configured");
-    return request.method === "POST"
-      ? new Response("", { status: 500 })
-      : htmlResponse(systemContent.common.genericError, 500, preferredLocale);
+    return jsonError(systemContent.common.genericError, 500);
   }
 
   const expected = await hmacSign(env.NEWSLETTER_SECRET, email);
   if (!timingSafeEqual(sig, expected)) {
-    return request.method === "POST"
-      ? new Response("", { status: 400 })
-      : htmlResponse(systemContent.newsletter.invalidUnsubscribeLink, 400, preferredLocale);
+    return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
   await updateResendContact({
@@ -62,7 +64,16 @@ async function unsubscribe(request: Request, env: Env): Promise<Response> {
   });
 
   if (request.method === "POST") {
-    return new Response("", { status: 202 });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        redirectTo: "/newsletter-unsubscribed",
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 
   const localizedPath = `/${preferredLocale}/newsletter-unsubscribed`;
@@ -84,6 +95,13 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     return await unsubscribe(context.request, context.env);
   } catch (error) {
     console.error("Error unsubscribing newsletter contact:", error);
-    return new Response("", { status: 500 });
+    const locale = getLocaleFromRequest(context.request);
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: getSystemContent(locale).common.genericError,
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
   }
 }

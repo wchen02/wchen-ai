@@ -43,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang={METADATA_DEFAULTS.languageTag} suppressHydrationWarning>
       <head>
-        <link rel="alternate" type="application/rss+xml" title={METADATA_DEFAULTS.rssTitle} href="/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title={METADATA_DEFAULTS.rssTitle} href="/rss/en.xml" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.classList.add("dark")}var p=window.location.pathname.split("/")[1];var s=${JSON.stringify(

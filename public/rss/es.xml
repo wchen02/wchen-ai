@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wilson Chen | Writing</title>
+    <link>https://wchen.ai/es/writing</link>
+    <description>Ideas sobre ingenieria, productos y software.</description>
+    <language>es-es</language>
+    <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Mar 2026 13:48:49 GMT</lastBuildDate>
+    
+    <item>
+      <title><![CDATA[Cómo funciona la i18n de este sitio (y cómo dos skills de agente la mantienen al día)]]></title>
+      <link>https://wchen.ai/es/writing/i18n-and-content-skills</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/i18n-and-content-skills</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Me preguntan cómo wchen.ai maneja varios idiomas y cómo mantengo inglés, español y chino alineados sin ahogarme en copiar y pegar. La respuesta corta: el sitio se apoya en un modelo de contenido…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Enviar newsletter desde un sitio estático con Resend y Cloudflare]]></title>
+      <link>https://wchen.ai/es/writing/newsletter-static-site-resend-cloudflare</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/newsletter-static-site-resend-cloudflare</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Un sitio estático no ejecuta código cuando alguien visita una página. Ese es el punto. Pero una newsletter exige dinámica: aceptar suscripciones, enviar un correo de confirmación, manejar el clic,…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Elegir un proveedor de email para marketing]]></title>
+      <link>https://wchen.ai/es/writing/choosing-marketing-email-providers</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/choosing-marketing-email-providers</guid>
+      <pubDate>Fri, 27 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Elegir un proveedor de email para newsletter o drip de marketing parece que debería ser simple. Necesitas enviar correos, recoger suscriptores y quizá seguir aperturas. El mercado está abarrotado:…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[La fricción del email en sitios estáticos]]></title>
+      <link>https://wchen.ai/es/writing/static-site-email</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/static-site-email</guid>
+      <pubDate>Tue, 24 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Añadir email a un sitio estático debería ser un problema resuelto. Solo necesitaba recibir envíos del formulario de contacto y enviar respuestas desde mi propio dominio. Suena simple. Sin embargo, el…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Dejando Netlify]]></title>
+      <link>https://wchen.ai/es/writing/ditching-netlify</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/ditching-netlify</guid>
+      <pubDate>Tue, 24 Feb 2026 10:00:00 GMT</pubDate>
+      <description><![CDATA[Usé Netlify durante años. Fue la primera plataforma que hizo que desplegar un sitio estático fuera sin esfuerzo — git push, esperar treinta segundos, listo. Durante mucho tiempo, eso bastaba. Luego…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Lecciones de Spec-Kit: Borrador Antes de Especificar, Alcance Antes de Construir]]></title>
+      <link>https://wchen.ai/es/writing/spec-kit-lessons</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/spec-kit-lessons</guid>
+      <pubDate>Mon, 23 Feb 2026 23:00:00 GMT</pubDate>
+      <description><![CDATA[La primera vez que usé spec-kit, le pasé un párrafo vago sobre lo que quería y pulsé ejecutar. La spec que produjo era técnicamente válida — y prácticamente inútil. Demasiado amplia, demasiado…]]></description>
+      <category>Workflow</category>
+    </item>
+    <item>
+      <title><![CDATA[Vibe coding un sitio en un día]]></title>
+      <link>https://wchen.ai/es/writing/vibe-coding-in-a-day</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/vibe-coding-in-a-day</guid>
+      <pubDate>Mon, 23 Feb 2026 22:00:00 GMT</pubDate>
+      <description><![CDATA[Construí este sitio entero en un solo día. No una landing. No una plantilla con colores cambiados. Un sitio Next.js exportado estáticamente con pipelines de contenido MDX, schemas validados con Zod y…]]></description>
+      <category>Workflow</category>
+    </item>
+    <item>
+      <title><![CDATA[Enseñar a un agente tu voz]]></title>
+      <link>https://wchen.ai/es/writing/teaching-agents-your-voice</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/teaching-agents-your-voice</guid>
+      <pubDate>Mon, 23 Feb 2026 18:00:00 GMT</pubDate>
+      <description><![CDATA[Estás leyendo un artículo escrito por un agente de IA. Pero suena a mí. No es casualidad. Construí una skill — un conjunto de instrucciones reutilizables — que enseña al agente a escribir con mi voz,…]]></description>
+      <category>Developer Tools</category>
+    </item>
+    <item>
+      <title><![CDATA[Por qué construyo sobre Cloudflare]]></title>
+      <link>https://wchen.ai/es/writing/why-cloudflare</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/why-cloudflare</guid>
+      <pubDate>Mon, 23 Feb 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Cada proyecto empieza con la misma decisión poco glamurosa: ¿dónde corre esto en realidad? La mayoría de desarrolladores trata el hosting como una casilla. Elige el predeterminado, despliega, sigue.…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Construir static-first en una era de dinamismo]]></title>
+      <link>https://wchen.ai/es/writing/static-first</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/static-first</guid>
+      <pubDate>Tue, 10 Feb 2026 14:30:00 GMT</pubDate>
+      <description><![CDATA[Hay una tendencia creciente a renderizar todo dinámicamente en el servidor. Con la llegada del edge computing, nos dicen que el render dinámico es básicamente gratis. Ejecuta una función en el edge,…]]></description>
+      <category>Architecture</category>
+    </item>
+  </channel>
+</rss>

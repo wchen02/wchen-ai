@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCurrentLocale } from "@/components/LocaleProvider";
 import { resolveContentTokens } from "@/lib/formatting";
 import { localizePath } from "@/lib/i18n";
+import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 
 interface SearchEntry {
@@ -97,7 +98,7 @@ export default function SearchWriting() {
                   >
                     {entry.title}
                   </Link>
-                  <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">{entry.theme}</span>
+                  <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">{getThemeLabel(entry.theme, locale)}</span>
                 </li>
               ))}
             </ul>
