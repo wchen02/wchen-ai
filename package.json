@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "pnpm run prebuild && next build",
+    "newsletter:send-recurring": "tsx scripts/send-recurring-newsletter.ts",
     "prebuild": "tsx scripts/validate-links.ts && tsx scripts/validate-theme-descriptors.ts && (test -f .env && tsx --env-file=.env scripts/fetch-github-data.ts || tsx scripts/fetch-github-data.ts) && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-robots.ts && tsx scripts/generate-search-index.ts",
     "start": "next start",
     "lint": "eslint",
@@ -15,6 +16,8 @@
     "validate:metadata": "tsx scripts/validate-metadata.ts"
   },
   "dependencies": {
+    "@react-email/components": "^1.0.9",
+    "@react-email/render": "^2.0.4",
     "@tailwindcss/typography": "^0.5.19",
     "framer-motion": "^12.34.3",
     "gray-matter": "^4.0.3",

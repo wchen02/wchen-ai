@@ -1,5 +1,14 @@
 import { NewsletterPayloadSchema } from "../../shared/newsletter";
-import { SITE_PROFILE, SITE_URL, getAllowedOrigins } from "../../src/lib/site-config";
+import { hmacSign } from "../../shared/newsletter-crypto";
+import { renderNewsletterConfirmEmail } from "../../shared/newsletter-email";
+import { sendResendEmail } from "../../shared/resend";
+import {
+  SITE_URL,
+  getAllowedOrigins,
+  getNewsletterEmailBrand,
+  getNewsletterEmailContent,
+  getNewsletterFromAddress,
+} from "../../src/lib/site-config";
 
 interface Env {
   RESEND_API_KEY?: string;
@@ -25,21 +34,6 @@ function corsHeaders(origin: string | null): Headers {
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
   });
-}
-
-async function hmacSign(secret: string, message: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
-  return Array.from(new Uint8Array(sig))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
 }
 
 export async function onRequestOptions(context: EventContext<Env, string, unknown>) {
@@ -97,27 +91,24 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     const ts = Math.floor(Date.now() / 1000).toString();
     const sig = await hmacSign(secret, `${email}|${ts}`);
     const confirmUrl = `${SITE_URL}/api/newsletter-confirm?email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}`;
-    const from = env.NEWSLETTER_FROM ?? SITE_PROFILE.newsletter.from;
-
-    const emailRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from,
-        to: [email],
-        subject: SITE_PROFILE.newsletter.subject,
-        html: `<p>Thanks for subscribing! Click the link below to confirm:</p><p><a href="${confirmUrl}">Confirm subscription</a></p><p>This link expires in 24 hours.</p>`,
-      }),
+    const from = getNewsletterFromAddress(env.NEWSLETTER_FROM);
+    const brand = getNewsletterEmailBrand(SITE_URL);
+    const newsletterContent = getNewsletterEmailContent(SITE_URL);
+    const emailContent = await renderNewsletterConfirmEmail({
+      brand,
+      content: newsletterContent.confirm,
+      footer: newsletterContent.footer,
+      confirmUrl,
     });
 
-    if (!emailRes.ok) {
-      const errBody = await emailRes.text();
-      console.error("Resend error:", emailRes.status, errBody);
-      throw new Error(`Resend responded with ${emailRes.status}`);
-    }
+    await sendResendEmail({
+      apiKey,
+      from,
+      to: email,
+      subject: newsletterContent.confirm.subject,
+      html: emailContent.html,
+      text: emailContent.text,
+    });
 
     return new Response(
       JSON.stringify({ success: true, message: "Check your email to confirm your subscription." }),

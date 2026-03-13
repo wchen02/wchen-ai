@@ -5,6 +5,6 @@
     "lib": ["esnext"],
     "moduleResolution": "bundler"
   },
-  "include": ["./**/*.ts", "../shared/**/*.ts"],
+  "include": ["./**/*.ts", "./**/*.tsx", "../shared/**/*.ts", "../shared/**/*.tsx"],
   "exclude": ["node_modules"]
 }

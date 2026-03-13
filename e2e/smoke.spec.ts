@@ -9,7 +9,7 @@ test.describe("Homepage - 15-Second Overview", () => {
 
     await expect(page.locator("h1")).toContainText(siteProfile.siteName);
     await expect(page.locator(`text=${siteProfile.role}`)).toBeVisible();
-    await expect(page.locator(`text=${siteProfile.givenName}`)).toBeVisible();
+    await expect(page.getByRole("main")).toContainText(`go by ${siteProfile.givenName}`);
 
     await expect(page.locator(`text=${homeContent.currentFocus.title}`)).toBeVisible();
     await expect(page.locator(`text=${homeContent.selectedWork.title}`)).toBeVisible();

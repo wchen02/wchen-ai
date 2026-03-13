@@ -1,33 +1,15 @@
 import { NextResponse } from "next/server";
-
-const TOKEN_MAX_AGE_S = 86400; // 24 hours
-
-async function hmacSign(secret: string, message: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
-  return Array.from(new Uint8Array(sig))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  const encoder = new TextEncoder();
-  const bufA = encoder.encode(a);
-  const bufB = encoder.encode(b);
-  let diff = 0;
-  for (let i = 0; i < bufA.length; i++) {
-    diff |= bufA[i] ^ bufB[i];
-  }
-  return diff === 0;
-}
+import { NEWSLETTER_TOKEN_MAX_AGE_S, hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
+import {
+  createNewsletterWelcomeIdempotencyKey,
+  renderNewsletterWelcomeEmail,
+} from "../../../../shared/newsletter-email";
+import { sendResendEmail, upsertResendContact } from "../../../../shared/resend";
+import {
+  getNewsletterEmailBrand,
+  getNewsletterEmailContent,
+  getNewsletterFromAddress,
+} from "@/lib/site-config";
 
 export async function POST(request: Request) {
   const payload = (await request.json()) as {
@@ -49,6 +31,9 @@ export async function POST(request: Request) {
   const secret = process.env.NEWSLETTER_SECRET;
   const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;
+  const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM);
+  const requestUrl = new URL(request.url);
+  const brand = getNewsletterEmailBrand(requestUrl.origin);
 
   if (!secret || !apiKey || !segmentId) {
     return NextResponse.json(
@@ -58,7 +43,7 @@ export async function POST(request: Request) {
   }
 
   const tokenAge = Math.floor(Date.now() / 1000) - Number.parseInt(ts, 10);
-  if (Number.isNaN(tokenAge) || tokenAge < 0 || tokenAge > TOKEN_MAX_AGE_S) {
+  if (Number.isNaN(tokenAge) || tokenAge < 0 || tokenAge > NEWSLETTER_TOKEN_MAX_AGE_S) {
     return NextResponse.json(
       { success: false, error: "This confirmation link has expired. Please subscribe again." },
       { status: 400 }
@@ -74,18 +59,27 @@ export async function POST(request: Request) {
   }
 
   try {
-    const contactRes = await fetch("https://api.resend.com/contacts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({ email, segments: [{ id: segmentId }] }),
+    await upsertResendContact({ apiKey, email, segmentId });
+
+    const newsletterContent = getNewsletterEmailContent(requestUrl.origin);
+    const welcomeEmail = await renderNewsletterWelcomeEmail({
+      brand,
+      content: newsletterContent.welcome,
+      footer: newsletterContent.footer,
     });
 
-    if (!contactRes.ok) {
-      const errBody = await contactRes.text();
-      throw new Error(`Resend responded with ${contactRes.status}`);
+    try {
+      await sendResendEmail({
+        apiKey,
+        from,
+        to: email,
+        subject: newsletterContent.welcome.subject,
+        html: welcomeEmail.html,
+        text: welcomeEmail.text,
+        idempotencyKey: createNewsletterWelcomeIdempotencyKey(email, ts),
+      });
+    } catch (error) {
+      console.error("Error sending newsletter welcome email locally:", error);
     }
 
     return NextResponse.json({ success: true, redirectTo: "/newsletter-confirmed" });

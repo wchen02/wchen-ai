@@ -1,6 +1,6 @@
 # Contact form: Cloudflare + Mailgun setup
 
-For general project setup (clone, install, env file), see the [Quickstart](../specs/001-personal-website/quickstart.md).
+For general project setup (clone, install, env file), see the [Quickstart](./quickstart.md).
 
 The contact form is handled by a Cloudflare Pages Function (`functions/api/contact.ts`). Emails are sent via **Mailgun**. Mailgun offers a [free tier](https://www.mailgun.com/pricing/) (e.g. 3,000 emails/month, then pay-as-you-go); for a personal site you can use a sending domain and stay within free/low usage.
 
@@ -62,4 +62,24 @@ If you don’t receive mail, check:
 
 ## 4. Local development
 
-For local dev, the function often runs without these env vars. In that case it returns success but does not send email (“Development mode: Message received but not sent.”). To test sending locally, run the Pages build and use `wrangler pages dev` with env vars, or set the same variables in a `.dev.vars` file (see [Wrangler docs](https://developers.cloudflare.com/workers/configuration/configuration-management/local-development/)).
+For day-to-day local development, run:
+
+```bash
+pnpm dev
+```
+
+The app includes a local Next.js implementation of `POST /api/contact`, so you can test the contact form without going through Cloudflare Pages Functions first.
+
+Behavior locally:
+
+- if `CONTACT_TO_EMAIL`, `MAILGUN_API_KEY`, and `MAILGUN_DOMAIN` are set, submissions send through Mailgun
+- if those vars are missing, the endpoint still returns success but does not send email (`Development mode: Message received but not sent.`)
+
+If you specifically want Cloudflare runtime parity, build the static output and run Pages locally:
+
+```bash
+pnpm build
+pnpm dlx wrangler pages dev out
+```
+
+You can also keep local-only secrets in `.dev.vars` when using Wrangler (see [Wrangler docs](https://developers.cloudflare.com/workers/configuration/configuration-management/local-development/)).
