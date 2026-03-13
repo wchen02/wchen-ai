@@ -68,10 +68,11 @@ export default function NewsletterSlideout() {
           paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}
       >
-        {/* Backdrop when open */}
+        {/* Backdrop when open; hidden from a11y tree when closed so axe does not flag unnamed button */}
         <button
           type="button"
-          aria-label={open ? "Close" : undefined}
+          aria-label="Close"
+          aria-hidden={!open}
           className={`pointer-events-auto fixed inset-0 bg-black/40 transition-opacity duration-200 md:bg-black/30 ${
             open ? "opacity-100" : "opacity-0 pointer-events-none"
           } motion-reduce:transition-none`}
@@ -109,10 +110,11 @@ export default function NewsletterSlideout() {
           </span>
         </button>
 
-        {/* Panel: slides up from bottom when open, height is content-based; no pointer events when closed so tab receives clicks */}
+        {/* Panel: slides up from bottom when open; inert + invisible when closed so tab (z-10) receives clicks and a11y/E2E see it hidden */}
         <div
-          className={`absolute left-0 right-0 bottom-full transition-transform duration-300 ease-out motion-reduce:transition-none max-h-[85vh] ${
-            open ? "translate-y-0 pointer-events-auto" : "translate-y-full pointer-events-none"
+          inert={!open}
+          className={`absolute left-0 right-0 bottom-full z-0 transition-transform duration-300 ease-out motion-reduce:transition-none max-h-[85vh] ${
+            open ? "z-20 translate-y-0 pointer-events-auto opacity-100" : "translate-y-full pointer-events-none invisible opacity-0"
           }`}
         >
           <div

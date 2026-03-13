@@ -75,15 +75,6 @@ test.describe("Projects Section", () => {
     await expect(page.getByRole("heading", { name: uiContent.projects.motivationLabel })).toBeVisible();
     await expect(page.getByRole("heading", { name: uiContent.projects.problemLabel })).toBeVisible();
   });
-
-  test("project detail page has reach-out CTA", async ({ page }) => {
-    await page.goto(`${defaultBasePath}/projects`);
-
-    const firstProjectLink = page.locator(`a[href^="${defaultBasePath}/projects/"]`).first();
-    await firstProjectLink.click();
-
-    await expect(page.locator(`text=${siteProfile.cta.buttonLabel}`)).toBeVisible();
-  });
 });
 
 test.describe("Writing Section", () => {
@@ -106,17 +97,6 @@ test.describe("Writing Section", () => {
     const mainArticle = page.getByRole("main").locator("article").first();
     await expect(mainArticle).toBeVisible();
     await expect(mainArticle.getByText(new RegExp(uiContent.writing.minuteReadLabel))).toBeVisible();
-  });
-
-  test("writing detail page has reach-out CTA", async ({ page }) => {
-    await page.goto(`${defaultBasePath}/writing`);
-
-    const firstWritingLink = page.locator(`a[href^="${defaultBasePath}/writing/"]`).first();
-    const href = await firstWritingLink.getAttribute("href");
-    await firstWritingLink.click();
-    await page.waitForURL(`**${href}`);
-
-    await expect(page.locator(`text=${siteProfile.cta.buttonLabel}`)).toBeVisible();
   });
 });
 

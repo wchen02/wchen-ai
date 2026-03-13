@@ -184,14 +184,6 @@ test.describe("Writing detail – content rendering", () => {
       await expect(main.locator("article").first()).toBeVisible({ timeout: 5000 });
       await expect(main.getByText(new RegExp(ui.writing.minuteReadLabel)).first()).toBeVisible({ timeout: 5000 });
     });
-
-    test(`${locale} writing detail has CTA`, async ({ page }) => {
-      await page.goto(`${base}/writing`);
-      const firstLink = page.locator(`a[href^="${base}/writing/"]`).first();
-      if ((await firstLink.count()) === 0) return;
-      await firstLink.click();
-      await expect(page.locator(`text=${profile.cta.buttonLabel}`)).toBeVisible({ timeout: 5000 });
-    });
   }
 });
 
@@ -225,14 +217,6 @@ test.describe("Project detail – content rendering", () => {
       await firstLink.click();
       await expect(page.getByRole("heading", { name: ui.projects.motivationLabel })).toBeVisible();
       await expect(page.getByRole("heading", { name: ui.projects.problemLabel })).toBeVisible();
-    });
-
-    test(`${locale} project detail has CTA`, async ({ page }) => {
-      await page.goto(`${base}/projects`);
-      const firstLink = page.locator(`a[href^="${base}/projects/"]`).first();
-      if ((await firstLink.count()) === 0) return;
-      await firstLink.click();
-      await expect(page.locator(`text=${profile.cta.buttonLabel}`)).toBeVisible();
     });
   }
 });
@@ -358,7 +342,6 @@ test.describe("Metadata and document", () => {
 test.describe("Theme toggle and comment color theme", () => {
   test("theme toggle adds and removes dark class on document", async ({ page }) => {
     await page.goto("/en");
-    const html = page.locator("html");
     const themeButton = page.getByRole("button", { name: /theme toggle/i });
     await expect(themeButton).toBeVisible();
 

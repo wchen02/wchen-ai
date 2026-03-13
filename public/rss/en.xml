@@ -6,7 +6,7 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss/en.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 15:10:46 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 16:31:04 GMT</lastBuildDate>
     
     <item>
       <title><![CDATA[How This Site's i18n Works — and How Two Agent Skills Keep It Fed]]></title>
@@ -22,6 +22,14 @@
       <guid isPermaLink="true">https://wchen.ai/en/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[A static site doesn't run code when someone hits a page. That's the point. But a newsletter requires dynamics: accept a signup, send a confirmation email, handle the click, add the contact to a list,…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Comments Without a Backend]]></title>
+      <link>https://wchen.ai/en/writing/site-comments-giscus</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/site-comments-giscus</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[I wanted a comment section on writing and project pages without running a database or a custom API. Static sites are great until you need state that lives somewhere. Comments are exactly that—someone…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

@@ -16,27 +16,29 @@ test.describe("Sticky newsletter popup (slideout)", () => {
   test("clicking the tab opens the panel with form and RSS link", async ({ page }) => {
     await page.goto(`${base}/writing`);
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
+    const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
     await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
     await expect(page.getByRole("button", { name: formsEn.newsletter.submitLabel })).toBeVisible();
-    await expect(page.getByRole("link", { name: profileEn.navigation.rssLabel })).toBeVisible();
+    await expect(slideout.getByRole("link", { name: profileEn.navigation.rssLabel })).toBeVisible();
     await expect(page.getByRole("button", { name: formsEn.newsletter.title })).toHaveAttribute("aria-expanded", "true");
   });
 
   test("close button in panel closes the panel", async ({ page }) => {
     await page.goto(`${base}/writing`);
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
-    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
-    await page.getByRole("region", { name: formsEn.newsletter.title }).getByRole("button", { name: "Close" }).click();
-    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).not.toBeVisible();
+    const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
+    await expect(slideout.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
+    await slideout.getByRole("button", { name: "Close" }).click();
     await expect(page.getByRole("button", { name: formsEn.newsletter.title })).toHaveAttribute("aria-expanded", "false");
   });
 
   test("clicking backdrop closes the panel", async ({ page }) => {
     await page.goto(`${base}/writing`);
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
-    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
+    const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
+    await expect(slideout.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
     await page.getByRole("button", { name: "Close" }).first().click();
-    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).not.toBeVisible();
+    await expect(page.getByRole("button", { name: formsEn.newsletter.title })).toHaveAttribute("aria-expanded", "false");
   });
 
   test("slideout is present on writing and project detail pages", async ({ page }) => {

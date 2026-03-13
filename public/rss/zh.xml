@@ -6,7 +6,7 @@
     <description>关于工程、产品与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 15:10:46 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 16:31:04 GMT</lastBuildDate>
     
     <item>
       <title><![CDATA[本站 i18n 是怎么做的，以及两个 agent skill 如何配合]]></title>
@@ -22,6 +22,14 @@
       <guid isPermaLink="true">https://wchen.ai/zh/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[静态站不会在有人打开页面时跑代码，这正是目的。但 newsletter 需要动态：接收订阅、发确认邮件、处理点击、把联系人加进列表、发欢迎信。那怎么既保持站点静态，又完整掌控整个流程？ 我的做法是：用 Resend 发信，用 Cloudflare Pages Functions 提供那一小块 API。HTML 预构建、从 edge 提供；真正在请求时执行的只有几条路由：校验入参、签名…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[没有后端的评论]]></title>
+      <link>https://wchen.ai/zh/writing/site-comments-giscus</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/site-comments-giscus</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[我想在文章和项目页有评论区，但不想自己跑数据库或写 API。 静态站很好，直到你需要有地方存状态。评论就是这种——别人的数据，挂在你的内容上。常见选择要么很重（Disqus，广告和追踪），要么是坑（自建 Commento、审核、垃圾）。我不想再维护一个服务，也不想为评论 SaaS 付钱，免得以后不想管了还得惦记。 GitHub 本身就有身份、楼中楼和审核，公开仓库里的 Discussions…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

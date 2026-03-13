@@ -143,7 +143,9 @@ test.describe("i18n: RSS feeds", () => {
       await page.evaluate(() => sessionStorage.removeItem("newsletter-slideout-expanded"));
       await page.reload();
       await page.getByRole("button", { name: toggleName }).click();
-      await expect(page.getByRole("main").locator(`a[href="${rssHref}"]`)).toBeVisible();
+      const slideout = page.getByRole("region", { name: toggleName });
+      await expect(slideout).toBeVisible();
+      await expect(slideout.locator(`a[href="${rssHref}"]`)).toBeVisible();
     };
     await openSlideoutAndExpectRss("/es/writing", "/rss/es.xml", formsEs.newsletter.title);
     await openSlideoutAndExpectRss("/zh/writing", "/rss/zh.xml", formsZh.newsletter.title);

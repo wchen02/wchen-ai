@@ -6,7 +6,7 @@
     <description>Ideas sobre ingenieria, productos y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Fri, 13 Mar 2026 15:10:46 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 16:31:04 GMT</lastBuildDate>
     
     <item>
       <title><![CDATA[Cómo funciona la i18n de este sitio (y cómo dos skills de agente la mantienen al día)]]></title>
@@ -22,6 +22,14 @@
       <guid isPermaLink="true">https://wchen.ai/es/writing/newsletter-static-site-resend-cloudflare</guid>
       <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
       <description><![CDATA[Un sitio estático no ejecuta código cuando alguien visita una página. Ese es el punto. Pero una newsletter exige dinámica: aceptar suscripciones, enviar un correo de confirmación, manejar el clic,…]]></description>
+      <category>Infrastructure</category>
+    </item>
+    <item>
+      <title><![CDATA[Comentarios sin backend]]></title>
+      <link>https://wchen.ai/es/writing/site-comments-giscus</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/site-comments-giscus</guid>
+      <pubDate>Fri, 13 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Quería una sección de comentarios en las páginas de escritos y proyectos sin levantar una base de datos ni una API propia. Los sitios estáticos van bien hasta que necesitas estado que viva en algún…]]></description>
       <category>Infrastructure</category>
     </item>
     <item>

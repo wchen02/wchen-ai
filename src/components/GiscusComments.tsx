@@ -38,12 +38,13 @@ export default function GiscusComments({
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current || !discussionTerm) return;
+    const container = containerRef.current;
+    if (!container || !discussionTerm) return;
 
     const theme = getGiscusTheme();
 
     // Clear existing widget (script + iframe) so we can inject with the new theme
-    containerRef.current.innerHTML = "";
+    container.innerHTML = "";
 
     const script = document.createElement("script");
     script.src = GISCUS_SCRIPT_SRC;
@@ -63,10 +64,10 @@ export default function GiscusComments({
     script.setAttribute("crossorigin", "anonymous");
     script.async = true;
 
-    containerRef.current.appendChild(script);
+    container.appendChild(script);
 
     return () => {
-      if (containerRef.current) containerRef.current.innerHTML = "";
+      container.innerHTML = "";
     };
   }, [discussionTerm, repo, repoId, categoryId, category, themeKey]);
 
