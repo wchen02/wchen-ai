@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import NavLink from "@/components/NavLink";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import SocialIcon from "@/components/SocialIcons";
@@ -66,8 +67,15 @@ export default function SiteHeader({
   socialLinks: SocialLink[];
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    // Gate portal on client mount to keep server and initial client render identical (avoids hydration mismatch).
+    const id = requestAnimationFrame(() => setHasMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const closeMenu = useCallback(() => {
     setIsMenuOpen(false);
@@ -91,6 +99,15 @@ export default function SiteHeader({
     return () => window.removeEventListener("keydown", handleEscape);
   }, [closeMenu]);
 
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isMenuOpen]);
+
   const navLinks = (
     <>
       <NavLink href="/projects">{navigation.projectsLabel}</NavLink>
@@ -106,27 +123,31 @@ export default function SiteHeader({
     </>
   );
 
+  const socialLinksElements = socialLinks.map((link) => (
+    <a
+      key={link.platform}
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={link.label}
+      className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
+    >
+      <SocialIcon platform={link.platform} />
+    </a>
+  ));
+
   const utils = (
     <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
       <LanguageSwitcher />
-      {socialLinks.map((link) => (
-        <a
-          key={link.platform}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={link.label}
-          className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
-        >
-          <SocialIcon platform={link.platform} />
-        </a>
-      ))}
+      {socialLinksElements}
       <ThemeToggle />
     </div>
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-background/80 backdrop-blur-md">
+    <header
+      className={`sticky top-0 w-full border-b border-gray-200 dark:border-gray-800 bg-background/80 backdrop-blur-md ${isMenuOpen ? "z-[100]" : "z-50"}`}
+    >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link
           href={localizePath(locale, "/")}
@@ -160,70 +181,109 @@ export default function SiteHeader({
         </button>
       </div>
 
-      {/* Mobile drawer */}
-      <div
-        className="md:hidden fixed inset-0 z-40"
-        aria-hidden={!isMenuOpen}
-      >
-        {/* Overlay */}
-        <div
-          className={`absolute inset-0 bg-black/40 transition-opacity duration-200 ${
-            isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          onClick={closeMenu}
-          aria-hidden
-        />
-
-        {/* Panel */}
-        <div
-          id={MENU_PANEL_ID}
-          role="dialog"
-          aria-modal="true"
-          aria-label={navigation.mainAriaLabel}
-          className={`absolute top-0 right-0 bottom-0 w-full max-w-sm bg-background border-l border-gray-200 dark:border-gray-800 shadow-xl flex flex-col transition-transform duration-200 ease-out ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
-        >
-          <div className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-gray-200 dark:border-gray-800 shrink-0">
-            <span className="font-bold text-lg tracking-tight text-gray-900 dark:text-white">
-              {brandMark}
-            </span>
-            <button
-              ref={closeButtonRef}
-              type="button"
-              className="p-2 -m-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
-              aria-label={navigation.menuCloseAriaLabel}
+      {/* Mobile drawer: portaled after mount to avoid hydration mismatch (document is undefined on server) */}
+      {hasMounted &&
+        createPortal(
+          <div
+            className={`md:hidden fixed inset-0 z-[100] isolate ${isMenuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+            style={{ height: "100dvh", minHeight: "100dvh" }}
+            aria-hidden={!isMenuOpen}
+          >
+            <div
+              className={`absolute inset-0 z-0 bg-black/40 transition-opacity duration-200 ${
+                isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
               onClick={closeMenu}
-            >
-              <CloseIcon className="w-6 h-6" />
-            </button>
-          </div>
-          <div className="flex flex-col gap-8 p-6 overflow-auto">
-            <nav
-              className="flex flex-col gap-4 text-sm font-medium text-gray-600 dark:text-gray-300"
+              aria-hidden
+            />
+            <div
+              id={MENU_PANEL_ID}
+              role="dialog"
+              aria-modal="true"
               aria-label={navigation.mainAriaLabel}
+              className={`absolute top-0 right-0 bottom-0 z-10 w-full max-w-full sm:max-w-sm bg-background border-l border-gray-200 dark:border-gray-800 shadow-xl flex flex-col transition-transform duration-200 ease-out ${
+                isMenuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
+              style={{ minHeight: "100dvh" }}
             >
-              <NavLink href="/projects" onClick={closeMenu}>
-                {navigation.projectsLabel}
-              </NavLink>
-              <NavLink href="/writing" onClick={closeMenu}>
-                {navigation.writingLabel}
-              </NavLink>
-              <NavLink href="/about" onClick={closeMenu}>
-                {navigation.aboutLabel}
-              </NavLink>
-              <Link
-                href={localizePath(locale, "/#contact")}
-                className="link-nav"
-                onClick={closeMenu}
-              >
-                {navigation.contactLabel}
-              </Link>
-            </nav>
-            {utils}
-          </div>
-        </div>
-      </div>
+              <div className="min-h-[4.5rem] flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-800 shrink-0">
+                <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">
+                  {brandMark}
+                </span>
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  className="p-3 -m-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded min-h-[2.75rem] min-w-[2.75rem] flex items-center justify-center"
+                  aria-label={navigation.menuCloseAriaLabel}
+                  onClick={closeMenu}
+                >
+                  <CloseIcon className="w-8 h-8" />
+                </button>
+              </div>
+              <div className="flex-1 min-h-0 flex flex-col gap-10 p-6 sm:p-8 overflow-y-auto overflow-x-hidden text-lg" style={{ minHeight: "50dvh" }}>
+                <nav
+                  className="flex flex-col gap-1 font-medium text-gray-600 dark:text-gray-300"
+                  aria-label={navigation.mainAriaLabel}
+                >
+                  <NavLink
+                    href="/projects"
+                    onClick={closeMenu}
+                    className="block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
+                  >
+                    {navigation.projectsLabel}
+                  </NavLink>
+                  <NavLink
+                    href="/writing"
+                    onClick={closeMenu}
+                    className="block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
+                  >
+                    {navigation.writingLabel}
+                  </NavLink>
+                  <NavLink
+                    href="/about"
+                    onClick={closeMenu}
+                    className="block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
+                  >
+                    {navigation.aboutLabel}
+                  </NavLink>
+                  <Link
+                    href={localizePath(locale, "/#contact")}
+                    className="link-nav block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
+                    onClick={closeMenu}
+                  >
+                    {navigation.contactLabel}
+                  </Link>
+                </nav>
+                <div className="flex flex-col gap-1 text-lg text-gray-500 dark:text-gray-400 [&_select]:text-base [&_select]:py-2">
+                  <div className="flex items-center gap-5 py-3 border-b border-gray-100 dark:border-gray-800">
+                    <LanguageSwitcher />
+                  </div>
+                  <div className="border-b border-gray-100 dark:border-gray-800 py-2">
+                    <ThemeToggle showLabel />
+                  </div>
+                  <div className="flex flex-col">
+                    {socialLinks.map((link) => (
+                      <a
+                        key={link.platform}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.label}
+                        className="flex items-center gap-3 min-h-[2.75rem] py-3 border-b border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
+                      >
+                        <span className="flex shrink-0 [&_svg]:w-5 [&_svg]:h-5" aria-hidden>
+                          <SocialIcon platform={link.platform} />
+                        </span>
+                        <span>{link.label}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </header>
   );
 }

@@ -37,7 +37,7 @@ test.describe("Homepage - 15-Second Overview", () => {
   test("navigation links point to correct pages", async ({ page }) => {
     await page.goto(defaultBasePath);
 
-    const nav = page.locator("header nav");
+    const nav = page.locator("header nav").first();
     await expect(nav.locator(`a[href="${defaultBasePath}/projects"]`)).toBeVisible();
     await expect(nav.locator(`a[href="${defaultBasePath}/writing"]`)).toBeVisible();
     await expect(nav.locator(`a[href="${defaultBasePath}/about"]`)).toBeVisible();
@@ -46,12 +46,12 @@ test.describe("Homepage - 15-Second Overview", () => {
 
   test("language switcher appears when multiple locales are supported", async ({ page }) => {
     await page.goto(defaultBasePath);
-    await expect(page.getByLabel(uiContent.languageSwitcher.ariaLabel)).toBeVisible();
+    await expect(page.getByLabel(uiContent.languageSwitcher.ariaLabel).first()).toBeVisible();
   });
 
   test("language switcher preserves the current route", async ({ page }) => {
     await page.goto(`${defaultBasePath}/about`);
-    await page.getByLabel(uiContent.languageSwitcher.ariaLabel).selectOption("es");
+    await page.getByLabel(uiContent.languageSwitcher.ariaLabel).first().selectOption("es");
     await page.waitForURL("**/es/about");
     await expect(page.locator("h1")).toContainText(siteProfileEs.navigation.aboutLabel);
   });
@@ -119,7 +119,7 @@ test.describe("About Page", () => {
   test("navigation includes About link", async ({ page }) => {
     await page.goto(defaultBasePath);
 
-    const nav = page.locator("header nav");
+    const nav = page.locator("header nav").first();
     await expect(nav.locator(`a[href="${defaultBasePath}/about"]`)).toBeVisible();
   });
 

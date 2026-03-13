@@ -98,6 +98,24 @@ Typical pattern from existing content:
 
 ---
 
+## Images in writing and project MDX
+
+Writing and project bodies support standard Markdown images. The site serves images from `public/` at build time (static export).
+
+**Where to put image files**
+- Writing: `public/writing/<slug>/` (e.g. `public/writing/my-post/hero.png`)
+- Projects: `public/projects/<slug>/` (e.g. `public/projects/my-project/diagram.svg`)
+
+**How to reference them in MDX**  
+Use root-relative URLs in Markdown image syntax:
+
+- Writing: `![Alt text](/writing/my-post/hero.png)`
+- Projects: `![Diagram](/projects/my-project/diagram.svg)`
+
+Images are rendered with lazy loading and responsive styling. Always provide meaningful `alt` text for accessibility.
+
+---
+
 ## Theme Values
 
 Themes for writing entries. Not strictly enumerated — new themes can be added, but prefer reusing existing ones:

@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
 import GiscusComments from "@/components/GiscusComments";
+import MdxImage from "@/components/MdxImage";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ReadNext from "@/components/ReadNext";
 import ShareButton from "@/components/ShareButton";
@@ -197,6 +198,7 @@ export default async function LocalizedWritingPage({
           <MDXRemote
             source={writing.content}
             options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }}
+            components={{ img: MdxImage }}
           />
         </div>
       </ArticleWithTOC>

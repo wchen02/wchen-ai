@@ -35,10 +35,11 @@ test.describe("Layout (every localized page)", () => {
       const siteHeader = page.locator("header").first();
       await expect(siteHeader).toBeVisible();
       await expect(siteHeader.locator(`a[href="${base}"]`)).toContainText(profile.brandMark);
-      await expect(siteHeader.getByRole("navigation", { name: profile.navigation.mainAriaLabel })).toBeVisible();
-      await expect(siteHeader.locator(`nav a[href="${base}/projects"]`)).toBeVisible();
-      await expect(siteHeader.locator(`nav a[href="${base}/writing"]`)).toBeVisible();
-      await expect(siteHeader.locator(`nav a[href="${base}/about"]`)).toBeVisible();
+      const desktopNav = siteHeader.getByRole("navigation", { name: profile.navigation.mainAriaLabel }).first();
+      await expect(desktopNav).toBeVisible();
+      await expect(desktopNav.locator(`a[href="${base}/projects"]`)).toBeVisible();
+      await expect(desktopNav.locator(`a[href="${base}/writing"]`)).toBeVisible();
+      await expect(desktopNav.locator(`a[href="${base}/about"]`)).toBeVisible();
       const main = page.locator("#main-content");
       await expect(main).toBeVisible();
       await expect(main.getByRole("main")).toBeVisible();

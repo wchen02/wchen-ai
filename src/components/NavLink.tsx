@@ -9,10 +9,12 @@ export default function NavLink({
   href,
   children,
   onClick,
+  className,
 }: {
   href: string;
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
 }) {
   const locale = useCurrentLocale();
   const pathname = usePathname() ?? "";
@@ -22,14 +24,14 @@ export default function NavLink({
       ? pathname === localizedHref
       : pathname.startsWith(localizedHref);
 
+  const baseClass = isActive
+    ? "text-emerald-600 dark:text-emerald-400 font-semibold link-nav"
+    : "link-nav";
+
   return (
     <Link
       href={localizedHref}
-      className={
-        isActive
-          ? "text-emerald-600 dark:text-emerald-400 font-semibold link-nav"
-          : "link-nav"
-      }
+      className={className ? `${baseClass} ${className}` : baseClass}
       onClick={onClick}
     >
       {children}

@@ -215,6 +215,18 @@ describe("newsletter shared wiring", () => {
     expect(newsletterContent.recurring.digest.subject).toBeTruthy();
     expect(newsletterContent.recurring.digest.itemTypeLabels?.writing).toBeTruthy();
     expect(newsletterContent.recurring.digest.itemTypeLabels?.project).toBeTruthy();
+    expect(newsletterContent.recurring.digest.newItemsHeading).toBeTruthy();
+    expect(newsletterContent.recurring.digest.updatedItemsHeading).toBeTruthy();
+  });
+
+  it("getRecurringNewsletterEmailContent resolves New and Updated section headings", () => {
+    const issueContent = getRecurringNewsletterEmailContent({
+      itemCount: 1,
+      siteUrl: "https://wchen.ai",
+      locale: "en",
+    });
+    expect(issueContent.newItemsHeading).toBeTruthy();
+    expect(issueContent.updatedItemsHeading).toBeTruthy();
   });
 
   it("subscribe handlers render the shared confirmation template", () => {

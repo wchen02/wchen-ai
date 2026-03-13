@@ -5,6 +5,7 @@ import rehypeSlug from "rehype-slug";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
 import GiscusComments from "@/components/GiscusComments";
+import MdxImage from "@/components/MdxImage";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ShareButton from "@/components/ShareButton";
 import { extractHeadings, getProjectBySlug, getProjects, type TOCItem } from "@/lib/mdx";
@@ -205,7 +206,11 @@ export default async function LocalizedProjectPage({
           )}
         </div>
         <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
-          <MDXRemote source={project.content} options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} />
+          <MDXRemote
+            source={project.content}
+            options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }}
+            components={{ img: MdxImage }}
+          />
         </div>
       </ArticleWithTOC>
       <NewsletterSlideout />

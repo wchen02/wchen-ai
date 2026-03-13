@@ -104,6 +104,18 @@ describe("i18n: newsletter content", () => {
     expect(en.emailLabel).not.toBe(es.emailLabel);
     expect(en.submitLabel).not.toBe(es.submitLabel);
   });
+
+  it("recurring digest has New and Updated section headings per locale", () => {
+    const en = getLocaleContent("en").newsletter.recurring?.digest;
+    const es = getLocaleContent("es").newsletter.recurring?.digest;
+    const zh = getLocaleContent("zh").newsletter.recurring?.digest;
+    expect(en?.newItemsHeading).toBeTruthy();
+    expect(en?.updatedItemsHeading).toBeTruthy();
+    expect(es?.newItemsHeading).toBeTruthy();
+    expect(es?.updatedItemsHeading).toBeTruthy();
+    expect(zh?.newItemsHeading).toBeTruthy();
+    expect(zh?.updatedItemsHeading).toBeTruthy();
+  });
 });
 
 describe("i18n: recurring newsletter", () => {

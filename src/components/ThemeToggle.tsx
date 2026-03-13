@@ -13,7 +13,11 @@ function getEffectiveTheme(theme: Theme): "light" | "dark" {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export default function ThemeToggle() {
+function capitalize(s: string) {
+  return s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+}
+
+export default function ThemeToggle({ showLabel = false }: { showLabel?: boolean }) {
   const locale = useCurrentLocale();
   const uiContent = getUiContent(locale);
   const [theme, setTheme] = useState<Theme>("system");
@@ -38,14 +42,24 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <button type="button" aria-label={uiContent.themeToggle.staticLabel} className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded">
-        <span className="w-[18px] h-[18px]" />
+      <button
+        type="button"
+        aria-label={uiContent.themeToggle.staticLabel}
+        className={`flex items-center gap-3 text-gray-500 dark:text-gray-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded ${
+          showLabel ? "min-h-[2.75rem] py-2 pr-2 w-full text-left" : "w-8 h-8 justify-center"
+        }`}
+      >
+        <span className="w-[18px] h-[18px] shrink-0" />
       </button>
     );
   }
 
   const effective = getEffectiveTheme(theme);
   const isDark = effective === "dark";
+
+  const modeLabel = isDark
+    ? capitalize(uiContent.themeToggle.darkModeLabel) + " mode"
+    : capitalize(uiContent.themeToggle.lightModeLabel) + " mode";
 
   return (
     <button
@@ -60,10 +74,12 @@ export default function ThemeToggle() {
           : uiContent.themeToggle.darkModeLabel,
       })}
       aria-pressed={isDark}
-      className="w-8 h-8 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
+      className={`flex items-center gap-3 text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded ${
+        showLabel ? "min-h-[2.75rem] py-2 pr-2 w-full text-left" : "w-8 h-8 justify-center"
+      }`}
     >
       {isDark ? (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="3" />
           <line x1="12" y1="21" x2="12" y2="23" />
@@ -75,10 +91,11 @@ export default function ThemeToggle() {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
       ) : (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
+      {showLabel && <span className="text-lg">{modeLabel}</span>}
     </button>
   );
 }

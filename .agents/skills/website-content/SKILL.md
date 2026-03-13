@@ -1,6 +1,6 @@
 ---
 name: website-content
-description: Write, rewrite, or improve content for the site owner's personal website (this repo). Use when the user asks to write a new writing entry, create a new project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," or "draft copy for the site." This skill covers MDX content authoring, frontmatter construction, page copy, and handing shared writing/project entries off to the translation workflow when they are finished.
+description: Write, rewrite, or improve content for the site owner's personal website (this repo). Use when the user asks to write a new writing entry, create a new project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, add an image, find an image for a post, or use a user-provided image; or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," or "draft copy for the site." This skill covers MDX content authoring, frontmatter construction, page copy, adding images to entries (sourcing royalty-free or placing user-provided), and handing shared writing/project entries off to the translation workflow when they are finished.
 ---
 
 # Website Content
@@ -15,6 +15,7 @@ Write content for the site in the site owner's voice. The site splits content in
 1. Read [references/voice-guide.md](references/voice-guide.md) to internalize the site owner's voice (customize that guide for your own voice if you forked this template).
 2. Read [references/content-schemas.md](references/content-schemas.md) for the content type being written.
 3. If updating homepage/about or other page-level copy, also read [references/page-patterns.md](references/page-patterns.md).
+4. If the task involves adding, sourcing, or placing an image in a writing or project entry, read [references/images.md](references/images.md).
 
 ## Content Types
 
@@ -44,6 +45,7 @@ After creating or updating a shared entry in `content/writing/[slug].mdx`, immed
 - Keep paragraphs short: 1-3 sentences
 - Use *italics* sparingly for emphasis on key reframes
 - End with a forward-looking conviction, not a summary
+- Images: place files in `public/writing/<slug>/` and use `![alt](/writing/<slug>/filename.png)`. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
 
 **Slug**: derive from the core concept in lowercase kebab case, for example `context-aware-agents.mdx`.
 
@@ -70,6 +72,7 @@ After creating or updating a shared entry in `content/projects/[slug].mdx`, imme
 - Common sections: `How it works`, `The Vision`, `Architecture`, `Results`
 - Include code snippets only when they add real clarity
 - Focus on narrative arc, not feature lists
+- Images: place files in `public/projects/<slug>/` and use `![alt](/projects/<slug>/filename.png)`. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
 
 ### Homepage Copy
 
@@ -141,6 +144,9 @@ Run this check against every piece of content before finalizing:
 ## File Placement
 
 ```text
+public/
+  writing/[slug]/                         -> Image assets for writing entry [slug]; reference as /writing/<slug>/filename.ext
+  projects/[slug]/                        -> Image assets for project entry [slug]; reference as /projects/<slug>/filename.ext
 content/
   writing/[slug].mdx                      -> Shared/default writing entries (canonical)
   projects/[slug].mdx                     -> Shared/default project entries (canonical)

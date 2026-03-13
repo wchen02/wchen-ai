@@ -48,7 +48,7 @@ export default async function LocaleLayout({
         {children}
       </div>
 
-      <footer className="border-t border-gray-200 dark:border-gray-800 py-8 mt-12">
+      <footer className="border-t border-gray-200 dark:border-gray-800 pt-8 pb-20 mt-12 sm:py-8">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           <p>
             © {new Date().getFullYear()} {siteProfile.siteName}. {siteProfile.footer.rightsLabel}
