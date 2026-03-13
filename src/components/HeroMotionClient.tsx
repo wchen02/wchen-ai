@@ -14,7 +14,7 @@ export default function HeroMotionClient({ children }: HeroMotionClientProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
-    return <div>{children}</div>;
+    return <div className="contents">{children}</div>;
   }
 
   const child = Children.only(children);
