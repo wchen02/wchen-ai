@@ -24,16 +24,26 @@ test.describe("Contact section", () => {
 
   test("contact form submits and shows success or error feedback", async ({ page }) => {
     await page.goto(`${base}/#contact`);
+    await expect(page.locator("#contact")).toBeVisible();
+
+    // Wait for client hydration so submit uses fetch, not native form POST
+    const contactResponsePromise = page.waitForResponse(
+      (resp) => resp.url().includes("/api/contact") && resp.request().method() === "POST",
+      { timeout: 15000 }
+    );
+
     await page.getByLabel(formsEn.contact.fields.name.label).fill("E2E Tester");
     await page.getByLabel(formsEn.contact.fields.email.label).fill("e2e-contact@example.com");
     await page.getByLabel(formsEn.contact.fields.message.label).fill("This is an e2e test message with enough length.");
     await page.getByRole("button", { name: new RegExp(formsEn.contact.submitLabel, "i") }).click();
 
+    await contactResponsePromise;
+
     // With API: success (role="status"). Without API or on error: alert. Either is valid.
     const contactSection = page.locator("#contact");
     await expect(
       contactSection.getByRole("status").or(contactSection.getByRole("alert"))
-    ).toBeVisible({ timeout: 10000 });
+    ).toBeVisible({ timeout: 5000 });
   });
 
   test("short message does not result in success (HTML5 or API validation)", async ({ page }) => {

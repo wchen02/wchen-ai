@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import type { ReactNode } from "react";
 
-const HeroMotionClient = dynamic(() => import("./HeroMotionClient"));
+const HeroMotionClient = dynamic(() => import("./HeroMotionClient"), { ssr: false });
 
 interface HeroMotionProps {
   children: ReactNode;

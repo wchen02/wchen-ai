@@ -66,7 +66,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4" noValidate>
       {/* Honeypot field - visually hidden, explicitly removed from screen readers if possible, but kept accessible to bots */}
       <div className="absolute left-[-9999px] top-[-9999px]" aria-hidden="true">
         <label htmlFor="_honey">{formsContent.common.honeypotLabel}</label>

@@ -171,7 +171,6 @@ test.describe("Writing index – content rendering", () => {
 test.describe("Writing detail – content rendering", () => {
   for (const locale of LOCALES) {
     const base = basePath(locale);
-    const profile = profileByLocale[locale];
     const ui = uiByLocale[locale];
 
     test(`${locale} first writing detail renders article and read time`, async ({ page }) => {
@@ -207,7 +206,6 @@ test.describe("Projects index – content rendering", () => {
 test.describe("Project detail – content rendering", () => {
   for (const locale of LOCALES) {
     const base = basePath(locale);
-    const profile = profileByLocale[locale];
     const ui = uiByLocale[locale];
 
     test(`${locale} first project detail renders motivation and problem`, async ({ page }) => {
