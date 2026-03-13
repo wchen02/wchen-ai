@@ -1,4 +1,10 @@
 {
   "writing": [],
-  "projects": []
+  "projects": [
+    {
+      "slug": "super-mario-replica",
+      "sentAt": "2026-03-13T03:50:38.691Z",
+      "subject": "New project: Super Mario Replica"
+    }
+  ]
 }
