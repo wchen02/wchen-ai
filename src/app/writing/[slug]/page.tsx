@@ -9,7 +9,7 @@ import ReadNext from "@/components/ReadNext";
 import ShareButton from "@/components/ShareButton";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import Link from "next/link";
-import { SITE_URL } from "@/lib/site-config";
+import { SITE_PROFILE, absoluteUrl } from "@/lib/site-config";
 import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 
 export async function generateStaticParams() {
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImageUrl = writing.ogImage ?? METADATA_DEFAULTS.defaultOgImageUrl;
 
   return {
-    title: `${writing.title} | Wilson Chen`,
+    title: `${writing.title} | ${SITE_PROFILE.siteName}`,
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
@@ -65,11 +65,11 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
     "@context": "https://schema.org",
     "@type": "Article",
     headline: writing.title,
-    author: { "@type": "Person", name: "Wilson Chen", url: SITE_URL },
+    author: { "@type": "Person", name: SITE_PROFILE.siteName, url: SITE_PROFILE.url },
     datePublished: writing.publishDate,
     ...(writing.updatedAt ? { dateModified: writing.updatedAt } : {}),
     description: extractExcerpt(writing.content),
-    url: `${SITE_URL}/writing/${resolvedParams.slug}`,
+    url: absoluteUrl(`/writing/${resolvedParams.slug}`),
     image: writing.ogImage ?? METADATA_DEFAULTS.defaultOgImageUrl,
   };
 
@@ -101,7 +101,7 @@ export default async function WritingPage({ params }: { params: Promise<{ slug: 
               <span>•</span>
               <span className="font-medium text-emerald-600 dark:text-emerald-400">{writing.theme}</span>
               <span>•</span>
-              <ShareButton url={`https://wchen.ai/writing/${resolvedParams.slug}`} title={writing.title} />
+              <ShareButton url={absoluteUrl(`/writing/${resolvedParams.slug}`)} title={writing.title} />
             </div>
             {writing.tags && writing.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">

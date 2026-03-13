@@ -1,17 +1,20 @@
 import { test, expect } from "@playwright/test";
+import aboutContent from "../content/site/about.json";
+import homeContent from "../content/site/home.json";
+import siteProfile from "../content/site/profile.json";
 
 test.describe("Homepage - 15-Second Overview", () => {
-  test("renders Wilson's identity and key sections", async ({ page }) => {
+  test("renders configured identity and key sections", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.locator("h1")).toContainText("Wilson Chen");
-    await expect(page.locator("text=Founder & Builder")).toBeVisible();
-    await expect(page.locator("text=I go by Wilson")).toBeVisible();
+    await expect(page.locator("h1")).toContainText(siteProfile.siteName);
+    await expect(page.locator(`text=${siteProfile.role}`)).toBeVisible();
+    await expect(page.locator(`text=${siteProfile.givenName}`)).toBeVisible();
 
-    await expect(page.locator("text=Current Focus")).toBeVisible();
-    await expect(page.locator("text=Selected Work")).toBeVisible();
-    await expect(page.locator("text=Recent Thinking")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Activity" })).toBeVisible();
+    await expect(page.locator(`text=${homeContent.currentFocus.title}`)).toBeVisible();
+    await expect(page.locator(`text=${homeContent.selectedWork.title}`)).toBeVisible();
+    await expect(page.locator(`text=${homeContent.recentThinking.title}`)).toBeVisible();
+    await expect(page.getByRole("heading", { name: homeContent.activity.title })).toBeVisible();
   });
 
   test("contact section is accessible from homepage", async ({ page }) => {
@@ -19,7 +22,7 @@ test.describe("Homepage - 15-Second Overview", () => {
 
     const contactSection = page.locator("#contact");
     await expect(contactSection).toBeVisible();
-    await expect(contactSection.locator("text=collaboration")).toBeVisible();
+    await expect(contactSection.locator(`text=${siteProfile.contact.title}`)).toBeVisible();
   });
 
   test("navigation links point to correct pages", async ({ page }) => {
@@ -58,7 +61,7 @@ test.describe("Projects Section", () => {
     const firstProjectLink = page.locator('a[href^="/projects/"]').first();
     await firstProjectLink.click();
 
-    await expect(page.locator("text=Start a conversation")).toBeVisible();
+    await expect(page.locator(`text=${siteProfile.cta.buttonLabel}`)).toBeVisible();
   });
 });
 
@@ -92,7 +95,7 @@ test.describe("Writing Section", () => {
     await firstWritingLink.click();
     await page.waitForURL(`**${href}`);
 
-    await expect(page.locator("text=Start a conversation")).toBeVisible();
+    await expect(page.locator(`text=${siteProfile.cta.buttonLabel}`)).toBeVisible();
   });
 });
 
@@ -101,15 +104,15 @@ test.describe("About Page", () => {
     await page.goto("/about");
 
     await expect(page.locator("h1")).toContainText("About");
-    await expect(page.locator("text=Philosophy")).toBeVisible();
-    await expect(page.locator("text=Interests")).toBeVisible();
-    await expect(page.locator("text=Background")).toBeVisible();
+    await expect(page.locator(`text=${aboutContent.philosophy.title}`)).toBeVisible();
+    await expect(page.locator(`text=${aboutContent.expertise.title}`)).toBeVisible();
+    await expect(page.locator(`text=${aboutContent.background.title}`)).toBeVisible();
   });
 
   test("about page has reach-out CTA", async ({ page }) => {
     await page.goto("/about");
 
-    await expect(page.locator("text=Start a conversation")).toBeVisible();
+    await expect(page.locator(`text=${siteProfile.cta.buttonLabel}`)).toBeVisible();
   });
 
   test("navigation includes About link", async ({ page }) => {
@@ -133,10 +136,10 @@ test.describe("No-JS Degradation", () => {
   test("homepage core content is readable without JavaScript", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.locator("h1")).toContainText("Wilson Chen");
-    await expect(page.locator("text=Founder & Builder")).toBeVisible();
-    await expect(page.locator("text=Current Focus")).toBeVisible();
-    await expect(page.locator("text=Selected Work")).toBeVisible();
+    await expect(page.locator("h1")).toContainText(siteProfile.siteName);
+    await expect(page.locator(`text=${siteProfile.role}`)).toBeVisible();
+    await expect(page.locator(`text=${homeContent.currentFocus.title}`)).toBeVisible();
+    await expect(page.locator(`text=${homeContent.selectedWork.title}`)).toBeVisible();
   });
 
   test("projects page is readable without JavaScript", async ({ page }) => {
@@ -152,7 +155,7 @@ test.describe("No-JS Degradation", () => {
   test("about page is readable without JavaScript", async ({ page }) => {
     await page.goto("/about");
     await expect(page.locator("h1")).toContainText("About");
-    await expect(page.locator("text=Philosophy")).toBeVisible();
+    await expect(page.locator(`text=${aboutContent.philosophy.title}`)).toBeVisible();
   });
 });
 
@@ -167,17 +170,17 @@ test.describe("404 Page", () => {
 test.describe("SEO & Metadata", () => {
   test("homepage has correct title and meta description", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/Wilson Chen/);
+    await expect(page).toHaveTitle(new RegExp(siteProfile.siteName));
 
     const metaDesc = page.locator('meta[name="description"]');
-    await expect(metaDesc).toHaveAttribute("content", /Wilson Chen/);
+    await expect(metaDesc).toHaveAttribute("content", new RegExp(siteProfile.siteName));
   });
 
   test("homepage has OpenGraph tags", async ({ page }) => {
     await page.goto("/");
 
     const ogTitle = page.locator('meta[property="og:title"]');
-    await expect(ogTitle).toHaveAttribute("content", /Wilson Chen/);
+    await expect(ogTitle).toHaveAttribute("content", new RegExp(siteProfile.siteName));
 
     const ogImage = page.locator('meta[property="og:image"]');
     await expect(ogImage).toBeAttached();
@@ -218,7 +221,7 @@ test.describe("SEO & Metadata", () => {
 
   test("favicon is referenced", async ({ page }) => {
     await page.goto("/");
-    const favicon = page.locator('link[rel="icon"][href="/favicon.svg"]');
+    const favicon = page.locator(`link[rel="icon"][href="${siteProfile.assets.faviconPath}"]`);
     await expect(favicon).toBeAttached();
   });
 });

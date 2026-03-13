@@ -1,4 +1,4 @@
-# Quickstart Guide: Personal Website
+# Quickstart Guide: Personal Site Template
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@
 1. **Clone the repository**:
    ```bash
    git clone <repo-url>
-   cd wchen.ai
+   cd your-site-repo
    ```
 
 2. **Install dependencies**:
@@ -28,11 +28,22 @@
    GH_USERNAME=your-github-username
    
    # Contact form (Cloudflare Pages Function + Mailgun) — see docs/contact-form-setup.md
+   NEXT_PUBLIC_SITE_URL=https://yourdomain.com
    CONTACT_TO_EMAIL=you@yourdomain.com
-   MAILGUN_DOMAIN=yourdomain.com
+   MAILGUN_DOMAIN=mg.yourdomain.com
    # MAILGUN_API_KEY is set as a secret in Cloudflare Pages; for local dev use .dev.vars
    ```
    For full contact form setup (Mailgun API key, Cloudflare secrets), see [Contact form setup](../../docs/contact-form-setup.md).
+
+## Template Content
+
+Update these files first when adapting the template:
+
+- `content/site/profile.json` for site identity, domain, socials, metadata defaults, and shared UI copy
+- `content/site/home.json` for homepage copy
+- `content/site/about.json` for about-page narrative
+- `content/projects/*.mdx` and `content/writing/*.mdx` for seeded example content
+- `public/headshot.jpg`, `public/og-default.svg`, and `public/favicon.svg` for brand assets
 
 ## Development
 

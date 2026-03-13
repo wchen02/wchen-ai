@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { getWritings, extractExcerpt } from '../src/lib/mdx';
-
-const SITE_URL = 'https://wchen.ai';
+import { SITE_PROFILE, SITE_URL } from '../src/lib/site-config';
 
 async function generateRss() {
   console.log('Generating RSS feed...');
@@ -25,9 +24,9 @@ async function generateRss() {
   const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Wilson Chen | Writing</title>
+    <title>${SITE_PROFILE.rss.title}</title>
     <link>${SITE_URL}/writing</link>
-    <description>Thoughts on engineering, products, and building software.</description>
+    <description>${SITE_PROFILE.rss.description}</description>
     <language>en-us</language>
     <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>

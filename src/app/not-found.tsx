@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { SITE_PROFILE } from "@/lib/site-config";
 
 export const metadata = {
-  title: "Page Not Found | Wilson Chen",
+  title: `${SITE_PROFILE.notFound.title} | ${SITE_PROFILE.siteName}`,
 };
 
 export default function NotFound() {
@@ -11,7 +12,7 @@ export default function NotFound() {
         404
       </h1>
       <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-        This page doesn&apos;t exist — but there&apos;s plenty more to explore.
+        {SITE_PROFILE.notFound.description}
       </p>
       <nav className="flex flex-wrap justify-center gap-4">
         <Link href="/" className="btn-primary">

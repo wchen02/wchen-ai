@@ -3,9 +3,12 @@ import { getProjects, getWritings, getGitHubContributions } from "@/lib/mdx";
 import ContactForm from "@/components/ContactForm";
 import HeroMotion from "@/components/HeroMotion";
 import GitHubGraphClient from "@/components/GitHubGraphClient";
+import MarkdownSnippet from "@/components/MarkdownSnippet";
 import ProjectsListClient from "@/components/ProjectsListClient";
 import SectionReveal from "@/components/SectionReveal";
 import WritingsListClient from "@/components/WritingsListClient";
+import { SITE_PROFILE } from "@/lib/site-config";
+import { getHomeContent } from "@/lib/site-content";
 
 function featuredFirst<T extends { featured: boolean }>(items: T[]): T[] {
   return [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -15,6 +18,7 @@ export default function Home() {
   const projects = featuredFirst(getProjects()).slice(0, 3);
   const writings = featuredFirst(getWritings()).slice(0, 3);
   const githubData = getGitHubContributions();
+  const homeContent = getHomeContent();
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-12 md:py-24 space-y-16">
@@ -24,105 +28,99 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 opacity-[0.02] dark:opacity-[0.04] pointer-events-none [background-image:linear-gradient(var(--grid-color,#e5e7eb)_1px,transparent_1px),linear-gradient(90deg,var(--grid-color,#e5e7eb)_1px,transparent_1px)] [background-size:24px_24px] [--grid-color:theme(colors.gray.300)] dark:[--grid-color:theme(colors.neutral.700)]" aria-hidden="true" />
         <HeroMotion>
           <header className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Wilson Chen
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-medium">
-            Founder & Builder
-          </p>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            I&apos;m Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building bestpos.io and AI-powered developer tools.
-          </p>
-          <div className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
-            <p>
-              I am currently exploring the intersection of artificial intelligence and 
-              developer tools, building systems that act as true thought partners.
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {SITE_PROFILE.siteName}
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 font-medium">
+              {SITE_PROFILE.role}
             </p>
-            <p>
-              My primary focus right now is on reducing friction between intention and execution
-              for software engineering teams through context-aware agents.
-            </p>
-          </div>
-          <Link href="/about" className="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
-            More about me & my philosophy →
-          </Link>
-        </header>
+            <MarkdownSnippet
+              source={homeContent.hero.intro}
+              className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed prose-p:my-0 prose-a:text-emerald-600 dark:prose-a:text-emerald-400"
+            />
+            <div className="prose dark:prose-invert text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed">
+              {homeContent.hero.paragraphs.map((paragraph) => (
+                <MarkdownSnippet key={paragraph} source={paragraph} />
+              ))}
+            </div>
+            <Link
+              href={homeContent.hero.aboutLink.href}
+              className="inline-flex items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
+            >
+              {homeContent.hero.aboutLink.label} →
+            </Link>
+          </header>
         </HeroMotion>
       </div>
 
       <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-          Current Focus & Problems
+          {homeContent.currentFocus.title}
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          What I&apos;m obsessed with now and the problems I believe matter.
+          {homeContent.currentFocus.description}
         </p>
         <div className="prose dark:prose-invert text-gray-600 dark:text-gray-400 leading-relaxed">
-          <p>
-            The core problem I am obsessed with is knowledge fragmentation. We have more tools 
-            than ever, yet context is continuously lost across platforms.
-          </p>
-          <p>
-            I believe the next wave of foundational companies will be built around unifying 
-            this context into seamless, invisible workflows rather than adding new dashboards.
-          </p>
+          {homeContent.currentFocus.paragraphs.map((paragraph) => (
+            <MarkdownSnippet key={paragraph} source={paragraph} />
+          ))}
         </div>
       </SectionReveal>
 
       <SectionReveal className="space-y-6">
         <div className="flex justify-between items-baseline border-b border-gray-200 dark:border-gray-800 pb-2">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Selected Work
+            {homeContent.selectedWork.title}
           </h2>
           <Link href="/projects" className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
-            View all →
+            {homeContent.selectedWork.viewAllLabel} →
           </Link>
         </div>
         <p className="text-gray-600 dark:text-gray-400">
-          Projects and experiments that reflect how I build and what I&apos;ve learned.
+          {homeContent.selectedWork.description}
         </p>
         {projects.length > 0 ? (
           <ProjectsListClient projects={projects} />
         ) : (
-          <p className="text-gray-500 italic">No projects added yet.</p>
+          <p className="text-gray-500 italic">{homeContent.selectedWork.emptyState}</p>
         )}
       </SectionReveal>
 
       <SectionReveal className="space-y-6">
         <div className="flex justify-between items-baseline border-b border-gray-200 dark:border-gray-800 pb-2">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Recent Thinking
+            {homeContent.recentThinking.title}
           </h2>
           <Link href="/writing" className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline">
-            View all →
+            {homeContent.recentThinking.viewAllLabel} →
           </Link>
         </div>
         <p className="text-gray-600 dark:text-gray-400">
-          Essays and notes on engineering, products, and building in public.
+          {homeContent.recentThinking.description}
         </p>
         {writings.length > 0 ? (
           <WritingsListClient writings={writings} />
         ) : (
-          <p className="text-gray-500 italic">No writing yet.</p>
+          <p className="text-gray-500 italic">{homeContent.recentThinking.emptyState}</p>
         )}
       </SectionReveal>
 
       <SectionReveal className="space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-          Activity
+          {homeContent.activity.title}
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Recent open-source and side-project activity on GitHub.
+          {homeContent.activity.description}
         </p>
         <GitHubGraphClient data={githubData} />
       </SectionReveal>
 
       <SectionReveal id="contact" className="pt-8 space-y-6">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2">
-          Contact
+          {SITE_PROFILE.contact.title}
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-lg">
-          Get in touch — email or use the form below. I&apos;m open to ideas, collaboration, and building the future together.
+          {SITE_PROFILE.contact.description}
         </p>
         <ContactForm />
       </SectionReveal>

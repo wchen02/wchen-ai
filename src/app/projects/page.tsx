@@ -3,15 +3,16 @@ import ProjectsFilter from "@/components/ProjectsFilter";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import SectionReveal from "@/components/SectionReveal";
 import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
+import { SITE_PROFILE } from "@/lib/site-config";
 
-const projectsDescription = "Things I've built, including apps, agents, and experiments.";
+const projectsDescription = SITE_PROFILE.projectsPage.metadataDescription;
 
 export const metadata = {
-  title: "Projects | Wilson Chen",
+  title: `Projects | ${SITE_PROFILE.siteName}`,
   description: projectsDescription,
   alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/projects` },
   openGraph: {
-    title: "Projects | Wilson Chen",
+    title: `Projects | ${SITE_PROFILE.siteName}`,
     description: projectsDescription,
     url: `${METADATA_DEFAULTS.canonicalBaseUrl}/projects`,
     siteName: METADATA_DEFAULTS.siteName,
@@ -21,12 +22,12 @@ export const metadata = {
       url: METADATA_DEFAULTS.defaultOgImageUrl,
       width: METADATA_DEFAULTS.defaultOgImageWidth,
       height: METADATA_DEFAULTS.defaultOgImageHeight,
-      alt: "Wilson Chen — Projects",
+      alt: `${SITE_PROFILE.siteName} — Projects`,
     }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Projects | Wilson Chen",
+    title: `Projects | ${SITE_PROFILE.siteName}`,
     description: projectsDescription,
     images: [METADATA_DEFAULTS.defaultOgImageUrl],
   },
@@ -40,11 +41,10 @@ export default function ProjectsPage() {
       <SectionReveal className="space-y-4">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Projects & Explorations
+            {SITE_PROFILE.projectsPage.title}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
-            A collection of apps, agents, and experiments I&apos;ve built to explore new ideas
-            and solve interesting problems.
+            {SITE_PROFILE.projectsPage.intro}
           </p>
         </header>
       </SectionReveal>

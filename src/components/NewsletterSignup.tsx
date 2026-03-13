@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { SITE_PROFILE } from "@/lib/site-config";
 
 export default function NewsletterSignup() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -46,8 +47,8 @@ export default function NewsletterSignup() {
   if (status === "success") {
     return (
       <div role="status" aria-live="polite" className="p-6 border border-emerald-200 dark:border-emerald-900 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-center text-emerald-800 dark:text-emerald-300">
-        <p className="font-medium">Check your email to confirm your subscription.</p>
-        <p className="text-sm mt-1">We sent a confirmation link to your inbox.</p>
+        <p className="font-medium">{SITE_PROFILE.newsletter.successTitle}</p>
+        <p className="text-sm mt-1">{SITE_PROFILE.newsletter.successDescription}</p>
       </div>
     );
   }
@@ -57,7 +58,7 @@ export default function NewsletterSignup() {
       <div>
         <h3 className="font-bold text-gray-900 dark:text-white">Stay in the loop</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Occasional updates when I publish new writing. No spam, unsubscribe anytime.
+          {SITE_PROFILE.newsletter.description}
         </p>
       </div>
       <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">

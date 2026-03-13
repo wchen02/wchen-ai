@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { SITE_PROFILE } from "@/lib/site-config";
 
 export default function Headshot() {
   const [failed, setFailed] = useState(false);
@@ -12,12 +13,12 @@ export default function Headshot() {
         className="absolute inset-0 flex items-center justify-center text-xl font-bold text-gray-500 dark:text-gray-400 select-none"
         aria-hidden={!failed}
       >
-        WC
+        {SITE_PROFILE.initials}
       </div>
       {!failed && (
         <Image
-          src="/headshot.jpg"
-          alt="Wilson Chen"
+          src={SITE_PROFILE.assets.headshotPath}
+          alt={SITE_PROFILE.siteName}
           width={96}
           height={96}
           className="relative w-full h-full object-cover"

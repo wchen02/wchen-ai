@@ -6,16 +6,17 @@ import SearchWriting from "@/components/SearchWriting";
 import SectionReveal from "@/components/SectionReveal";
 import { getThemeDescriptor } from "@/lib/theme-config";
 import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
+import { SITE_PROFILE } from "@/lib/site-config";
 import type { Writing } from "@/lib/schemas";
 
-const writingDescription = "Thoughts and reflections on building, technology, and developer tools.";
+const writingDescription = SITE_PROFILE.writingPage.metadataDescription;
 
 export const metadata = {
-  title: "Writing | Wilson Chen",
+  title: `Writing | ${SITE_PROFILE.siteName}`,
   description: writingDescription,
   alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/writing` },
   openGraph: {
-    title: "Writing | Wilson Chen",
+    title: `Writing | ${SITE_PROFILE.siteName}`,
     description: writingDescription,
     url: `${METADATA_DEFAULTS.canonicalBaseUrl}/writing`,
     siteName: METADATA_DEFAULTS.siteName,
@@ -25,12 +26,12 @@ export const metadata = {
       url: METADATA_DEFAULTS.defaultOgImageUrl,
       width: METADATA_DEFAULTS.defaultOgImageWidth,
       height: METADATA_DEFAULTS.defaultOgImageHeight,
-      alt: "Wilson Chen — Writing",
+      alt: `${SITE_PROFILE.siteName} — Writing`,
     }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Writing | Wilson Chen",
+    title: `Writing | ${SITE_PROFILE.siteName}`,
     description: writingDescription,
     images: [METADATA_DEFAULTS.defaultOgImageUrl],
   },
@@ -67,11 +68,10 @@ export default function WritingPage() {
       <SectionReveal className="space-y-4">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Writing & Ideas
+            {SITE_PROFILE.writingPage.title}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mt-4">
-            A living record of my evolving thoughts on engineering, products, and the friction 
-            of building software.
+            {SITE_PROFILE.writingPage.intro}
           </p>
         </header>
       </SectionReveal>
@@ -80,7 +80,7 @@ export default function WritingPage() {
         <NewsletterSignup />
         <p className="text-sm text-gray-600 dark:text-gray-400 shrink-0">
           <a href="/rss.xml" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded">
-            Subscribe via RSS
+            {SITE_PROFILE.navigation.rssLabel}
           </a>
         </p>
       </SectionReveal>

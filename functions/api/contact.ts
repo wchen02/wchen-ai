@@ -1,4 +1,5 @@
 import { ContactPayloadSchema } from "../../shared/contact";
+import { getAllowedOrigins } from "../../src/lib/site-config";
 
 interface Env {
   CONTACT_TO_EMAIL?: string;
@@ -10,10 +11,7 @@ interface Env {
   MAILGUN_EU?: string;
 }
 
-const ALLOWED_ORIGINS = [
-  "https://wchen.ai",
-  "https://www.wchen.ai",
-];
+const ALLOWED_ORIGINS = getAllowedOrigins();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;

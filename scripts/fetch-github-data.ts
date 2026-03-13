@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { SITE_PROFILE } from '../src/lib/site-config';
 
 interface ContributionDay {
   contributionCount: number;
@@ -30,8 +31,8 @@ interface GitHubGraphQLResponse {
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
 const OUTPUT_FILE = path.join(PUBLIC_DIR, 'github-contributions.json');
 
-// Get GitHub username from environment, fallback to what's in the spec
-const GH_USERNAME = process.env.GH_USERNAME || 'wenshengchen';
+// Get GitHub username from environment, fallback to the template profile
+const GH_USERNAME = process.env.GH_USERNAME || SITE_PROFILE.github.username;
 const GH_TOKEN = process.env.GH_TOKEN;
 
 async function fetchGitHubData() {

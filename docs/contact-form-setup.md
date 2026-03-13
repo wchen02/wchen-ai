@@ -7,7 +7,7 @@ The contact form is handled by a Cloudflare Pages Function (`functions/api/conta
 ## 1. Mailgun setup
 
 1. Sign up at [Mailgun](https://www.mailgun.com/) and verify your account.
-2. In the Mailgun dashboard, add and verify your **sending domain** (e.g. `wchen.ai` or a subdomain like `mg.wchen.ai`). Follow their DNS instructions (MX, TXT for verification and DKIM).
+2. In the Mailgun dashboard, add and verify your **sending domain** (for example `yourdomain.com` or a subdomain like `mg.yourdomain.com`). Follow their DNS instructions (MX, TXT for verification and DKIM).
 3. Create an **API key**: **Sending** → **Domain settings** → **Sending API keys**, or use the primary API key from **Account** → **API keys**. Store it securely; you’ll add it as a secret in Cloudflare.
 
 ## 2. Environment variables (CI and production)
@@ -35,10 +35,10 @@ Set them directly in Cloudflare so the contact function can send mail:
 
 | Variable             | Example                           | Description                                                             |
 | -------------------- | --------------------------------- | ----------------------------------------------------------------------- |
-| `CONTACT_TO_EMAIL`   | `you@wchen.ai`                    | Where contact form submissions are delivered.                           |
+| `CONTACT_TO_EMAIL`   | `you@yourdomain.com`              | Where contact form submissions are delivered.                           |
 | `MAILGUN_API_KEY`    | *(secret)*                        | Your Mailgun API key. Add as **Encrypted** (secret).                    |
-| `MAILGUN_DOMAIN`     | `wchen.ai` or `mg.wchen.ai`       | Your verified Mailgun sending domain.                                   |
-| `MAILGUN_FROM_EMAIL` | `Contact Form <noreply@wchen.ai>` | Optional. Defaults to `Contact Form <noreply@{MAILGUN_DOMAIN}>`.        |
+| `MAILGUN_DOMAIN`     | `yourdomain.com` or `mg.yourdomain.com` | Your verified Mailgun sending domain.                              |
+| `MAILGUN_FROM_EMAIL` | `Contact Form <noreply@mg.yourdomain.com>` | Optional. Defaults to `Contact Form <noreply@{MAILGUN_DOMAIN}>`. |
 | `MAILGUN_EU`         | `1`                               | Optional. Set to `1` to use the EU API endpoint (`api.eu.mailgun.net`). |
 
 

@@ -1,0 +1,86 @@
+{
+  "siteName": "Wilson Chen",
+  "fullName": "Wensheng Chen",
+  "givenName": "Wilson",
+  "initials": "WC",
+  "brandMark": "WC.",
+  "role": "Founder & Builder",
+  "siteTitle": "Wilson Chen | Founder & Builder",
+  "siteDescription": "Personal website of Wilson Chen. Founder, builder, and software engineer.",
+  "url": "https://wchen.ai",
+  "locale": "en_US",
+  "assets": {
+    "headshotPath": "/headshot.jpg",
+    "faviconPath": "/favicon.svg",
+    "defaultOgImagePath": "/og-default.svg",
+    "defaultOgImageAlt": "Wilson Chen | Founder & Builder"
+  },
+  "socialLinks": [
+    {
+      "platform": "x",
+      "url": "https://x.com/wchen_ai",
+      "label": "X (Twitter)",
+      "handle": "@wchen_ai"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://www.linkedin.com/in/wchen02/",
+      "label": "LinkedIn"
+    },
+    {
+      "platform": "github",
+      "url": "https://github.com/wchen02",
+      "label": "GitHub"
+    }
+  ],
+  "github": {
+    "username": "wchen02"
+  },
+  "rss": {
+    "title": "Wilson Chen | Writing",
+    "description": "Thoughts on engineering, products, and building software."
+  },
+  "navigation": {
+    "projectsLabel": "Projects",
+    "writingLabel": "Writing",
+    "aboutLabel": "About",
+    "contactLabel": "Contact",
+    "skipToContentLabel": "Skip to content",
+    "rssLabel": "Subscribe via RSS"
+  },
+  "footer": {
+    "rightsLabel": "All rights reserved."
+  },
+  "writingPage": {
+    "title": "Writing & Ideas",
+    "intro": "A living record of my evolving thoughts on engineering, products, and the friction of building software.",
+    "metadataDescription": "Thoughts and reflections on building, technology, and developer tools."
+  },
+  "projectsPage": {
+    "title": "Projects & Explorations",
+    "intro": "A collection of apps, agents, and experiments I've built to explore new ideas and solve interesting problems.",
+    "metadataDescription": "Things I've built, including apps, agents, and experiments."
+  },
+  "cta": {
+    "title": "Interested in discussing this further?",
+    "description": "I'm always open to connecting with fellow builders and founders.",
+    "buttonLabel": "Start a conversation"
+  },
+  "newsletter": {
+    "from": "Wilson Chen <newsletter@m.wchen.ai>",
+    "subject": "Confirm your subscription to Wilson Chen's writing",
+    "description": "Occasional updates when I publish new writing. No spam, unsubscribe anytime.",
+    "successTitle": "Check your email to confirm your subscription.",
+    "successDescription": "We sent a confirmation link to your inbox.",
+    "confirmedTitle": "You're subscribed!",
+    "confirmedDescription": "Thanks for confirming. You'll hear from me when I publish something new."
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Get in touch by email or use the form below. I'm open to ideas, collaboration, and building the future together."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "This page doesn't exist, but there's plenty more to explore."
+  }
+}

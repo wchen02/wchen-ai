@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { getProjects, getWritings } from '../src/lib/mdx';
-
-const SITE_URL = 'https://wchen.ai';
+import { SITE_URL } from '../src/lib/site-config';
 
 interface SitemapEntry {
   url: string;

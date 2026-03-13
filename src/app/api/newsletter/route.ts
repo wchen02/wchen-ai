@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { NewsletterPayloadSchema } from "../../../../shared/newsletter";
+import { SITE_PROFILE, SITE_URL, getAllowedOrigins } from "@/lib/site-config";
 
-const ALLOWED_ORIGINS = [
-  "https://wchen.ai",
-  "https://www.wchen.ai",
-];
+const ALLOWED_ORIGINS = getAllowedOrigins();
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
@@ -102,13 +100,13 @@ export async function POST(request: Request) {
     const sig = await hmacSign(secret, `${email}|${ts}`);
     const baseUrl =
       process.env.NEXT_PUBLIC_SITE_URL ??
-      (process.env.NODE_ENV === "production" ? "https://wchen.ai" : requestUrl.origin);
+      (process.env.NODE_ENV === "production" ? SITE_URL : requestUrl.origin);
     const confirmPath =
       process.env.NODE_ENV === "production"
         ? "/api/newsletter-confirm"
         : "/newsletter-confirm";
     const confirmUrl = `${baseUrl}${confirmPath}?email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}`;
-    const from = process.env.NEWSLETTER_FROM ?? "Wilson Chen <newsletter@m.wchen.ai>";
+    const from = process.env.NEWSLETTER_FROM ?? SITE_PROFILE.newsletter.from;
 
     const emailRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -119,7 +117,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         from,
         to: [email],
-        subject: "Confirm your subscription to Wilson Chen's writing",
+        subject: SITE_PROFILE.newsletter.subject,
         html: `<p>Thanks for subscribing! Click the link below to confirm:</p><p><a href="${confirmUrl}">Confirm subscription</a></p><p>This link expires in 24 hours.</p>`,
       }),
     });

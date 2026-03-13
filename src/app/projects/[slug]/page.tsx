@@ -6,6 +6,8 @@ import ArticleWithTOC from "@/components/ArticleWithTOC";
 import ShareButton from "@/components/ShareButton";
 import ReachOutCTA from "@/components/ReachOutCTA";
 import Link from "next/link";
+import { SITE_PROFILE, absoluteUrl } from "@/lib/site-config";
+import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 
 export async function generateStaticParams() {
   const projects = getProjects();
@@ -23,16 +25,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
   
   return {
-    title: `${project.title} | Wilson Chen`,
+    title: `${project.title} | ${SITE_PROFILE.siteName}`,
     description: project.problemAddressed,
+    alternates: { canonical: `${METADATA_DEFAULTS.canonicalBaseUrl}/projects/${resolvedParams.slug}` },
     openGraph: {
       title: project.title,
       description: project.problemAddressed,
-      url: `https://wchen.ai/projects/${resolvedParams.slug}`,
-      siteName: "Wilson Chen",
-      locale: "en_US",
+      url: absoluteUrl(`/projects/${resolvedParams.slug}`),
+      siteName: METADATA_DEFAULTS.siteName,
+      locale: METADATA_DEFAULTS.locale,
       type: "article",
-      images: [{ url: "https://wchen.ai/og-default.png", width: 1200, height: 630, alt: project.title }],
+      images: [{
+        url: METADATA_DEFAULTS.defaultOgImageUrl,
+        width: METADATA_DEFAULTS.defaultOgImageWidth,
+        height: METADATA_DEFAULTS.defaultOgImageHeight,
+        alt: project.title,
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.problemAddressed,
+      images: [METADATA_DEFAULTS.defaultOgImageUrl],
     },
   };
 }
@@ -76,7 +90,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 ))}
               </div>
               <span>•</span>
-              <ShareButton url={`https://wchen.ai/projects/${resolvedParams.slug}`} title={project.title} />
+              <ShareButton url={absoluteUrl(`/projects/${resolvedParams.slug}`)} title={project.title} />
               {(project.github || project.url) && <span>•</span>}
               {project.github && (
                 <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 dark:hover:text-emerald-400 hover:underline">
