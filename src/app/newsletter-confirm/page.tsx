@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Status = "loading" | "error";
 
-export default function NewsletterConfirmPage() {
+function NewsletterConfirmContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<Status>("loading");
@@ -68,5 +68,26 @@ export default function NewsletterConfirmPage() {
         {message}
       </p>
     </main>
+  );
+}
+
+function NewsletterConfirmFallback() {
+  return (
+    <main className="max-w-3xl mx-auto px-6 py-24 md:py-32 text-center">
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+        Confirming...
+      </h1>
+      <p className="text-lg text-gray-600 dark:text-gray-400">
+        Confirming your subscription...
+      </p>
+    </main>
+  );
+}
+
+export default function NewsletterConfirmPage() {
+  return (
+    <Suspense fallback={<NewsletterConfirmFallback />}>
+      <NewsletterConfirmContent />
+    </Suspense>
   );
 }
