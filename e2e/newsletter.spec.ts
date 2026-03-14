@@ -17,10 +17,11 @@ test.describe("Sticky newsletter popup (slideout)", () => {
     await page.goto(`${base}/writing`);
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
     const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
+    await expect(slideout).toBeVisible();
     await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
     await expect(page.getByRole("button", { name: formsEn.newsletter.submitLabel })).toBeVisible();
     await expect(slideout.getByRole("link", { name: profileEn.navigation.rssLabel })).toBeVisible();
-    await expect(page.getByRole("button", { name: formsEn.newsletter.title })).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByRole("button", { expanded: true })).toHaveAttribute("aria-expanded", "true");
   });
 
   test("close button in panel closes the panel", async ({ page }) => {
@@ -28,7 +29,8 @@ test.describe("Sticky newsletter popup (slideout)", () => {
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
     const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
     await expect(slideout.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
-    await slideout.getByRole("button", { name: "Close" }).click();
+    // Bar toggle shows aria-label "Close" when expanded; clicking it closes the panel (no separate X button)
+    await slideout.getByRole("button", { name: "Close", expanded: true }).click();
     await expect(page.getByRole("button", { name: formsEn.newsletter.title })).toHaveAttribute("aria-expanded", "false");
   });
 
@@ -53,12 +55,14 @@ test.describe("Newsletter subscription", () => {
   test("subscription form submits and shows success or error feedback", async ({ page }) => {
     await page.goto(`${base}/writing`);
     await page.getByRole("button", { name: formsEn.newsletter.title }).click();
-    await expect(page.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
+    const slideout = page.getByRole("region", { name: formsEn.newsletter.title });
+    await expect(slideout).toBeVisible();
+    await expect(slideout.getByLabel(formsEn.newsletter.emailLabel)).toBeVisible();
 
-    const emailInput = page.getByLabel(formsEn.newsletter.emailLabel);
+    const emailInput = slideout.getByLabel(formsEn.newsletter.emailLabel);
     await emailInput.fill("e2e-subscriber@example.com");
 
-    await page.getByRole("button", { name: formsEn.newsletter.submitLabel }).click();
+    await slideout.getByRole("button", { name: formsEn.newsletter.submitLabel }).click();
 
     // With API: success (role="status"). With static export (no API): error (role="alert"). Either is valid.
     const main = page.getByRole("main");

@@ -71,17 +71,17 @@ export default function NewsletterSlideout() {
           type="button"
           aria-label="Close"
           aria-hidden={!open}
-          className={`pointer-events-auto fixed inset-0 bg-black/40 transition-opacity duration-200 md:bg-black/30 ${
+          className={`pointer-events-auto fixed inset-0 z-0 bg-black/40 transition-opacity duration-200 md:bg-black/30 ${
             open ? "opacity-100" : "opacity-0 pointer-events-none"
           } motion-reduce:transition-none`}
           onClick={() => setOpen(false)}
         />
 
-        {/* Single card: bar at top, content slides up below when open */}
+        {/* Single card: bar at top, content slides up below when open; z-10 so panel stays above backdrop */}
         <div
           role="region"
           aria-label={title}
-          className="flex flex-col rounded-t-2xl border-x border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)] overflow-hidden"
+          className="relative z-10 flex flex-col rounded-t-2xl border-x border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)] overflow-hidden"
         >
           {/* Bar: always visible, top of card when expanded; pb-safe keeps content above home indicator */}
           <div
