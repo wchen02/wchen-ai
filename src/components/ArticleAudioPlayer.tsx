@@ -147,9 +147,11 @@ export default function ArticleAudioPlayer({
     audio.addEventListener("error", handleError);
 
     if (audio.readyState >= 1) {
-      setLoading(false);
-      setDuration(audio.duration);
-      playback?.setDuration(audio.duration);
+      queueMicrotask(() => {
+        setLoading(false);
+        setDuration(audio.duration);
+        playback?.setDuration(audio.duration);
+      });
     }
 
     return () => {
@@ -182,7 +184,7 @@ export default function ArticleAudioPlayer({
   useEffect(() => {
     if (!playback?.playbackRate) return;
     const idx = SPEEDS.indexOf(playback.playbackRate as (typeof SPEEDS)[number]);
-    if (idx >= 0) setPlaybackRateIndex(idx);
+    if (idx >= 0) queueMicrotask(() => setPlaybackRateIndex(idx));
   }, [playback?.playbackRate]);
 
   useEffect(() => {

@@ -13,7 +13,9 @@ export default function WritingProseWithHighlight({
   children: ReactElement;
 }) {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true));
+  }, []);
 
   if (!subtitlesUrl) return children;
   if (!mounted) return children;

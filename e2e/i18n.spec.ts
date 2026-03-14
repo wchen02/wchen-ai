@@ -240,7 +240,7 @@ test.describe("i18n: Search", () => {
 test.describe("i18n: Language switcher", () => {
   test("switching to es from home updates content to Spanish", async ({ page }) => {
     await page.goto("/en");
-    await page.getByLabel(uiEn.languageSwitcher.ariaLabel).selectOption("es");
+    await page.getByLabel(uiEn.languageSwitcher.ariaLabel).first().selectOption("es");
     await page.waitForURL("**/es");
     await expect(page.locator("h1")).toContainText(profileEs.siteName);
     await expect(page.getByRole("main")).toContainText(homeEs.currentFocus.title);
@@ -248,14 +248,15 @@ test.describe("i18n: Language switcher", () => {
 
   test("switching to zh from about updates content to Chinese", async ({ page }) => {
     await page.goto("/en/about");
-    await page.getByLabel(uiEn.languageSwitcher.ariaLabel).selectOption("zh");
+    await page.getByLabel(uiEn.languageSwitcher.ariaLabel).first().selectOption("zh");
     await page.waitForURL("**/zh/about");
     await expect(page.locator("h1")).toContainText(aboutZh.intro.title);
   });
 
   test("all supported locales appear in language switcher", async ({ page }) => {
     await page.goto("/en");
-    const select = page.getByLabel(uiEn.languageSwitcher.ariaLabel);
+    // Header and mobile menu each have a language switcher; scope to the first (visible) one.
+    const select = page.getByLabel(uiEn.languageSwitcher.ariaLabel).first();
     await expect(select).toBeVisible();
     await expect(select.locator('option[value="en"]')).toContainText("English");
     await expect(select.locator('option[value="es"]')).toContainText("Espanol");

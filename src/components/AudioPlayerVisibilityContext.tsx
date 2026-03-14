@@ -15,6 +15,8 @@ interface AudioPlayerVisibilityContextValue {
   isOpen: boolean;
   toggle: () => void;
   playerContainerRef: React.RefObject<HTMLDivElement | null>;
+  /** Callback ref to attach the player container DOM node (use in JSX; do not read ref during render). */
+  setPlayerContainerRef: (el: HTMLDivElement | null) => void;
   stickyDismissed: boolean;
   setStickyDismissed: (d: boolean) => void;
   stickyBarVisible: boolean;
@@ -28,6 +30,9 @@ export function AudioPlayerVisibilityProvider({ children }: { children: ReactNod
   const [stickyDismissed, setStickyDismissed] = useState(false);
   const [stickyBarVisible, setStickyBarVisible] = useState(false);
   const playerContainerRef = useRef<HTMLDivElement | null>(null);
+  const setPlayerContainerRef = useCallback((el: HTMLDivElement | null) => {
+    playerContainerRef.current = el;
+  }, []);
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
   return (
     <AudioPlayerVisibilityContext.Provider
@@ -35,6 +40,7 @@ export function AudioPlayerVisibilityProvider({ children }: { children: ReactNod
         isOpen,
         toggle,
         playerContainerRef,
+        setPlayerContainerRef,
         stickyDismissed,
         setStickyDismissed: useCallback((d: boolean) => setStickyDismissed(d), []),
         stickyBarVisible,
@@ -82,10 +88,24 @@ export function AudioPlayerGate({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+function PlayerContainerDiv({
+  setRef,
+  children,
+}: {
+  setRef: (el: HTMLDivElement | null) => void;
+  children: ReactNode;
+}) {
+  return <div ref={setRef}>{children}</div>;
+}
+
 export function InPagePlayerWrapper({ children }: { children: ReactNode }) {
   const visibility = useAudioPlayerVisibility();
   if (!visibility) return <>{children}</>;
-  return <div ref={visibility.playerContainerRef}>{children}</div>;
+  return (
+    <PlayerContainerDiv setRef={visibility.setPlayerContainerRef}>
+      {children}
+    </PlayerContainerDiv>
+  );
 }
 
 const STICKY_BAR_HEIGHT_REM = 4;
@@ -183,6 +203,8 @@ export function StickyAudioPlayerBar({
       window.removeEventListener("resize", onScrollOrResize);
       if (tickRef.current !== null) cancelAnimationFrame(tickRef.current);
     };
+    // Depend on visibility fields only: context value is a new object each render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- visibility object identity unused
   }, [
     visibility?.isOpen,
     visibility?.stickyDismissed,
@@ -199,6 +221,7 @@ export function StickyAudioPlayerBar({
     return () => {
       visibility?.setStickyBarVisible(false);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- visibility object identity unused
   }, [showStickyBar, visibility?.setStickyBarVisible]);
 
   if (!showStickyBar || !playback) return null;

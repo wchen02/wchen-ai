@@ -55,9 +55,10 @@ test.describe("Contact section", () => {
 
     // HTML5 minLength prevents submit, or API returns 400: in either case success status should not appear.
     await expect(page.locator("#contact").getByRole("status")).not.toBeVisible({ timeout: 3000 });
-    // Form or error alert still visible.
+    // Form or error alert still visible (use .first() to satisfy strict mode when both are in DOM).
+    const contact = page.locator("#contact");
     await expect(
-      page.locator("#contact").locator("form").or(page.locator("#contact").getByRole("alert"))
+      contact.locator("form").or(contact.getByRole("alert")).first()
     ).toBeVisible();
   });
 

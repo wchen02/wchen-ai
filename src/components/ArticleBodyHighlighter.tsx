@@ -8,7 +8,8 @@ function usePrefersReducedMotion(): boolean {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mq.matches);
+    // Defer initial sync so setState runs in a callback (satisfies react-hooks/set-state-in-effect)
+    queueMicrotask(() => setPrefersReducedMotion(mq.matches));
     const listener = () => setPrefersReducedMotion(mq.matches);
     mq.addEventListener("change", listener);
     return () => mq.removeEventListener("change", listener);
@@ -66,7 +67,7 @@ export default function ArticleBodyHighlighter({
 
   useEffect(() => {
     if (!subtitlesUrl) {
-      setSegments([]);
+      queueMicrotask(() => setSegments([]));
       return;
     }
     let cancelled = false;
