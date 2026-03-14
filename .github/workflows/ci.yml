@@ -72,6 +72,7 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           RESEND_SEGMENT_ID: ${{ secrets.RESEND_SEGMENT_ID }}
+          NEWSLETTER_SECRET: ${{ secrets.NEWSLETTER_SECRET }}
           NEWSLETTER_FROM: ${{ vars.NEWSLETTER_FROM }}
 
       - name: Detect newsletter state changes

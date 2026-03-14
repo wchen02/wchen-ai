@@ -358,6 +358,7 @@ export async function renderNewsletterIssueEmail(
               {newEntries.map((entry) => (
                 <Section key={`new-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
                   {entry.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- email HTML; next/image not supported in email clients
                     <img
                       src={entry.imageUrl}
                       alt={entry.title}
@@ -384,6 +385,7 @@ export async function renderNewsletterIssueEmail(
               {updatedEntries.map((entry) => (
                 <Section key={`updated-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
                   {entry.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- email HTML; next/image not supported in email clients
                     <img
                       src={entry.imageUrl}
                       alt={entry.title}
