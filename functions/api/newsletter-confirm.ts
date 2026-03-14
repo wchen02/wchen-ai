@@ -74,9 +74,10 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
     const brand = getNewsletterEmailBrand(SITE_URL, resolvedLocale);
     const newsletterContent = getNewsletterEmailContent(SITE_URL, resolvedLocale);
-    const unsubscribeSig = await hmacSign(secret, email);
+    const normalizedEmail = email.trim().toLowerCase();
+    const unsubscribeSig = await hmacSign(secret, normalizedEmail);
     const unsubscribeUrl = getNewsletterUnsubscribeUrl({
-      email,
+      email: normalizedEmail,
       sig: unsubscribeSig,
       siteUrl: SITE_URL,
       useLocalPage: true,

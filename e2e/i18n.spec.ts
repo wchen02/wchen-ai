@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import aboutEn from "../content/locales/en/site/about.json";
 import aboutEs from "../content/locales/es/site/about.json";
 import aboutZh from "../content/locales/zh/site/about.json";
@@ -137,19 +137,50 @@ test.describe("i18n: RSS feeds", () => {
     }
   });
 
-  test("writing page RSS link is locale-specific (in newsletter slideout)", async ({ page }) => {
-    const openSlideoutAndExpectRss = async (path: string, rssHref: string, toggleName: string) => {
-      await page.goto(path);
-      await page.evaluate(() => sessionStorage.removeItem("newsletter-slideout-expanded"));
-      await page.reload();
-      await page.waitForLoadState("networkidle");
-      await page.getByRole("button", { name: toggleName }).click();
-      const slideout = page.getByRole("region", { name: toggleName });
-      await expect(slideout).toBeVisible({ timeout: 5000 });
-      await expect(slideout.locator(`a[href="${rssHref}"]`)).toBeVisible();
-    };
-    await openSlideoutAndExpectRss("/es/writing", "/rss/es.xml", formsEs.newsletter.title);
-    await openSlideoutAndExpectRss("/zh/writing", "/rss/zh.xml", formsZh.newsletter.title);
+  async function openSlideoutAndExpectRss(
+    page: Page,
+    path: string,
+    rssHref: string,
+    toggleName: string,
+    pageHeading: string
+  ) {
+    await page.goto(path);
+    await page.evaluate(() => sessionStorage.removeItem("newsletter-slideout-expanded"));
+    await page.reload();
+    await page.waitForLoadState("networkidle");
+    await expect(page.getByRole("heading", { level: 1, name: pageHeading })).toBeVisible({
+      timeout: 10000,
+    });
+    const toggle = page.getByRole("button", { name: toggleName });
+    await expect(toggle).toBeVisible({ timeout: 10000 });
+    await toggle.click();
+    const slideout = page.getByRole("region", { name: toggleName });
+    await expect(slideout).toBeVisible({ timeout: 5000 });
+    await expect(slideout.locator(`a[href="${rssHref}"]`)).toBeVisible();
+  }
+
+  test("writing page RSS link is locale-specific for zh (in newsletter slideout)", async ({
+    page,
+  }) => {
+    await openSlideoutAndExpectRss(
+      page,
+      "/zh/writing",
+      "/rss/zh.xml",
+      formsZh.newsletter.title,
+      profileZh.writingPage.title
+    );
+  });
+
+  test("writing page RSS link is locale-specific for es (in newsletter slideout)", async ({
+    page,
+  }) => {
+    await openSlideoutAndExpectRss(
+      page,
+      "/es/writing",
+      "/rss/es.xml",
+      formsEs.newsletter.title,
+      profileEs.writingPage.title
+    );
   });
 
   test("each locale RSS feed returns 200 and contains items", async ({ request }) => {

@@ -74,9 +74,10 @@ export async function POST(request: Request) {
     });
 
     const newsletterContent = getNewsletterEmailContent(requestUrl.origin, resolvedLocale);
-    const unsubscribeSig = await hmacSign(secret, email);
+    const normalizedEmail = email.trim().toLowerCase();
+    const unsubscribeSig = await hmacSign(secret, normalizedEmail);
     const unsubscribeUrl = getNewsletterUnsubscribeUrl({
-      email,
+      email: normalizedEmail,
       sig: unsubscribeSig,
       siteUrl: requestUrl.origin,
       useLocalPage: true,

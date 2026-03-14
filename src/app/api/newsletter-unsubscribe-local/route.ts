@@ -25,14 +25,21 @@ async function unsubscribe(request: Request): Promise<
     return { success: false, error: systemContent.common.genericError, status: 500 };
   }
 
-  const expected = await hmacSign(secret, email);
-  if (!timingSafeEqual(sig, expected)) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const [expectedRaw, expectedNorm] = await Promise.all([
+    hmacSign(secret, email),
+    normalizedEmail !== email ? hmacSign(secret, normalizedEmail) : Promise.resolve(""),
+  ]);
+  const sigValid =
+    timingSafeEqual(sig, expectedRaw) ||
+    (expectedNorm !== "" && timingSafeEqual(sig, expectedNorm));
+  if (!sigValid) {
     return { success: false, error: systemContent.newsletter.invalidUnsubscribeLink, status: 400 };
   }
 
   await updateResendContact({
     apiKey,
-    email,
+    email: normalizedEmail,
     unsubscribed: true,
   });
 

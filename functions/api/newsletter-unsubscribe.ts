@@ -53,14 +53,21 @@ export async function unsubscribe(request: Request, env: Env): Promise<Response>
     return jsonError(systemContent.common.genericError, 500);
   }
 
-  const expected = await hmacSign(env.NEWSLETTER_SECRET, email);
-  if (!timingSafeEqual(sig, expected)) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const [expectedRaw, expectedNorm] = await Promise.all([
+    hmacSign(env.NEWSLETTER_SECRET, email),
+    normalizedEmail !== email ? hmacSign(env.NEWSLETTER_SECRET, normalizedEmail) : Promise.resolve(""),
+  ]);
+  const sigValid =
+    timingSafeEqual(sig, expectedRaw) ||
+    (expectedNorm !== "" && timingSafeEqual(sig, expectedNorm));
+  if (!sigValid) {
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
   await updateResendContact({
     apiKey: env.RESEND_API_KEY,
-    email,
+    email: normalizedEmail,
     unsubscribed: true,
   });
 
