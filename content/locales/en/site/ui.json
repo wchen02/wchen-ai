@@ -32,6 +32,26 @@
   "readNext": {
     "heading": "Read Next"
   },
+  "listen": {
+    "label": "Listen",
+    "hideLabel": "Hide player",
+    "ariaLabel": "Listen to this article",
+    "transcriptAriaLabel": "Read-along transcript",
+    "readAlongHint": "Text highlights as you listen.",
+    "loading": "Loading audio…",
+    "error": "Couldn’t load audio.",
+    "retry": "Retry",
+    "playLabel": "Play",
+    "pauseLabel": "Pause",
+    "progressAriaLabel": "Playback progress",
+    "speedMenuAriaLabel": "Playback speed",
+    "closeStickyLabel": "Close player",
+    "scrollFollowLabel": "Scroll with highlight",
+    "scrollFollowShortLabel": "Scroll",
+    "scrollFollowHint": "Page scrolls to the current sentence as you listen",
+    "scrollFollowOn": "On",
+    "scrollFollowOff": "Off"
+  },
   "searchWriting": {
     "label": "Search writing by title, theme, or tags",
     "loadingPlaceholder": "Search writing...",

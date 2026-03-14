@@ -4,10 +4,22 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
 import type { Metadata } from "next";
 import ArticleWithTOC from "@/components/ArticleWithTOC";
+import ArticleAudioPlayer from "@/components/ArticleAudioPlayer";
+import AudioPlaybackProvider from "@/components/AudioPlaybackContext";
+import {
+  AudioPlayerGate,
+  AudioPlayerTrigger,
+  AudioPlayerVisibilityProvider,
+  InPagePlayerWrapper,
+  StickyAudioPlayerBar,
+} from "@/components/AudioPlayerVisibilityContext";
+import WritingProseWithHighlight from "@/components/WritingProseWithHighlight";
 import GiscusComments from "@/components/GiscusComments";
 import MdxImage from "@/components/MdxImage";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ShareButton from "@/components/ShareButton";
+import { hashAudioText, mdxToAudioText } from "@/lib/audio-text";
+import { getAudioInfo } from "@/lib/audio-manifest";
 import { extractHeadings, getProjectBySlug, getProjects, type TOCItem } from "@/lib/mdx";
 import { formatDate, resolveContentTokens } from "@/lib/formatting";
 import { getMetadataDefaults } from "@/lib/metadata-defaults";
@@ -17,6 +29,7 @@ import { resolveLocale, SUPPORTED_LOCALES } from "@/lib/locales";
 import { absoluteUrl, getSiteProfile } from "@/lib/site-config";
 import { getUiContent } from "@/lib/site-content";
 import { getGiscusConfig } from "@/lib/giscus-config";
+import { rehypeAudioOffsets } from "@/lib/rehype-audio-offsets";
 
 export async function generateStaticParams() {
   return SUPPORTED_LOCALES.flatMap((locale) =>
@@ -92,6 +105,8 @@ export default async function LocalizedProjectPage({
     notFound();
   }
 
+  const audioInfo = await getAudioInfo(resolvedLocale, "projects", slug);
+  const audioTextHash = audioInfo.subtitlesUrl ? hashAudioText(mdxToAudioText(project.content)) : undefined;
   const fixedSections: TOCItem[] = [
     { id: "the-motivation", text: uiContent.projects.motivationLabel, level: 2 },
     { id: "the-problem", text: uiContent.projects.problemLabel, level: 2 },
@@ -103,9 +118,18 @@ export default async function LocalizedProjectPage({
   const giscusConfig = getGiscusConfig();
   const discussionTerm = `Project: ${project.title} (${resolvedLocale})`;
 
-  return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24">
-      <ArticleWithTOC
+  const proseNode = (
+    <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
+      <MDXRemote
+        source={project.content}
+        options={{ mdxOptions: { rehypePlugins: audioInfo.subtitlesUrl ? [rehypeSlug, rehypeAudioOffsets] : [rehypeSlug] } }}
+        components={{ img: MdxImage }}
+      />
+    </div>
+  );
+
+  const article = (
+    <ArticleWithTOC
         locale={resolvedLocale}
         backLink={
           <Link
@@ -141,6 +165,16 @@ export default async function LocalizedProjectPage({
                 title={project.title}
                 description={project.problemAddressed}
               />
+              {audioInfo.hasAudio && (
+                <>
+                  <span>•</span>
+                  <AudioPlayerTrigger
+                    label={uiContent.listen.label}
+                    hideLabel={uiContent.listen.hideLabel ?? "Hide player"}
+                    ariaLabel={uiContent.listen.ariaLabel}
+                  />
+                </>
+              )}
               {(project.github || project.url) && <span>•</span>}
               {project.github && (
                 <a
@@ -163,6 +197,32 @@ export default async function LocalizedProjectPage({
                 </a>
               )}
             </div>
+            {audioInfo.hasAudio && (
+              <InPagePlayerWrapper>
+                <AudioPlayerGate>
+                  <ArticleAudioPlayer
+                    hasAudio={audioInfo.hasAudio}
+                    audioUrl={audioInfo.url}
+                    subtitlesUrl={audioInfo.subtitlesUrl}
+                    highlightMode={audioInfo.subtitlesUrl ? "body" : "transcript"}
+                    label={uiContent.listen.label}
+                    ariaLabel={uiContent.listen.ariaLabel}
+                    readAlongHint={uiContent.listen.readAlongHint}
+                    loadingLabel={uiContent.listen.loading}
+                    errorLabel={uiContent.listen.error}
+                    retryLabel={uiContent.listen.retry}
+                    playLabel={uiContent.listen.playLabel}
+                    pauseLabel={uiContent.listen.pauseLabel}
+                    progressAriaLabel={uiContent.listen.progressAriaLabel}
+                    speedMenuAriaLabel={uiContent.listen.speedMenuAriaLabel}
+                    scrollFollowLabel={uiContent.listen.scrollFollowLabel}
+                    scrollFollowHint={uiContent.listen.scrollFollowHint}
+                    scrollFollowOn={uiContent.listen.scrollFollowOn}
+                    scrollFollowOff={uiContent.listen.scrollFollowOff}
+                  />
+                </AudioPlayerGate>
+              </InPagePlayerWrapper>
+            )}
           </header>
         }
         tocHeadings={tocHeadings}
@@ -205,14 +265,36 @@ export default async function LocalizedProjectPage({
             </section>
           )}
         </div>
-        <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
-          <MDXRemote
-            source={project.content}
-            options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }}
-            components={{ img: MdxImage }}
-          />
-        </div>
+        <WritingProseWithHighlight subtitlesUrl={audioInfo.subtitlesUrl} expectedTextHash={audioTextHash}>
+          {proseNode}
+        </WritingProseWithHighlight>
       </ArticleWithTOC>
+  );
+
+  return (
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24">
+      {audioInfo.hasAudio ? (
+        <AudioPlaybackProvider>
+          <AudioPlayerVisibilityProvider>
+            <StickyAudioPlayerBar
+              title={project.title}
+              playLabel={uiContent.listen.playLabel}
+              pauseLabel={uiContent.listen.pauseLabel}
+              progressAriaLabel={uiContent.listen.progressAriaLabel}
+              speedMenuAriaLabel={uiContent.listen.speedMenuAriaLabel}
+              closeStickyLabel={uiContent.listen.closeStickyLabel}
+              scrollFollowLabel={uiContent.listen.scrollFollowLabel}
+              scrollFollowShortLabel={uiContent.listen.scrollFollowShortLabel}
+              scrollFollowHint={uiContent.listen.scrollFollowHint}
+              scrollFollowOn={uiContent.listen.scrollFollowOn}
+              scrollFollowOff={uiContent.listen.scrollFollowOff}
+            />
+            {article}
+          </AudioPlayerVisibilityProvider>
+        </AudioPlaybackProvider>
+      ) : (
+        article
+      )}
       <NewsletterSlideout />
     </main>
   );

@@ -32,6 +32,26 @@
   "readNext": {
     "heading": "继续阅读"
   },
+  "listen": {
+    "label": "朗读",
+    "hideLabel": "收起播放器",
+    "ariaLabel": "朗读此文",
+    "transcriptAriaLabel": "跟读文稿",
+    "readAlongHint": "收听时正文会高亮显示。",
+    "loading": "正在加载音频…",
+    "error": "无法加载音频。",
+    "retry": "重试",
+    "playLabel": "播放",
+    "pauseLabel": "暂停",
+    "progressAriaLabel": "播放进度",
+    "speedMenuAriaLabel": "播放速度",
+    "closeStickyLabel": "关闭播放器",
+    "scrollFollowLabel": "跟随高亮滚动",
+    "scrollFollowShortLabel": "跟随",
+    "scrollFollowHint": "播放时页面会滚动到当前句子",
+    "scrollFollowOn": "开",
+    "scrollFollowOff": "关"
+  },
   "searchWriting": {
     "label": "按标题、主题或标签搜索写作",
     "loadingPlaceholder": "正在搜索写作...",

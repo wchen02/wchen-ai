@@ -41,7 +41,7 @@ export default function ArticleWithTOC({
 
       {showToc && (
         <aside
-          className="hidden xl:block xl:fixed xl:top-24 xl:left-[calc(50%+26.5rem)] xl:w-48"
+          className="hidden xl:block xl:fixed xl:top-24 xl:left-[calc(50%+26.5rem)] xl:w-48 xl:z-[45]"
           aria-label={uiContent.tableOfContents.ariaLabel}
         >
           <TableOfContents headings={tocHeadings} locale={locale} />

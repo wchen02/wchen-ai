@@ -4,6 +4,7 @@ import path from "path";
 import matter from "gray-matter";
 import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from "./schemas";
 import { DEFAULT_LOCALE } from "./locales";
+import { mdxToAudioText } from "./audio-text";
 
 function hashRawFileContent(raw: string): string {
   return crypto.createHash("sha256").update(raw, "utf8").digest("hex").slice(0, 16);
@@ -46,6 +47,14 @@ export function extractExcerpt(mdxContent: string, maxLength = EXCERPT_LENGTH): 
 
   if (plain.length <= maxLength) return plain;
   return plain.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
+}
+
+/**
+ * Converts MDX/markdown body to plain text for TTS or other uses.
+ * Strips frontmatter, code blocks, images; keeps link text; removes markdown syntax.
+ */
+export function mdxToPlainText(mdxContent: string): string {
+  return mdxToAudioText(mdxContent);
 }
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');

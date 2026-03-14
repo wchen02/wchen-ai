@@ -32,6 +32,26 @@
   "readNext": {
     "heading": "Leer despues"
   },
+  "listen": {
+    "label": "Escuchar",
+    "hideLabel": "Ocultar reproductor",
+    "ariaLabel": "Escuchar este artículo",
+    "transcriptAriaLabel": "Transcripción para seguir la lectura",
+    "readAlongHint": "El texto se resalta al escuchar.",
+    "loading": "Cargando audio…",
+    "error": "No se pudo cargar el audio.",
+    "retry": "Reintentar",
+    "playLabel": "Reproducir",
+    "pauseLabel": "Pausar",
+    "progressAriaLabel": "Progreso de reproducción",
+    "speedMenuAriaLabel": "Velocidad de reproducción",
+    "closeStickyLabel": "Cerrar reproductor",
+    "scrollFollowLabel": "Desplazar con el resaltado",
+    "scrollFollowShortLabel": "Desplazar",
+    "scrollFollowHint": "La página se desplaza a la oración actual mientras escuchas",
+    "scrollFollowOn": "Sí",
+    "scrollFollowOff": "No"
+  },
   "searchWriting": {
     "label": "Buscar escritos por titulo, tema o etiquetas",
     "loadingPlaceholder": "Buscando escritos...",

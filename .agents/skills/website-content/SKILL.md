@@ -127,6 +127,19 @@ Use the translation handoff only for shared MDX entries:
 - Do not trigger it for `content/locales/<locale>/...` source files
 - Do not trigger it for homepage, about, newsletter, UI, forms, or system JSON copy
 
+## Audio Publish Handoff
+
+If the task creates or updates writing/project content that should have audio, do not assume generated audio is committed to Git.
+
+Use this manual handoff after the content and any translations are finished:
+
+1. Run `pnpm audio:generate` to create local audio artifacts under `public/audio/`.
+2. Verify the affected page(s) locally if audio playback/highlighting matters to the task.
+3. Run `pnpm audio:publish` to upload the generated assets and `audio-manifest.json` to R2.
+4. Remind the user that production builds need `AUDIO_SOURCE=r2` and `R2_AUDIO_PUBLIC_BASE_URL` configured.
+
+Do not silently generate or upload audio as part of every content-writing task unless the user explicitly asks for that step.
+
 ## Voice Checklist
 
 Run this check against every piece of content before finalizing:
