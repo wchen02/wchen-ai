@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
         env:
-          # Install devDependencies (eslint, vitest, etc.); job-level NODE_ENV=production would skip them.
+          # Install devDependencies (eslint, vitest, playwright, etc.); job-level NODE_ENV=production would skip them.
           NODE_ENV: development
 
       - name: Run ESLint
@@ -71,6 +71,7 @@ jobs:
 
       - name: Send recurring newsletter
         if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''
+        continue-on-error: true
         run: pnpm run newsletter:send-recurring
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

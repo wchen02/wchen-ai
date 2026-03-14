@@ -24,6 +24,9 @@ import { hmacSign } from "../shared/newsletter-crypto";
 import type { ResendContact } from "../shared/resend";
 import { listResendContactsBySegment, sendResendEmail } from "../shared/resend";
 
+/** Resend allows 2 requests per second; wait between sends to avoid 429. */
+const RESEND_RATE_LIMIT_DELAY_MS = 600;
+
 function getPreferredLocale(contact: ResendContact): string {
   const fromProps =
     (contact.properties as Record<string, string> | undefined)?.preferred_locale;
@@ -140,6 +143,7 @@ async function main(): Promise<void> {
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
       },
     });
+    await new Promise((r) => setTimeout(r, RESEND_RATE_LIMIT_DELAY_MS));
   }
 
   const sentAt = new Date().toISOString();
