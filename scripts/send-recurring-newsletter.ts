@@ -105,6 +105,7 @@ async function main(): Promise<void> {
       ctaUrl: candidate.ctaUrl,
       typeLabel: issueContent.itemTypeLabels[candidate.type],
       isUpdate: isRecurringCandidateUpdate(state, candidate),
+      imageUrl: candidate.imageUrl ?? undefined,
     }));
     const from = getNewsletterFromAddress(process.env.NEWSLETTER_FROM, locale);
 

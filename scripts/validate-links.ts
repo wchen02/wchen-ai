@@ -36,6 +36,12 @@ function validateLinks(): void {
     ...Array.from(writingSlugs).map((s) => `/writing/${s}`),
   ]);
 
+  /** Allow static asset paths under /writing/<slug>/ or /projects/<slug>/ (e.g. images). */
+  function isAllowedStaticAsset(cleanLink: string): boolean {
+    const match = cleanLink.match(/^\/(writing|projects)\/[^/]+\/.+\.(svg|png|jpg|jpeg|gif|webp)$/);
+    return !!match;
+  }
+
   const broken: BrokenLink[] = [];
 
   function scanDirectory(dir: string) {
@@ -49,7 +55,7 @@ function validateLinks(): void {
       while ((match = INTERNAL_LINK_RE.exec(content)) !== null) {
         const [, text, link] = match;
         const cleanLink = link.split('#')[0].split('?')[0].replace(/\/$/, '') || '/';
-        if (!validPaths.has(cleanLink)) {
+        if (!validPaths.has(cleanLink) && !isAllowedStaticAsset(cleanLink)) {
           broken.push({ file: path.relative(process.cwd(), filePath), link, text });
         }
       }

@@ -6,8 +6,16 @@
     <description>Ideas sobre ingenieria, productos y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 04:06:55 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 05:12:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Audio de lectura sin servidor]]></title>
+      <link>https://wchen.ai/es/writing/static-first-audio</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/static-first-audio</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[El audio de lectura en una web suele implicar un servidor: el usuario pulsa play, el servidor ejecuta text-to-speech, hace stream del resultado o al menos consulta una grabación en una base de datos.…]]></description>
+      <category>Architecture</category>
+    </item>
     <item>
       <title><![CDATA[Validación en build como producto]]></title>
       <link>https://wchen.ai/es/writing/build-time-validation-as-product</link>

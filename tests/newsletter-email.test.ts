@@ -111,6 +111,45 @@ describe("newsletter email templates", () => {
     expect(result.text).toContain(resolvedContent.footer.unsubscribeLabel ?? "");
   });
 
+  it("renders digest entry with imageUrl when provided and omits image when not", async () => {
+    const issueContent = getRecurringNewsletterEmailContent({
+      itemCount: 2,
+      siteUrl: "https://wchen.ai",
+    });
+    const imageUrl = "https://wchen.ai/writing/shipping/hero.png";
+    const result = await renderNewsletterIssueEmail({
+      brand,
+      content: issueContent,
+      footer: resolvedContent.footer,
+      subjectLine: issueContent.subject,
+      entries: [
+        {
+          type: "writing",
+          title: "Shipping before you're ready",
+          summary: "A short note on momentum.",
+          ctaLabel: issueContent.itemActionLabels.writing,
+          ctaUrl: "https://wchen.ai/en/writing/shipping-before-youre-ready",
+          typeLabel: issueContent.itemTypeLabels.writing,
+          imageUrl,
+        },
+        {
+          type: "project",
+          title: "wchen.ai",
+          summary: "A static-first personal site.",
+          ctaLabel: issueContent.itemActionLabels.project,
+          ctaUrl: "https://wchen.ai/en/projects/wchen-ai",
+          typeLabel: issueContent.itemTypeLabels.project,
+        },
+      ],
+      unsubscribeUrl: "https://wchen.ai/api/newsletter-unsubscribe?email=reader%40example.com&sig=abc",
+    });
+
+    expect(result.html).toContain(`src="${imageUrl}"`);
+    expect(result.html).toMatch(/alt="Shipping before you&#x27;re ready"/);
+    const imgCount = (result.html.match(/<img\s/g) ?? []).length;
+    expect(imgCount).toBe(1);
+  });
+
   it("renders digest with separate New and Updated sections when entries have isUpdate", async () => {
     const issueContent = getRecurringNewsletterEmailContent({
       itemCount: 2,

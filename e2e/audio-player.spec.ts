@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { test, expect } from "@playwright/test";
 import uiEn from "../content/locales/en/site/ui.json";
 
@@ -8,7 +10,17 @@ const listenUi = uiEn.listen;
 const writingWithAudio = "static-first";
 const writingUrl = `${base}/writing/${writingWithAudio}`;
 
+// Audio assets are in .gitignore; in CI they are absent, so the Listen button is not rendered.
+// Skip these tests when audio files are not present (e.g. run audio:generate locally to enable).
+const publicDir = path.join(process.cwd(), "public", "audio");
+const hasWritingAudio = fs.existsSync(path.join(publicDir, "en", "writing", `${writingWithAudio}.mp3`));
+const hasProjectAudio = fs.existsSync(path.join(publicDir, "en", "projects", "env-from-example.mp3"));
+
 test.describe("Audio player", () => {
+  test.beforeEach(() => {
+    test.skip(!hasWritingAudio, "public/audio not present (gitignored); run audio:generate locally");
+  });
+
   test("writing page with audio shows Listen trigger", async ({ page }) => {
     await page.goto(writingUrl);
     const listenTrigger = page.getByRole("button", { name: listenUi.ariaLabel });
@@ -95,6 +107,10 @@ test.describe("Audio player", () => {
 });
 
 test.describe("Audio player – project page", () => {
+  test.beforeEach(() => {
+    test.skip(!hasProjectAudio, "public/audio not present (gitignored); run audio:generate locally");
+  });
+
   // Project with audio (from manifest)
   const projectWithAudio = "env-from-example";
   const projectUrl = `${base}/projects/${projectWithAudio}`;

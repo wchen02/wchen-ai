@@ -6,8 +6,16 @@
     <description>关于工程、产品与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 04:06:55 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 05:12:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[无服务端的跟读音频]]></title>
+      <link>https://wchen.ai/zh/writing/static-first-audio</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/static-first-audio</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[网站上的跟读音频通常意味着有一台服务器：用户点播放，服务端跑 TTS、推流，或者至少从数据库里查一条录音。我想在这个站上也有音频——播放按钮和可选的按词高亮——但不加任何运行时。站点保持静态：每页预渲染，CDN 只负责发文件。没有函数调用，生产环境也没有 TTS 用的 API key。…]]></description>
+      <category>Architecture</category>
+    </item>
     <item>
       <title><![CDATA[把构建时校验当产品]]></title>
       <link>https://wchen.ai/zh/writing/build-time-validation-as-product</link>

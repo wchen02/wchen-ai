@@ -220,6 +220,8 @@ export interface NewsletterIssueEntry {
   typeLabel?: string;
   /** When true, this item is a content update (re-send); when false or unset, it is new. */
   isUpdate?: boolean;
+  /** Optional absolute URL for digest card image (from writing/project ogImage). */
+  imageUrl?: string;
 }
 
 async function renderNewsletterTemplate(
@@ -355,6 +357,13 @@ export async function renderNewsletterIssueEmail(
               </Heading>
               {newEntries.map((entry) => (
                 <Section key={`new-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
+                  {entry.imageUrl ? (
+                    <img
+                      src={entry.imageUrl}
+                      alt={entry.title}
+                      style={issueImageStyle}
+                    />
+                  ) : null}
                   <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
                   <Heading as="h3" style={issueTitleStyle}>
                     {entry.title}
@@ -374,6 +383,13 @@ export async function renderNewsletterIssueEmail(
               </Heading>
               {updatedEntries.map((entry) => (
                 <Section key={`updated-${entry.type}-${entry.title}-${entry.ctaUrl}`} style={issueCardStyle}>
+                  {entry.imageUrl ? (
+                    <img
+                      src={entry.imageUrl}
+                      alt={entry.title}
+                      style={issueImageStyle}
+                    />
+                  ) : null}
                   <Text style={issueTypeStyle}>{entry.typeLabel ?? entry.type}</Text>
                   <Heading as="h3" style={issueTitleStyle}>
                     {entry.title}
@@ -469,6 +485,17 @@ const issueCardStyle = {
   borderRadius: "16px",
   margin: "0 0 16px",
   padding: "20px",
+};
+
+const issueImageStyle = {
+  display: "block" as const,
+  maxWidth: "100%",
+  width: "100%",
+  height: "auto",
+  maxHeight: "240px",
+  objectFit: "cover" as const,
+  borderRadius: "12px",
+  marginBottom: "16px",
 };
 
 const issueTypeStyle = {

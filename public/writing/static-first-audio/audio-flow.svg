@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 140" width="600" height="140" aria-hidden="true">
+  <defs>
+    <style>
+      .box { fill: none; stroke: currentColor; stroke-width: 1.5; }
+      .arrow { fill: none; stroke: currentColor; stroke-width: 1.2; marker-end: url(#arrow); }
+      .label { font: 12px/1.3 system-ui, sans-serif; fill: currentColor; }
+      .small { font-size: 10px; fill: #666; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <!-- MDX -->
+  <rect class="box" x="8" y="38" width="72" height="44" rx="4"/>
+  <text class="label" x="44" y="64" text-anchor="middle">MDX</text>
+  <path class="arrow" d="M80 60 L115 60"/>
+  <!-- Generate -->
+  <rect class="box" x="118" y="24" width="88" height="72" rx="4"/>
+  <text class="label" x="162" y="48" text-anchor="middle">audio:generate</text>
+  <text class="small" x="162" y="64" text-anchor="middle">MP3 + .mp3.json</text>
+  <text class="small" x="162" y="78" text-anchor="middle">+ manifest</text>
+  <path class="arrow" d="M206 60 L241 60"/>
+  <!-- Artifacts -->
+  <rect class="box" x="244" y="28" width="80" height="64" rx="4"/>
+  <text class="label" x="284" y="52" text-anchor="middle">public/audio/</text>
+  <text class="small" x="284" y="68" text-anchor="middle">(git-ignored)</text>
+  <path class="arrow" d="M324 60 L359 60"/>
+  <!-- Local or R2 -->
+  <rect class="box" x="362" y="20" width="96" height="80" rx="4"/>
+  <text class="label" x="410" y="48" text-anchor="middle">Local / R2</text>
+  <text class="small" x="410" y="64" text-anchor="middle">Dev: /audio/</text>
+  <text class="small" x="410" y="78" text-anchor="middle">Prod: audio:publish</text>
+  <text class="small" x="410" y="92" text-anchor="middle">? R2 bucket</text>
+  <path class="arrow" d="M458 60 L493 60"/>
+  <!-- Static site -->
+  <rect class="box" x="496" y="28" width="96" height="64" rx="4"/>
+  <text class="label" x="544" y="52" text-anchor="middle">Static site</text>
+  <text class="small" x="544" y="68" text-anchor="middle">Build reads manifest</text>
+  <text class="small" x="544" y="82" text-anchor="middle">? player when entry exists</text>
+</svg>

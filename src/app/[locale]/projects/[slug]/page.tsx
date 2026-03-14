@@ -56,6 +56,8 @@ export async function generateMetadata({
     return { title: uiContent.projects.notFoundTitle };
   }
 
+  const ogImageUrl = project.ogImage ?? metadataDefaults.defaultOgImageUrl;
+
   return {
     title: resolveContentTokens(uiContent.projects.detailTitleTemplate, {
       title: project.title,
@@ -75,7 +77,7 @@ export async function generateMetadata({
       type: "article",
       images: [
         {
-          url: metadataDefaults.defaultOgImageUrl,
+          url: ogImageUrl,
           width: metadataDefaults.defaultOgImageWidth,
           height: metadataDefaults.defaultOgImageHeight,
           alt: project.title,
@@ -86,7 +88,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: project.title,
       description: project.problemAddressed,
-      images: [metadataDefaults.defaultOgImageUrl],
+      images: [ogImageUrl],
     },
   };
 }

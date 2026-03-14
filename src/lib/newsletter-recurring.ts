@@ -39,6 +39,8 @@ export interface RecurringNewsletterCandidate {
   ctaUrl: string;
   publishedAt: string;
   contentVersion: string;
+  /** Optional absolute URL for digest/OG image (from writing.ogImage or project.ogImage). */
+  imageUrl?: string;
 }
 
 export function getNewsletterStatePath(): string {
@@ -71,6 +73,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     ctaUrl: absoluteUrl(`/writing/${writing.slug}`, locale),
     publishedAt: writing.publishDate,
     contentVersion: getWritingContentVersion(writing.slug, locale),
+    imageUrl: writing.ogImage ? absoluteUrl(writing.ogImage, locale) : undefined,
   }));
 
   const projectCandidates = getProjects(locale).map((project) => ({
@@ -81,6 +84,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     ctaUrl: absoluteUrl(`/projects/${project.slug}`, locale),
     publishedAt: project.date,
     contentVersion: getProjectContentVersion(project.slug, locale),
+    imageUrl: project.ogImage ? absoluteUrl(project.ogImage, locale) : undefined,
   }));
 
   return [...writingCandidates, ...projectCandidates].sort(compareRecurringCandidates);

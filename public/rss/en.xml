@@ -6,8 +6,16 @@
     <description>Thoughts on engineering, products, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss/en.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 04:06:55 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 05:12:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Read-along audio without a server]]></title>
+      <link>https://wchen.ai/en/writing/static-first-audio</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/static-first-audio</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[Read-along audio on a website usually implies a server. Someone hits play, a server runs text-to-speech, streams the result, or at least looks up a recording in a database. I wanted audio on this…]]></description>
+      <category>Architecture</category>
+    </item>
     <item>
       <title><![CDATA[Build-Time Validation as a Product]]></title>
       <link>https://wchen.ai/en/writing/build-time-validation-as-product</link>

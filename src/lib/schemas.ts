@@ -437,6 +437,9 @@ export const ProjectSchema = z.object({
   url: z.string().url().optional(),
   github: z.string().url().optional(),
   
+  // Optional OG/digest image (parity with writing)
+  ogImage: z.string().url().optional(),
+  
   // State
   featured: z.boolean().default(false), // To prioritize on homepage
 });
