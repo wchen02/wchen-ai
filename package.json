@@ -10,7 +10,7 @@
     "newsletter:send-recurring": "(test -f .env && tsx --env-file=.env scripts/send-recurring-newsletter.ts || tsx scripts/send-recurring-newsletter.ts)",
     "prebuild": "tsx scripts/validate-links.ts && tsx scripts/validate-theme-descriptors.ts && (test -f .env && tsx --env-file=.env scripts/fetch-github-data.ts || tsx scripts/fetch-github-data.ts) && tsx scripts/generate-rss.ts && tsx scripts/generate-sitemap.ts && tsx scripts/generate-robots.ts && tsx scripts/generate-search-index.ts",
     "start": "NODE_ENV=production next start",
-    "lint": "eslint",
+    "lint": "pnpm exec eslint .",
     "typecheck": "tsc --noEmit && tsc --noEmit -p functions/tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test",
