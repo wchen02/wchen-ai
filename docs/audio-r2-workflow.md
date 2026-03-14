@@ -61,6 +61,22 @@ The publish script:
 4. Run `pnpm audio:publish`.
 5. Deploy the site with `AUDIO_SOURCE=r2`.
 
+## Troubleshooting: Audio not working in production
+
+1. **Build-time environment variables**
+   - Audio source and R2 base URL are read at **build time** (when `next build` runs). If your deploy runs the build on Cloudflare Pages or another CI, that environment must have:
+     - `AUDIO_SOURCE=r2`
+     - `R2_AUDIO_PUBLIC_BASE_URL=https://cdn.wchen.ai` (or your R2 public/custom domain, no trailing slash)
+   - In **Cloudflare Pages**: Project → **Settings** → **Environment variables** → add both for **Production** (and **Preview** if you use it), then **Redeploy** so the next build sees them.
+   - Without these, the build uses local audio (`/audio/...`). Since `public/audio/` is gitignored, those URLs 404 in production and the player may not appear or playback fails.
+
+2. **R2/CDN returning 4xx/5xx for the MP3**
+   - Open the audio URL directly (e.g. `https://cdn.wchen.ai/en/writing/static-first.mp3`). If you get 404, 500, or another error, fix the bucket/custom domain before expecting playback.
+   - Common causes: custom domain not **Active**, R2 public access not enabled for the bucket, or a Worker in front that errors on Range requests (browsers send Range for `<audio>`). If using a custom domain, try the default R2 public URL (`https://pub-xxxx.r2.dev`) temporarily to confirm the bucket serves the file.
+
+3. **Player not shown at all**
+   - The build fetches the manifest from `R2_AUDIO_PUBLIC_BASE_URL/audio-manifest.json`. If that fetch failed at build time (wrong URL, network, or env not set), the manifest is empty and every page gets `hasAudio: false`, so no player is rendered. Fix step 1 and redeploy.
+
 ## Troubleshooting: Audio not playing locally with R2
 
 If you set `AUDIO_SOURCE=r2` and published to R2 but cannot listen locally:
