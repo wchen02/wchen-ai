@@ -6,6 +6,7 @@
 import fs from "fs";
 import path from "path";
 import { DEFAULT_LOCALE } from "../src/lib/locales";
+import { logger } from "../src/lib/logger";
 
 const OUT = path.join(process.cwd(), "out");
 
@@ -57,7 +58,7 @@ function getOneWritingSlug(): string | null {
 }
 
 function main(): void {
-  console.log("Validating page metadata on critical routes...");
+  logger.log("Validating page metadata on critical routes...");
 
   const results: CheckResult[] = [];
 
@@ -133,14 +134,14 @@ function main(): void {
 
   const failed = results.filter((r) => !r.ok);
   if (failed.length > 0) {
-    console.error("\nMetadata validation failed:\n");
+    logger.error("\nMetadata validation failed:\n");
     for (const r of failed) {
-      console.error(`  ${r.route}: missing ${r.missing.join(", ")}`);
+      logger.error(`  ${r.route}: missing ${r.missing.join(", ")}`);
     }
     process.exit(1);
   }
 
-  console.log("All critical routes have required metadata and JSON-LD.");
+  logger.log("All critical routes have required metadata and JSON-LD.");
 }
 
 main();

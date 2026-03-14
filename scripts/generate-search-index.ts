@@ -7,6 +7,7 @@ import path from "path";
 import { z } from "zod";
 import { getWritings } from "../src/lib/mdx";
 import { SUPPORTED_LOCALES } from "../src/lib/locales";
+import { logger } from "../src/lib/logger";
 
 const SearchEntrySchema = z.object({
   slug: z.string(),
@@ -35,7 +36,7 @@ function main(): void {
     const outPath = path.join(process.cwd(), "public", "locales", locale, "search-index.json");
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, JSON.stringify(index), "utf8");
-    console.log(`Wrote ${outPath} (${entries.length} writings, ${themes.length} themes).`);
+    logger.log(`Wrote ${outPath} (${entries.length} writings, ${themes.length} themes).`);
   }
 }
 

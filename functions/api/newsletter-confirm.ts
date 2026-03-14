@@ -4,6 +4,7 @@ import {
   renderNewsletterWelcomeEmail,
 } from "../../shared/newsletter-email";
 import { sendResendEmail, upsertResendContact } from "../../shared/resend";
+import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
   SITE_URL,
@@ -46,7 +47,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   const segmentId = env.RESEND_SEGMENT_ID;
 
   if (!secret || !apiKey || !segmentId) {
-    console.error("Newsletter confirm not configured");
+    logger.error("Newsletter confirm not configured");
     return htmlResponse(getSystemContent(resolvedLocale).common.genericError, 500, resolvedLocale);
   }
 
@@ -103,13 +104,13 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         },
       });
     } catch (error) {
-      console.error("Error sending newsletter welcome email:", error);
+      logger.error("Error sending newsletter welcome email:", error);
     }
 
     const origin = new URL(request.url).origin;
     return Response.redirect(`${origin}/${resolvedLocale}/newsletter-confirmed`, 302);
   } catch (error) {
-    console.error("Error confirming newsletter subscription:", error);
+    logger.error("Error confirming newsletter subscription:", error);
     return htmlResponse(getSystemContent(resolvedLocale).common.genericError, 500, resolvedLocale);
   }
 }

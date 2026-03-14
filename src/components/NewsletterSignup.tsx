@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useCurrentLocale } from "@/components/LocaleProvider";
+import { logger } from "@/lib/logger";
 import { getFormsContent } from "@/lib/site-content";
 import { getSiteProfile } from "@/lib/site-config";
 
@@ -47,7 +48,7 @@ export default function NewsletterSignup({ variant = "default" }: NewsletterSign
       formRef.current?.reset();
       setStatus("success");
     } catch (error: unknown) {
-      console.error(error);
+      logger.error(error);
       setStatus("error");
       const errMessage = error instanceof Error ? error.message : formsContent.common.unexpectedError;
       setErrorMessage(errMessage);

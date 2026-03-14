@@ -12,6 +12,7 @@ import {
   getNewsletterEmailContent,
   getNewsletterFromAddress,
 } from "@/lib/site-config";
+import { logger } from "@/lib/logger";
 import { getSystemContent } from "@/lib/site-content";
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
@@ -133,7 +134,7 @@ export async function POST(request: Request) {
       { status: 200, headers }
     );
   } catch (error) {
-    console.error("Error processing newsletter subscription:", error);
+    logger.error("Error processing newsletter subscription:", error);
     return NextResponse.json(
       {
         success: false,

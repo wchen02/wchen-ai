@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
 import { updateResendContact } from "../../../../shared/resend";
+import { logger } from "@/lib/logger";
 import { resolveLocale } from "@/lib/locales";
 import { getSystemContent } from "@/lib/site-content";
 
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
       { status: result.status }
     );
   } catch (error) {
-    console.error("Error unsubscribing newsletter contact locally:", error);
+    logger.error("Error unsubscribing newsletter contact locally:", error);
     const url = new URL(request.url);
     const locale = resolveLocale(url.searchParams.get("locale") ?? null);
     return NextResponse.json(

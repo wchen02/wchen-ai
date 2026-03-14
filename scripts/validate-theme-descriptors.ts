@@ -3,6 +3,7 @@
  * Run during build or lint to keep theme descriptors in sync with content.
  */
 import { getWritings } from "../src/lib/mdx";
+import { logger } from "../src/lib/logger";
 import { THEME_DESCRIPTORS } from "../src/lib/theme-config";
 
 function main(): void {
@@ -11,15 +12,15 @@ function main(): void {
   const missing = Array.from(themesUsed).filter((theme) => !(theme in THEME_DESCRIPTORS));
 
   if (missing.length > 0) {
-    console.warn(
+    logger.warn(
       "[validate-theme-descriptors] The following writing theme(s) have no descriptor in content/locales/en/site/ui.json:",
       missing.join(", ")
     );
-    console.warn("Add entries to themeDescriptors for consistent writing index UX.");
+    logger.warn("Add entries to themeDescriptors for consistent writing index UX.");
     process.exit(1);
   }
 
-  console.log("Theme descriptors OK: all writing themes have descriptors.");
+  logger.log("Theme descriptors OK: all writing themes have descriptors.");
 }
 
 main();

@@ -1,6 +1,6 @@
 # Audio R2 Workflow
 
-Generated audio is treated as a local artifact, not a Git-tracked asset.
+Generated audio is treated as a local artifact, not a Git-tracked asset. **Audio generation and publishing are not part of the normal build or CI**—run `pnpm audio:generate` and `pnpm audio:publish` locally, then push; the CI build only needs `AUDIO_SOURCE` and `R2_AUDIO_PUBLIC_BASE_URL` so the deployed app uses R2 for playback.
 
 ## Local Development
 
@@ -56,19 +56,20 @@ The publish script:
 ## Recommended Workflow
 
 1. Create or update content.
-2. Run `pnpm audio:generate`.
+2. Run `pnpm audio:generate` locally.
 3. Sanity check the local page/audio behavior.
-4. Run `pnpm audio:publish`.
-5. Deploy the site with `AUDIO_SOURCE=r2`.
+4. Run `pnpm audio:publish` locally (requires R2 env in `.env` or shell).
+5. Push to trigger CI (or deploy manually). The build does **not** run audio steps; set `AUDIO_SOURCE=r2` and `R2_AUDIO_PUBLIC_BASE_URL` in your GitHub production environment (or Cloudflare Pages env) so the built app uses R2 for playback.
 
 ## Troubleshooting: Audio not working in production
 
 1. **Build-time environment variables**
-   - Audio source and R2 base URL are read at **build time** (when `next build` runs). If your deploy runs the build on Cloudflare Pages or another CI, that environment must have:
+   - Audio source and R2 base URL are read at **build time** (when `next build` runs). The environment that runs the build must have:
      - `AUDIO_SOURCE=r2`
      - `R2_AUDIO_PUBLIC_BASE_URL=https://cdn.wchen.ai` (or your R2 public/custom domain, no trailing slash)
-   - In **Cloudflare Pages**: Project → **Settings** → **Environment variables** → add both for **Production** (and **Preview** if you use it), then **Redeploy** so the next build sees them.
-   - Without these, the build uses local audio (`/audio/...`). Since `public/audio/` is gitignored, those URLs 404 in production and the player may not appear or playback fails.
+   - **GitHub Actions CI:** Add **variables** `AUDIO_SOURCE` (value `r2`) and `R2_AUDIO_PUBLIC_BASE_URL` in the repo’s **production** environment (Settings → Environments → production). The workflow passes them into the build step.
+   - **Cloudflare Pages (build on Cloudflare):** Project → **Settings** → **Environment variables** → add both for **Production** (and **Preview** if you use it), then **Redeploy** so the next build sees them.
+   - Without these, the build uses local audio (`/audio/...`). Since `public/audio/` is gitignored and CI does not run audio generation, those URLs 404 in production and the player may not appear or playback fails.
 
 2. **R2/CDN returning 4xx/5xx for the MP3**
    - Open the audio URL directly (e.g. `https://cdn.wchen.ai/en/writing/static-first.mp3`). If you get 404, 500, or another error, fix the bucket/custom domain before expecting playback.
@@ -128,7 +129,7 @@ See [Configure CORS (R2)](https://developers.cloudflare.com/r2/buckets/cors/) an
 
 ## Notes
 
-- Normal site builds no longer require audio generation.
+- **Prebuild and CI do not run audio.** The `prebuild` script does not include `audio:generate` or `audio:publish`. Run them locally when you add or change content that should have read-along audio, then push; CI builds with `AUDIO_SOURCE` and `R2_AUDIO_PUBLIC_BASE_URL` so the app points to R2.
 - `public/audio/` is ignored by Git.
 - If `public/audio/` was previously tracked, remove it from the Git index with:
 

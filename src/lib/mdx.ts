@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, type Writing, type GitHubContributions } from "./schemas";
 import { DEFAULT_LOCALE } from "./locales";
 import { mdxToAudioText } from "./audio-text";
+import { logger } from "./logger";
 
 function hashRawFileContent(raw: string): string {
   return crypto.createHash("sha256").update(raw, "utf8").digest("hex").slice(0, 16);
@@ -160,7 +161,7 @@ export function getWritings(locale = DEFAULT_LOCALE, baseContentDir = CONTENT_DI
     const readingTimeMinutes = Math.ceil(wordCount / 200) || 1;
 
     if (!validatedData.draft && (wordCount < 200 || wordCount > 1500)) {
-      console.warn(
+      logger.warn(
         `[content] Writing "${validatedData.title}" (${slug}) has ${wordCount} words (expected 200–1500).`
       );
     }

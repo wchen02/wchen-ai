@@ -5,6 +5,7 @@
  */
 import { unsubscribe } from "./newsletter-unsubscribe";
 import { getLocaleFromRequest } from "./newsletter-unsubscribe";
+import { logger } from "../../src/lib/logger";
 import { getSystemContent } from "../../src/lib/site-content";
 
 type Env = { RESEND_API_KEY?: string; NEWSLETTER_SECRET?: string };
@@ -21,7 +22,7 @@ export async function onRequestPost(
   try {
     return await unsubscribe(context.request, context.env);
   } catch (error) {
-    console.error("Error in newsletter-unsubscribe-local:", error);
+    logger.error("Error in newsletter-unsubscribe-local:", error);
     const locale = getLocaleFromRequest(context.request);
     return new Response(
       JSON.stringify({

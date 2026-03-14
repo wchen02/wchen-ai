@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ContactPayloadSchema } from "../../../../shared/contact";
+import { logger } from "@/lib/logger";
 import { getSystemContent } from "@/lib/site-content";
 
 const systemContent = getSystemContent();
@@ -88,7 +89,7 @@ export async function POST(request: Request) {
       });
       if (!mailRes.ok) {
         const errBody = await mailRes.text();
-        console.error("Mailgun error:", mailRes.status, errBody);
+        logger.error("Mailgun error:", mailRes.status, errBody);
         return NextResponse.json(
           { success: false, error: systemContent.contact.sendFailure },
           { status: 500 }
@@ -106,7 +107,7 @@ export async function POST(request: Request) {
       message: systemContent.contact.developmentMessage,
     });
   } catch (error) {
-    console.error("Error processing contact form:", error);
+    logger.error("Error processing contact form:", error);
     return NextResponse.json(
       { success: false, error: systemContent.contact.sendFailure },
       { status: 500 }

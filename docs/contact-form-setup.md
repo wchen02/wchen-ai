@@ -51,7 +51,7 @@ If you use Option A and the sync step fails in CI, add or fix the same variables
 ## 3. Verify and monitor
 
 - **Test the form** on the live site and check that the email arrives at `CONTACT_TO_EMAIL`.
-- **Real-time logs:** **Workers & Pages → [project] → Logs** (or `wrangler pages deployment tail`). You’ll see `console.log`/`console.error` from the contact function (e.g. “Mailgun error: …” if send fails).
+- **Real-time logs:** **Workers & Pages → [project] → Logs** (or `wrangler pages deployment tail`). The contact function uses the project logger; in production only errors are logged (e.g. “Mailgun error: …” if send fails).
 - **Analytics:** **Workers & Pages → [project] → Analytics** for request counts and errors on `/api/contact`.
 
 If you don’t receive mail, check:

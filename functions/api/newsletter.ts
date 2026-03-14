@@ -2,6 +2,7 @@ import { NewsletterPayloadSchema } from "../../shared/newsletter";
 import { hmacSign } from "../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../shared/newsletter-email";
 import { sendResendEmail } from "../../shared/resend";
+import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
   SITE_URL,
@@ -86,7 +87,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     const apiKey = env.RESEND_API_KEY;
 
     if (!secret || !apiKey) {
-      console.warn("Newsletter not configured: set NEWSLETTER_SECRET + RESEND_API_KEY.");
+      logger.warn("Newsletter not configured: set NEWSLETTER_SECRET + RESEND_API_KEY.");
       return new Response(
         JSON.stringify({ success: true, message: systemContent.newsletter.subscribeSuccess }),
         { status: 200, headers }
@@ -120,7 +121,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       { status: 200, headers }
     );
   } catch (error) {
-    console.error("Error processing newsletter subscription:", error);
+    logger.error("Error processing newsletter subscription:", error);
     return new Response(
       JSON.stringify({ success: false, error: getSystemContent().newsletter.subscribeFailure }),
       { status: 500, headers }

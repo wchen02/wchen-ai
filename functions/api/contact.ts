@@ -1,4 +1,5 @@
 import { ContactPayloadSchema } from "../../shared/contact";
+import { logger } from "../../src/lib/logger";
 import { getAllowedOrigins } from "../../src/lib/site-config";
 import { getSystemContent } from "../../src/lib/site-content";
 
@@ -136,7 +137,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       });
       if (!mailRes.ok) {
         const errBody = await mailRes.text();
-        console.error("Mailgun error:", mailRes.status, errBody);
+        logger.error("Mailgun error:", mailRes.status, errBody);
         throw new Error(`Mailgun responded with ${mailRes.status}`);
       }
       return new Response(
@@ -145,7 +146,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       );
     }
 
-    console.warn(
+    logger.warn(
       "No contact delivery configured: set CONTACT_TO_EMAIL + MAILGUN_API_KEY + MAILGUN_DOMAIN."
     );
     return new Response(
@@ -154,7 +155,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     );
 
   } catch (error) {
-    console.error("Error processing contact form:", error);
+    logger.error("Error processing contact form:", error);
     return new Response(
       JSON.stringify({ success: false, error: systemContent.contact.sendFailure }),
       { status: 500, headers }

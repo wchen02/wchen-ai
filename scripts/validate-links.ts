@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { logger } from '../src/lib/logger';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content');
 const PROJECTS_DIR = path.join(CONTENT_DIR, 'projects');
@@ -25,7 +26,7 @@ interface BrokenLink {
 }
 
 function validateLinks(): void {
-  console.log('Validating internal links in content...');
+  logger.log('Validating internal links in content...');
 
   const projectSlugs = new Set(getMdxSlugs(PROJECTS_DIR));
   const writingSlugs = new Set(getMdxSlugs(WRITING_DIR));
@@ -66,15 +67,15 @@ function validateLinks(): void {
   scanDirectory(WRITING_DIR);
 
   if (broken.length > 0) {
-    console.error('\nBroken internal links detected:\n');
+    logger.error('\nBroken internal links detected:\n');
     for (const b of broken) {
-      console.error(`  ${b.file}: [${b.text}](${b.link})`);
+      logger.error(`  ${b.file}: [${b.text}](${b.link})`);
     }
-    console.error(`\n${broken.length} broken link(s) found. Build aborted.`);
+    logger.error(`\n${broken.length} broken link(s) found. Build aborted.`);
     process.exit(1);
   }
 
-  console.log('All internal links valid.');
+  logger.log('All internal links valid.');
 }
 
 validateLinks();

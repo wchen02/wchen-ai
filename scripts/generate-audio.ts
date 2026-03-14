@@ -23,6 +23,7 @@ import {
   type AudioTimingFile,
   type AudioTimingSegment,
 } from "../src/lib/audio-text";
+import { logger } from "../src/lib/logger";
 
 const PUBLIC_AUDIO = path.join(process.cwd(), "public", "audio");
 
@@ -163,7 +164,7 @@ async function generateAudioForItem(
     }
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     if (chunkPaths.length > 1 && !ffmpegAvailable()) {
-      console.warn(`[generate-audio] ffmpeg not found; writing first chunk only to ${outPath}. Install ffmpeg for full audio.`);
+      logger.warn(`[generate-audio] ffmpeg not found; writing first chunk only to ${outPath}. Install ffmpeg for full audio.`);
       fs.copyFileSync(chunkPaths[0], outPath);
       allSubtitles.splice(1);
       chunkDurationsMs.splice(1);
@@ -196,12 +197,12 @@ async function generateAudioForItem(
 
 async function main(): Promise<void> {
   if (process.env.SKIP_AUDIO === "1") {
-    console.log("[generate-audio] SKIP_AUDIO=1, skipping.");
+    logger.log("[generate-audio] SKIP_AUDIO=1, skipping.");
     return;
   }
 
   const provider = getTTSProvider();
-  console.log(`[generate-audio] Using provider: ${provider.name}`);
+  logger.log(`[generate-audio] Using provider: ${provider.name}`);
 
   const manifest: AudioManifest = createEmptyAudioManifest();
 
@@ -214,7 +215,7 @@ async function main(): Promise<void> {
       const textHash = hashAudioText(plain);
       if (!shouldGenerateAudio(outPath, textHash)) {
         registerAudioManifestEntry(manifest, locale, "writing", w.slug, { hasSubtitles: true });
-        console.log(`[generate-audio] ${locale}/writing/${w.slug} (skip, exists)`);
+        logger.log(`[generate-audio] ${locale}/writing/${w.slug} (skip, exists)`);
         continue;
       }
       try {
@@ -222,9 +223,9 @@ async function main(): Promise<void> {
         if (ok) {
           registerAudioManifestEntry(manifest, locale, "writing", w.slug, { hasSubtitles: true });
         }
-        console.log(`[generate-audio] ${locale}/writing/${w.slug}`);
+        logger.log(`[generate-audio] ${locale}/writing/${w.slug}`);
       } catch (err) {
-        console.error(`[generate-audio] ${locale}/writing/${w.slug}:`, err);
+        logger.error(`[generate-audio] ${locale}/writing/${w.slug}:`, err);
       }
     }
 
@@ -236,7 +237,7 @@ async function main(): Promise<void> {
       const textHash = hashAudioText(plain);
       if (!shouldGenerateAudio(outPath, textHash)) {
         registerAudioManifestEntry(manifest, locale, "projects", p.slug, { hasSubtitles: true });
-        console.log(`[generate-audio] ${locale}/projects/${p.slug} (skip, exists)`);
+        logger.log(`[generate-audio] ${locale}/projects/${p.slug} (skip, exists)`);
         continue;
       }
       try {
@@ -244,9 +245,9 @@ async function main(): Promise<void> {
         if (ok) {
           registerAudioManifestEntry(manifest, locale, "projects", p.slug, { hasSubtitles: true });
         }
-        console.log(`[generate-audio] ${locale}/projects/${p.slug}`);
+        logger.log(`[generate-audio] ${locale}/projects/${p.slug}`);
       } catch (err) {
-        console.error(`[generate-audio] ${locale}/projects/${p.slug}:`, err);
+        logger.error(`[generate-audio] ${locale}/projects/${p.slug}:`, err);
       }
     }
   }
@@ -257,10 +258,10 @@ async function main(): Promise<void> {
     JSON.stringify(manifest, null, 2),
     "utf8"
   );
-  console.log(`[generate-audio] Wrote ${path.join(PUBLIC_AUDIO, "audio-manifest.json")}`);
+  logger.log(`[generate-audio] Wrote ${path.join(PUBLIC_AUDIO, "audio-manifest.json")}`);
 }
 
 main().catch((err) => {
-  console.error("[generate-audio] Fatal:", err);
+  logger.error("[generate-audio] Fatal:", err);
   process.exit(1);
 });

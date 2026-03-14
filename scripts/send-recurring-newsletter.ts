@@ -1,4 +1,5 @@
 import { DEFAULT_LOCALE, resolveLocale } from "../src/lib/locales";
+import { logger } from "../src/lib/logger";
 import {
   SITE_URL,
   getNewsletterEmailBrand,
@@ -53,7 +54,7 @@ async function main(): Promise<void> {
   const secret = process.env.NEWSLETTER_SECRET;
 
   if (!apiKey || !segmentId || !secret) {
-    console.log(
+    logger.log(
       "Skipping recurring newsletter send: RESEND_API_KEY, RESEND_SEGMENT_ID, or NEWSLETTER_SECRET is not set."
     );
     return;
@@ -67,7 +68,7 @@ async function main(): Promise<void> {
   );
 
   if (unsentCandidatesForState.length === 0) {
-    console.log("No unsent recurring newsletter items found.");
+    logger.log("No unsent recurring newsletter items found.");
     return;
   }
 
@@ -78,7 +79,7 @@ async function main(): Promise<void> {
   const recipientsWithLocale = getUniqueDeliverableRecipientsWithLocale(contacts);
 
   if (recipientsWithLocale.length === 0) {
-    console.log("No confirmed newsletter subscribers found in the configured Resend segment.");
+    logger.log("No confirmed newsletter subscribers found in the configured Resend segment.");
     return;
   }
 
@@ -150,13 +151,13 @@ async function main(): Promise<void> {
   );
   writeNewsletterSendState(nextState);
 
-  console.log(
+  logger.log(
     `Sent recurring newsletter digest with ${unsentCandidatesForState.length} items to ${recipientsWithLocale.length} subscribers.`
   );
 }
 
 main().catch((error) => {
-  console.error("Recurring newsletter send failed.");
-  console.error(error);
+  logger.error("Recurring newsletter send failed.");
+  logger.error(error);
   process.exit(1);
 });

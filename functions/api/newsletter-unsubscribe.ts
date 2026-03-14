@@ -5,6 +5,7 @@ import {
   getPreferredLocaleFromAcceptLanguage,
   resolveLocale,
 } from "../../src/lib/locales";
+import { logger } from "../../src/lib/logger";
 import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
@@ -48,7 +49,7 @@ export async function unsubscribe(request: Request, env: Env): Promise<Response>
   }
 
   if (!env.NEWSLETTER_SECRET || !env.RESEND_API_KEY) {
-    console.error("Newsletter unsubscribe not configured");
+    logger.error("Newsletter unsubscribe not configured");
     return jsonError(systemContent.common.genericError, 500);
   }
 
@@ -84,7 +85,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   try {
     return await unsubscribe(context.request, context.env);
   } catch (error) {
-    console.error("Error unsubscribing newsletter contact:", error);
+    logger.error("Error unsubscribing newsletter contact:", error);
     const locale = getLocaleFromRequest(context.request);
     return htmlResponse(getSystemContent(locale).common.genericError, 500, locale);
   }
@@ -94,7 +95,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
   try {
     return await unsubscribe(context.request, context.env);
   } catch (error) {
-    console.error("Error unsubscribing newsletter contact:", error);
+    logger.error("Error unsubscribing newsletter contact:", error);
     const locale = getLocaleFromRequest(context.request);
     return new Response(
       JSON.stringify({

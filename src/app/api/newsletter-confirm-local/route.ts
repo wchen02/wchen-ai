@@ -12,6 +12,7 @@ import {
   getNewsletterFromAddress,
   getNewsletterUnsubscribeUrl,
 } from "@/lib/site-config";
+import { logger } from "@/lib/logger";
 import { getSystemContent } from "@/lib/site-content";
 
 export async function POST(request: Request) {
@@ -103,12 +104,12 @@ export async function POST(request: Request) {
         },
       });
     } catch (error) {
-      console.error("Error sending newsletter welcome email locally:", error);
+      logger.error("Error sending newsletter welcome email locally:", error);
     }
 
     return NextResponse.json({ success: true, redirectTo: "/newsletter-confirmed" });
   } catch (error) {
-    console.error("Error confirming newsletter subscription locally:", error);
+    logger.error("Error confirming newsletter subscription locally:", error);
     return NextResponse.json(
       { success: false, error: getSystemContent(resolvedLocale).common.genericError },
       { status: 500 }

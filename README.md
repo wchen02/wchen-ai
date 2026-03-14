@@ -30,3 +30,7 @@ Contact form setup (Mailgun, Cloudflare env vars, local dev): [docs/contact-form
 ## Newsletter
 
 Newsletter setup and recurring-send behavior: [docs/newsletter-setup.md](docs/newsletter-setup.md).
+
+## Audio (read-along)
+
+Read-along audio is generated and published locally to R2; CI does not run audio steps. [docs/audio-r2-workflow.md](docs/audio-r2-workflow.md).

@@ -4,6 +4,7 @@ import { getProjects, getWritings } from '../src/lib/mdx';
 import { SITE_URL } from '../src/lib/site-config';
 import { SUPPORTED_LOCALES } from '../src/lib/locales';
 import { localizePath } from '../src/lib/i18n';
+import { logger } from '../src/lib/logger';
 
 interface SitemapEntry {
   url: string;
@@ -15,7 +16,7 @@ function toDateString(isoDate: string): string {
 }
 
 function generateSitemap() {
-  console.log('Generating sitemap...');
+  logger.log('Generating sitemap...');
   const buildDate = new Date().toISOString().split('T')[0];
   const entries: SitemapEntry[] = [];
 
@@ -50,7 +51,7 @@ ${entries
   }
 
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemap);
-  console.log('Generated sitemap at public/sitemap.xml');
+  logger.log('Generated sitemap at public/sitemap.xml');
 }
 
 generateSitemap();

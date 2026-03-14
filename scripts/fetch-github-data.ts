@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { logger } from '../src/lib/logger';
 import { SITE_PROFILE } from '../src/lib/site-config';
 
 interface ContributionDay {
@@ -37,13 +38,13 @@ const GH_TOKEN = process.env.GH_TOKEN;
 
 async function fetchGitHubData() {
   if (!GH_TOKEN) {
-    console.warn('⚠️ GH_TOKEN is not set in environment. Skipping GitHub data fetch.');
-    console.warn('Creating a mock github-contributions.json file instead.');
+    logger.warn('⚠️ GH_TOKEN is not set in environment. Skipping GitHub data fetch.');
+    logger.warn('Creating a mock github-contributions.json file instead.');
     createMockData();
     return;
   }
 
-  console.log(`Fetching GitHub contribution data for @${GH_USERNAME}...`);
+  logger.log(`Fetching GitHub contribution data for @${GH_USERNAME}...`);
 
   const query = `
     query {
@@ -97,12 +98,12 @@ async function fetchGitHubData() {
     // Write to public folder
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(calendar, null, 2));
     
-    console.log(`✅ Successfully saved GitHub data to ${OUTPUT_FILE}`);
-    console.log(`Total contributions this year: ${calendar.totalContributions}`);
+    logger.log(`✅ Successfully saved GitHub data to ${OUTPUT_FILE}`);
+    logger.log(`Total contributions this year: ${calendar.totalContributions}`);
     
   } catch (error) {
-    console.error('❌ Failed to fetch GitHub data:', error);
-    console.warn('Falling back to mock data to prevent build failure.');
+    logger.error('❌ Failed to fetch GitHub data:', error);
+    logger.warn('Falling back to mock data to prevent build failure.');
     createMockData();
   }
 }
@@ -148,7 +149,7 @@ function createMockData() {
   };
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(mockData, null, 2));
-  console.log(`✅ Created mock GitHub data at ${OUTPUT_FILE}`);
+  logger.log(`✅ Created mock GitHub data at ${OUTPUT_FILE}`);
 }
 
 fetchGitHubData();

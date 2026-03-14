@@ -134,4 +134,4 @@ These are **neural TTS models that run on your machine** (or in CI) at build tim
 
 All of them need a small shared pipeline: MDX → plain text (existing plan), chunk long text, call TTS per chunk, concatenate audio, write to `public/audio/<locale>/writing|<projects>/<slug>.mp3`.
 
-**Implementation:** This site uses Edge TTS via a provider abstraction in `src/lib/tts/`. Swap provider by implementing the `TTSProvider` interface in `src/lib/tts/providers/` and setting `TTS_PROVIDER` (or extending `getTTSProvider()` in `src/lib/tts/index.ts`). Build script: `scripts/generate-audio.ts`. Set `SKIP_AUDIO=1` to skip generation in CI.
+**Implementation:** This site uses Edge TTS via a provider abstraction in `src/lib/tts/`. Swap provider by implementing the `TTSProvider` interface in `src/lib/tts/providers/` and setting `TTS_PROVIDER` (or extending `getTTSProvider()` in `src/lib/tts/index.ts`). Build script: `scripts/generate-audio.ts`. Audio generation and publishing are run **locally only** (not in CI); see [Audio R2 workflow](./audio-r2-workflow.md). Set `SKIP_AUDIO=1` to skip generation when running `pnpm audio:generate` locally.

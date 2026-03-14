@@ -64,7 +64,6 @@ export default function NewsletterSlideout() {
         style={{
           paddingLeft: "env(safe-area-inset-left, 0px)",
           paddingRight: "env(safe-area-inset-right, 0px)",
-          paddingBottom: "env(safe-area-inset-bottom, 0px)",
         }}
       >
         {/* Backdrop when open; hidden from a11y tree when closed so axe does not flag unnamed button */}
@@ -78,64 +77,58 @@ export default function NewsletterSlideout() {
           onClick={() => setOpen(false)}
         />
 
-        {/* Tab: always visible strip at bottom right; z-10 so it sits above panel for hit-testing */}
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => setOpen((v) => !v)}
-          className="relative z-10 flex min-h-12 h-14 sm:h-12 w-full shrink-0 items-center justify-between gap-3 rounded-t-2xl border-x border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)] touch-manipulation transition-colors hover:bg-gray-50 dark:hover:bg-neutral-800/80 active:bg-gray-100 dark:active:bg-neutral-800 px-4 sm:px-4"
-        >
-          <span className="flex min-w-0 items-center gap-2">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 dark:bg-emerald-400/10 text-emerald-600 dark:text-emerald-400" aria-hidden>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                <path d="m22 6-10 7L2 6" />
-              </svg>
-            </span>
-            <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-              {title}
-            </span>
-          </span>
-          <span
-            className={`shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 dark:text-gray-400 transition-transform duration-200 motion-reduce:transition-none ${
-              open ? "rotate-180" : ""
-            }`}
-            aria-hidden
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </button>
-
-        {/* Panel: slides up from bottom when open; inert + invisible when closed so tab (z-10) receives clicks and a11y/E2E see it hidden */}
+        {/* Single card: bar at top, content slides up below when open */}
         <div
-          inert={!open}
-          className={`absolute left-0 right-0 bottom-full z-0 transition-transform duration-300 ease-out motion-reduce:transition-none max-h-[85vh] ${
-            open ? "z-20 translate-y-0 pointer-events-auto opacity-100" : "translate-y-full pointer-events-none invisible opacity-0"
-          }`}
+          role="region"
+          aria-label={title}
+          className="flex flex-col rounded-t-2xl border-x border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)] overflow-hidden"
         >
+          {/* Bar: always visible, top of card when expanded; pb-safe keeps content above home indicator */}
           <div
-            id={panelId}
-            role="region"
-            aria-label={title}
-            className="rounded-t-2xl border-x border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.08)] dark:shadow-[0_-8px_24px_-4px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col"
+            className="relative z-10 flex min-h-12 h-14 sm:h-12 w-full shrink-0 items-center justify-between gap-3 px-4 sm:px-4"
+            style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
           >
-            {/* Header: close only (title is in the tab bar) */}
-            <div className="flex shrink-0 items-center justify-end border-b border-gray-100 dark:border-gray-800 bg-gray-50/80 dark:bg-neutral-800/50 px-4 py-2">
-              <button
-                type="button"
-                aria-label="Close"
-                onClick={() => setOpen(false)}
-                className="shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-neutral-700 hover:text-gray-700 dark:hover:text-gray-200 touch-manipulation transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls={panelId}
+              aria-label={open ? "Close" : title}
+              onClick={() => setOpen((v) => !v)}
+              className="flex min-w-0 flex-1 items-center justify-between gap-3 touch-manipulation transition-colors hover:bg-gray-50 dark:hover:bg-neutral-800/80 active:bg-gray-100 dark:active:bg-neutral-800 -m-1 rounded-lg p-1"
+            >
+              <span className="flex min-w-0 items-center gap-2">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 dark:bg-emerald-400/10 text-emerald-600 dark:text-emerald-400" aria-hidden>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <path d="m22 6-10 7L2 6" />
+                  </svg>
+                </span>
+                <span className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                  {title}
+                </span>
+              </span>
+              <span
+                className={`shrink-0 flex h-8 w-8 items-center justify-center rounded-lg text-gray-500 dark:text-gray-400 transition-transform duration-[350ms] ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
+                  open ? "rotate-180" : ""
+                }`}
+                aria-hidden
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 15l6-6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </button>
-            </div>
-            <div className="overflow-y-auto overscroll-contain max-h-[70vh] px-4 pt-4 pb-5 space-y-5">
+              </span>
+            </button>
+          </div>
+
+          {/* Content: slides up below bar when open; inert + fully hidden when closed so only bar is visible */}
+          <div
+            id={panelId}
+            inert={!open}
+            className={`grid min-h-0 overflow-hidden transition-[grid-template-rows] duration-[350ms] ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none ${
+              open ? "grid-rows-[1fr]" : "grid-rows-[0fr] max-h-0"
+            } ${!open ? "pointer-events-none invisible" : ""}`}
+          >
+            <div className="overflow-y-auto overscroll-contain min-h-0 max-h-[70vh] px-4 pt-4 pb-5 space-y-5">
               <NewsletterSignup variant="slideout" />
               <div className="pt-2">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Or follow via feed</p>

@@ -7,6 +7,7 @@ import {
   S3Client,
   S3ServiceException,
 } from "@aws-sdk/client-s3";
+import { logger } from "../src/lib/logger";
 
 const PUBLIC_AUDIO = path.join(process.cwd(), "public", "audio");
 const MANIFEST_FILENAME = "audio-manifest.json";
@@ -161,20 +162,20 @@ async function main(): Promise<void> {
   for (const candidate of candidates) {
     if (await isUnchanged(client, config.bucket, candidate)) {
       skippedCount += 1;
-      console.log(`[upload-audio-to-r2] skip ${candidate.key}`);
+      logger.log(`[upload-audio-to-r2] skip ${candidate.key}`);
       continue;
     }
     await uploadCandidate(client, config.bucket, candidate);
     uploadedCount += 1;
-    console.log(`[upload-audio-to-r2] upload ${candidate.key}`);
+    logger.log(`[upload-audio-to-r2] upload ${candidate.key}`);
   }
 
-  console.log(
+  logger.log(
     `[upload-audio-to-r2] Completed: ${uploadedCount} uploaded, ${skippedCount} skipped, ${candidates.length} total`
   );
 }
 
 main().catch((error) => {
-  console.error("[upload-audio-to-r2] Fatal:", error);
+  logger.error("[upload-audio-to-r2] Fatal:", error);
   process.exit(1);
 });

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useCurrentLocale } from "@/components/LocaleProvider";
+import { logger } from "@/lib/logger";
 import { getFormsContent } from "@/lib/site-content";
 
 export default function ContactForm() {
@@ -42,7 +43,7 @@ export default function ContactForm() {
       formRef.current?.reset();
       setStatus("success");
     } catch (error: unknown) {
-      console.error(error);
+      logger.error(error);
       setStatus("error");
       const errMessage = error instanceof Error ? error.message : formsContent.common.unexpectedError;
       setErrorMessage(errMessage);

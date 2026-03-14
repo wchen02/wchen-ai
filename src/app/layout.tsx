@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import LoggerInit from "@/components/LoggerInit";
 import { METADATA_DEFAULTS } from "@/lib/metadata-defaults";
 import { SUPPORTED_LOCALES } from "@/lib/locales";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} bg-background text-foreground antialiased selection:bg-emerald-200 dark:selection:bg-emerald-900 min-h-screen flex flex-col`}>
+        <LoggerInit />
         {children}
       </body>
     </html>

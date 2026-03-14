@@ -3,12 +3,13 @@ import path from 'path';
 import { getWritings, extractExcerpt } from '../src/lib/mdx';
 import { SUPPORTED_LOCALES, type SupportedLocale } from '../src/lib/locales';
 import { localizePath } from '../src/lib/i18n';
+import { logger } from '../src/lib/logger';
 import { getSiteProfile, getSiteUrl } from '../src/lib/site-config';
 
 const RSS_REL_PATH = (locale: SupportedLocale) => `/rss/${locale}.xml`;
 
 async function generateRss() {
-  console.log('Generating per-locale RSS feeds...');
+  logger.log('Generating per-locale RSS feeds...');
 
   const publicDir = path.join(process.cwd(), 'public');
   const rssDir = path.join(publicDir, 'rss');
@@ -51,7 +52,7 @@ async function generateRss() {
 
     const outPath = path.join(rssDir, `${locale}.xml`);
     fs.writeFileSync(outPath, rssFeed);
-    console.log(`✅ Generated RSS feed at public/rss/${locale}.xml`);
+    logger.log(`✅ Generated RSS feed at public/rss/${locale}.xml`);
   }
 }
 

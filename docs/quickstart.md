@@ -101,7 +101,8 @@ pnpm validate:metadata
 
 Notes:
 
-- `pnpm build` runs the prebuild scripts that validate links, generate RSS/sitemap/search assets, and fetch GitHub contribution data when credentials are available.
+- `pnpm build` runs the prebuild scripts that validate links, generate RSS/sitemap/search assets, and fetch GitHub contribution data when credentials are available. It does **not** run audio generation or R2 upload—those are done locally (see [Audio R2 workflow](./audio-r2-workflow.md)).
+- `pnpm build` and `pnpm start` set `NODE_ENV=production` so the app and logger behave as in production.
 - `pnpm validate:metadata` validates required metadata and structured-data output after a build.
 - `pnpm run newsletter:send-recurring` sends a real recurring newsletter when newsletter env vars are configured. Leave those vars unset if you only want to verify that the script exits safely.
 

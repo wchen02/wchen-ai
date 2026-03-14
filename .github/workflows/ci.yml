@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
+      # Production env so Next build and app code (e.g. logger) behave as in production.
+      NODE_ENV: production
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
       RESEND_SEGMENT_ID: ${{ secrets.RESEND_SEGMENT_ID }}
     steps:
@@ -54,11 +56,15 @@ jobs:
       - name: Run Tests
         run: pnpm test
 
+      # Audio is generated and published to R2 locally (pnpm audio:generate && pnpm audio:publish).
+      # Set vars AUDIO_SOURCE=r2 and R2_AUDIO_PUBLIC_BASE_URL so the built app uses R2 for playback.
       - name: Build Next.js Application
         run: pnpm build
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USERNAME: ${{ github.repository_owner }}
+          AUDIO_SOURCE: ${{ vars.AUDIO_SOURCE }}
+          R2_AUDIO_PUBLIC_BASE_URL: ${{ vars.R2_AUDIO_PUBLIC_BASE_URL }}
 
       - name: Send recurring newsletter
         if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''
