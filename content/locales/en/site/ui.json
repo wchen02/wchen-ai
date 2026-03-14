@@ -66,11 +66,24 @@
     "minuteReadLabel": "min read",
     "updatedPrefix": "Updated",
     "notFoundTitle": "Writing Not Found",
-    "detailTitleTemplate": "{title} | {siteName}"
+    "detailTitleTemplate": "{title} | {siteName}",
+    "loadMoreLabel": "Load more",
+    "loadMoreAriaLabel": "Load more writings",
+    "showingCountTemplate": "Showing 1–{end} of {total}",
+    "filterByThemeLabel": "Filter by theme:",
+    "allThemesLabel": "All themes",
+    "skipToThemeNavLabel": "Skip to theme navigation",
+    "backToTopLabel": "Back to top",
+    "backToTopAriaLabel": "Back to top of page"
   },
   "projects": {
     "filterByTypeLabel": "Filter by type:",
     "allLabel": "All",
+    "loadMoreLabel": "Load more",
+    "loadMoreAriaLabel": "Load more projects",
+    "showingCountTemplate": "Showing 1–{end} of {total}",
+    "backToTopLabel": "Back to top",
+    "backToTopAriaLabel": "Back to top of page",
     "typeLabels": {
       "app": "App",
       "agent": "Agent",

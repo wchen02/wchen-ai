@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import BackToTop from "@/components/BackToTop";
+import LoadMoreProjects from "@/components/LoadMoreProjects";
 import ProjectsFilter from "@/components/ProjectsFilter";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import SectionReveal from "@/components/SectionReveal";
 import { getProjects } from "@/lib/mdx";
+
+const INITIAL_PROJECT_COUNT = 20;
 import { getMetadataDefaults } from "@/lib/metadata-defaults";
 import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization";
 import { resolveLocale } from "@/lib/locales";
@@ -59,10 +63,12 @@ export default async function LocalizedProjectsPage({
   const { locale } = await params;
   const resolvedLocale = resolveLocale(locale);
   const siteProfile = getSiteProfile(resolvedLocale);
-  const projects = getProjects(resolvedLocale);
+  const allProjects = getProjects(resolvedLocale);
+  const initialProjects = allProjects.slice(0, INITIAL_PROJECT_COUNT);
+  const totalCount = allProjects.length;
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-16">
+    <main id="page-top" className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-16">
       <SectionReveal className="space-y-4">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -75,8 +81,20 @@ export default async function LocalizedProjectsPage({
       </SectionReveal>
 
       <SectionReveal>
-        <ProjectsFilter projects={projects} />
+        <ProjectsFilter projects={initialProjects} />
       </SectionReveal>
+
+      {totalCount > INITIAL_PROJECT_COUNT && (
+        <SectionReveal>
+          <LoadMoreProjects totalCount={totalCount} locale={resolvedLocale} />
+        </SectionReveal>
+      )}
+
+      {totalCount > 0 && (
+        <SectionReveal>
+          <BackToTop section="projects" />
+        </SectionReveal>
+      )}
 
       <NewsletterSlideout />
     </main>

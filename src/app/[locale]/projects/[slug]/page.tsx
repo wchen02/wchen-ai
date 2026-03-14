@@ -14,11 +14,12 @@ import {
   StickyAudioPlayerBar,
 } from "@/components/AudioPlayerVisibilityContext";
 import WritingProseWithHighlight from "@/components/WritingProseWithHighlight";
+import ProjectSummaryWithHighlight from "@/components/ProjectSummaryWithHighlight";
 import GiscusComments from "@/components/GiscusComments";
 import MdxImage from "@/components/MdxImage";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import ShareButton from "@/components/ShareButton";
-import { hashAudioText, mdxToAudioText } from "@/lib/audio-text";
+import { hashAudioText, projectToAudioText } from "@/lib/audio-text";
 import { getAudioInfo } from "@/lib/audio-manifest";
 import { extractHeadings, getProjectBySlug, getProjects, type TOCItem } from "@/lib/mdx";
 import { formatDate, resolveContentTokens } from "@/lib/formatting";
@@ -108,7 +109,15 @@ export default async function LocalizedProjectPage({
   }
 
   const audioInfo = await getAudioInfo(resolvedLocale, "projects", slug);
-  const audioTextHash = audioInfo.subtitlesUrl ? hashAudioText(mdxToAudioText(project.content)) : undefined;
+  const projectAudio = audioInfo.subtitlesUrl
+    ? projectToAudioText(project, {
+        motivationLabel: uiContent.projects.motivationLabel,
+        problemLabel: uiContent.projects.problemLabel,
+        learningsLabel: uiContent.projects.learningsLabel,
+      })
+    : null;
+  const audioTextHash = projectAudio ? hashAudioText(projectAudio.fullText) : undefined;
+  const bodyStartOffset = projectAudio?.bodyStartOffset ?? 0;
   const fixedSections: TOCItem[] = [
     { id: "the-motivation", text: uiContent.projects.motivationLabel, level: 2 },
     { id: "the-problem", text: uiContent.projects.problemLabel, level: 2 },
@@ -124,7 +133,13 @@ export default async function LocalizedProjectPage({
     <div className="prose dark:prose-invert prose-emerald min-w-0 max-w-full overflow-x-auto prose-headings:font-bold prose-headings:scroll-mt-24 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-pre:overflow-x-auto prose-pre:max-w-full prose-img:max-w-full prose-img:h-auto">
       <MDXRemote
         source={project.content}
-        options={{ mdxOptions: { rehypePlugins: audioInfo.subtitlesUrl ? [rehypeSlug, rehypeAudioOffsets] : [rehypeSlug] } }}
+        options={{
+          mdxOptions: {
+            rehypePlugins: audioInfo.subtitlesUrl
+              ? [rehypeSlug, [rehypeAudioOffsets, { bodyStartOffset }]]
+              : [rehypeSlug],
+          },
+        }}
         components={{ img: MdxImage }}
       />
     </div>
@@ -243,32 +258,21 @@ export default async function LocalizedProjectPage({
           </>
         }
       >
-        <div className="bg-gray-50 dark:bg-neutral-900 rounded-xl p-6 md:p-8 space-y-6 border border-gray-100 dark:border-gray-800">
-          <section id="the-motivation">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 scroll-mt-24">
-              {uiContent.projects.motivationLabel}
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{project.motivation}</p>
-          </section>
-          <section id="the-problem">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 scroll-mt-24">
-              {uiContent.projects.problemLabel}
-            </h2>
-            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-              {project.problemAddressed}
-            </p>
-          </section>
-          {project.learnings && (
-            <section id="key-learnings">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 scroll-mt-24">
-                {uiContent.projects.learningsLabel}
-              </h2>
-              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{project.learnings}</p>
-            </section>
-          )}
-        </div>
-        <WritingProseWithHighlight subtitlesUrl={audioInfo.subtitlesUrl} expectedTextHash={audioTextHash}>
-          {proseNode}
+        <WritingProseWithHighlight
+          subtitlesUrl={audioInfo.subtitlesUrl}
+          expectedTextHash={audioTextHash}
+          bodyStartOffset={bodyStartOffset}
+        >
+          <>
+            <ProjectSummaryWithHighlight
+              project={project}
+              motivationLabel={uiContent.projects.motivationLabel}
+              problemLabel={uiContent.projects.problemLabel}
+              learningsLabel={uiContent.projects.learningsLabel}
+              highlightWithAudio={Boolean(audioInfo.subtitlesUrl)}
+            />
+            {proseNode}
+          </>
         </WritingProseWithHighlight>
       </ArticleWithTOC>
   );

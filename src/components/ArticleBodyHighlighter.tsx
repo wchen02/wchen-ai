@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { useAudioPlayback } from "@/components/AudioPlaybackContext";
 import { useAudioPlayerVisibility } from "@/components/AudioPlayerVisibilityContext";
 
@@ -36,6 +36,13 @@ interface AudioOffsetSpan extends HTMLSpanElement {
   };
 }
 
+const AUDIO_OFFSET_SELECTOR = "[data-audio-start-offset][data-audio-end-offset]";
+
+function collectSpans(container: HTMLDivElement | null): AudioOffsetSpan[] {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll<AudioOffsetSpan>(AUDIO_OFFSET_SELECTOR));
+}
+
 const HIGHLIGHT_CLASSES = [
   "text-emerald-600",
   "dark:text-emerald-400",
@@ -46,10 +53,13 @@ const HIGHLIGHT_CLASSES = [
 export default function ArticleBodyHighlighter({
   subtitlesUrl,
   expectedTextHash,
+  bodyStartOffset = 0,
   children,
 }: {
   subtitlesUrl?: string;
   expectedTextHash?: string;
+  /** For project pages: character offset in full audio where the MDX body starts. Used when segment offsets are body-relative (legacy JSON). */
+  bodyStartOffset?: number;
   children: ReactNode;
 }) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
@@ -85,7 +95,8 @@ export default function ArticleBodyHighlighter({
           Array.isArray((payload as AudioTimingFile).segments)
         ) {
           const timingFile = payload as AudioTimingFile;
-          if (expectedTextHash && timingFile.textHash !== expectedTextHash) {
+          const hashMismatch = expectedTextHash && timingFile.textHash !== expectedTextHash;
+          if (hashMismatch && bodyStartOffset <= 0) {
             setSegments([]);
             return;
           }
@@ -96,11 +107,20 @@ export default function ArticleBodyHighlighter({
               typeof segment?.startOffset === "number" &&
               typeof segment?.endOffset === "number"
           );
-          setSegments(nextSegments);
+          const alignedSegments =
+            hashMismatch && bodyStartOffset > 0
+              ? nextSegments.map((segment) => ({
+                  ...segment,
+                  startOffset: segment.startOffset + bodyStartOffset,
+                  endOffset: segment.endOffset + bodyStartOffset,
+                }))
+              : nextSegments;
+          setSegments(alignedSegments);
         }
       })
       .catch(() => {
-        // CORS or network error: leave segments empty (read-along disabled). Ensure promise is handled.
+        // CORS or network error: segments stay empty (read-along disabled). In production, use
+        // same-origin audio (e.g. R2_AUDIO_PUBLIC_BASE_URL=/audio with /audio/* proxied) or set CORS on the asset origin.
         if (!cancelled) {
           try {
             setSegments([]);
@@ -112,15 +132,31 @@ export default function ArticleBodyHighlighter({
     return () => {
       cancelled = true;
     };
-  }, [expectedTextHash, subtitlesUrl]);
+  }, [expectedTextHash, subtitlesUrl, bodyStartOffset]);
 
-  useEffect(() => {
-    spansRef.current = bodyRef.current
-      ? Array.from(
-          bodyRef.current.querySelectorAll<AudioOffsetSpan>("[data-audio-start-offset][data-audio-end-offset]")
-        )
-      : [];
+  // Run synchronously after DOM update so spans from server-rendered/hydrated content are found (fixes production).
+  useLayoutEffect(() => {
+    spansRef.current = collectSpans(bodyRef.current);
   }, [children, segments.length]);
+
+  // Retry span collection when segments have loaded but no spans were found (hydration/timing in production).
+  useLayoutEffect(() => {
+    if (segments.length === 0 || spansRef.current.length > 0) return;
+    let cancelled = false;
+    const onFrame = () => {
+      if (cancelled) return;
+      spansRef.current = collectSpans(bodyRef.current);
+      if (spansRef.current.length > 0) return;
+      window.setTimeout(() => {
+        if (!cancelled) spansRef.current = collectSpans(bodyRef.current);
+      }, 100);
+    };
+    const id = requestAnimationFrame(onFrame);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(id);
+    };
+  }, [segments.length]);
 
   useEffect(() => {
     if (!bodyRef.current || segments.length === 0 || spansRef.current.length === 0) return;
@@ -144,10 +180,12 @@ export default function ArticleBodyHighlighter({
     if (activeSegmentIndex < 0) return;
 
     const activeSegment = segments[activeSegmentIndex];
+    const segStart = activeSegment.startOffset;
+    const segEnd = activeSegment.endOffset;
     const nextHighlighted = spansRef.current.filter((span) => {
       const spanStart = Number(span.dataset.audioStartOffset);
       const spanEnd = Number(span.dataset.audioEndOffset);
-      return spanStart < activeSegment.endOffset && spanEnd > activeSegment.startOffset;
+      return spanStart < segEnd && spanEnd > segStart;
     });
     if (nextHighlighted.length > 0) {
       for (const span of nextHighlighted) {

@@ -85,6 +85,51 @@ export function mdxToAudioText(mdxContent: string): string {
   return normalizeAudioText(raw);
 }
 
+export interface ProjectAudioLabels {
+  motivationLabel: string;
+  problemLabel: string;
+  learningsLabel: string;
+}
+
+export interface ProjectForAudio {
+  motivation: string;
+  problemAddressed: string;
+  learnings?: string;
+  content: string;
+}
+
+/**
+ * Builds full plain text for project TTS: motivation, problem, key learnings (if present), then body.
+ * Returns full text and the character offset where the body starts (for highlight sync).
+ */
+export function projectToAudioText(
+  project: ProjectForAudio,
+  labels: ProjectAudioLabels
+): { fullText: string; bodyStartOffset: number } {
+  const state = createAudioTextState();
+  appendAudioText(state, labels.motivationLabel);
+  appendAudioText(state, " ");
+  appendAudioText(state, project.motivation);
+  appendAudioText(state, " ");
+  appendAudioText(state, labels.problemLabel);
+  appendAudioText(state, " ");
+  appendAudioText(state, project.problemAddressed);
+  if (project.learnings) {
+    appendAudioText(state, " ");
+    appendAudioText(state, labels.learningsLabel);
+    appendAudioText(state, " ");
+    appendAudioText(state, project.learnings);
+  }
+  let bodyStartOffset = state.length;
+  const bodyText = mdxToAudioText(project.content);
+  if (bodyText) {
+    appendAudioText(state, " ");
+    bodyStartOffset = state.length;
+    appendAudioText(state, bodyText);
+  }
+  return { fullText: state.text, bodyStartOffset };
+}
+
 export function buildAudioTimingSegments(
   subtitles: ProviderSubtitleSegment[] | undefined,
   offsetBase = 0

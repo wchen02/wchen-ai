@@ -66,11 +66,24 @@
     "minuteReadLabel": "分钟阅读",
     "updatedPrefix": "更新于",
     "notFoundTitle": "未找到文章",
-    "detailTitleTemplate": "{title} | {siteName}"
+    "detailTitleTemplate": "{title} | {siteName}",
+    "loadMoreLabel": "加载更多",
+    "loadMoreAriaLabel": "加载更多文章",
+    "showingCountTemplate": "显示第 1–{end} 条，共 {total} 条",
+    "filterByThemeLabel": "按主题筛选：",
+    "allThemesLabel": "全部主题",
+    "skipToThemeNavLabel": "跳到主题导航",
+    "backToTopLabel": "返回顶部",
+    "backToTopAriaLabel": "返回页面顶部"
   },
   "projects": {
     "filterByTypeLabel": "按类型筛选：",
     "allLabel": "全部",
+    "loadMoreLabel": "加载更多",
+    "loadMoreAriaLabel": "加载更多项目",
+    "showingCountTemplate": "显示第 1–{end} 条，共 {total} 条",
+    "backToTopLabel": "返回顶部",
+    "backToTopAriaLabel": "返回页面顶部",
     "typeLabels": {
       "app": "应用",
       "agent": "代理",

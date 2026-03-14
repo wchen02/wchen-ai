@@ -20,9 +20,11 @@ import {
   buildAudioTimingSegments,
   hashAudioText,
   mdxToAudioText,
+  projectToAudioText,
   type AudioTimingFile,
   type AudioTimingSegment,
 } from "../src/lib/audio-text";
+import { getUiContent } from "../src/lib/site-content";
 import { logger } from "../src/lib/logger";
 
 const PUBLIC_AUDIO = path.join(process.cwd(), "public", "audio");
@@ -230,8 +232,14 @@ async function main(): Promise<void> {
     }
 
     const projects = getProjects(locale);
+    const ui = getUiContent(locale);
+    const projectLabels = {
+      motivationLabel: ui.projects.motivationLabel,
+      problemLabel: ui.projects.problemLabel,
+      learningsLabel: ui.projects.learningsLabel,
+    };
     for (const p of projects) {
-      const plain = mdxToAudioText(p.content);
+      const { fullText: plain } = projectToAudioText(p, projectLabels);
       if (!plain || plain.length < 50) continue;
       const outPath = path.join(PUBLIC_AUDIO, locale, "projects", `${p.slug}.mp3`);
       const textHash = hashAudioText(plain);

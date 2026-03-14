@@ -66,11 +66,24 @@
     "minuteReadLabel": "min de lectura",
     "updatedPrefix": "Actualizado",
     "notFoundTitle": "Escrito no encontrado",
-    "detailTitleTemplate": "{title} | {siteName}"
+    "detailTitleTemplate": "{title} | {siteName}",
+    "loadMoreLabel": "Cargar mas",
+    "loadMoreAriaLabel": "Cargar mas escritos",
+    "showingCountTemplate": "Mostrando 1–{end} de {total}",
+    "filterByThemeLabel": "Filtrar por tema:",
+    "allThemesLabel": "Todos los temas",
+    "skipToThemeNavLabel": "Ir a la navegacion por tema",
+    "backToTopLabel": "Volver arriba",
+    "backToTopAriaLabel": "Volver al inicio de la pagina"
   },
   "projects": {
     "filterByTypeLabel": "Filtrar por tipo:",
     "allLabel": "Todos",
+    "loadMoreLabel": "Cargar mas",
+    "loadMoreAriaLabel": "Cargar mas proyectos",
+    "showingCountTemplate": "Mostrando 1–{end} de {total}",
+    "backToTopLabel": "Volver arriba",
+    "backToTopAriaLabel": "Volver al inicio de la pagina",
     "typeLabels": {
       "app": "App",
       "agent": "Agente",

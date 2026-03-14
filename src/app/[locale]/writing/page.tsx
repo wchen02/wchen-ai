@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import BackToTop from "@/components/BackToTop";
+import LoadMoreWritings from "@/components/LoadMoreWritings";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import SearchWriting from "@/components/SearchWriting";
 import SectionReveal from "@/components/SectionReveal";
+import ThemeNav from "@/components/ThemeNav";
 import WritingCard from "@/components/WritingCard";
 import { getWritings } from "@/lib/mdx";
 import { getMetadataDefaults } from "@/lib/metadata-defaults";
@@ -11,6 +14,8 @@ import { getSiteProfile } from "@/lib/site-config";
 import { getUiContent } from "@/lib/site-content";
 import { getThemeDescriptor, getThemeLabel } from "@/lib/theme-config";
 import type { Writing } from "@/lib/schemas";
+
+const INITIAL_WRITING_COUNT = 20;
 
 function groupByTheme(writings: Writing[]): Record<string, Writing[]> {
   const groups = writings.reduce(
@@ -88,12 +93,14 @@ export default async function LocalizedWritingIndexPage({
   const resolvedLocale = resolveLocale(locale);
   const siteProfile = getSiteProfile(resolvedLocale);
   const uiContent = getUiContent(resolvedLocale);
-  const writings = getWritings(resolvedLocale);
-  const themeGroups = groupByTheme(writings);
+  const allWritings = getWritings(resolvedLocale);
+  const initialWritings = allWritings.slice(0, INITIAL_WRITING_COUNT);
+  const themeGroups = groupByTheme(initialWritings);
   const themes = Object.keys(themeGroups).sort();
+  const totalCount = allWritings.length;
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-12">
+    <main id="page-top" className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-12">
       <SectionReveal className="space-y-6">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -107,22 +114,17 @@ export default async function LocalizedWritingIndexPage({
       </SectionReveal>
 
       {themes.length > 1 && (
+        <a
+          href="#theme-nav"
+          className="sr-only focus:not-sr-only focus:static focus:inline-block focus:px-3 focus:py-2 focus:mb-4 focus:bg-emerald-500 focus:text-white focus:rounded"
+        >
+          {uiContent.writing.skipToThemeNavLabel}
+        </a>
+      )}
+
+      {themes.length > 1 && (
         <SectionReveal>
-          <nav
-            id="theme-nav"
-            className="flex flex-wrap gap-2"
-            aria-label={uiContent.writing.themeNavAriaLabel}
-          >
-            {themes.map((theme) => (
-              <a
-                key={theme}
-                href={`#theme-${theme.toLowerCase().replace(/\s+/g, "-")}`}
-                className="px-3 py-1 text-sm font-medium rounded-full border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
-              >
-                {getThemeLabel(theme, resolvedLocale)}
-              </a>
-            ))}
-          </nav>
+          <ThemeNav themes={themes} locale={resolvedLocale} />
         </SectionReveal>
       )}
 
@@ -151,6 +153,18 @@ export default async function LocalizedWritingIndexPage({
           <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-8 text-center">
             <p className="text-gray-600 dark:text-gray-400">{uiContent.writing.emptyState}</p>
           </div>
+        </SectionReveal>
+      )}
+
+      {totalCount > INITIAL_WRITING_COUNT && (
+        <SectionReveal>
+          <LoadMoreWritings totalCount={totalCount} locale={resolvedLocale} />
+        </SectionReveal>
+      )}
+
+      {totalCount > 0 && (
+        <SectionReveal>
+          <BackToTop section="writing" />
         </SectionReveal>
       )}
 
