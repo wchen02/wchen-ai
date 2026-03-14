@@ -93,8 +93,8 @@ export default async function LocalizedWritingIndexPage({
   const themes = Object.keys(themeGroups).sort();
 
   return (
-    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-16">
-      <SectionReveal className="space-y-4">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-24 space-y-12">
+      <SectionReveal className="space-y-6">
         <header>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
             {siteProfile.writingPage.title}
@@ -103,9 +103,6 @@ export default async function LocalizedWritingIndexPage({
             {siteProfile.writingPage.intro}
           </p>
         </header>
-      </SectionReveal>
-
-      <SectionReveal>
         <SearchWriting />
       </SectionReveal>
 

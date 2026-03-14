@@ -52,7 +52,7 @@ export default function SearchWriting() {
 
   if (loading || !index) {
     return (
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-3">
         <label htmlFor="writing-search" className="sr-only">
           {uiContent.searchWriting.label}
         </label>
@@ -71,7 +71,7 @@ export default function SearchWriting() {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-3">
         <label htmlFor="writing-search" className="sr-only">
           {uiContent.searchWriting.label}
         </label>
