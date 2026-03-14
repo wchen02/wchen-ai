@@ -72,7 +72,10 @@ export default function ArticleBodyHighlighter({
     }
     let cancelled = false;
     fetch(subtitlesUrl)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`Subtitle fetch ${r.status}`);
+        return r.json();
+      })
       .then((payload: unknown) => {
         if (cancelled) return;
         if (
@@ -97,7 +100,14 @@ export default function ArticleBodyHighlighter({
         }
       })
       .catch(() => {
-        if (!cancelled) setSegments([]);
+        // CORS or network error: leave segments empty (read-along disabled). Ensure promise is handled.
+        if (!cancelled) {
+          try {
+            setSegments([]);
+          } catch {
+            // ignore
+          }
+        }
       });
     return () => {
       cancelled = true;

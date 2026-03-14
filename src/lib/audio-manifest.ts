@@ -52,13 +52,48 @@ function isAudioManifest(parsed: unknown): parsed is AudioManifest {
   });
 }
 
+/** Normalize manifest from R2 or disk: accept object format or array-of-slugs format. */
+function normalizeToAudioManifest(parsed: unknown): AudioManifest | null {
+  if (!parsed || typeof parsed !== "object") return null;
+  const result: AudioManifest = {};
+  const locales = parsed as Record<string, { writing?: unknown; projects?: unknown }>;
+  for (const locale of Object.keys(locales)) {
+    const bucket = locales[locale];
+    if (!bucket || typeof bucket !== "object") continue;
+    result[locale] = { writing: {}, projects: {} };
+    for (const contentType of ["writing", "projects"] as const) {
+      const raw = bucket[contentType];
+      if (!raw) continue;
+      if (Array.isArray(raw)) {
+        for (const slug of raw) {
+          if (typeof slug === "string") {
+            result[locale][contentType][slug] = { hasSubtitles: true };
+          }
+        }
+      } else if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+        const entries = raw as Record<string, unknown>;
+        for (const [slug, entry] of Object.entries(entries)) {
+          if (
+            entry &&
+            typeof entry === "object" &&
+            typeof (entry as AudioManifestEntry).hasSubtitles === "boolean"
+          ) {
+            result[locale][contentType][slug] = entry as AudioManifestEntry;
+          }
+        }
+      }
+    }
+  }
+  return Object.keys(result).length > 0 ? result : null;
+}
+
 function loadLocalManifest(): AudioManifest | null {
   if (cachedLocalManifest !== null) return cachedLocalManifest;
   try {
     const manifestPath = path.join(process.cwd(), "public", "audio", "audio-manifest.json");
     const raw = fs.readFileSync(manifestPath, "utf8");
     const parsed = JSON.parse(raw) as unknown;
-    cachedLocalManifest = isAudioManifest(parsed) ? parsed : null;
+    cachedLocalManifest = normalizeToAudioManifest(parsed) ?? (isAudioManifest(parsed) ? parsed : null);
     return cachedLocalManifest;
   } catch {
     return null;
@@ -76,7 +111,7 @@ async function loadRemoteManifest(): Promise<AudioManifest | null> {
       const response = await fetch(manifestUrl, { cache: "force-cache" });
       if (!response.ok) return null;
       const parsed = (await response.json()) as unknown;
-      return isAudioManifest(parsed) ? parsed : null;
+      return normalizeToAudioManifest(parsed) ?? (isAudioManifest(parsed) ? parsed : null);
     } catch {
       return null;
     }
