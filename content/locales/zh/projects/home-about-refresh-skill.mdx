@@ -1,7 +1,6 @@
 ---
 title: "home-about-refresh skill"
 date: "2026-03-13T12:00:00Z"
-status: "active"
 type: ["agent", "skill"]
 motivation: "我希望首页和 about 页能一直和我实际在写、在做的内容对齐——不用每次发新内容都亲手改 hero、当前重心或哲学那几段。"
 problemAddressed: "首页和 about 会漂移。你加了写作和项目条目，主站文案还停留在上季度的重心或一句通用口号。手动同步又烦又容易忘。语料才是事实来源，但没有任何东西从语料抽到驱动站点的 locale JSON 里。"
@@ -15,7 +14,7 @@ featured: false
 
 Skill 就是一个 `SKILL.md` 加一份小参考：`references/corpus-signals.md`。用户说「刷新首页」或「把 home 和 about 跟我的写作同步」时，agent 按固定流程走。
 
-**1. 收集语料信号。** 从 `content/writing/*.mdx`（以及可选的按 locale 的写作）里读一批有代表性的文章——优先最近的和 `featured: true`。每篇抽：`theme`、`tags`，以及正文里一两条具体主张或 reframe。再读 `content/projects/*.mdx` 里的项目，优先 `featured` 且 `status: active` 或 `in-progress`。每个抽：`motivation`、`problemAddressed`、`learnings`、`type`，以及反复出现的问题领域。综合出：当前主题、站主关心的问题、重复出现的原则、在写作和项目里都出现的专长。
+**1. 收集语料信号。** 从 `content/writing/*.mdx`（以及可选的按 locale 的写作）里读一批有代表性的文章——优先最近的和 `featured: true`。每篇抽：`theme`、`tags`，以及正文里一两条具体主张或 reframe。再读 `content/projects/*.mdx` 里的项目，优先 `featured`。每个抽：`motivation`、`problemAddressed`、`learnings`、`type`，以及反复出现的问题领域。综合出：当前主题、站主关心的问题、重复出现的原则、在写作和项目里都出现的专长。
 
 **2. 定范围。** 只改一个 locale（例如只动 `content/locales/en/site/`）还是所有 locale。若改所有，先改默认 locale，再按同样结构改其他 locale；意思没变的保留原有翻译。
 

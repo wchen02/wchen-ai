@@ -28,7 +28,6 @@ export const ProjectTypeEnum = z.enum(['app', 'agent', 'experiment']);
 export const ProjectSchema = z.object({
   title: z.string().min(1, "Title is required"),
   date: z.string().datetime(), // ISO 8601 string
-  status: z.enum(['active', 'archived', 'in-progress']),
   type: z.array(ProjectTypeEnum).min(1),
   
   // Narrative fields (instead of just feature lists)

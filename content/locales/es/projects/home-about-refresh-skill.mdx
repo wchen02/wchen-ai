@@ -1,7 +1,6 @@
 ---
 title: "home-about-refresh skill"
 date: "2026-03-13T12:00:00Z"
-status: "active"
 type: ["agent", "skill"]
 motivation: "Quería que la homepage y la página about se mantuvieran alineadas con lo que realmente escribo y construyo — sin reescribir a mano el hero, el foco actual o la filosofía cada vez que publico contenido nuevo."
 problemAddressed: "Home y about se desfasan. Añades entradas de escritura y de proyectos; las páginas principales siguen diciendo el foco del trimestre pasado o un eslogan genérico. Sincronizar a mano es tedioso y fácil de olvidar. El corpus es la fuente de verdad, pero nada extraía de él hacia el JSON de locale que impulsa el sitio."
@@ -15,7 +14,7 @@ Construí un skill de agente que actualiza la homepage y la página about desde 
 
 El skill es un solo `SKILL.md` más una referencia pequeña: `references/corpus-signals.md`. Cuando el usuario dice "refresca la home" o "sincroniza home y about con mi escritura," el agente sigue un flujo fijo.
 
-**1. Reunir señal del corpus.** Leer un conjunto representativo de escritos de `content/writing/*.mdx` (y opcionalmente escritura por locale) — preferir recientes y `featured: true`. De cada pieza: `theme`, `tags`, y una o dos convicciones o reframes concretos del cuerpo. Luego leer proyectos de `content/projects/*.mdx`, preferir `featured` y `status: active` o `in-progress`. De cada uno: `motivation`, `problemAddressed`, `learnings`, `type`, y áreas de problema recurrentes. Sintetizar: temas actuales, problemas que le importan al autor del sitio, principios que se repiten, expertise que aparece en escritura y proyectos.
+**1. Reunir señal del corpus.** Leer un conjunto representativo de escritos de `content/writing/*.mdx` (y opcionalmente escritura por locale) — preferir recientes y `featured: true`. De cada pieza: `theme`, `tags`, y una o dos convicciones o reframes concretos del cuerpo. Luego leer proyectos de `content/projects/*.mdx`, preferir `featured`. De cada uno: `motivation`, `problemAddressed`, `learnings`, `type`, y áreas de problema recurrentes. Sintetizar: temas actuales, problemas que le importan al autor del sitio, principios que se repiten, expertise que aparece en escritura y proyectos.
 
 **2. Decidir alcance.** Un solo locale (p. ej. solo `content/locales/en/site/`) o todos los locales. Para todos, actualizar primero el por defecto, luego cada otro locale con los mismos cambios estructurales; preservar traducciones existentes donde el significado siga encajando.
 

@@ -24,7 +24,7 @@ Update `content/locales/<locale>/site/home.json` and `content/locales/<locale>/s
 ### 1. Gather corpus signal
 
 - **Writings**: List and read a representative set from `content/writing/*.mdx` (and optionally `content/locales/<locale>/writing/*.mdx`). Prefer recent and `featured: true`. From each piece use: `theme`, `tags`, and 1–2 concrete convictions or reframes from the body (opening, position, closing).
-- **Projects**: List and read from `content/projects/*.mdx` (and optionally locale-specific projects). Prefer `featured` and `status: active` or `in-progress`. From each use: `motivation`, `problemAddressed`, `learnings`, `type`, and any recurring problem areas.
+- **Projects**: List and read from `content/projects/*.mdx` (and optionally locale-specific projects). Prefer `featured`. From each use: `motivation`, `problemAddressed`, `learnings`, `type`, and any recurring problem areas.
 
 Synthesize: current themes, problems the site owner cares about, principles that repeat, and areas of expertise that show up in both writing and projects.
 

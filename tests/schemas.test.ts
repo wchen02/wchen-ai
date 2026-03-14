@@ -5,7 +5,6 @@ describe('ProjectSchema', () => {
   const validProject = {
     title: 'Test Project',
     date: '2025-10-10T00:00:00Z',
-    status: 'active',
     type: ['app'],
     motivation: 'This is the motivation for this project.',
     problemAddressed: 'This is the problem being addressed.',
@@ -41,11 +40,6 @@ describe('ProjectSchema', () => {
 
   it('rejects invalid date format', () => {
     const result = ProjectSchema.safeParse({ ...validProject, date: 'not-a-date' });
-    expect(result.success).toBe(false);
-  });
-
-  it('rejects invalid status', () => {
-    const result = ProjectSchema.safeParse({ ...validProject, status: 'unknown' });
     expect(result.success).toBe(false);
   });
 

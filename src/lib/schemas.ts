@@ -291,13 +291,8 @@ export const UiContentSchema = z.object({
     detailTitleTemplate: z.string().min(1),
   }),
   projects: z.object({
-    filterByStatusLabel: z.string().min(1),
-    statusLabels: z.object({
-      all: z.string().min(1),
-      active: z.string().min(1),
-      archived: z.string().min(1),
-      inProgress: z.string().min(1),
-    }),
+    filterByTypeLabel: z.string().min(1),
+    allLabel: z.string().min(1),
     typeLabels: z.object({
       app: z.string().min(1),
       agent: z.string().min(1),
@@ -309,7 +304,6 @@ export const UiContentSchema = z.object({
     emptyState: z.string().min(1),
     filteredEmptyState: z.string().min(1),
     clearFilterLabel: z.string().min(1),
-    inProgressLabel: z.string().min(1),
     motivationLabel: z.string().min(1),
     problemLabel: z.string().min(1),
     learningsLabel: z.string().min(1),
@@ -421,11 +415,11 @@ export const SystemContentSchema = z.object({
 });
 
 export const ProjectTypeEnum = z.enum(['app', 'agent', 'experiment', 'skill', 'library', 'tool']);
+export type ProjectType = z.infer<typeof ProjectTypeEnum>;
 
 export const ProjectSchema = z.object({
   title: z.string().min(1, "Title is required"),
   date: z.string().datetime(), // ISO 8601 string
-  status: z.enum(['active', 'archived', 'in-progress']),
   type: z.array(ProjectTypeEnum).min(1),
   
   // Narrative fields (instead of just feature lists)

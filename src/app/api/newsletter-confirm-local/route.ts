@@ -16,12 +16,16 @@ import { logger } from "@/lib/logger";
 import { getSystemContent } from "@/lib/site-content";
 
 export async function POST(request: Request) {
-  const payload = (await request.json()) as {
-    email?: string;
-    ts?: string;
-    sig?: string;
-    locale?: string;
-  };
+  let payload: { email?: string; ts?: string; sig?: string; locale?: string };
+  try {
+    payload = (await request.json()) as typeof payload;
+  } catch {
+    const resolvedLocale = resolveLocale(null);
+    return NextResponse.json(
+      { success: false, error: getSystemContent(resolvedLocale).common.genericError },
+      { status: 400 }
+    );
+  }
   const email = payload.email ?? null;
   const ts = payload.ts ?? null;
   const sig = payload.sig ?? null;

@@ -69,13 +69,8 @@
     "detailTitleTemplate": "{title} | {siteName}"
   },
   "projects": {
-    "filterByStatusLabel": "Filtrar por estado:",
-    "statusLabels": {
-      "all": "Todos",
-      "active": "Activo",
-      "archived": "Archivado",
-      "inProgress": "En progreso"
-    },
+    "filterByTypeLabel": "Filtrar por tipo:",
+    "allLabel": "Todos",
     "typeLabels": {
       "app": "App",
       "agent": "Agente",
@@ -87,7 +82,6 @@
     "emptyState": "No se encontraron proyectos.",
     "filteredEmptyState": "Ningun proyecto coincide con el filtro actual.",
     "clearFilterLabel": "Limpiar filtro y mostrar todos los proyectos",
-    "inProgressLabel": "En progreso",
     "motivationLabel": "Motivacion",
     "problemLabel": "Problema",
     "learningsLabel": "Aprendizajes clave",

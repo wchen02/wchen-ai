@@ -21,7 +21,6 @@ describe('getProjects', () => {
       expect(project.slug).toBeTruthy();
       expect(project.title).toBeTruthy();
       expect(project.date).toBeTruthy();
-      expect(project.status).toBeTruthy();
       expect(project.type.length).toBeGreaterThan(0);
       expect(project.motivation.length).toBeGreaterThanOrEqual(10);
       expect(project.problemAddressed.length).toBeGreaterThanOrEqual(10);

@@ -69,13 +69,8 @@
     "detailTitleTemplate": "{title} | {siteName}"
   },
   "projects": {
-    "filterByStatusLabel": "按状态筛选：",
-    "statusLabels": {
-      "all": "全部",
-      "active": "活跃",
-      "archived": "归档",
-      "inProgress": "进行中"
-    },
+    "filterByTypeLabel": "按类型筛选：",
+    "allLabel": "全部",
     "typeLabels": {
       "app": "应用",
       "agent": "代理",
@@ -87,7 +82,6 @@
     "emptyState": "没有找到项目。",
     "filteredEmptyState": "当前筛选条件下没有匹配的项目。",
     "clearFilterLabel": "清除筛选并显示全部项目",
-    "inProgressLabel": "进行中",
     "motivationLabel": "动机",
     "problemLabel": "问题",
     "learningsLabel": "关键收获",

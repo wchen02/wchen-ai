@@ -1,7 +1,6 @@
 ---
 title: "home-about-refresh skill"
 date: "2026-03-13T12:00:00Z"
-status: "active"
 type: ["agent", "skill"]
 motivation: "I wanted the homepage and about page to stay aligned with what I actually write and build — without manually rewriting hero copy, current focus, or philosophy every time I ship new content."
 problemAddressed: "Home and about drift. You add writing entries and project entries; the main pages still say last quarter's focus or a generic tagline. Manually syncing is tedious and easy to forget. The corpus is the source of truth, but nothing was pulling from it into the locale JSON that drives the site."
@@ -15,7 +14,7 @@ I built an agent skill that updates the homepage and about page from the content
 
 The skill is a single `SKILL.md` plus a small reference: `references/corpus-signals.md`. When the user says "refresh the home page" or "sync home and about with my writing," the agent follows a fixed workflow.
 
-**1. Gather corpus signal.** Read a representative set of writings from `content/writing/*.mdx` (and optionally locale-specific writing) — prefer recent and `featured: true`. From each piece: `theme`, `tags`, and one or two concrete convictions or reframes from the body. Then read projects from `content/projects/*.mdx`, prefer `featured` and `status: active` or `in-progress`. From each: `motivation`, `problemAddressed`, `learnings`, `type`, and recurring problem areas. Synthesize: current themes, problems the site owner cares about, principles that repeat, expertise that shows up in both writing and projects.
+**1. Gather corpus signal.** Read a representative set of writings from `content/writing/*.mdx` (and optionally locale-specific writing) — prefer recent and `featured: true`. From each piece: `theme`, `tags`, and one or two concrete convictions or reframes from the body. Then read projects from `content/projects/*.mdx`, prefer `featured`. From each: `motivation`, `problemAddressed`, `learnings`, `type`, and recurring problem areas. Synthesize: current themes, problems the site owner cares about, principles that repeat, expertise that shows up in both writing and projects.
 
 **2. Decide scope.** Single locale (e.g. only `content/locales/en/site/`) or all locales. For all locales, update the default first, then each other locale with the same structural changes; preserve existing translations where meaning still fits.
 

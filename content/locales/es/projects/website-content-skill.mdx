@@ -1,7 +1,6 @@
 ---
 title: "website-content skill"
 date: "2026-02-23T00:00:00Z"
-status: "active"
 type: ["agent", "skill"]
 motivation: "Quería que mi agente de IA dejara de escribir como un comunicado de prensa y empezara a escribir como yo — misma voz, mismo frontmatter, mismos patrones estructurales — sin tener que reexplicar esas restricciones en cada sesión."
 problemAddressed: "Cada vez que pedía a un agente que escribiera contenido para mi sitio, el resultado sonaba hueco. Gramática correcta, cero personalidad. El modelo caía en relleno corporativo porque no tenía restricciones contra las que trabajar. Re-promptear mis preferencias de voz en cada sesión no era sostenible."
@@ -28,13 +27,12 @@ website-content/
 
 **Capa 2: Guía de voz** — Patrones a nivel de frase extraídos de mi escritura existente. No orientación abstracta tipo "sé conversacional". Sino: hábitos estructurales concretos (anclas declarativas cortas seguidas de desarrollo), preferencias de vocabulario (`build`, `ship`, `friction` — no `leverage`, `synergy`, `innovative`), restricciones de párrafo (1-3 frases, cada una avanza exactamente una idea) y prohibiciones explícitas (sin signos de exclamación, sin emojis en el cuerpo).
 
-**Capa 3: Content schemas** — Definiciones de frontmatter validadas con Zod para cada tipo de contenido. El schema de writing exige `title`, `publishDate`, `theme` y `tags`. El schema de project exige `motivation`, `problemAddressed`, `status` y `type`. No son sugerencias de estilo — son contratos en build. Un frontmatter mal formado hace fallar la exportación estática de Next.js.
+**Capa 3: Content schemas** — Definiciones de frontmatter validadas con Zod para cada tipo de contenido. El schema de writing exige `title`, `publishDate`, `theme` y `tags`. El schema de project exige `motivation`, `problemAddressed` y `type`. No son sugerencias de estilo — son contratos en build. Un frontmatter mal formado hace fallar la exportación estática de Next.js.
 
 ```typescript
 const ProjectSchema = z.object({
   title: z.string(),
   date: z.string().datetime(),
-  status: z.enum(["active", "archived", "in-progress"]),
   type: z.array(z.enum(["app", "agent", "experiment"])).min(1),
   motivation: z.string().min(10),
   problemAddressed: z.string().min(10),

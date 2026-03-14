@@ -156,6 +156,19 @@ describe("newsletter confirm API", () => {
     expect(json.error).toMatch(/confirmation/i);
   });
 
+  it("returns 400 when body is not valid JSON", async () => {
+    const req = new Request("https://wchen.ai/api/newsletter-confirm-local", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "not json",
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.success).toBe(false);
+    expect(json.error).toBeDefined();
+  });
+
   it("returns 400 when token is expired", async () => {
     const ts = String(Math.floor(Date.now() / 1000) - NEWSLETTER_TOKEN_MAX_AGE_S - 60);
     const sig = await hmacSign(secret, `user@example.com|${ts}`);

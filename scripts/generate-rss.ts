@@ -56,4 +56,7 @@ async function generateRss() {
   }
 }
 
-generateRss();
+void generateRss().catch((e) => {
+  logger.error("generate-rss failed.", e);
+  process.exit(1);
+});

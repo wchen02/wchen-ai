@@ -34,11 +34,6 @@ export default function ProjectCard({
             {uiContent.projects.typeLabels[t]}
           </span>
         ))}
-        {project.status === 'in-progress' && (
-          <span className="px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-md">
-            {uiContent.projects.inProgressLabel}
-          </span>
-        )}
       </div>
 
       <div className="mt-2 space-y-2 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">

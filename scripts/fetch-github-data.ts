@@ -152,4 +152,7 @@ function createMockData() {
   logger.log(`✅ Created mock GitHub data at ${OUTPUT_FILE}`);
 }
 
-fetchGitHubData();
+void fetchGitHubData().catch((e) => {
+  logger.error("fetch-github-data failed.", e);
+  process.exit(1);
+});

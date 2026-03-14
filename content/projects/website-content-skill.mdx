@@ -1,7 +1,6 @@
 ---
 title: "website-content skill"
 date: "2026-02-23T00:00:00Z"
-status: "active"
 type: ["agent", "skill"]
 motivation: "I wanted my AI agent to stop writing like a press release and start writing like me — same voice, same frontmatter, same structural patterns — without re-explaining those constraints every session."
 problemAddressed: "Every time I asked an agent to write content for my site, the result came back hollow. Correct grammar, zero personality. The model defaulted to corporate filler because it had no constraints to work against. Re-prompting my voice preferences each session was unsustainable."
@@ -28,13 +27,12 @@ website-content/
 
 **Layer 2: Voice guide** — Concrete sentence-level patterns extracted from my existing writing. Not abstract guidance like "be conversational." Instead: specific structural habits (short declarative anchors followed by expansion), vocabulary preferences (`build`, `ship`, `friction` — not `leverage`, `synergy`, `innovative`), paragraph constraints (1-3 sentences, each advancing exactly one idea), and explicit bans (no exclamation points, no emojis in body copy).
 
-**Layer 3: Content schemas** — Zod-validated frontmatter definitions for each content type. The writing schema requires `title`, `publishDate`, `theme`, and `tags`. The project schema requires `motivation`, `problemAddressed`, `status`, and `type`. These aren't style suggestions — they're build-time contracts. Malformed frontmatter fails the Next.js static export.
+**Layer 3: Content schemas** — Zod-validated frontmatter definitions for each content type. The writing schema requires `title`, `publishDate`, `theme`, and `tags`. The project schema requires `motivation`, `problemAddressed`, and `type`. These aren't style suggestions — they're build-time contracts. Malformed frontmatter fails the Next.js static export.
 
 ```typescript
 const ProjectSchema = z.object({
   title: z.string(),
   date: z.string().datetime(),
-  status: z.enum(["active", "archived", "in-progress"]),
   type: z.array(z.enum(["app", "agent", "experiment"])).min(1),
   motivation: z.string().min(10),
   problemAddressed: z.string().min(10),
