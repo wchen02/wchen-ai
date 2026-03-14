@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import Link from "next/link";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { useCurrentLocale } from "@/components/LocaleProvider";
 import { getFormsContent } from "@/lib/site-content";
@@ -140,7 +139,7 @@ export default function NewsletterSlideout() {
               <NewsletterSignup variant="slideout" />
               <div className="pt-2">
                 <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">Or follow via feed</p>
-                <Link
+                <a
                   href={rssHref}
                   className="inline-flex items-center gap-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 rounded"
                 >
@@ -148,7 +147,7 @@ export default function NewsletterSlideout() {
                     <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.75-7.163-15.892-15.839-15.849zm0-3.236v4.811c9.937.093 18.017 8.175 18.11 18.11h4.811c-.101-12.651-10.322-22.872-22.972-22.972z" />
                   </svg>
                   {rssLabel}
-                </Link>
+                </a>
               </div>
             </div>
           </div>
