@@ -1,7 +1,7 @@
 import { NewsletterPayloadSchema } from "../../shared/newsletter";
 import { hmacSign } from "../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../shared/newsletter-email";
-import { sendResendEmail } from "../../shared/resend";
+import { getNewsletterProvider } from "../../src/lib/newsletter";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
@@ -107,8 +107,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       confirmUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await getNewsletterProvider(apiKey).sendEmail({
       from,
       to: email,
       subject: newsletterContent.confirm.subject,

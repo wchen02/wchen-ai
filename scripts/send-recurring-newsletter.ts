@@ -21,20 +21,20 @@ import {
   renderNewsletterIssueEmail,
 } from "../shared/newsletter-email";
 import { hmacSign } from "../shared/newsletter-crypto";
-import type { ResendContact } from "../shared/resend";
-import { listResendContactsBySegment, sendResendEmail } from "../shared/resend";
+import type { NewsletterContact } from "../src/lib/newsletter";
+import { getNewsletterProvider } from "../src/lib/newsletter";
 
-/** Resend allows 2 requests per second; wait between sends to avoid 429. */
-const RESEND_RATE_LIMIT_DELAY_MS = 600;
+/** Delay between sends to stay within the newsletter provider's rate limit. */
+const SEND_DELAY_MS = 600;
 
-function getPreferredLocale(contact: ResendContact): string {
+function getPreferredLocale(contact: NewsletterContact): string {
   const fromProps =
     (contact.properties as Record<string, string> | undefined)?.preferred_locale;
   return resolveLocale(contact.preferred_locale ?? fromProps ?? DEFAULT_LOCALE);
 }
 
 function getUniqueDeliverableRecipientsWithLocale(
-  contacts: ResendContact[]
+  contacts: NewsletterContact[]
 ): Array<{ email: string; locale: string }> {
   const seen = new Set<string>();
   const result: Array<{ email: string; locale: string }> = [];
@@ -63,6 +63,7 @@ async function main(): Promise<void> {
     return;
   }
 
+  const provider = getNewsletterProvider(apiKey);
   const state = loadNewsletterSendState();
   const candidatesDefault = getRecurringNewsletterCandidates(DEFAULT_LOCALE);
   const unsentCandidatesForState = selectUnsentRecurringNewsletterCandidates(
@@ -75,14 +76,11 @@ async function main(): Promise<void> {
     return;
   }
 
-  const contacts = await listResendContactsBySegment({
-    apiKey,
-    segmentId,
-  });
+  const contacts = await provider.listContacts({ audienceId: segmentId });
   const recipientsWithLocale = getUniqueDeliverableRecipientsWithLocale(contacts);
 
   if (recipientsWithLocale.length === 0) {
-    logger.log("No confirmed newsletter subscribers found in the configured Resend segment.");
+    logger.log("No confirmed newsletter subscribers found in the configured audience.");
     return;
   }
 
@@ -130,8 +128,7 @@ async function main(): Promise<void> {
       unsubscribeUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await provider.sendEmail({
       from,
       to: recipient,
       subject: issueContent.subject,
@@ -143,7 +140,7 @@ async function main(): Promise<void> {
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
       },
     });
-    await new Promise((r) => setTimeout(r, RESEND_RATE_LIMIT_DELAY_MS));
+    await new Promise((r) => setTimeout(r, SEND_DELAY_MS));
   }
 
   const sentAt = new Date().toISOString();

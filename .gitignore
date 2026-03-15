@@ -48,3 +48,4 @@ website-content.skill
 
 *.mp3
 /public/audio/
+package-lock.json

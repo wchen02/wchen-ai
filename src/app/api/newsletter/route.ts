@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NewsletterPayloadSchema } from "../../../../shared/newsletter";
 import { hmacSign } from "../../../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../../../shared/newsletter-email";
-import { sendResendEmail } from "../../../../shared/resend";
+import { getNewsletterProvider } from "@/lib/newsletter";
 import { localizePath } from "@/lib/i18n";
 import { resolveLocale } from "@/lib/locales";
 import {
@@ -118,8 +118,7 @@ export async function POST(request: Request) {
       confirmUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await getNewsletterProvider(apiKey).sendEmail({
       from,
       to: email,
       subject: newsletterContent.confirm.subject,
