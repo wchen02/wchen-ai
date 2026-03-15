@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
-import { getMailProvider } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/mail";
 import { logger } from "@/lib/logger";
 import { resolveLocale } from "@/lib/locales";
 import { getSystemContent } from "@/lib/site-content";

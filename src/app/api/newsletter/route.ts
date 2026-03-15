@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NewsletterPayloadSchema } from "../../../../shared/newsletter";
 import { hmacSign } from "../../../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../../../shared/newsletter-email";
-import { getMailProvider } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/mail";
 import { localizePath } from "@/lib/i18n";
 import { resolveLocale } from "@/lib/locales";
 import {

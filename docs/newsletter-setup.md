@@ -31,7 +31,7 @@ The default is `resend` and no change is needed unless you want to switch provid
 | `resend` *(default)* | `RESEND_API_KEY`, `RESEND_SEGMENT_ID` | Uses the [Resend](https://resend.com) API |
 
 To add a new provider: implement the `MailProvider` interface from
-`shared/mail-provider.ts`, add a `case` in `getMailProvider` in `shared/resend.ts`,
+`shared/mail/types.ts`, add a `case` in `getMailProvider` in `shared/mail/index.ts`,
 and set `MAIL_PROVIDER=<your-provider-name>`.
 
 ## Environment Variables

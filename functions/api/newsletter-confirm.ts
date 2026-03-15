@@ -3,7 +3,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../../shared/newsletter-email";
-import { getMailProvider } from "../../shared/resend";
+import { getMailProvider } from "../../shared/mail";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {

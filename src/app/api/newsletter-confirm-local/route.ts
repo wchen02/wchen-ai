@@ -4,7 +4,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../../../../shared/newsletter-email";
-import { getMailProvider } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/mail";
 import { resolveLocale } from "@/lib/locales";
 import {
   getNewsletterEmailBrand,

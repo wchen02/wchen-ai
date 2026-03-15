@@ -1,5 +1,5 @@
 import { hmacSign, timingSafeEqual } from "../../shared/newsletter-crypto";
-import { getMailProvider } from "../../shared/resend";
+import { getMailProvider } from "../../shared/mail";
 import {
   DEFAULT_LOCALE,
   getPreferredLocaleFromAcceptLanguage,

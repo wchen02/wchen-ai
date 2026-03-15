@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getMailProvider } from "../shared/resend";
+import { getMailProvider } from "../shared/mail";
 
 /**
  * Unit tests for getMailProvider — the env-var-driven mail provider factory.

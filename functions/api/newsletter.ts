@@ -1,7 +1,7 @@
 import { NewsletterPayloadSchema } from "../../shared/newsletter";
 import { hmacSign } from "../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../shared/newsletter-email";
-import { getMailProvider } from "../../shared/resend";
+import { getMailProvider } from "../../shared/mail";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {

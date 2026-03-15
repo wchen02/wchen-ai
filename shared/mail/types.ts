@@ -40,7 +40,7 @@ export interface UpdateContactParams {
  * Provider-agnostic mail interface. Implement this interface to swap the
  * underlying email provider (e.g. Resend → SendGrid → Mailgun) without
  * touching any business logic. Use {@link createResendMailProvider} from
- * `./resend` to obtain the default Resend-backed implementation.
+ * `./providers/resend` to obtain the default Resend-backed implementation.
  */
 export interface MailProvider {
   sendEmail(params: SendEmailParams): Promise<void>;

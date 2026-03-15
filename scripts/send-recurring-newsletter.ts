@@ -21,8 +21,8 @@ import {
   renderNewsletterIssueEmail,
 } from "../shared/newsletter-email";
 import { hmacSign } from "../shared/newsletter-crypto";
-import type { MailContact } from "../shared/mail-provider";
-import { getMailProvider } from "../shared/resend";
+import type { MailContact } from "../shared/mail";
+import { getMailProvider } from "../shared/mail";
 
 /** Resend allows 2 requests per second; wait between sends to avoid 429. */
 const RESEND_RATE_LIMIT_DELAY_MS = 600;

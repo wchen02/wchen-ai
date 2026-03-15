@@ -4,7 +4,7 @@ import { hmacSign } from "../shared/newsletter-crypto";
 import { NEWSLETTER_TOKEN_MAX_AGE_S } from "../shared/newsletter-crypto";
 
 // Mock the mail provider so API routes do not hit the real API
-vi.mock("../shared/resend", () => {
+vi.mock("../shared/mail", () => {
   const mockProvider = {
     sendEmail: vi.fn().mockResolvedValue(undefined),
     upsertContact: vi.fn().mockResolvedValue(undefined),
