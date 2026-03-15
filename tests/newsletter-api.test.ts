@@ -3,11 +3,14 @@ import { NewsletterPayloadSchema } from "../shared/newsletter";
 import { hmacSign } from "../shared/newsletter-crypto";
 import { NEWSLETTER_TOKEN_MAX_AGE_S } from "../shared/newsletter-crypto";
 
-// Mock Resend so API routes do not hit the real API
+// Mock the mail provider so API routes do not hit the real API
 vi.mock("../shared/resend", () => ({
-  sendResendEmail: vi.fn().mockResolvedValue(undefined),
-  upsertResendContact: vi.fn().mockResolvedValue(undefined),
-  updateResendContact: vi.fn().mockResolvedValue(undefined),
+  createResendMailProvider: vi.fn().mockReturnValue({
+    sendEmail: vi.fn().mockResolvedValue(undefined),
+    upsertContact: vi.fn().mockResolvedValue(undefined),
+    listContacts: vi.fn().mockResolvedValue([]),
+    updateContact: vi.fn().mockResolvedValue(undefined),
+  }),
 }));
 
 describe("newsletter payload validation", () => {

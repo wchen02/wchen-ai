@@ -1,5 +1,5 @@
 import { hmacSign, timingSafeEqual } from "../../shared/newsletter-crypto";
-import { updateResendContact } from "../../shared/resend";
+import { createResendMailProvider } from "../../shared/resend";
 import {
   DEFAULT_LOCALE,
   getPreferredLocaleFromAcceptLanguage,
@@ -65,8 +65,7 @@ export async function unsubscribe(request: Request, env: Env): Promise<Response>
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
-  await updateResendContact({
-    apiKey: env.RESEND_API_KEY,
+  await createResendMailProvider(env.RESEND_API_KEY).updateContact({
     email: normalizedEmail,
     unsubscribed: true,
   });

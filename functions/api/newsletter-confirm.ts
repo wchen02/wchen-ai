@@ -3,7 +3,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../../shared/newsletter-email";
-import { sendResendEmail, upsertResendContact } from "../../shared/resend";
+import { createResendMailProvider } from "../../shared/resend";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
@@ -65,8 +65,8 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   }
 
   try {
-    await upsertResendContact({
-      apiKey,
+    const provider = createResendMailProvider(apiKey);
+    await provider.upsertContact({
       email,
       segmentId,
       properties: { preferred_locale: resolvedLocale },
@@ -91,8 +91,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     });
 
     try {
-      await sendResendEmail({
-        apiKey,
+      await provider.sendEmail({
         from,
         to: email,
         subject: newsletterContent.welcome.subject,

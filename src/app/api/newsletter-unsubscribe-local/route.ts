@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
-import { updateResendContact } from "../../../../shared/resend";
+import { createResendMailProvider } from "../../../../shared/resend";
 import { logger } from "@/lib/logger";
 import { resolveLocale } from "@/lib/locales";
 import { getSystemContent } from "@/lib/site-content";
@@ -37,8 +37,7 @@ async function unsubscribe(request: Request): Promise<
     return { success: false, error: systemContent.newsletter.invalidUnsubscribeLink, status: 400 };
   }
 
-  await updateResendContact({
-    apiKey,
+  await createResendMailProvider(apiKey).updateContact({
     email: normalizedEmail,
     unsubscribed: true,
   });
