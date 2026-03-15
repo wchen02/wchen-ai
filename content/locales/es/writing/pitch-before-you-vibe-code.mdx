@@ -1,0 +1,80 @@
+---
+title: "Presenta la idea antes de hacer vibe coding"
+publishDate: "2026-03-14T12:00:00Z"
+theme: "Workflow"
+tags: ["vibe-coding", "cursor", "skills", "workflow"]
+featured: false
+draft: false
+---
+
+No empiezo un proyecto nuevo en Cursor. Empiezo en ChatGPT.
+
+Antes de que exista un repositorio, existe una idea. Y antes de que exista un plan de implementación, normalmente hay una intuición a medio formar que suena más inteligente en mi cabeza de lo que realmente es. He aprendido a no confiar en ese primer borrador. Así que ahora le presento la idea a un LLM como si se la estuviera presentando a un emprendedor que ha visto mil productos flojos y no tiene paciencia para comentarios amables.
+
+Eso cambia la conversación de inmediato. En vez de "ayúdame a construir esto", la pregunta pasa a ser: ¿merece siquiera la pena construir esto de esta forma?
+
+![Cuaderno sobre un portatil, como imagen de redactar requisitos antes de programar.](/writing/pitch-before-you-vibe-code/feature.jpg)
+
+## Primero someto la idea a presión
+
+Mi primer ciclo no es técnico. Es comercial y estratégico.
+
+Le pido a ChatGPT que actúe como emprendedor y destroce la idea. ¿Qué es débil? ¿Qué es genérico? ¿Dónde está la cuña? ¿Quién quiere esto de verdad? ¿Qué la haría más defendible? Luego sigo iterando hasta que la cosa se siente más afilada que la versión con la que entré.
+
+Aquí es donde uso las herramientas aburridas pero necesarias: análisis SWOT, análisis de viabilidad, análisis de moat, preguntas sobre distribución y modos de fallo obvios. Nada de eso es glamuroso. Todo importa. Mucho mal vibe coding empieza con una idea que nunca recibió suficiente presión.
+
+La meta no es hacer que la idea suene sofisticada. La meta es hacer que sobreviva al contacto con el escepticismo. Después de unas cuantas rondas, casi siempre termino en uno de dos lugares: o la idea se derrumba, lo cual es útil, o se vuelve lo bastante específica como para que de verdad quiera pasarme un fin de semana construyéndola.
+
+Ese es el momento en que sigo adelante.
+
+## Requisito antes que repositorio
+
+Cuando la idea ya me convence, le pido al modelo un requisito completo.
+
+No una lista suelta de funcionalidades. No un "constrúyeme un MVP." Quiero un documento de requisitos de verdad: qué es el producto, para quién es, cuáles son los flujos de usuario, las restricciones, los no-objetivos, los componentes principales y qué debería significar "terminado". Si me salto este paso, la construcción empieza rápido y luego degenera en improvisación del agente.
+
+Esta es la parte que la gente infravalora del vibe coding. El código ya no es el cuello de botella. La ambigüedad sí.
+
+Cuando un agente recibe instrucciones vagas, hace lo que hace un becario inteligente: rellena los huecos con valores por defecto plausibles. A veces eso funciona. Casi siempre produce algo coherente pero equivocado. Un requisito sólido no elimina los errores, pero reduce muchísimo cuánto tiene que adivinarse más adelante.
+
+Así que dejo que el LLM me ayude a pensar antes, cuando cambiar de dirección todavía cuesta poco.
+
+## Cursor es mi superficie de control
+
+Cuando el requisito ya está sólido, entro en el entorno de vibe coding.
+
+Puedes hacer esto con `opencode`, `Claude Code` o cualquier otra configuración de agentes de código. Ahora mismo estoy usando Cursor porque me gusta el control fino. No quiero un borrón totalmente autónomo en el que el agente desaparece en una ejecución larga y vuelve con una sorpresa. Quiero dirección. Quiero intervenir pronto. Quiero corregir el rumbo cuando el código empieza a desviarse de lo que realmente quería decir.
+
+El problema es que un requisito completo suele ser demasiado largo para que todos los agentes lo relean constantemente. Si metes todo el documento en la ventana de contexto cada vez, gastas tokens en repetición en lugar de ejecución.
+
+Por eso uso Cursor para comprimir el requisito en una forma con la que los agentes realmente puedan trabajar. Le pido al agente que lo divida en partes más pequeñas y digeribles. Hago que cree archivos de referencia cuando ayuda: notas de arquitectura, desglose de tareas, restricciones, contratos de datos, detalles de integración, cualquier cosa que deba permanecer estable entre sesiones. También incluyo un `AGENTS.md` para que las reglas de trabajo del proyecto vivan cerca del código en vez de dentro de mi memoria.
+
+Ese paso importa más de lo que parece. Convierte un documento sobredimensionado en un pequeño sistema operativo para el proyecto.
+
+## Los skills también forman parte de la construcción
+
+Una vez que el entorno existe, instalo `find-skills` desde `skills.sh`.
+
+Luego uso el agente de Cursor para usar `find-skills` sobre el propio proyecto: encuentra todos los skills que realmente me ayudarían a hacer vibe coding mejor en esta cosa y luego instala los recomendados. No trato los skills como un extra simpático. Los trato como infraestructura de contexto.
+
+Eso cambia la calidad de las sesiones. En vez de volver a explicar las mismas convenciones, puedo darle al agente una mejor posición de partida. Una tarea de frontend recibe guía de frontend. Una tarea de Cloudflare recibe guía de Cloudflare. Una tarea de contenido recibe guía del flujo de contenido. El agente no se vuelve más inteligente en abstracto. Se orienta mejor dentro del proyecto real.
+
+Este es uno de los grandes cambios en cómo pienso el desarrollo asistido por IA. El modelo en bruto importa, pero el *entorno de trabajo* importa igual. Buenos archivos de referencia, reglas claras y los skills adecuados se potencian entre sí. Reducen la deriva. Reducen el retrabajo. Hacen que cada prompt cargue con más peso.
+
+## Por qué la spec deja de ser la fuente de verdad
+
+Ya no estoy usando spec-kit para este flujo.
+
+Sigo pensando que spec-kit es útil para arrancar un proyecto. Es bueno forzando estructura al principio. Pero descubrí que el coste de mantenimiento se vuelve extraño una vez que empieza el trabajo real. El vibe coding produce bugs. Los bugs requieren dirección manual. La dirección manual crea decisiones locales que no estaban en la spec original. Entonces la spec y el código empiezan a divergir.
+
+En ese punto, fingir que la spec sigue siendo la fuente de verdad se convierte en una carga. El documento dice una cosa. El código dice otra. El agente sigue lo que sea que hayas pegado en el prompt ese día.
+
+Prefiero aceptar la realidad de un proyecto vivo. La fuente de verdad es la base de código en evolución, los archivos de referencia curados y las reglas del proyecto en `AGENTS.md`. Esos artefactos pueden mantenerse cerca del trabajo a medida que cambia. Una gran spec de arriba abajo casi nunca puede.
+
+Eso no significa que quiera menos estructura. Significa que quiero una estructura que sobreviva al contacto con la iteración.
+
+## Conclusión
+
+Mi flujo actual de vibe coding es simple en principio: someter la idea a presión, generar un requisito serio, comprimir ese requisito en referencias amigables para agentes, instalar los skills correctos y luego construir con dirección manual ajustada.
+
+El cambio más profundo es que ahora el trabajo empieza antes que el código. El buen vibe coding no es "deja que el modelo cocine". Es aclarar qué merece existir, dar forma a un entorno donde los agentes puedan moverse con contexto y negarse a que documentos obsoletos tengan más autoridad que la realidad del código. Cuanto mejor me vuelvo en eso, menos se parece la construcción a escribir prompts y más a dirigir.

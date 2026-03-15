@@ -1,0 +1,80 @@
+---
+title: "Pitch the Idea Before You Vibe Code"
+publishDate: "2026-03-14T12:00:00Z"
+theme: "Workflow"
+tags: ["vibe-coding", "cursor", "skills", "workflow"]
+featured: false
+draft: false
+---
+
+I do not start a new project in Cursor. I start in ChatGPT.
+
+Before there is a repo, there is an idea. And before there is an implementation plan, there is usually a half-formed instinct that sounds smarter in my head than it actually is. I have learned not to trust that first draft. So now I pitch the idea to an LLM as if I am pitching it to an entrepreneur who has seen a thousand weak products and has no patience for polite feedback.
+
+That changes the conversation immediately. Instead of "help me build this," the question becomes: is this even worth building in this form?
+
+![Notebook resting on a laptop, representing drafting requirements before coding.](/writing/pitch-before-you-vibe-code/feature.jpg)
+
+## Pressure-Test the Idea First
+
+My first loop is not technical. It is commercial and strategic.
+
+I ask ChatGPT to act like an entrepreneur and tear the idea apart. What is weak? What is generic? Where is the wedge? Who actually wants this? What would make this more defensible? Then I keep iterating until the thing feels sharper than the version I walked in with.
+
+This is where I use the boring but necessary tools: SWOT analysis, feasibility analysis, moat analysis, distribution questions, obvious failure modes. None of that is glamorous. All of it matters. A lot of bad vibe coding starts with an idea that never got challenged hard enough.
+
+The point is not to make the idea sound sophisticated. The point is to make it survive contact with skepticism. After a few rounds, I usually end up in one of two places: either the idea collapses, which is useful, or it becomes specific enough that I actually want to spend a weekend building it.
+
+That is the moment I move forward.
+
+## Requirement Before Repository
+
+Once I like the idea, I ask the model for a full requirement.
+
+Not a loose feature list. Not "build me an MVP." I want a real requirement document: what the product is, who it is for, the user flows, the constraints, the non-goals, the major components, and what "done" should mean. If I skip this step, the build starts fast and then degenerates into agent improv.
+
+This is the part people underrate about vibe coding. The code is not the bottleneck anymore. Ambiguity is.
+
+When an agent gets vague instructions, it does what a smart intern does: it fills in the blanks with plausible defaults. Sometimes that works. Usually it produces something coherent but wrong. A strong requirement does not eliminate mistakes, but it dramatically reduces how much guessing happens downstream.
+
+So I let the LLM help me do the thinking up front, where the cost of changing direction is still low.
+
+## Cursor Is My Control Surface
+
+After the requirement is solid, I move into the vibe coding environment.
+
+You can do this with `opencode`, `Claude Code`, or any other coding agent setup. I am using Cursor right now because I like the fine control. I do not want a fully autonomous blur where the agent disappears into a long run and comes back with a surprise. I want steering. I want to intervene early. I want to redirect when the code starts drifting from what I actually meant.
+
+The catch is that a full requirement is often too long to be the thing every agent keeps re-reading. Dump the whole document into the context window every time and you waste tokens on repetition instead of execution.
+
+So I use Cursor to compress the requirement into a shape agents can actually work with. I ask the agent to break it into smaller, digestible pieces. I have it create reference files where that helps: architecture notes, task breakdowns, constraints, data contracts, integration details, anything that should stay stable across sessions. I also include an `AGENTS.md` so the working rules of the project live close to the code instead of inside my memory.
+
+That step matters more than most people think. It turns one oversized document into a small operating system for the project.
+
+## Skills Are Part of the Build
+
+Once the environment exists, I install `find-skills` from `skills.sh`.
+
+Then I use the Cursor agent to use `find-skills` on the project itself: find every skill that would materially help me vibe code this thing better, then install the recommended ones. I do not treat skills as a nice extra. I treat them as context infrastructure.
+
+That changes the quality of the sessions. Instead of re-explaining the same conventions, I can give the agent a better starting position. A frontend task gets frontend guidance. A Cloudflare task gets Cloudflare guidance. A content task gets content workflow guidance. The agent does not become smarter in the abstract. It becomes better oriented inside the actual project.
+
+This is one of the big shifts in how I think about AI-assisted development. The raw model matters, but the *working environment* matters just as much. Good reference files, clear rules, and the right installed skills compound. They reduce drift. They reduce rework. They make each prompt carry more weight.
+
+## Why Spec Stops Being the Source of Truth
+
+I am not using spec-kit for this flow anymore.
+
+I still think spec-kit is useful for kicking off a project. It is good at forcing structure early. But I found the maintenance cost gets weird once the real work starts. Vibe coding produces bugs. Bugs require manual steering. Manual steering creates local decisions that were not in the original spec. Then the spec and the code begin to diverge.
+
+At that point, pretending the spec is still the source of truth becomes a liability. The document says one thing. The code says another. The agent follows whichever one you happened to paste into the prompt that day.
+
+I would rather accept the reality of a live project. The source of truth is the evolving codebase, the curated reference files, and the project rules in `AGENTS.md`. Those artifacts can stay close to the work as it changes. A big top-down spec usually cannot.
+
+That does not mean I want less structure. It means I want structure that survives contact with iteration.
+
+## Conviction
+
+My current vibe coding flow is simple in principle: pressure-test the idea, generate a serious requirement, compress that requirement into agent-friendly references, install the right skills, and then build with tight manual steering.
+
+The deepest shift is that the work starts earlier than code now. Good vibe coding is not "let the model cook." It is clarifying what deserves to exist, shaping an environment where agents can move with context, and refusing to let stale documents outrank the reality of the code. The better I get at that, the more the build feels less like prompting and more like directing.

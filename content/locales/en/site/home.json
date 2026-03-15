@@ -1,9 +1,9 @@
 {
   "hero": {
-    "intro": "I'm Wensheng Chen; I go by Wilson. Previously CTO at The Juicy Crab; now building [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com), and AI-powered developer tools.",
+    "intro": "I'm Wensheng Chen; I go by Wilson. I'm CTO at The Juicy Crab, and I also run [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com), and a growing set of AI-powered developer tool experiments.",
     "paragraphs": [
-      "I am currently exploring the intersection of artificial intelligence and developer tools — encoding context and voice so agents execute as thought partners, and defaulting to static-first systems that stay fast and predictable.",
-      "My primary focus is reducing friction between intention and execution: context-aware agents, spec-first workflows where the bottleneck is articulation not implementation, and tooling that closes the gap without adding new abstractions."
+      "I am currently exploring how to make agents less generic and more useful: pressure-test ideas before code, turn requirements into durable reference files, and encode context and voice so the output reflects the actual project.",
+      "That work keeps pulling me toward static-first architecture, build-time validation, and skill-driven workflows. I care about compressing the distance between intention and execution without adding another layer of process for its own sake."
     ],
     "aboutLink": {
       "href": "/about",
@@ -14,8 +14,8 @@
     "title": "Current Focus & Problems",
     "description": "What I'm obsessed with now and the problems I believe matter.",
     "paragraphs": [
-      "The core problem I am obsessed with is knowledge fragmentation and missing context. We have more tools than ever, yet context is lost across platforms — and when we hand work to agents, they default to generic output because they don't have our voice and constraints encoded.",
-      "I believe the next wave will come from unifying context into seamless workflows and from encoding procedural knowledge so that agents and tools act as thought partners. The bottleneck has moved from execution to articulation; the developers who think most clearly will have the edge."
+      "The problem I keep returning to is that software still loses context at the moment it matters. Ideas get coded before they are challenged, specs drift from reality, and agents fill the gaps with plausible defaults that sound right but miss the point.",
+      "I believe the next advantage comes from clearer articulation and better operating environments: sharper requirements, explicit constraints, reusable skills, and systems that fail early instead of shipping ambiguity downstream."
     ]
   },
   "selectedWork": {

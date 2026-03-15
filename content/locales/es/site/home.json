@@ -1,9 +1,9 @@
 {
   "hero": {
-    "intro": "Soy Wensheng Chen; me dicen Wilson. Antes fui CTO en The Juicy Crab; ahora construyo [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com) y herramientas para developers impulsadas por IA.",
+    "intro": "Soy Wensheng Chen; me dicen Wilson. Sigo siendo CTO en The Juicy Crab, y tambien llevo [bestpos.io](https://bestpos.io), [kloudeats.com](https://kloudeats.com) y una serie creciente de experimentos de herramientas para developers impulsadas por IA.",
     "paragraphs": [
-      "Estoy explorando la interseccion entre inteligencia artificial y herramientas para developers: codificar contexto y voz para que los agentes actuen como socios de pensamiento, y priorizar sistemas static-first que sigan siendo rapidos y predecibles.",
-      "Mi enfoque principal es reducir la friccion entre intencion y ejecucion: agentes conscientes del contexto, flujos spec-first donde el cuello de botella es la articulacion no la implementacion, y herramientas que cierran la brecha sin agregar abstracciones nuevas."
+      "Estoy explorando como hacer que los agentes sean menos genericos y mas utiles: cuestionar la idea antes del codigo, convertir requisitos en archivos de referencia duraderos, y codificar contexto y voz para que la salida refleje el proyecto real.",
+      "Ese trabajo me sigue llevando hacia arquitectura static-first, validacion en build y flujos guiados por skills. Me importa acortar la distancia entre intencion y ejecucion sin sumar otra capa de proceso por puro gusto."
     ],
     "aboutLink": {
       "href": "/about",
@@ -14,8 +14,8 @@
     "title": "Enfoque Actual y Problemas",
     "description": "Lo que me obsesiona ahora y los problemas que creo que importan.",
     "paragraphs": [
-      "El problema central que mas me obsesiona es la fragmentacion del conocimiento y la ausencia de contexto. Tenemos mas herramientas que nunca, pero el contexto se pierde entre plataformas; y cuando delegamos en agentes, su salida es generica porque no tienen codificada nuestra voz ni nuestras restricciones.",
-      "Creo que la siguiente ola vendra de unificar contexto en flujos fluidos y de codificar conocimiento procedural para que agentes y herramientas actuen como socios de pensamiento. El cuello de botella ha pasado de la ejecucion a la articulacion; los developers que piensan con mas claridad llevan ventaja."
+      "El problema al que sigo volviendo es que el software pierde contexto justo cuando mas importa. Las ideas se codifican antes de ser cuestionadas, las specs se alejan de la realidad, y los agentes rellenan los huecos con defaults plausibles que suenan bien pero fallan en lo esencial.",
+      "Creo que la siguiente ventaja vendra de una articulacion mas clara y de mejores entornos de trabajo: requisitos mas afilados, restricciones explicitas, skills reutilizables, y sistemas que fallen temprano en vez de empujar ambiguedad cuesta abajo."
     ]
   },
   "selectedWork": {
