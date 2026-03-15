@@ -4,7 +4,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../../../../shared/newsletter-email";
-import { createResendMailProvider } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/resend";
 import { resolveLocale } from "@/lib/locales";
 import {
   getNewsletterEmailBrand,
@@ -39,11 +39,14 @@ export async function POST(request: Request) {
   }
 
   const secret = process.env.NEWSLETTER_SECRET;
-  const apiKey = process.env.RESEND_API_KEY;
+  const provider = getMailProvider({
+    MAIL_PROVIDER: process.env.MAIL_PROVIDER,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+  });
   const segmentId = process.env.RESEND_SEGMENT_ID;
   const requestUrl = new URL(request.url);
 
-  if (!secret || !apiKey || !segmentId) {
+  if (!secret || !provider || !segmentId) {
     return NextResponse.json(
       { success: false, error: getSystemContent(resolvedLocale).common.genericError },
       { status: 500 }
@@ -70,7 +73,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    const provider = createResendMailProvider(apiKey);
     await provider.upsertContact({
       email,
       segmentId,

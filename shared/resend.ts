@@ -146,3 +146,38 @@ export function createResendMailProvider(apiKey: string): MailProvider {
     updateContact: (params: UpdateContactParams) => updateResendContact({ ...params, apiKey }),
   };
 }
+
+/**
+ * Environment variables used by {@link getMailProvider} to select and configure
+ * the active mail provider. Pass `process.env` (Node) or the Cloudflare `env`
+ * object here.
+ */
+export interface MailProviderEnv {
+  /** Selects the mail provider. Defaults to `"resend"`. */
+  MAIL_PROVIDER?: string;
+  /** Required when MAIL_PROVIDER is "resend" (the default). */
+  RESEND_API_KEY?: string;
+}
+
+/**
+ * Returns a {@link MailProvider} driven by the `MAIL_PROVIDER` environment
+ * variable, or `null` when the required credentials are absent.
+ *
+ * Supported values for `MAIL_PROVIDER`:
+ * - `"resend"` (default) — requires `RESEND_API_KEY`
+ *
+ * To add a new provider: add a `case` here and its factory in a sibling file.
+ */
+export function getMailProvider(env: MailProviderEnv): MailProvider | null {
+  const providerName = env.MAIL_PROVIDER ?? "resend";
+  switch (providerName) {
+    case "resend": {
+      if (!env.RESEND_API_KEY) return null;
+      return createResendMailProvider(env.RESEND_API_KEY);
+    }
+    default:
+      throw new Error(
+        `Unknown MAIL_PROVIDER: "${providerName}". Supported values: resend`
+      );
+  }
+}

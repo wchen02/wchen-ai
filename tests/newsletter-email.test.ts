@@ -274,10 +274,10 @@ describe("newsletter shared wiring", () => {
 
     expect(functionsSource).toContain("getNewsletterEmailContent");
     expect(functionsSource).toContain("renderNewsletterConfirmEmail");
-    expect(functionsSource).toContain("createResendMailProvider");
+    expect(functionsSource).toContain("getMailProvider");
     expect(nextSource).toContain("getNewsletterEmailContent");
     expect(nextSource).toContain("renderNewsletterConfirmEmail");
-    expect(nextSource).toContain("createResendMailProvider");
+    expect(nextSource).toContain("getMailProvider");
   });
 
   it("confirm handlers use the shared welcome template and contact helper", () => {

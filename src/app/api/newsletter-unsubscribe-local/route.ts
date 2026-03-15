@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { hmacSign, timingSafeEqual } from "../../../../shared/newsletter-crypto";
-import { createResendMailProvider } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/resend";
 import { logger } from "@/lib/logger";
 import { resolveLocale } from "@/lib/locales";
 import { getSystemContent } from "@/lib/site-content";
@@ -20,8 +20,11 @@ async function unsubscribe(request: Request): Promise<
   }
 
   const secret = process.env.NEWSLETTER_SECRET;
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!secret || !apiKey) {
+  const provider = getMailProvider({
+    MAIL_PROVIDER: process.env.MAIL_PROVIDER,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+  });
+  if (!secret || !provider) {
     return { success: false, error: systemContent.common.genericError, status: 500 };
   }
 
@@ -37,7 +40,7 @@ async function unsubscribe(request: Request): Promise<
     return { success: false, error: systemContent.newsletter.invalidUnsubscribeLink, status: 400 };
   }
 
-  await createResendMailProvider(apiKey).updateContact({
+  await provider.updateContact({
     email: normalizedEmail,
     unsubscribed: true,
   });

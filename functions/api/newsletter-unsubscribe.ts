@@ -1,5 +1,5 @@
 import { hmacSign, timingSafeEqual } from "../../shared/newsletter-crypto";
-import { createResendMailProvider } from "../../shared/resend";
+import { getMailProvider } from "../../shared/resend";
 import {
   DEFAULT_LOCALE,
   getPreferredLocaleFromAcceptLanguage,
@@ -9,6 +9,7 @@ import { logger } from "../../src/lib/logger";
 import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
+  MAIL_PROVIDER?: string;
   RESEND_API_KEY?: string;
   NEWSLETTER_SECRET?: string;
 }
@@ -48,7 +49,8 @@ export async function unsubscribe(request: Request, env: Env): Promise<Response>
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
-  if (!env.NEWSLETTER_SECRET || !env.RESEND_API_KEY) {
+  const provider = getMailProvider(env);
+  if (!env.NEWSLETTER_SECRET || !provider) {
     logger.error("Newsletter unsubscribe not configured");
     return jsonError(systemContent.common.genericError, 500);
   }
@@ -65,7 +67,7 @@ export async function unsubscribe(request: Request, env: Env): Promise<Response>
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
-  await createResendMailProvider(env.RESEND_API_KEY).updateContact({
+  await provider.updateContact({
     email: normalizedEmail,
     unsubscribed: true,
   });

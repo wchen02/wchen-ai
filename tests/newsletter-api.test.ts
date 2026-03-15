@@ -4,14 +4,19 @@ import { hmacSign } from "../shared/newsletter-crypto";
 import { NEWSLETTER_TOKEN_MAX_AGE_S } from "../shared/newsletter-crypto";
 
 // Mock the mail provider so API routes do not hit the real API
-vi.mock("../shared/resend", () => ({
-  createResendMailProvider: vi.fn().mockReturnValue({
+vi.mock("../shared/resend", () => {
+  const mockProvider = {
     sendEmail: vi.fn().mockResolvedValue(undefined),
     upsertContact: vi.fn().mockResolvedValue(undefined),
     listContacts: vi.fn().mockResolvedValue([]),
     updateContact: vi.fn().mockResolvedValue(undefined),
-  }),
-}));
+  };
+  return {
+    getMailProvider: vi.fn().mockImplementation((env: { RESEND_API_KEY?: string }) =>
+      env.RESEND_API_KEY ? mockProvider : null
+    ),
+  };
+});
 
 describe("newsletter payload validation", () => {
   it("accepts valid email and empty honeypot", () => {
