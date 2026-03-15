@@ -1,34 +1,13 @@
 import { test, expect, type Page } from "@playwright/test";
-import aboutEn from "../content/locales/en/site/about.json";
-import aboutEs from "../content/locales/es/site/about.json";
-import aboutZh from "../content/locales/zh/site/about.json";
-import formsEn from "../content/locales/en/site/forms.json";
-import formsEs from "../content/locales/es/site/forms.json";
-import formsZh from "../content/locales/zh/site/forms.json";
-import homeEn from "../content/locales/en/site/home.json";
-import homeEs from "../content/locales/es/site/home.json";
-import homeZh from "../content/locales/zh/site/home.json";
-import profileEn from "../content/locales/en/site/profile.json";
-import profileEs from "../content/locales/es/site/profile.json";
-import profileZh from "../content/locales/zh/site/profile.json";
-import uiEn from "../content/locales/en/site/ui.json";
-import uiEs from "../content/locales/es/site/ui.json";
-import uiZh from "../content/locales/zh/site/ui.json";
 import { SUPPORTED_LOCALES } from "../src/lib/locales";
-
-const aboutByLocale = { en: aboutEn, es: aboutEs, zh: aboutZh };
-const formsByLocale = { en: formsEn, es: formsEs, zh: formsZh };
-const homeByLocale = { en: homeEn, es: homeEs, zh: homeZh };
-const profileByLocale = { en: profileEn, es: profileEs, zh: profileZh };
-const uiByLocale = { en: uiEn, es: uiEs, zh: uiZh };
+import { getLocaleContent } from "../src/lib/content";
 
 const baseURL = "http://localhost:4173";
 
 test.describe("i18n: Home page", () => {
   for (const locale of SUPPORTED_LOCALES) {
     const basePath = `/${locale}`;
-    const profile = profileByLocale[locale];
-    const home = homeByLocale[locale];
+    const { profile, home } = getLocaleContent(locale);
 
     test(`${locale} home shows locale-specific content`, async ({ page }) => {
       await page.goto(`${basePath}`);
@@ -51,7 +30,7 @@ test.describe("i18n: Home page", () => {
 test.describe("i18n: About page", () => {
   for (const locale of SUPPORTED_LOCALES) {
     const basePath = `/${locale}`;
-    const about = aboutByLocale[locale];
+    const { about } = getLocaleContent(locale);
 
     test(`${locale} about page shows locale-specific intro and sections`, async ({ page }) => {
       await page.goto(`${basePath}/about`);
@@ -66,8 +45,7 @@ test.describe("i18n: About page", () => {
 test.describe("i18n: Projects", () => {
   for (const locale of SUPPORTED_LOCALES) {
     const basePath = `/${locale}`;
-    const profile = profileByLocale[locale];
-    const ui = uiByLocale[locale];
+    const { profile, ui } = getLocaleContent(locale);
 
     test(`${locale} projects index shows locale-specific title and nav`, async ({ page }) => {
       await page.goto(`${basePath}/projects`);
@@ -91,8 +69,7 @@ test.describe("i18n: Projects", () => {
 test.describe("i18n: Writings", () => {
   for (const locale of SUPPORTED_LOCALES) {
     const basePath = `/${locale}`;
-    const profile = profileByLocale[locale];
-    const ui = uiByLocale[locale];
+    const { profile, ui } = getLocaleContent(locale);
 
     test(`${locale} writing index shows locale-specific title and theme nav`, async ({ page }) => {
       await page.goto(`${basePath}/writing`, { waitUntil: "networkidle" });
@@ -118,7 +95,8 @@ test.describe("i18n: Writings", () => {
 
     test(`${locale} writing page shows theme descriptors in locale`, async ({ page }) => {
       await page.goto(`${basePath}/writing`);
-      const themeDescriptorEn = uiEn.themeDescriptors["Architecture"];
+      // Fall back to English descriptor when the locale does not override it
+      const themeDescriptorEn = getLocaleContent("en").ui.themeDescriptors["Architecture"];
       const themeDescriptor = ui.themeDescriptors["Architecture"] ?? themeDescriptorEn;
       await expect(page.getByRole("main")).toContainText(themeDescriptor);
     });
@@ -131,7 +109,7 @@ test.describe("i18n: RSS feeds", () => {
       await page.goto(`/${locale}`);
       const rssLink = page.locator(`footer a[href="/rss/${locale}.xml"]`);
       await expect(rssLink).toBeVisible();
-      await expect(rssLink).toContainText(profileByLocale[locale].navigation.rssLabel);
+      await expect(rssLink).toContainText(getLocaleContent(locale).profile.navigation.rssLabel);
     }
   });
 
@@ -160,24 +138,26 @@ test.describe("i18n: RSS feeds", () => {
   test("writing page RSS link is locale-specific for zh (in newsletter slideout)", async ({
     page,
   }) => {
+    const { forms, profile } = getLocaleContent("zh");
     await openSlideoutAndExpectRss(
       page,
       "/zh/writing",
       "/rss/zh.xml",
-      formsByLocale.zh.newsletter.title,
-      profileByLocale.zh.writingPage.title
+      forms.newsletter.title,
+      profile.writingPage.title
     );
   });
 
   test("writing page RSS link is locale-specific for es (in newsletter slideout)", async ({
     page,
   }) => {
+    const { forms, profile } = getLocaleContent("es");
     await openSlideoutAndExpectRss(
       page,
       "/es/writing",
       "/rss/es.xml",
-      formsByLocale.es.newsletter.title,
-      profileByLocale.es.writingPage.title
+      forms.newsletter.title,
+      profile.writingPage.title
     );
   });
 
@@ -193,28 +173,31 @@ test.describe("i18n: RSS feeds", () => {
   });
 
   test("es RSS feed contains Spanish content", async ({ request }) => {
+    const { profile } = getLocaleContent("es");
     const res = await request.get(`${baseURL}/rss/es.xml`);
     expect(res.ok()).toBe(true);
     const text = await res.text();
-    expect(text).toContain(profileByLocale.es.rss.language);
-    expect(text).toContain(profileByLocale.es.rss.title);
+    expect(text).toContain(profile.rss.language);
+    expect(text).toContain(profile.rss.title);
   });
 
   test("zh RSS feed contains Chinese content", async ({ request }) => {
+    const { profile } = getLocaleContent("zh");
     const res = await request.get(`${baseURL}/rss/zh.xml`);
     expect(res.ok()).toBe(true);
     const text = await res.text();
-    expect(text).toContain(profileByLocale.zh.rss.language);
-    expect(text).toContain(profileByLocale.zh.rss.title);
+    expect(text).toContain(profile.rss.language);
+    expect(text).toContain(profile.rss.title);
   });
 });
 
 test.describe("i18n: Newsletter", () => {
   test("newsletter signup on es shows Spanish form labels", async ({ page }) => {
+    const { forms } = getLocaleContent("es");
     await page.goto("/es/writing");
-    await page.getByRole("button", { name: formsByLocale.es.newsletter.title }).click();
-    await expect(page.getByLabel(formsByLocale.es.newsletter.emailLabel)).toBeVisible();
-    await expect(page.getByRole("button", { name: formsByLocale.es.newsletter.submitLabel })).toBeVisible();
+    await page.getByRole("button", { name: forms.newsletter.title }).click();
+    await expect(page.getByLabel(forms.newsletter.emailLabel)).toBeVisible();
+    await expect(page.getByRole("button", { name: forms.newsletter.submitLabel })).toBeVisible();
   });
 
   test("newsletter confirm page route exists and uses locale", async ({ page }) => {
@@ -236,8 +219,9 @@ test.describe("i18n: Newsletter", () => {
 
 test.describe("i18n: Search", () => {
   test("search on en writing page loads and accepts input", async ({ page }) => {
+    const { ui } = getLocaleContent("en");
     await page.goto("/en/writing");
-    const searchInput = page.getByPlaceholder(uiByLocale.en.searchWriting.placeholder);
+    const searchInput = page.getByPlaceholder(ui.searchWriting.placeholder);
     await expect(searchInput).toBeVisible();
     await searchInput.fill("static");
     await expect(searchInput).toHaveValue("static");
@@ -266,24 +250,29 @@ test.describe("i18n: Search", () => {
 
 test.describe("i18n: Language switcher", () => {
   test("switching to es from home updates content to Spanish", async ({ page }) => {
+    const enUi = getLocaleContent("en").ui;
+    const esContent = getLocaleContent("es");
     await page.goto("/en");
-    await page.getByLabel(uiByLocale.en.languageSwitcher.ariaLabel).first().selectOption("es");
+    await page.getByLabel(enUi.languageSwitcher.ariaLabel).first().selectOption("es");
     await page.waitForURL("**/es");
-    await expect(page.locator("h1")).toContainText(profileByLocale.es.siteName);
-    await expect(page.getByRole("main")).toContainText(homeByLocale.es.currentFocus.title);
+    await expect(page.locator("h1")).toContainText(esContent.profile.siteName);
+    await expect(page.getByRole("main")).toContainText(esContent.home.currentFocus.title);
   });
 
   test("switching to zh from about updates content to Chinese", async ({ page }) => {
+    const enUi = getLocaleContent("en").ui;
+    const zhAbout = getLocaleContent("zh").about;
     await page.goto("/en/about");
-    await page.getByLabel(uiByLocale.en.languageSwitcher.ariaLabel).first().selectOption("zh");
+    await page.getByLabel(enUi.languageSwitcher.ariaLabel).first().selectOption("zh");
     await page.waitForURL("**/zh/about");
-    await expect(page.locator("h1")).toContainText(aboutByLocale.zh.intro.title);
+    await expect(page.locator("h1")).toContainText(zhAbout.intro.title);
   });
 
   test("all supported locales appear in language switcher", async ({ page }) => {
+    const { ui } = getLocaleContent("en");
     await page.goto("/en");
     // Header and mobile menu each have a language switcher; scope to the first (visible) one.
-    const select = page.getByLabel(uiByLocale.en.languageSwitcher.ariaLabel).first();
+    const select = page.getByLabel(ui.languageSwitcher.ariaLabel).first();
     await expect(select).toBeVisible();
     await expect(select.locator('option[value="en"]')).toContainText("English");
     await expect(select.locator('option[value="es"]')).toContainText("Espanol");
@@ -306,10 +295,12 @@ test.describe("i18n: Tags and themes", () => {
   });
 
   test("writing index shows theme navigation with locale labels", async ({ page }) => {
+    const { ui } = getLocaleContent("es");
     await page.goto("/es/writing");
-    const themeNav = page.getByRole("navigation", { name: uiByLocale.es.writing.themeNavAriaLabel });
+    const themeNav = page.getByRole("navigation", { name: ui.writing.themeNavAriaLabel });
     await expect(themeNav).toBeVisible();
     const themeLinks = themeNav.locator("a");
     await expect(themeLinks.first()).toBeVisible();
   });
 });
+
