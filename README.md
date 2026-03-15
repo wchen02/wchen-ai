@@ -31,6 +31,10 @@ Contact form setup (Mailgun, Cloudflare env vars, local dev): [docs/contact-form
 
 Newsletter setup and recurring-send behavior: [docs/newsletter-setup.md](docs/newsletter-setup.md).
 
+## Content creation
+
+Content entries can be created manually or generated with an LLM via `pnpm content:create`. The script loads the website-content skill guidelines and calls a configured provider (OpenAI, Anthropic, Google Gemini, or any OpenAI-compatible host). See [docs/content-creation.md](docs/content-creation.md) for usage, LLM provider setup, and the recommended workflow.
+
 ## Audio (read-along)
 
 Read-along audio is generated and published locally to R2; CI does not run audio steps. [docs/audio-r2-workflow.md](docs/audio-r2-workflow.md).

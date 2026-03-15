@@ -76,6 +76,21 @@ Content stays in the repository under `content/`; no database or CMS is required
 - Add a new locale by mirroring `content/locales/en/` under a new locale directory, then register it in `src/lib/content.ts`
 - Frontmatter is validated during builds, so it is safest to copy a nearby example and edit it rather than start from scratch
 
+Alternatively, use the content creation script to generate entries with an LLM:
+
+```bash
+# Generate a writing entry (uses LLM_PROVIDER env var, default: openai)
+pnpm content:create --type writing --topic "Why I stopped using ORMs"
+
+# Generate a project entry
+pnpm content:create --type project --topic "My CLI tool" --slug my-tool
+
+# Free-form prompt
+pnpm content:create --prompt "Update the English about page philosophy section"
+```
+
+Configure the LLM provider by adding `LLM_PROVIDER` and the matching API key to `.env` (see the commented-out block in `.env.example`). Full usage, provider options, and the recommended workflow are in [docs/content-creation.md](./content-creation.md).
+
 ## Local Development
 
 Start the app with:
