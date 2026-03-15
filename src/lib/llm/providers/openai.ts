@@ -13,7 +13,7 @@ interface OpenAIProviderOptions {
  */
 export function createOpenAIProvider(options?: OpenAIProviderOptions): LLMProvider {
   const apiKey = options?.apiKey ?? process.env.OPENAI_API_KEY ?? "";
-  const baseUrl = (options?.baseUrl ?? process.env.LLM_BASE_URL ?? "https://api.openai.com/v1").replace(/\/$/, "");
+  const baseUrl = (options?.baseUrl ?? "https://api.openai.com/v1").replace(/\/$/, "");
   const model = options?.model ?? process.env.LLM_MODEL ?? "gpt-4o";
 
   return {

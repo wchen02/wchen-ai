@@ -14,6 +14,7 @@
  * LLM provider (configure via env vars):
  *   LLM_PROVIDER=openai            (default) requires OPENAI_API_KEY
  *   LLM_PROVIDER=anthropic                   requires ANTHROPIC_API_KEY
+ *   LLM_PROVIDER=google                      requires GOOGLE_API_KEY
  *   LLM_PROVIDER=openai-compatible           requires LLM_BASE_URL + LLM_API_KEY
  *   LLM_MODEL=gpt-4o               optional model override
  */
@@ -21,10 +22,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { getLLMProvider } from "../../../src/lib/llm";
+import { getLLMProvider } from "../src/lib/llm";
 
-const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../");
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SKILL_DIR = path.join(REPO_ROOT, ".agents/skills/website-content");
+
+/** Directories under REPO_ROOT that the LLM is permitted to write into. */
+const ALLOWED_OUTPUT_DIRS = ["content/", "public/writing/", "public/projects/"];
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -59,7 +63,28 @@ function readSkillFile(relPath: string): string {
 }
 
 function writeContentFile(relPath: string, content: string): void {
-  const full = path.join(REPO_ROOT, relPath);
+  // Reject absolute paths and traversal sequences before joining.
+  const normalized = relPath.replace(/\\/g, "/");
+  if (path.isAbsolute(normalized) || normalized.includes("..")) {
+    throw new Error(`[create-content] Unsafe file path rejected: ${relPath}`);
+  }
+
+  // Confirm the output path is in an allowed directory.
+  const inAllowedDir = ALLOWED_OUTPUT_DIRS.some((dir) => normalized.startsWith(dir));
+  if (!inAllowedDir) {
+    throw new Error(
+      `[create-content] Path not in an allowed output directory (${ALLOWED_OUTPUT_DIRS.join(", ")}): ${relPath}`
+    );
+  }
+
+  const full = path.resolve(REPO_ROOT, relPath);
+
+  // Double-check the resolved path is still inside REPO_ROOT.
+  const repoRootWithSep = REPO_ROOT.endsWith(path.sep) ? REPO_ROOT : REPO_ROOT + path.sep;
+  if (!full.startsWith(repoRootWithSep)) {
+    throw new Error(`[create-content] Resolved path escapes repo root: ${full}`);
+  }
+
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, content, "utf8");
   console.log(`[create-content] wrote ${relPath}`);
