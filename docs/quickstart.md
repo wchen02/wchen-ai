@@ -37,7 +37,8 @@ CONTACT_TO_EMAIL=you@yourdomain.com
 MAILGUN_DOMAIN=mg.yourdomain.com
 MAILGUN_API_KEY=mailgun_api_key_here
 
-# Newsletter
+# Newsletter (mail provider defaults to "resend"; set MAIL_PROVIDER to change)
+# MAIL_PROVIDER=resend
 RESEND_API_KEY=re_your_api_key_here
 RESEND_SEGMENT_ID=seg_your_segment_id_here
 NEWSLETTER_SECRET=your-random-32-char-secret-here

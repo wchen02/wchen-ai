@@ -20,13 +20,32 @@ Update these files first:
 
 `content/locales/en/site/newsletter.json` is where template users should change subjects, previews, CTA labels, section headings, footer copy, and recurring writing/project email language.
 
+## Mail Provider
+
+Email delivery is handled through a swappable `MailProvider` interface. The active
+provider is selected at runtime via the `MAIL_PROVIDER` environment variable.
+The default is `resend` and no change is needed unless you want to switch providers.
+
+| `MAIL_PROVIDER` | Required credentials | Notes |
+|---|---|---|
+| `resend` *(default)* | `RESEND_API_KEY`, `RESEND_SEGMENT_ID` | Uses the [Resend](https://resend.com) API |
+
+To add a new provider: implement the `MailProvider` interface from
+`shared/mail-provider.ts`, add a `case` in `getMailProvider` in `shared/resend.ts`,
+and set `MAIL_PROVIDER=<your-provider-name>`.
+
 ## Environment Variables
 
 Add these to local `.env` and production secrets/vars as needed:
 
 ```env
+# Mail provider (optional — defaults to "resend")
+# MAIL_PROVIDER=resend
+
+# Resend credentials (required when MAIL_PROVIDER=resend, the default)
 RESEND_API_KEY=re_your_api_key_here
 RESEND_SEGMENT_ID=seg_your_segment_id_here
+
 NEWSLETTER_SECRET=your-random-32-char-secret-here
 # Optional
 # NEWSLETTER_FROM=Your Name <newsletter@yourdomain.com>
@@ -34,7 +53,8 @@ NEWSLETTER_SECRET=your-random-32-char-secret-here
 
 What each one does:
 
-- `RESEND_API_KEY`: used for confirmation, welcome, and recurring sends
+- `MAIL_PROVIDER`: selects the email provider. Defaults to `resend`. Set this to switch providers without touching any business logic.
+- `RESEND_API_KEY`: used for confirmation, welcome, and recurring sends (required for the default Resend provider)
 - `RESEND_SEGMENT_ID`: the confirmed subscriber segment used as the recurring-send audience
 - `NEWSLETTER_SECRET`: signs and verifies double opt-in confirmation links
 - `NEWSLETTER_FROM`: optional override for the sender address; otherwise the value from `content/locales/en/site/profile.json` is used
@@ -59,8 +79,9 @@ Set these in **Cloudflare Dashboard -> Workers & Pages -> [your project] -> Sett
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `RESEND_API_KEY` | Yes | Sends confirmation and welcome emails from the deployed newsletter endpoints |
-| `RESEND_SEGMENT_ID` | Yes | Adds confirmed contacts to the correct Resend segment |
+| `MAIL_PROVIDER` | No | Mail provider to use. Defaults to `resend`. Set to switch providers. |
+| `RESEND_API_KEY` | Yes (with default Resend provider) | Sends confirmation and welcome emails from the deployed newsletter endpoints |
+| `RESEND_SEGMENT_ID` | Yes (with default Resend provider) | Adds confirmed contacts to the correct segment |
 | `NEWSLETTER_SECRET` | Yes | Signs and verifies newsletter confirmation links |
 | `NEWSLETTER_FROM` | No | Overrides the sender address used by the deployed newsletter emails |
 
@@ -73,17 +94,18 @@ The recurring newsletter CI step reads from the GitHub `production` environment:
 - secret: `RESEND_API_KEY`
 - secret: `RESEND_SEGMENT_ID`
 - variable: `NEWSLETTER_FROM` (optional)
+- variable: `MAIL_PROVIDER` (optional — defaults to `resend`)
 
 Important: the current workflow does **not** sync newsletter variables from GitHub to Cloudflare Pages. GitHub configuration only powers the CI recurring-send step. You still need to set the runtime newsletter variables directly in Cloudflare Pages.
 
 ## Double Opt-In Flow
 
-The signup flow uses Resend plus a signed confirmation link:
+The signup flow uses a signed confirmation link and the configured mail provider (Resend by default):
 
-1. `POST /api/newsletter` validates the email address and sends the confirmation email.
+1. `POST /api/newsletter` validates the email address and sends the confirmation email via the configured provider.
 2. The confirmation email is rendered from `content/locales/en/site/newsletter.json`.
 3. The confirmation link hits `GET /api/newsletter-confirm`.
-4. The contact is added to the configured Resend segment.
+4. The contact is added to the configured subscriber segment.
 5. A welcome email is sent using the same content-driven email layer.
 
 ## Local Development Notes
