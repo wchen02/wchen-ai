@@ -3,7 +3,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../../shared/newsletter-email";
-import { sendResendEmail, upsertResendContact } from "../../shared/resend";
+import { getMailProvider } from "../../shared/mail";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
@@ -16,6 +16,7 @@ import {
 import { getSystemContent } from "../../src/lib/site-content";
 
 interface Env {
+  MAIL_PROVIDER?: string;
   RESEND_API_KEY?: string;
   RESEND_SEGMENT_ID?: string;
   NEWSLETTER_SECRET?: string;
@@ -43,10 +44,10 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   }
 
   const secret = env.NEWSLETTER_SECRET;
-  const apiKey = env.RESEND_API_KEY;
+  const provider = getMailProvider(env);
   const segmentId = env.RESEND_SEGMENT_ID;
 
-  if (!secret || !apiKey || !segmentId) {
+  if (!secret || !provider || !segmentId) {
     logger.error("Newsletter confirm not configured");
     return htmlResponse(getSystemContent(resolvedLocale).common.genericError, 500, resolvedLocale);
   }
@@ -65,8 +66,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   }
 
   try {
-    await upsertResendContact({
-      apiKey,
+    await provider.upsertContact({
       email,
       segmentId,
       properties: { preferred_locale: resolvedLocale },
@@ -91,8 +91,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     });
 
     try {
-      await sendResendEmail({
-        apiKey,
+      await provider.sendEmail({
         from,
         to: email,
         subject: newsletterContent.welcome.subject,
