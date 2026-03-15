@@ -28,9 +28,9 @@ export interface LocaleContentBundle {
 
 // Dynamic require: webpack/turbopack bundles all matching locale JSON files at build time.
 // This avoids hardcoding locale names while remaining compatible with client bundles.
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const readLocaleJson = (locale: string, name: string): unknown => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require(`../../content/locales/${locale}/site/${name}.json`);
   } catch (err) {
     throw new Error(`Failed to load locale file "${name}.json" for locale "${locale}": ${err}`);
