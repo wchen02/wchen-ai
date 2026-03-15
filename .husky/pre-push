@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 # Same checks as CI; surfaces problems locally before push.
-# E2E tests require a production build in out/; skip them when it is absent.
-pnpm lint && pnpm typecheck && pnpm test && ([ -d out ] && pnpm test:e2e || echo "Skipping e2e: run 'pnpm build' first to enable e2e pre-push checks.")
+# E2E tests require a built `out/` directory (run `pnpm build` first).
+pnpm lint && pnpm typecheck && pnpm test && (test -d out && pnpm test:e2e || echo "Skipping E2E: out/ not found. Run 'pnpm build' to enable E2E checks.")

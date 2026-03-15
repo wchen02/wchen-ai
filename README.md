@@ -33,4 +33,4 @@ Newsletter setup and recurring-send behavior: [docs/newsletter-setup.md](docs/ne
 
 ## Audio (read-along)
 
-Read-along audio is generated and published locally to R2; CI does not run audio steps. [docs/audio-r2-workflow.md](docs/audio-r2-workflow.md).
+Read-along audio is generated and published locally to object storage (Cloudflare R2 by default); CI does not run audio steps. [docs/audio-storage-workflow.md](docs/audio-storage-workflow.md).
