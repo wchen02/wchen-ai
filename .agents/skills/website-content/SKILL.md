@@ -127,38 +127,6 @@ Use the translation handoff only for shared MDX entries:
 - Do not trigger it for `content/locales/<locale>/...` source files
 - Do not trigger it for homepage, about, newsletter, UI, forms, or system JSON copy
 
-## Scripted Content Creation
-
-Any LLM provider or coding agent can generate content without a chat interface by running `scripts/create-content.ts`. The script loads these skill guidelines automatically and writes the resulting files to the repository.
-
-```sh
-# Write a new writing entry (uses LLM_PROVIDER env var, default: openai)
-pnpm content:create --type writing --topic "Why I stopped using ORMs"
-
-# Write a project entry with a custom slug
-pnpm content:create --type project --topic "My CLI tool driftctl" --slug driftctl
-
-# Free-form prompt for more complex tasks
-pnpm content:create --prompt "Update the English about page philosophy section to reflect a shift toward agent-native workflows"
-
-# Locale-specific entry
-pnpm content:create --type writing --topic "The cost of indirection" --locale es
-```
-
-Required env vars (set in `.env` or the environment):
-
-| Variable | When required |
-|---|---|
-| `LLM_PROVIDER` | Select provider: `openai` (default), `anthropic`, `google`, `openai-compatible` |
-| `OPENAI_API_KEY` | `LLM_PROVIDER=openai` — models: `gpt-4o`, `o1`, `o3-mini`, `gpt-4-turbo`, … |
-| `ANTHROPIC_API_KEY` | `LLM_PROVIDER=anthropic` — models: `claude-opus-4-5`, `claude-sonnet-4-5`, `claude-3-5-haiku`, … |
-| `GOOGLE_API_KEY` | `LLM_PROVIDER=google` — models: `gemini-2.0-flash`, `gemini-1.5-pro`, `gemini-2.5-pro`, … |
-| `LLM_BASE_URL` | `LLM_PROVIDER=openai-compatible` — e.g. `http://localhost:11434/v1` for Ollama |
-| `LLM_API_KEY` | `LLM_PROVIDER=openai-compatible` — works with Mistral, Groq, xAI Grok, Together AI, … |
-| `LLM_MODEL` | Optional model override for any provider |
-
-The script writes every file block returned by the LLM directly to `content/` or `public/writing|projects/`. Review the output before committing.
-
 ## Audio Publish Handoff
 
 If the task creates or updates writing/project content that should have audio, do not assume generated audio is committed to Git.
