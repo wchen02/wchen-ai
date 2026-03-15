@@ -22,8 +22,8 @@ export function normalizeLocale(locale?: string | null): string {
   return (locale ?? "").trim().toLowerCase().replace(/_/g, "-");
 }
 
-export function isSupportedLocale(locale: string): locale is SupportedLocale {
-  return SUPPORTED_LOCALES.includes(locale as SupportedLocale);
+export function isSupportedLocale(locale: string): boolean {
+  return SUPPORTED_LOCALES.includes(locale);
 }
 
 export function resolveLocale(locale?: string | null): SupportedLocale {
