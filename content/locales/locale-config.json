@@ -1,0 +1,5 @@
+[
+  { "code": "en", "isDefault": true, "label": "English", "nativeLabel": "English" },
+  { "code": "es", "label": "Spanish", "nativeLabel": "Espanol" },
+  { "code": "zh", "label": "Chinese", "nativeLabel": "中文" }
+]

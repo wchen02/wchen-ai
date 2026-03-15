@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import {
   AboutContentSchema,
   FormsContentSchema,
@@ -28,16 +26,18 @@ export interface LocaleContentBundle {
   system: SystemContent;
 }
 
-function readLocaleJson(locale: SupportedLocale, name: string): unknown {
-  const filePath = path.join(process.cwd(), "content", "locales", locale, "site", `${name}.json`);
+// Dynamic require: webpack/turbopack bundles all matching locale JSON files at build time.
+// This avoids hardcoding locale names while remaining compatible with client bundles.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const readLocaleJson = (locale: string, name: string): unknown => {
   try {
-    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    return require(`../../content/locales/${locale}/site/${name}.json`);
   } catch (err) {
     throw new Error(`Failed to load locale file "${name}.json" for locale "${locale}": ${err}`);
   }
-}
+};
 
-function buildBundle(locale: SupportedLocale): LocaleContentBundle {
+function buildBundle(locale: string): LocaleContentBundle {
   return {
     profile: SiteProfileSchema.parse(readLocaleJson(locale, "profile")),
     home: HomeContentSchema.parse(readLocaleJson(locale, "home")),
