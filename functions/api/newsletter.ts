@@ -1,24 +1,9 @@
-import { NewsletterPayloadSchema } from "../../shared/newsletter";
-import { hmacSign } from "../../shared/newsletter-crypto";
-import { renderNewsletterConfirmEmail } from "../../shared/newsletter-email";
-import { sendResendEmail } from "../../shared/resend";
-import { logger } from "../../src/lib/logger";
-import { resolveLocale } from "../../src/lib/locales";
 import {
-  SITE_URL,
-  getAllowedOrigins,
-  getNewsletterEmailBrand,
-  getNewsletterEmailContent,
-  getNewsletterFromAddress,
-} from "../../src/lib/site-config";
+  handleNewsletterSubscribe,
+  type NewsletterSubscribeHandlerEnv,
+} from "../../shared/handlers/newsletter-subscribe";
+import { getAllowedOrigins, SITE_URL } from "../../src/lib/site-config";
 import { getSystemContent } from "../../src/lib/site-content";
-
-interface Env {
-  RESEND_API_KEY?: string;
-  RESEND_SEGMENT_ID?: string;
-  NEWSLETTER_SECRET?: string;
-  NEWSLETTER_FROM?: string;
-}
 
 const ALLOWED_ORIGINS = getAllowedOrigins();
 
@@ -39,12 +24,12 @@ function corsHeaders(origin: string | null): Headers {
   });
 }
 
-export async function onRequestOptions(context: EventContext<Env, string, unknown>) {
+export async function onRequestOptions(context: EventContext<NewsletterSubscribeHandlerEnv, string, unknown>) {
   const origin = context.request.headers.get("Origin");
   return new Response(null, { headers: corsHeaders(origin), status: 204 });
 }
 
-export async function onRequestPost(context: EventContext<Env, string, unknown>) {
+export async function onRequestPost(context: EventContext<NewsletterSubscribeHandlerEnv, string, unknown>) {
   const { request, env } = context;
   const origin = request.headers.get("Origin");
   const headers = corsHeaders(origin);
@@ -56,75 +41,17 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     );
   }
 
-  try {
-    const rawBody = await request.text();
-    const parsed = NewsletterPayloadSchema.safeParse(JSON.parse(rawBody));
+  const response = await handleNewsletterSubscribe(
+    request,
+    env,
+    ({ email, ts, sig, locale }) =>
+      `${SITE_URL}/api/newsletter-confirm?email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}&locale=${locale}`
+  );
 
-    if (!parsed.success) {
-      const issues = parsed.error.issues;
-      const honeyIssue = issues.find((i) => i.path.includes("_honey"));
-      const systemContent = getSystemContent();
-      if (honeyIssue) {
-        return new Response(
-          JSON.stringify({ success: false, error: systemContent.common.invalidSubmission }),
-          { status: 400, headers }
-        );
-      }
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: systemContent.common.validationFailed,
-          details: issues.map((i) => ({ field: i.path.join("."), message: i.message })),
-        }),
-        { status: 400, headers }
-      );
-    }
-
-    const { email, locale: payloadLocale } = parsed.data;
-    const locale = resolveLocale(payloadLocale);
-    const systemContent = getSystemContent(locale);
-    const secret = env.NEWSLETTER_SECRET;
-    const apiKey = env.RESEND_API_KEY;
-
-    if (!secret || !apiKey) {
-      logger.warn("Newsletter not configured: set NEWSLETTER_SECRET + RESEND_API_KEY.");
-      return new Response(
-        JSON.stringify({ success: true, message: systemContent.newsletter.subscribeSuccess }),
-        { status: 200, headers }
-      );
-    }
-
-    const ts = Math.floor(Date.now() / 1000).toString();
-    const sig = await hmacSign(secret, `${email}|${ts}`);
-    const confirmUrl = `${SITE_URL}/api/newsletter-confirm?email=${encodeURIComponent(email)}&ts=${ts}&sig=${sig}&locale=${locale}`;
-    const from = getNewsletterFromAddress(env.NEWSLETTER_FROM, locale);
-    const brand = getNewsletterEmailBrand(SITE_URL, locale);
-    const newsletterContent = getNewsletterEmailContent(SITE_URL, locale);
-    const emailContent = await renderNewsletterConfirmEmail({
-      brand,
-      content: newsletterContent.confirm,
-      footer: newsletterContent.footer,
-      confirmUrl,
-    });
-
-    await sendResendEmail({
-      apiKey,
-      from,
-      to: email,
-      subject: newsletterContent.confirm.subject,
-      html: emailContent.html,
-      text: emailContent.text,
-    });
-
-    return new Response(
-      JSON.stringify({ success: true, message: systemContent.newsletter.subscribeSuccess }),
-      { status: 200, headers }
-    );
-  } catch (error) {
-    logger.error("Error processing newsletter subscription:", error);
-    return new Response(
-      JSON.stringify({ success: false, error: getSystemContent().newsletter.subscribeFailure }),
-      { status: 500, headers }
-    );
+  // Merge CORS headers with the shared handler's response headers
+  const mergedHeaders = new Headers(response.headers);
+  for (const [key, value] of headers.entries()) {
+    mergedHeaders.set(key, value);
   }
+  return new Response(response.body, { status: response.status, headers: mergedHeaders });
 }

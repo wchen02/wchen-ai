@@ -243,7 +243,8 @@ describe("newsletter unsubscribe API", () => {
 
   it("returns 400 when email or sig is missing", async () => {
     const req = new Request(
-      "https://wchen.ai/api/newsletter-unsubscribe-local?email=user%40example.com"
+      "https://wchen.ai/api/newsletter-unsubscribe-local?email=user%40example.com",
+      { method: "POST" }
     );
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -254,7 +255,8 @@ describe("newsletter unsubscribe API", () => {
 
   it("returns 400 when signature is invalid", async () => {
     const req = new Request(
-      "https://wchen.ai/api/newsletter-unsubscribe-local?email=user%40example.com&sig=wrong"
+      "https://wchen.ai/api/newsletter-unsubscribe-local?email=user%40example.com&sig=wrong",
+      { method: "POST" }
     );
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -266,7 +268,8 @@ describe("newsletter unsubscribe API", () => {
   it("returns 200 and redirectTo when signature is valid", async () => {
     const sig = await hmacSign(secret, "user@example.com");
     const req = new Request(
-      `https://wchen.ai/api/newsletter-unsubscribe-local?email=${encodeURIComponent("user@example.com")}&sig=${sig}&locale=en`
+      `https://wchen.ai/api/newsletter-unsubscribe-local?email=${encodeURIComponent("user@example.com")}&sig=${sig}&locale=en`,
+      { method: "POST" }
     );
     const res = await POST(req);
     expect(res.status).toBe(200);

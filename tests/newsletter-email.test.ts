@@ -269,29 +269,42 @@ describe("newsletter shared wiring", () => {
   });
 
   it("subscribe handlers render the shared confirmation template", () => {
+    const sharedSubscribePath = path.resolve(
+      __dirname,
+      "../shared/handlers/newsletter-subscribe.ts"
+    );
     const functionsSource = fs.readFileSync(functionsSubscribePath, "utf8");
     const nextSource = fs.readFileSync(nextSubscribePath, "utf8");
+    const sharedSource = fs.readFileSync(sharedSubscribePath, "utf8");
 
-    expect(functionsSource).toContain("getNewsletterEmailContent");
-    expect(functionsSource).toContain("renderNewsletterConfirmEmail");
-    expect(functionsSource).toContain("sendResendEmail");
-    expect(nextSource).toContain("getNewsletterEmailContent");
-    expect(nextSource).toContain("renderNewsletterConfirmEmail");
-    expect(nextSource).toContain("sendResendEmail");
+    // Shared handler contains the email-rendering logic
+    expect(sharedSource).toContain("getNewsletterEmailContent");
+    expect(sharedSource).toContain("renderNewsletterConfirmEmail");
+    expect(sharedSource).toContain("sendResendEmail");
+
+    // Provider wrappers delegate to the shared handler
+    expect(functionsSource).toContain("handleNewsletterSubscribe");
+    expect(nextSource).toContain("handleNewsletterSubscribe");
   });
 
   it("confirm handlers use the shared welcome template and contact helper", () => {
+    const sharedConfirmPath = path.resolve(
+      __dirname,
+      "../shared/handlers/newsletter-confirm.ts"
+    );
     const functionsSource = fs.readFileSync(functionsConfirmPath, "utf8");
     const nextSource = fs.readFileSync(nextConfirmPath, "utf8");
+    const sharedSource = fs.readFileSync(sharedConfirmPath, "utf8");
 
-    expect(functionsSource).toContain("getNewsletterEmailContent");
-    expect(functionsSource).toContain("renderNewsletterWelcomeEmail");
-    expect(functionsSource).toContain("upsertResendContact");
-    expect(functionsSource).toContain("createNewsletterWelcomeIdempotencyKey");
-    expect(nextSource).toContain("getNewsletterEmailContent");
-    expect(nextSource).toContain("renderNewsletterWelcomeEmail");
-    expect(nextSource).toContain("upsertResendContact");
-    expect(nextSource).toContain("createNewsletterWelcomeIdempotencyKey");
+    // Shared handler contains the email-rendering and contact-upserting logic
+    expect(sharedSource).toContain("getNewsletterEmailContent");
+    expect(sharedSource).toContain("renderNewsletterWelcomeEmail");
+    expect(sharedSource).toContain("upsertResendContact");
+    expect(sharedSource).toContain("createNewsletterWelcomeIdempotencyKey");
+
+    // Provider wrappers delegate to the shared handler
+    expect(functionsSource).toContain("handleNewsletterConfirmGet");
+    expect(nextSource).toContain("handleNewsletterConfirmPost");
   });
 });
 

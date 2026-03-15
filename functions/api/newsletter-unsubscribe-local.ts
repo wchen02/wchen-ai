@@ -3,24 +3,25 @@
  * The static frontend always calls this path (same as Next.js dev). This module
  * delegates to the shared unsubscribe handler so production and dev behave the same.
  */
-import { unsubscribe } from "./newsletter-unsubscribe";
-import { getLocaleFromRequest } from "./newsletter-unsubscribe";
+import {
+  handleNewsletterUnsubscribe,
+  getLocaleFromRequest,
+  type NewsletterUnsubscribeHandlerEnv,
+} from "../../shared/handlers/newsletter-unsubscribe";
 import { logger } from "../../src/lib/logger";
 import { getSystemContent } from "../../src/lib/site-content";
 
-type Env = { RESEND_API_KEY?: string; NEWSLETTER_SECRET?: string };
-
 export async function onRequestGet(
-  context: EventContext<Env, string, unknown>
+  context: EventContext<NewsletterUnsubscribeHandlerEnv, string, unknown>
 ): Promise<Response> {
-  return unsubscribe(context.request, context.env);
+  return handleNewsletterUnsubscribe(context.request, context.env);
 }
 
 export async function onRequestPost(
-  context: EventContext<Env, string, unknown>
+  context: EventContext<NewsletterUnsubscribeHandlerEnv, string, unknown>
 ): Promise<Response> {
   try {
-    return await unsubscribe(context.request, context.env);
+    return await handleNewsletterUnsubscribe(context.request, context.env);
   } catch (error) {
     logger.error("Error in newsletter-unsubscribe-local:", error);
     const locale = getLocaleFromRequest(context.request);
