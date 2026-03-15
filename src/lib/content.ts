@@ -47,64 +47,22 @@ export interface LocaleContentBundle {
   system: SystemContent;
 }
 
-const localeContentSources: Record<SupportedLocale, Record<keyof LocaleContentBundle, unknown>> = {
-  en: {
-    profile: profileEn,
-    home: homeEn,
-    about: aboutEn,
-    newsletter: newsletterEn,
-    ui: uiEn,
-    forms: formsEn,
-    system: systemEn,
-  },
-  es: {
-    profile: profileEs,
-    home: homeEs,
-    about: aboutEs,
-    newsletter: newsletterEs,
-    ui: uiEs,
-    forms: formsEs,
-    system: systemEs,
-  },
-  zh: {
-    profile: profileZh,
-    home: homeZh,
-    about: aboutZh,
-    newsletter: newsletterZh,
-    ui: uiZh,
-    forms: formsZh,
-    system: systemZh,
-  },
-};
+function buildBundle(sources: Record<keyof LocaleContentBundle, unknown>): LocaleContentBundle {
+  return {
+    profile: SiteProfileSchema.parse(sources.profile),
+    home: HomeContentSchema.parse(sources.home),
+    about: AboutContentSchema.parse(sources.about),
+    newsletter: NewsletterContentSourceSchema.parse(sources.newsletter),
+    ui: UiContentSchema.parse(sources.ui),
+    forms: FormsContentSchema.parse(sources.forms),
+    system: SystemContentSchema.parse(sources.system),
+  };
+}
 
 const localeContent: Record<SupportedLocale, LocaleContentBundle> = {
-  en: {
-    profile: SiteProfileSchema.parse(localeContentSources.en.profile),
-    home: HomeContentSchema.parse(localeContentSources.en.home),
-    about: AboutContentSchema.parse(localeContentSources.en.about),
-    newsletter: NewsletterContentSourceSchema.parse(localeContentSources.en.newsletter),
-    ui: UiContentSchema.parse(localeContentSources.en.ui),
-    forms: FormsContentSchema.parse(localeContentSources.en.forms),
-    system: SystemContentSchema.parse(localeContentSources.en.system),
-  },
-  es: {
-    profile: SiteProfileSchema.parse(localeContentSources.es.profile),
-    home: HomeContentSchema.parse(localeContentSources.es.home),
-    about: AboutContentSchema.parse(localeContentSources.es.about),
-    newsletter: NewsletterContentSourceSchema.parse(localeContentSources.es.newsletter),
-    ui: UiContentSchema.parse(localeContentSources.es.ui),
-    forms: FormsContentSchema.parse(localeContentSources.es.forms),
-    system: SystemContentSchema.parse(localeContentSources.es.system),
-  },
-  zh: {
-    profile: SiteProfileSchema.parse(localeContentSources.zh.profile),
-    home: HomeContentSchema.parse(localeContentSources.zh.home),
-    about: AboutContentSchema.parse(localeContentSources.zh.about),
-    newsletter: NewsletterContentSourceSchema.parse(localeContentSources.zh.newsletter),
-    ui: UiContentSchema.parse(localeContentSources.zh.ui),
-    forms: FormsContentSchema.parse(localeContentSources.zh.forms),
-    system: SystemContentSchema.parse(localeContentSources.zh.system),
-  },
+  en: buildBundle({ profile: profileEn, home: homeEn, about: aboutEn, newsletter: newsletterEn, ui: uiEn, forms: formsEn, system: systemEn }),
+  es: buildBundle({ profile: profileEs, home: homeEs, about: aboutEs, newsletter: newsletterEs, ui: uiEs, forms: formsEs, system: systemEs }),
+  zh: buildBundle({ profile: profileZh, home: homeZh, about: aboutZh, newsletter: newsletterZh, ui: uiZh, forms: formsZh, system: systemZh }),
 };
 
 export function getLocaleContent(locale?: string): LocaleContentBundle {
