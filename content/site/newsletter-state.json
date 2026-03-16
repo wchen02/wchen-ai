@@ -39,6 +39,66 @@
       "slug": "choosing-marketing-email-providers",
       "sentAt": "2026-03-13T04:06:53.139Z",
       "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "build-time-validation-as-product",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "887ea3694833969f"
+    },
+    {
+      "slug": "cost-of-generic-ui-agent-design",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "8c9ba9712ef6f3e2"
+    },
+    {
+      "slug": "github-as-your-backend",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "970771d637d8f07c"
+    },
+    {
+      "slug": "i18n-and-content-skills",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "0b31c1eaaaef2fa9"
+    },
+    {
+      "slug": "newsletter-static-site-resend-cloudflare",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "46a1503da5b56e8c"
+    },
+    {
+      "slug": "progressive-disclosure-agent-skills",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "4e836466637efc66"
+    },
+    {
+      "slug": "recurring-newsletter-as-build-step",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "b842e880ee69891f"
+    },
+    {
+      "slug": "site-comments-giscus",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "94680756d2056ae2"
+    },
+    {
+      "slug": "pitch-before-you-vibe-code",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "9e245353ac5b6362"
+    },
+    {
+      "slug": "static-first-audio",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "8ed180c3d8d31c6e"
     }
   ],
   "projects": [
@@ -61,6 +121,12 @@
       "slug": "env-from-example",
       "sentAt": "2026-03-13T04:06:53.139Z",
       "subject": "New on Wilson Chen"
+    },
+    {
+      "slug": "home-about-refresh-skill",
+      "sentAt": "2026-03-15T12:51:27.262Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "88c162c7c63bb5a9"
     }
   ]
 }

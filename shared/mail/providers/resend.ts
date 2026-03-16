@@ -1,26 +1,16 @@
+import type {
+  MailContact,
+  MailProvider,
+  ListContactsParams,
+  SendEmailParams,
+  UpdateContactParams,
+  UpsertContactParams,
+} from "../types";
+
 const RESEND_API_BASE = "https://api.resend.com";
 
-export interface ResendEmailRequest {
+interface ResendEmailRequest extends SendEmailParams {
   apiKey: string;
-  from: string;
-  to: string | string[];
-  subject: string;
-  html: string;
-  text?: string;
-  idempotencyKey?: string;
-  headers?: Record<string, string>;
-}
-
-export interface ResendContact {
-  id: string;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  created_at: string;
-  unsubscribed: boolean;
-  /** Set when Resend returns custom contact properties (e.g. preferred_locale). */
-  preferred_locale?: string;
-  properties?: Record<string, unknown>;
 }
 
 export async function sendResendEmail({
@@ -56,12 +46,7 @@ export async function sendResendEmail({
   }
 }
 
-export async function upsertResendContact(params: {
-  apiKey: string;
-  email: string;
-  segmentId: string;
-  properties?: Record<string, string | number>;
-}): Promise<void> {
+export async function upsertResendContact(params: UpsertContactParams & { apiKey: string }): Promise<void> {
   const response = await fetch(`${RESEND_API_BASE}/contacts`, {
     method: "POST",
     headers: {
@@ -83,12 +68,8 @@ export async function upsertResendContact(params: {
   }
 }
 
-export async function listResendContactsBySegment(params: {
-  apiKey: string;
-  segmentId: string;
-  pageSize?: number;
-}): Promise<ResendContact[]> {
-  const contacts: ResendContact[] = [];
+export async function listResendContactsBySegment(params: ListContactsParams & { apiKey: string }): Promise<MailContact[]> {
+  const contacts: MailContact[] = [];
   const pageSize = params.pageSize ?? 100;
   let after: string | undefined;
 
@@ -115,7 +96,7 @@ export async function listResendContactsBySegment(params: {
     }
 
     const payload = (await response.json()) as {
-      data?: ResendContact[];
+      data?: MailContact[];
       has_more?: boolean;
     };
     const page = payload.data ?? [];
@@ -132,11 +113,7 @@ export async function listResendContactsBySegment(params: {
   }
 }
 
-export async function updateResendContact(params: {
-  apiKey: string;
-  email: string;
-  unsubscribed?: boolean;
-}): Promise<void> {
+export async function updateResendContact(params: UpdateContactParams & { apiKey: string }): Promise<void> {
   const response = await fetch(`${RESEND_API_BASE}/contacts/${encodeURIComponent(params.email)}`, {
     method: "PATCH",
     headers: {
@@ -152,4 +129,18 @@ export async function updateResendContact(params: {
     const errorBody = await response.text();
     throw new Error(`Resend contact update error (${response.status}): ${errorBody}`);
   }
+}
+
+/**
+ * Returns a {@link MailProvider} backed by the Resend API.
+ * To swap to a different provider, implement {@link MailProvider} and add
+ * a new case in `shared/mail/index.ts`.
+ */
+export function createResendMailProvider(apiKey: string): MailProvider {
+  return {
+    sendEmail: (params: SendEmailParams) => sendResendEmail({ ...params, apiKey }),
+    upsertContact: (params: UpsertContactParams) => upsertResendContact({ ...params, apiKey }),
+    listContacts: (params: ListContactsParams) => listResendContactsBySegment({ ...params, apiKey }),
+    updateContact: (params: UpdateContactParams) => updateResendContact({ ...params, apiKey }),
+  };
 }

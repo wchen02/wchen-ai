@@ -2,10 +2,13 @@ function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-export type AudioSource = "local" | "r2";
+export type AudioSource = "local" | "r2" | "s3";
 
 export function getAudioSource(): AudioSource {
-  return process.env.AUDIO_SOURCE?.trim().toLowerCase() === "r2" ? "r2" : "local";
+  const source = process.env.AUDIO_SOURCE?.trim().toLowerCase();
+  if (source === "r2") return "r2";
+  if (source === "s3") return "s3";
+  return "local";
 }
 
 export function isLocalAudioSource(): boolean {
@@ -13,18 +16,22 @@ export function isLocalAudioSource(): boolean {
 }
 
 export function getAudioPublicBaseUrl(): string | null {
-  if (isLocalAudioSource()) {
+  const source = getAudioSource();
+  if (source === "local") {
     return "/audio";
   }
-  const baseUrl = process.env.R2_AUDIO_PUBLIC_BASE_URL?.trim();
+  const envPrefix = source === "s3" ? "S3" : "R2";
+  const baseUrl = process.env[`${envPrefix}_AUDIO_PUBLIC_BASE_URL`]?.trim();
   return baseUrl ? trimTrailingSlash(baseUrl) : null;
 }
 
 export function getAudioManifestUrl(): string | null {
-  if (isLocalAudioSource()) {
+  const source = getAudioSource();
+  if (source === "local") {
     return null;
   }
-  const explicitUrl = process.env.R2_AUDIO_MANIFEST_URL?.trim();
+  const envPrefix = source === "s3" ? "S3" : "R2";
+  const explicitUrl = process.env[`${envPrefix}_AUDIO_MANIFEST_URL`]?.trim();
   if (explicitUrl) {
     return explicitUrl;
   }

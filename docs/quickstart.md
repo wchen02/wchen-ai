@@ -37,7 +37,8 @@ CONTACT_TO_EMAIL=you@yourdomain.com
 MAILGUN_DOMAIN=mg.yourdomain.com
 MAILGUN_API_KEY=mailgun_api_key_here
 
-# Newsletter
+# Newsletter (mail provider defaults to "resend"; set MAIL_PROVIDER to change)
+# MAIL_PROVIDER=resend
 RESEND_API_KEY=re_your_api_key_here
 RESEND_SEGMENT_ID=seg_your_segment_id_here
 NEWSLETTER_SECRET=your-random-32-char-secret-here
@@ -116,7 +117,7 @@ pnpm validate:metadata
 
 Notes:
 
-- `pnpm build` runs the prebuild scripts that validate links, generate RSS/sitemap/search assets, and fetch GitHub contribution data when credentials are available. It does **not** run audio generation or R2 upload—those are done locally (see [Audio R2 workflow](./audio-r2-workflow.md)).
+- `pnpm build` runs the prebuild scripts that validate links, generate RSS/sitemap/search assets, and fetch GitHub contribution data when credentials are available. It does **not** run audio generation or publish—those are done locally (see [Audio storage workflow](./audio-storage-workflow.md)).
 - `pnpm build` and `pnpm start` set `NODE_ENV=production` so the app and logger behave as in production.
 - `pnpm validate:metadata` validates required metadata and structured-data output after a build.
 - `pnpm run newsletter:send-recurring` sends a real recurring newsletter when newsletter env vars are configured. Leave those vars unset if you only want to verify that the script exits safely.

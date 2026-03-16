@@ -21,20 +21,20 @@ import {
   renderNewsletterIssueEmail,
 } from "../shared/newsletter-email";
 import { hmacSign } from "../shared/newsletter-crypto";
-import type { ResendContact } from "../shared/resend";
-import { listResendContactsBySegment, sendResendEmail } from "../shared/resend";
+import type { MailContact } from "../shared/mail";
+import { getMailProvider } from "../shared/mail";
 
 /** Resend allows 2 requests per second; wait between sends to avoid 429. */
 const RESEND_RATE_LIMIT_DELAY_MS = 600;
 
-function getPreferredLocale(contact: ResendContact): string {
+function getPreferredLocale(contact: MailContact): string {
   const fromProps =
     (contact.properties as Record<string, string> | undefined)?.preferred_locale;
   return resolveLocale(contact.preferred_locale ?? fromProps ?? DEFAULT_LOCALE);
 }
 
 function getUniqueDeliverableRecipientsWithLocale(
-  contacts: ResendContact[]
+  contacts: MailContact[]
 ): Array<{ email: string; locale: string }> {
   const seen = new Set<string>();
   const result: Array<{ email: string; locale: string }> = [];
@@ -52,13 +52,16 @@ function getUniqueDeliverableRecipientsWithLocale(
 }
 
 async function main(): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
   const segmentId = process.env.RESEND_SEGMENT_ID;
   const secret = process.env.NEWSLETTER_SECRET;
+  const provider = getMailProvider({
+    MAIL_PROVIDER: process.env.MAIL_PROVIDER,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+  });
 
-  if (!apiKey || !segmentId || !secret) {
+  if (!provider || !segmentId || !secret) {
     logger.log(
-      "Skipping recurring newsletter send: RESEND_API_KEY, RESEND_SEGMENT_ID, or NEWSLETTER_SECRET is not set."
+      "Skipping recurring newsletter send: mail provider credentials, RESEND_SEGMENT_ID, or NEWSLETTER_SECRET is not set."
     );
     return;
   }
@@ -75,8 +78,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const contacts = await listResendContactsBySegment({
-    apiKey,
+  const contacts = await provider.listContacts({
     segmentId,
   });
   const recipientsWithLocale = getUniqueDeliverableRecipientsWithLocale(contacts);
@@ -130,8 +132,7 @@ async function main(): Promise<void> {
       unsubscribeUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await provider.sendEmail({
       from,
       to: recipient,
       subject: issueContent.subject,

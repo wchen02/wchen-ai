@@ -1,37 +1,29 @@
-export const DEFAULT_LOCALE = "en";
-export const SUPPORTED_LOCALES = [DEFAULT_LOCALE, "es", "zh"] as const;
+import localeConfig from "../../content/locales/locale-config.json";
 
-export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+if (!localeConfig || localeConfig.length === 0) {
+  throw new Error("locale-config.json must define at least one locale");
+}
+
+const defaultEntry = localeConfig.find((l) => l.isDefault) ?? localeConfig[0];
+
+export const DEFAULT_LOCALE: string = defaultEntry.code;
+export const SUPPORTED_LOCALES: readonly string[] = localeConfig.map((l) => l.code);
+
+export type SupportedLocale = string;
 
 export const LOCALE_COOKIE_NAME = "preferred_locale";
 
-export const LOCALE_INFO: Record<
-  SupportedLocale,
-  {
-    label: string;
-    nativeLabel: string;
-  }
-> = {
-  en: {
-    label: "English",
-    nativeLabel: "English",
-  },
-  es: {
-    label: "Spanish",
-    nativeLabel: "Espanol",
-  },
-  zh: {
-    label: "Chinese",
-    nativeLabel: "中文",
-  },
-};
+export const LOCALE_INFO: Record<string, { label: string; nativeLabel: string }> =
+  Object.fromEntries(
+    localeConfig.map((l) => [l.code, { label: l.label, nativeLabel: l.nativeLabel }])
+  );
 
 export function normalizeLocale(locale?: string | null): string {
   return (locale ?? "").trim().toLowerCase().replace(/_/g, "-");
 }
 
-export function isSupportedLocale(locale: string): locale is SupportedLocale {
-  return SUPPORTED_LOCALES.includes(locale as SupportedLocale);
+export function isSupportedLocale(locale: string): boolean {
+  return SUPPORTED_LOCALES.includes(locale);
 }
 
 export function resolveLocale(locale?: string | null): SupportedLocale {

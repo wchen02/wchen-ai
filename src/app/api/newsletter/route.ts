@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NewsletterPayloadSchema } from "../../../../shared/newsletter";
 import { hmacSign } from "../../../../shared/newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../../../../shared/newsletter-email";
-import { sendResendEmail } from "../../../../shared/resend";
+import { getMailProvider } from "../../../../shared/mail";
 import { localizePath } from "@/lib/i18n";
 import { resolveLocale } from "@/lib/locales";
 import {
@@ -85,9 +85,12 @@ export async function POST(request: Request) {
     const locale = resolveLocale(payloadLocale);
     const systemContent = getSystemContent(locale);
     const secret = process.env.NEWSLETTER_SECRET;
-    const apiKey = process.env.RESEND_API_KEY;
+    const provider = getMailProvider({
+      MAIL_PROVIDER: process.env.MAIL_PROVIDER,
+      RESEND_API_KEY: process.env.RESEND_API_KEY,
+    });
 
-    if (!secret || !apiKey) {
+    if (!secret || !provider) {
       return NextResponse.json(
         {
           success: true,
@@ -118,8 +121,7 @@ export async function POST(request: Request) {
       confirmUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await provider.sendEmail({
       from,
       to: email,
       subject: newsletterContent.confirm.subject,
