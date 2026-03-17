@@ -4,7 +4,6 @@ import {
 } from "../../shared/handlers/newsletter-subscribe";
 import { getAllowedOrigins, SITE_URL } from "../../src/lib/site-config";
 import { getSystemContent } from "../../src/lib/site-content";
-
 const ALLOWED_ORIGINS = getAllowedOrigins();
 
 function isAllowedOrigin(origin: string | null): boolean {

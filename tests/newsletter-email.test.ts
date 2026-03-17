@@ -277,10 +277,11 @@ describe("newsletter shared wiring", () => {
     const nextSource = fs.readFileSync(nextSubscribePath, "utf8");
     const sharedSource = fs.readFileSync(sharedSubscribePath, "utf8");
 
-    // Shared handler contains the email-rendering logic
+    // Shared handler contains the email-rendering logic and provider selection.
     expect(sharedSource).toContain("getNewsletterEmailContent");
     expect(sharedSource).toContain("renderNewsletterConfirmEmail");
-    expect(sharedSource).toContain("sendResendEmail");
+    expect(sharedSource).toContain("getMailProvider");
+    expect(sharedSource).toContain("provider.sendEmail");
 
     // Provider wrappers delegate to the shared handler
     expect(functionsSource).toContain("handleNewsletterSubscribe");
@@ -296,10 +297,12 @@ describe("newsletter shared wiring", () => {
     const nextSource = fs.readFileSync(nextConfirmPath, "utf8");
     const sharedSource = fs.readFileSync(sharedConfirmPath, "utf8");
 
-    // Shared handler contains the email-rendering and contact-upserting logic
+    // Shared handler contains the email-rendering, provider selection, and contact-upserting logic.
     expect(sharedSource).toContain("getNewsletterEmailContent");
     expect(sharedSource).toContain("renderNewsletterWelcomeEmail");
-    expect(sharedSource).toContain("upsertResendContact");
+    expect(sharedSource).toContain("getMailProvider");
+    expect(sharedSource).toContain("provider.upsertContact");
+    expect(sharedSource).toContain("provider.sendEmail");
     expect(sharedSource).toContain("createNewsletterWelcomeIdempotencyKey");
 
     // Provider wrappers delegate to the shared handler

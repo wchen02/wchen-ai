@@ -1,6 +1,8 @@
-# Audio R2 Workflow
+# Audio Storage Workflow
 
-Generated audio is treated as a local artifact, not a Git-tracked asset. **Audio generation and publishing are not part of the normal build or CI**—run `pnpm audio:generate` and `pnpm audio:publish` locally, then push; the CI build only needs `AUDIO_SOURCE` and `R2_AUDIO_PUBLIC_BASE_URL` so the deployed app uses R2 for playback.
+Generated audio is treated as a local artifact, not a Git-tracked asset. **Audio generation and publishing are not part of the normal build or CI**—run `pnpm audio:generate` and `pnpm audio:publish` locally, then push; the CI build only needs `AUDIO_SOURCE` and the provider's public base URL so the deployed app uses remote storage for playback.
+
+The upload script selects the storage provider via the `STORAGE_PROVIDER` environment variable (default: `r2`). The `AUDIO_SOURCE` environment variable tells the app where to fetch audio at build/runtime. Both support `r2` (Cloudflare R2) and `s3` (Amazon S3).
 
 ## Local Development
 
@@ -13,6 +15,8 @@ pnpm audio:generate
 This writes files under `public/audio/`, including `audio-manifest.json`. Local development continues to serve them from `/audio/...`.
 
 ## Production Delivery
+
+### Using Cloudflare R2
 
 Production builds can resolve audio directly from a public R2 bucket instead of from checked-in files.
 
@@ -29,7 +33,20 @@ If your manifest is not published at `<public base>/audio-manifest.json`, also s
 R2_AUDIO_MANIFEST_URL=https://pub-your-bucket-id.r2.dev/audio-manifest.json
 ```
 
-## Publishing Audio To R2
+### Using Amazon S3
+
+```bash
+AUDIO_SOURCE=s3
+S3_AUDIO_PUBLIC_BASE_URL=https://your-cloudfront-or-s3-public-url
+```
+
+If your manifest is not published at `<public base>/audio-manifest.json`, also set:
+
+```bash
+S3_AUDIO_MANIFEST_URL=https://your-cloudfront-or-s3-public-url/audio-manifest.json
+```
+
+## Publishing Audio
 
 After generating audio locally, upload it with:
 
@@ -37,13 +54,30 @@ After generating audio locally, upload it with:
 pnpm audio:publish
 ```
 
-Required environment variables for upload:
+The upload script uses `STORAGE_PROVIDER` to select the provider (default: `r2`).
+
+### Cloudflare R2 (default)
+
+Required environment variables:
 
 ```bash
+STORAGE_PROVIDER=r2   # optional – r2 is the default
 R2_ACCOUNT_ID=your-cloudflare-account-id
 R2_ACCESS_KEY_ID=your-r2-access-key-id
 R2_SECRET_ACCESS_KEY=your-r2-secret-access-key
 R2_AUDIO_BUCKET=your-audio-bucket-name
+```
+
+### Amazon S3
+
+Required environment variables:
+
+```bash
+STORAGE_PROVIDER=s3
+S3_REGION=us-east-1
+S3_ACCESS_KEY_ID=your-aws-access-key-id
+S3_SECRET_ACCESS_KEY=your-aws-secret-access-key
+S3_AUDIO_BUCKET=your-audio-bucket-name
 ```
 
 The publish script:
@@ -58,8 +92,8 @@ The publish script:
 1. Create or update content.
 2. Run `pnpm audio:generate` locally.
 3. Sanity check the local page/audio behavior.
-4. Run `pnpm audio:publish` locally (requires R2 env in `.env` or shell).
-5. Push to trigger CI (or deploy manually). The build does **not** run audio steps; set `AUDIO_SOURCE=r2` and `R2_AUDIO_PUBLIC_BASE_URL` in your GitHub production environment (or Cloudflare Pages env) so the built app uses R2 for playback.
+4. Run `pnpm audio:publish` locally (requires provider env vars in `.env` or shell).
+5. Push to trigger CI (or deploy manually). The build does **not** run audio steps; set `AUDIO_SOURCE` and the provider's public base URL in your GitHub production environment (or Cloudflare Pages env) so the built app uses remote storage for playback.
 
 ## Troubleshooting: Audio not working in production
 

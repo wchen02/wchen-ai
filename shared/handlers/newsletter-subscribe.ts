@@ -1,7 +1,7 @@
 import { NewsletterPayloadSchema } from "../newsletter";
 import { hmacSign } from "../newsletter-crypto";
 import { renderNewsletterConfirmEmail } from "../newsletter-email";
-import { sendResendEmail } from "../resend";
+import { getMailProvider, type MailProviderEnv } from "../mail";
 import { resolveLocale } from "../../src/lib/locales";
 import {
   getNewsletterEmailBrand,
@@ -16,8 +16,7 @@ import { getSystemContent } from "../../src/lib/site-content";
  * Populate from process.env (Next.js), context.env (Cloudflare),
  * or event variables (Lambda) before calling handleNewsletterSubscribe().
  */
-export interface NewsletterSubscribeHandlerEnv {
-  RESEND_API_KEY?: string;
+export interface NewsletterSubscribeHandlerEnv extends MailProviderEnv {
   NEWSLETTER_SECRET?: string;
   NEWSLETTER_FROM?: string;
 }
@@ -50,7 +49,7 @@ export type BuildConfirmUrl = (params: {
  * Provider-agnostic newsletter subscribe handler.
  *
  * Validates the request payload, generates an HMAC-signed confirmation token,
- * and sends the confirmation email via Resend. The caller supplies
+ * and sends the confirmation email via the configured mail provider. The caller supplies
  * `buildConfirmUrl` to construct the confirmation URL using provider-specific
  * configuration (base URL, path convention, locale strategy, etc.).
  *
@@ -65,6 +64,7 @@ export type BuildConfirmUrl = (params: {
  *     }
  *     const reqUrl = new URL(request.url);
  *     return handleNewsletterSubscribe(request, {
+ *       MAIL_PROVIDER: process.env.MAIL_PROVIDER,
  *       RESEND_API_KEY: process.env.RESEND_API_KEY,
  *       NEWSLETTER_SECRET: process.env.NEWSLETTER_SECRET,
  *     }, ({ email, ts, sig, locale }) =>
@@ -117,11 +117,11 @@ export async function handleNewsletterSubscribe(
     const locale = resolveLocale(payloadLocale);
     const systemContent = getSystemContent(locale);
     const secret = env.NEWSLETTER_SECRET;
-    const apiKey = env.RESEND_API_KEY;
+    const provider = getMailProvider(env);
 
-    if (!secret || !apiKey) {
+    if (!secret || !provider) {
       logger.warn(
-        "Newsletter not configured: set NEWSLETTER_SECRET + RESEND_API_KEY."
+        "Newsletter not configured: set NEWSLETTER_SECRET and mail provider env vars."
       );
       return Response.json(
         { success: true, message: systemContent.newsletter.subscribeSuccess },
@@ -148,8 +148,7 @@ export async function handleNewsletterSubscribe(
       confirmUrl,
     });
 
-    await sendResendEmail({
-      apiKey,
+    await provider.sendEmail({
       from,
       to: email,
       subject: newsletterContent.confirm.subject,

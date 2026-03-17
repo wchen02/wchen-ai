@@ -7,7 +7,7 @@ import {
   createNewsletterWelcomeIdempotencyKey,
   renderNewsletterWelcomeEmail,
 } from "../newsletter-email";
-import { sendResendEmail, upsertResendContact } from "../resend";
+import { getMailProvider, type MailProviderEnv } from "../mail";
 import { logger } from "../../src/lib/logger";
 import { resolveLocale } from "../../src/lib/locales";
 import {
@@ -23,8 +23,7 @@ import { getSystemContent } from "../../src/lib/site-content";
  * Populate from process.env (Next.js), context.env (Cloudflare),
  * or event variables (Lambda) before calling the handler.
  */
-export interface NewsletterConfirmHandlerEnv {
-  RESEND_API_KEY?: string;
+export interface NewsletterConfirmHandlerEnv extends MailProviderEnv {
   RESEND_SEGMENT_ID?: string;
   NEWSLETTER_SECRET?: string;
   NEWSLETTER_FROM?: string;
@@ -56,10 +55,10 @@ async function confirmSubscription(
   | { ok: false; error: string; status: number }
 > {
   const secret = env.NEWSLETTER_SECRET;
-  const apiKey = env.RESEND_API_KEY;
+  const provider = getMailProvider(env);
   const segmentId = env.RESEND_SEGMENT_ID;
 
-  if (!secret || !apiKey || !segmentId) {
+  if (!secret || !provider || !segmentId) {
     logger.error("Newsletter confirm not configured");
     return {
       ok: false,
@@ -87,8 +86,7 @@ async function confirmSubscription(
     };
   }
 
-  await upsertResendContact({
-    apiKey,
+  await provider.upsertContact({
     email,
     segmentId,
     properties: { preferred_locale: resolvedLocale },
@@ -114,8 +112,7 @@ async function confirmSubscription(
   });
 
   try {
-    await sendResendEmail({
-      apiKey,
+    await provider.sendEmail({
       from,
       to: email,
       subject: newsletterContent.welcome.subject,
@@ -209,6 +206,7 @@ export async function handleNewsletterConfirmGet(
  *   export async function POST(request: Request) {
  *     const reqUrl = new URL(request.url);
  *     return handleNewsletterConfirmPost(request, {
+ *       MAIL_PROVIDER: process.env.MAIL_PROVIDER,
  *       RESEND_API_KEY: process.env.RESEND_API_KEY,
  *       RESEND_SEGMENT_ID: process.env.RESEND_SEGMENT_ID,
  *       NEWSLETTER_SECRET: process.env.NEWSLETTER_SECRET,

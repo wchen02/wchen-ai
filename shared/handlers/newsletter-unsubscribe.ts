@@ -1,5 +1,5 @@
 import { hmacSign, timingSafeEqual } from "../newsletter-crypto";
-import { updateResendContact } from "../resend";
+import { getMailProvider, type MailProviderEnv } from "../mail";
 import {
   DEFAULT_LOCALE,
   getPreferredLocaleFromAcceptLanguage,
@@ -13,8 +13,7 @@ import { getSystemContent } from "../../src/lib/site-content";
  * Populate from process.env (Next.js), context.env (Cloudflare),
  * or event variables (Lambda) before calling handleNewsletterUnsubscribe().
  */
-export interface NewsletterUnsubscribeHandlerEnv {
-  RESEND_API_KEY?: string;
+export interface NewsletterUnsubscribeHandlerEnv extends MailProviderEnv {
   NEWSLETTER_SECRET?: string;
 }
 
@@ -47,6 +46,7 @@ export function getLocaleFromRequest(request: Request): string {
  *   // Next.js App Router
  *   export async function POST(request: Request) {
  *     return handleNewsletterUnsubscribe(request, {
+ *       MAIL_PROVIDER: process.env.MAIL_PROVIDER,
  *       RESEND_API_KEY: process.env.RESEND_API_KEY,
  *       NEWSLETTER_SECRET: process.env.NEWSLETTER_SECRET,
  *     });
@@ -86,7 +86,9 @@ export async function handleNewsletterUnsubscribe(
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
-  if (!env.NEWSLETTER_SECRET || !env.RESEND_API_KEY) {
+  const provider = getMailProvider(env);
+
+  if (!env.NEWSLETTER_SECRET || !provider) {
     logger.error("Newsletter unsubscribe not configured");
     return jsonError(systemContent.common.genericError, 500);
   }
@@ -105,8 +107,7 @@ export async function handleNewsletterUnsubscribe(
     return jsonError(systemContent.newsletter.invalidUnsubscribeLink, 400);
   }
 
-  await updateResendContact({
-    apiKey: env.RESEND_API_KEY,
+  await provider.updateContact({
     email: normalizedEmail,
     unsubscribed: true,
   });
