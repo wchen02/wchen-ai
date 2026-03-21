@@ -26,6 +26,9 @@
 .DS_Store
 *.pem
 
+# cloudflare / wrangler (local Pages Functions bundle dumps)
+/_worker.bundle
+
 # debug
 npm-debug.log*
 yarn-debug.log*

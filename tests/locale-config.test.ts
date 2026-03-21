@@ -201,11 +201,15 @@ describe("locale-config.json is the source of truth (no TS hardcoding)", () => {
     expect(source).toContain("locale-config.json");
   });
 
-  it("content.ts does not contain per-locale static JSON imports", () => {
+  it("content.ts has static JSON imports for every locale in locale-config (Pages Functions / esbuild)", () => {
     const source = fs.readFileSync(path.resolve(__dirname, "../src/lib/content.ts"), "utf8");
-    expect(source).not.toMatch(/import\s+\w+\s+from\s+["'].*locales\/en\/site/);
-    expect(source).not.toMatch(/import\s+\w+\s+from\s+["'].*locales\/es\/site/);
-    expect(source).not.toMatch(/import\s+\w+\s+from\s+["'].*locales\/zh\/site/);
+    for (const { code } of localeConfig) {
+      for (const file of LOCALE_SITE_FILES) {
+        expect(source, `expected static import path locales/${code}/site/${file}`).toContain(
+          `locales/${code}/site/${file}`
+        );
+      }
+    }
   });
 });
 
