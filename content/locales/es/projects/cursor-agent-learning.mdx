@@ -1,0 +1,51 @@
+---
+title: "Laboratorio de aprendizaje de agentes en Cursor"
+date: "2026-03-20T12:00:00Z"
+type: ["agent", "experiment", "skill"]
+motivation: "Quería un repo pequeño y con licencia MIT donde dominar la configuración de agentes en Cursor con vibe coding y experimentos—no solo leer sobre reglas y hooks, sino cablearlos, romperlos y ver cómo encajan."
+problemAddressed: "La mayoría de tutoriales de agentes se quedan en los prompts. En el trabajo real necesitas configuración nativa del repo: líneas base que perduran (reglas), procedimientos con nombre (skills), delegación enfocada (subagentes), intención del proyecto en un archivo ligero (AGENTS.md) y automatización alrededor de ediciones y shell (hooks). Sin un mapa y ejemplos que funcionen, reinventas esa pila cada vez."
+learnings: "Poner nombre a un flujo como skill importa tanto como los scripts de debajo—la documentación de frameworks que enlaza flujos tipo plan→implementar→verificar con puntos de entrada concretos `/skill-name` convierte chats ad hoc en algo enseñable. Separar shell, hooks y MCP en ejemplos explícitos dejó claros los límites. Mantuve el repo pensado para claridad frente a endurecimiento de producción, para que los ejemplos sigan siendo fáciles de copiar a proyectos reales."
+github: "https://github.com/wchen02/cursor-agent-learning"
+ogImage: "https://wchen.ai/projects/cursor-agent-learning/hero.jpg"
+featured: false
+---
+
+![Portátil en un escritorio con un editor lleno de código—cómo imagino aprender la configuración de agentes en un repo real, no en abstracto.](/projects/cursor-agent-learning/hero.jpg)
+
+*Foto de [Christopher Gower](https://unsplash.com/@cgower?utm_source=wchen.ai&utm_medium=referral) en [Unsplash](https://unsplash.com/photos/a-macbook-with-lines-of-code-on-its-screen-on-a-busy-desk-m_HRfLhgABo?utm_source=wchen.ai&utm_medium=referral).*
+
+Publiqué [cursor-agent-learning](https://github.com/wchen02/cursor-agent-learning) como laboratorio de aprendizaje deliberado: documentación más ejemplos vivos en `.cursor/` para tratar la configuración del agente como cualquier otra parte del código—versionada, documentada y segura para experimentar.
+
+## Por qué un laboratorio y no solo un post
+
+Cursor te da varias palancas sobre cómo se comporta un agente en un repositorio. Lo que falta no es *si* existen esas palancas, sino *un sitio* donde probarlas juntas. Construí este proyecto para leer un concepto, pasar a una regla o skill que funcione, hacer un ejercicio y ajustar hooks sin ensuciar una app de producción. El objetivo es estructura repetible, no una demo de una sola vez.
+
+## Qué hay en el repo
+
+La documentación es la columna vertebral: guía principal de vibe coding, referencia rápida, temas avanzados (referencias de reglas, skills multiarchivo, orquestación, hooks de auditoría y bloqueo), resolución de problemas, consejos, comparación entre herramientas y un documento largo de frameworks de agente que conecta flujos de trabajo con skills concretas. Hay ejercicios prácticos y calendarios opcionales (incluido un plan de 14 días y uno intensivo más corto) para que la práctica siga a los conceptos en lugar de evaporarse tras una lectura rápida.
+
+Bajo `.cursor/` hay reglas de ejemplo (siempre activas, por archivo y `@`-mention), skills que invocas con `/skill-name`, definiciones de subagentes y scripts de hook cableados desde `hooks.json`. Los `AGENTS.md` en la raíz y anidados muestran cómo encajan instrucciones ligeras del proyecto junto a personalización más profunda.
+
+## Flujos de entrega centrales
+
+La documentación de frameworks agrupa skills según cómo sale el software al mundo: desarrollo de features con plan → implementar → verificar, flujos de bugfix con verificación, implementación con investigación primero y pasadas orientadas a seguridad. Eso corresponde al bloque de “entrega central” del currículo—las secciones uno a cuatro del esquema interno—para que elijas un carril sin adivinar qué cuenta como “bien” en el chat.
+
+## Puertas humanas y ciclos de vida de producto
+
+![Personas colaborando con portátiles alrededor de una mesa—aprobación, revisión y ciclo de vida como parte del bucle, no como remate.](/projects/cursor-agent-learning/planning-workflow.jpg)
+
+*Foto de [fauxels](https://www.pexels.com/@fauxels/) en [Pexels](https://www.pexels.com/photo/photo-of-people-doing-handshakes-3184296/).*
+
+Más allá del camino feliz de código, el repo incluye patrones donde un humano aprueba explícitamente el siguiente paso: release con aprobación, idea hasta completar con human-in-the-loop, y ciclos ágiles que tratan requisitos, tests y bucles de feedback como parte primera de la narrativa del agente. Ahí la asistencia del agente deja de fingir que el equipo es solo una persona escribiendo en un hilo.
+
+## MCP, hooks y dónde está el límite
+
+Hay un hilo dedicado al trabajo asistido por MCP: traer documentación, combinar flujos ágiles con MCP y skills relacionadas para ver cuándo las herramientas externas entran en el bucle frente a cuándo basta el contexto del repo. Otro tema contrasta uso de shell, scripts de hook y herramientas MCP—tres formas de tocar el mundo fuera del modelo—con ejemplos que hacen visibles los tradeoffs en lugar de dejarlo en filosofía.
+
+## Memoria en disco y narrativas largas
+
+Dos patrones amplían el límite de la sesión. Skills de “memoria” en Markdown local muestran cómo persistir notas en un archivo del repo entre chats para que el agente no tenga que reaprender las mismas restricciones cada vez. Un skill narrativo más amplio (`project-vibe-master-workflow`) recorre una historia de punta a punta con estado partido en disco para poder pausar, reanudar y tratar el trabajo del agente más como bitácora de proyecto que como una sola transcripción.
+
+## Cómo lo encuadro ahora
+
+Las reglas fijan la línea base, los skills empaquetan procedimientos, los subagentes aíslan trabajo, `AGENTS.md` concentra la intención del proyecto en un archivo y los hooks conectan el agente a tu cadena de herramientas con salvaguardas. Este repositorio es el mapa de esas palancas, con ejemplos para copiar y un currículo—lo uso cuando quiero aprender con método en lugar de confiar en que el próximo prompt quede fijado.

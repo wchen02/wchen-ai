@@ -1,0 +1,51 @@
+---
+title: "Cursor agent learning lab"
+date: "2026-03-20T12:00:00Z"
+type: ["agent", "experiment", "skill"]
+motivation: "I wanted one small, MIT-licensed repo where I could master Cursor agent setup through vibe coding and experiments—not just read about rules and hooks, but wire them, break them, and see how they compose."
+problemAddressed: "Most agent tutorials stop at prompts. In real work you need repo-native configuration: baselines that stick (rules), named procedures (skills), focused delegation (subagents), lightweight project intent (AGENTS.md), and automation around edits and shell (hooks). Without a map and working samples, you reinvent that stack every time."
+learnings: "Naming a workflow as a skill matters as much as the underlying scripts—framework docs that tie plan→implement→verify style flows to concrete `/skill-name` entry points turn one-off chats into something teachable. Separating shell, hooks, and MCP into explicit examples made the boundaries obvious. I kept the repo optimized for clarity over production hardening so the examples stay easy to copy into real projects."
+github: "https://github.com/wchen02/cursor-agent-learning"
+ogImage: "https://wchen.ai/projects/cursor-agent-learning/hero.jpg"
+featured: false
+---
+
+![Laptop on a desk with an editor full of code—how I picture learning agent setup in a real repo, not in the abstract.](/projects/cursor-agent-learning/hero.jpg)
+
+*Photo by [Christopher Gower](https://unsplash.com/@cgower?utm_source=wchen.ai&utm_medium=referral) on [Unsplash](https://unsplash.com/photos/a-macbook-with-lines-of-code-on-its-screen-on-a-busy-desk-m_HRfLhgABo?utm_source=wchen.ai&utm_medium=referral).*
+
+I shipped [cursor-agent-learning](https://github.com/wchen02/cursor-agent-learning) as a deliberate learning lab: documentation plus living `.cursor/` examples so I could treat agent configuration like any other part of the codebase—versioned, documented, and safe to experiment with.
+
+## Why a lab, not a blog post
+
+Cursor gives you several levers for how an agent behaves in a repository. The gap is not *whether* those levers exist; it is whether you have a place to try them together. I built this project so I could read a concept, flip to a working rule or skill, run an exercise, and adjust hooks without polluting a production app. The point is repeatable structure, not a one-time demo.
+
+## What sits in the repo
+
+The documentation stack is the spine: a main vibe-coding guide, quick reference, advanced topics (rule references, multi-file skills, orchestration, audit and block hooks), troubleshooting, tips, a cross-tool comparison, and a long agent-framework document that connects workflows to concrete skills. There is a hands-on exercise set and optional schedules (including a 14-day path and a shorter intensive) so practice follows the concepts instead of fading after one skim.
+
+Under `.cursor/` you get sample rules (always-on, file-scoped, and `@`-mention), skills invoked with `/skill-name`, subagent definitions, and hook scripts wired from `hooks.json`. Root and nested `AGENTS.md` files show how lightweight project instructions sit next to deeper customization.
+
+## Core delivery workflows
+
+The framework documentation groups skills around how software actually gets out the door: feature development with plan → implement → verify, bugfix flows with verification, research-first implementation, and security-oriented passes. Those map to the “core delivery” slice of the curriculum—sections one through four in the internal outline—so you can pick a lane without guessing what “good” looks like in chat.
+
+## Human gates and product-shaped lifecycles
+
+![People collaborating over laptops at a table—approval, review, and lifecycle work as part of the loop, not an afterthought.](/projects/cursor-agent-learning/planning-workflow.jpg)
+
+*Photo by [fauxels](https://www.pexels.com/@fauxels/) on [Pexels](https://www.pexels.com/photo/photo-of-people-doing-handshakes-3184296/).*
+
+Beyond happy-path coding, the repo includes patterns where a human explicitly approves the next step: release with approval, idea-to-completion with human-in-the-loop, and agile-style lifecycles that treat requirements, tests, and feedback loops as first-class parts of the agent narrative. That is where agent assistance stops pretending the team is only one person typing in a thread.
+
+## MCP, hooks, and where the boundary is
+
+There is a dedicated thread for MCP-assisted work: pulling docs, combining agile flows with MCP, and related skills so you can see when external tools belong in the loop versus when plain repo context is enough. Another theme contrasts shell usage, hook scripts, and MCP tools—three ways to touch the world outside the model—with examples that make the tradeoffs visible instead of philosophical.
+
+## Memory on disk and long-running narratives
+
+Two patterns extend the session boundary. Local Markdown “memory” skills show how to persist notes in a repo file across chats so the agent does not have to relearn the same constraints every time. A fuller narrative skill (`project-vibe-master-workflow`) walks an end-to-end story with split on-disk state so you can pause, resume, and treat agent work more like a project journal than a single transcript.
+
+## How I think about it now
+
+Rules set the baseline, skills package procedures, subagents isolate work, `AGENTS.md` keeps project intent in one file, and hooks connect the agent to your toolchain with guardrails. This repository is the map of those levers, with copy-paste examples and a curriculum—I use it when I want to learn deliberately instead of hoping the next prompt sticks.

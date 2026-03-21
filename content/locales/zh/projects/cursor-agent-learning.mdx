@@ -1,0 +1,51 @@
+---
+title: "Cursor 智能体学习实验仓"
+date: "2026-03-20T12:00:00Z"
+type: ["agent", "experiment", "skill"]
+motivation: "我需要一个体量小、MIT 许可的仓库，用 vibe coding 和实验把 Cursor 智能体配置吃透——不只读规则和 hook 的概念，而是接线、弄坏、再拼起来，看它们如何组合。"
+problemAddressed: "多数智能体教程停在 prompt。真实工作里你需要仓库原生的配置：能留下来的基线（规则）、有名字的流程（skills）、聚焦的委派（子智能体）、轻量的项目意图（AGENTS.md），以及围绕编辑和 shell 的自动化（hooks）。没有地图和可运行示例，你只能一次次从零搭同一套东西。"
+learnings: "把一条工作流命名成 skill，和底下的脚本一样重要——把「规划→实现→验证」这类流程和具体的 `/skill-name` 入口写进框架文档，才能把临时聊天变成可教的东西。把 shell、hook、MCP 拆成独立示例后，边界就一目了然。我刻意优先清晰度而非生产级加固，这样示例复制到真项目里仍然顺手。"
+github: "https://github.com/wchen02/cursor-agent-learning"
+ogImage: "https://wchen.ai/projects/cursor-agent-learning/hero.jpg"
+featured: false
+---
+
+![桌上的笔记本屏幕里是写满代码的编辑器——我心目中在真实仓库里学智能体配置的样子，而不是抽象概念。](/projects/cursor-agent-learning/hero.jpg)
+
+*摄影：[Christopher Gower](https://unsplash.com/@cgower?utm_source=wchen.ai&utm_medium=referral)，来源 [Unsplash](https://unsplash.com/photos/a-macbook-with-lines-of-code-on-its-screen-on-a-busy-desk-m_HRfLhgABo?utm_source=wchen.ai&utm_medium=referral)。*
+
+我发布了 [cursor-agent-learning](https://github.com/wchen02/cursor-agent-learning)，当作刻意设计的实验场：文档加上可运行的 `.cursor/` 示例，让智能体配置和代码库的其它部分一样——可版本管理、可写进文档、可以放心试错。
+
+## 为什么是实验仓，而不是一篇博文
+
+Cursor 提供多根操纵杆，决定智能体在仓库里如何表现。缺口往往不在于这些能力*是否存在*，而在于有没有一个地方能把它们放在一起试。我做这个项目，是为了读完概念就能切到可用的规则或 skill、做练习、调 hook，而不污染生产应用。目标是可重复的结构，而不是一次性演示。
+
+## 仓库里有什么
+
+文档是主轴：主 vibe coding 指南、速查、进阶主题（规则引用、多文件 skill、编排、审计与拦截类 hook）、排错、技巧、跨工具对照，以及一份较长的智能体框架文档，把流程和具体 skill 对上号。还有动手练习和可选日程（含 14 天路线和更短的强化版），让练习跟着概念走，而不是扫一眼就忘。
+
+`.cursor/` 下有示例规则（常驻、按文件、`@` 提及）、用 `/skill-name` 调用的 skills、子智能体定义，以及从 `hooks.json` 接好的 hook 脚本。根目录与嵌套的 `AGENTS.md` 展示轻量项目说明如何与更深的定制并存。
+
+## 核心交付类工作流
+
+框架文档按软件如何真正交付来归类 skill：带「规划→实现→验证」的功能开发、带验证的修 bug、先调研再实现、以及偏安全的审查路径。对应课程里「核心交付」那一段（内部大纲的第一至四块），让你选路线时不必猜聊天里怎样算「做对」。
+
+## 人工门禁与产品型生命周期
+
+![多人围桌用笔记本协作——审批、评审与生命周期是闭环的一部分，而不是事后补丁。](/projects/cursor-agent-learning/planning-workflow.jpg)
+
+*摄影：[fauxels](https://www.pexels.com/@fauxels/)，来源 [Pexels](https://www.pexels.com/photo/photo-of-people-doing-handshakes-3184296/)。*
+
+除了理想路径写代码，仓库还包含需要人明确点头再往下走的模式：带审批的发布、人机协同的从想法到落地，以及把需求、测试、反馈环当作叙事主体的敏捷式生命周期。到这里，智能体辅助不再假装团队只有一个人在线程里打字。
+
+## MCP、hook 与边界在哪
+
+有专门一线讲 MCP 协助：拉文档、敏捷 + MCP 的组合，以及相关 skills，用来判断何时该让外部工具进环、何时仅靠仓库上下文就够。另一条线对比 shell、hook 脚本与 MCP 工具——三种触碰模型外世界的方式——用示例把取舍摆清楚，而不是停留在概念层。
+
+## 磁盘上的记忆与长叙事
+
+两种模式把会话边界往外推。本地 Markdown「记忆」类 skill 演示如何把笔记写进仓库里的文件、跨聊天保留，让智能体不必每次重学同一套约束。更完整的叙事 skill（`project-vibe-master-workflow`）用拆开的磁盘状态走通端到端故事，便于暂停、恢复，把工作当成项目日志而不是单条对话记录。
+
+## 我现在怎么概括
+
+规则定基线，skills 封装流程，子智能体隔离任务，`AGENTS.md` 把项目意图收在一个文件里，hooks 在护栏下把智能体接到你的工具链。这个仓库就是那些操纵杆的地图，附带可复制示例和一条学习路径——我想系统学习时会打开它，而不是指望下一条 prompt 能记住一切。
