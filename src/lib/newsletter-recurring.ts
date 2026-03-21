@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { z } from "zod";
 
+import { resolveDigestImageUrl } from "./content-image-storage";
 import { DEFAULT_LOCALE } from "./locales";
 import { absoluteUrl } from "./site-config";
 import {
@@ -73,7 +74,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     ctaUrl: absoluteUrl(`/writing/${writing.slug}`, locale),
     publishedAt: writing.publishDate,
     contentVersion: getWritingContentVersion(writing.slug, locale),
-    imageUrl: writing.ogImage ? absoluteUrl(writing.ogImage, locale) : undefined,
+    imageUrl: writing.ogImage ? resolveDigestImageUrl(writing.ogImage, locale) : undefined,
   }));
 
   const projectCandidates = getProjects(locale).map((project) => ({
@@ -84,7 +85,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     ctaUrl: absoluteUrl(`/projects/${project.slug}`, locale),
     publishedAt: project.date,
     contentVersion: getProjectContentVersion(project.slug, locale),
-    imageUrl: project.ogImage ? absoluteUrl(project.ogImage, locale) : undefined,
+    imageUrl: project.ogImage ? resolveDigestImageUrl(project.ogImage, locale) : undefined,
   }));
 
   return [...writingCandidates, ...projectCandidates].sort(compareRecurringCandidates);

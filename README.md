@@ -29,7 +29,7 @@ Contact form setup (Mailgun, Cloudflare env vars, local dev): [docs/contact-form
 
 ## Newsletter
 
-Newsletter setup and recurring-send behavior: [docs/newsletter-setup.md](docs/newsletter-setup.md).
+Newsletter setup and recurring-send behavior: [docs/newsletter-setup.md](docs/newsletter-setup.md). Digest thumbnails via R2: [docs/newsletter-digest-images.md](docs/newsletter-digest-images.md).
 
 ## Content creation
 

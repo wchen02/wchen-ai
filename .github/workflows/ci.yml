@@ -69,6 +69,17 @@ jobs:
           AUDIO_SOURCE: ${{ vars.AUDIO_SOURCE }}
           R2_AUDIO_PUBLIC_BASE_URL: ${{ vars.R2_AUDIO_PUBLIC_BASE_URL }}
 
+      - name: Publish content images to R2 (newsletter digest)
+        if: github.ref == 'refs/heads/main'
+        run: pnpm run content-images:publish
+        env:
+          R2_AUDIO_PUBLIC_BASE_URL: ${{ vars.R2_AUDIO_PUBLIC_BASE_URL }}
+          NEWSLETTER_IMAGE_PUBLIC_BASE_URL: ${{ vars.NEWSLETTER_IMAGE_PUBLIC_BASE_URL }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_AUDIO_BUCKET: ${{ vars.R2_AUDIO_BUCKET }}
+
       - name: Send recurring newsletter
         if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''
         continue-on-error: true
@@ -78,6 +89,8 @@ jobs:
           RESEND_SEGMENT_ID: ${{ secrets.RESEND_SEGMENT_ID }}
           NEWSLETTER_SECRET: ${{ secrets.NEWSLETTER_SECRET }}
           NEWSLETTER_FROM: ${{ vars.NEWSLETTER_FROM }}
+          R2_AUDIO_PUBLIC_BASE_URL: ${{ vars.R2_AUDIO_PUBLIC_BASE_URL }}
+          NEWSLETTER_IMAGE_PUBLIC_BASE_URL: ${{ vars.NEWSLETTER_IMAGE_PUBLIC_BASE_URL }}
 
       - name: Detect newsletter state changes
         if: github.ref == 'refs/heads/main' && env.RESEND_API_KEY != '' && env.RESEND_SEGMENT_ID != ''

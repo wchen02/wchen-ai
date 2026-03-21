@@ -140,6 +140,10 @@ Use this manual handoff after the content and any translations are finished:
 
 Do not silently generate or upload audio as part of every content-writing task unless the user explicitly asks for that step.
 
+## Newsletter digest images
+
+When adding or changing `ogImage` on writing/project MDX (thumbnails in recurring digests), see **`docs/newsletter-digest-images.md`**. The site serves files from `public/`; CI mirrors eligible images to R2 with `pnpm content-images:publish` so digest emails do not 404 before deploy.
+
 ## Voice Checklist
 
 Run this check against every piece of content before finalizing:

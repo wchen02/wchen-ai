@@ -164,6 +164,7 @@ See [Configure CORS (R2)](https://developers.cloudflare.com/r2/buckets/cors/) an
 ## Notes
 
 - **Prebuild and CI do not run audio.** The `prebuild` script does not include `audio:generate` or `audio:publish`. Run them locally when you add or change content that should have read-along audio, then push; CI builds with `AUDIO_SOURCE` and `R2_AUDIO_PUBLIC_BASE_URL` so the app points to R2.
+- **Newsletter digest thumbnails** also use this bucket under `og/...`; see [Newsletter digest images](./newsletter-digest-images.md).
 - `public/audio/` is ignored by Git.
 - If `public/audio/` was previously tracked, remove it from the Git index with:
 

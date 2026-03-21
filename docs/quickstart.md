@@ -50,6 +50,7 @@ Use the dedicated guides for full provider setup and production environment conf
 
 - [Contact form setup](./contact-form-setup.md)
 - [Newsletter setup](./newsletter-setup.md)
+- [Newsletter digest images](./newsletter-digest-images.md) (R2 thumbnails for recurring digests)
 
 ## Main Content Entry Points
 

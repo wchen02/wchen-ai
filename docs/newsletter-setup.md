@@ -20,6 +20,10 @@ Update these files first:
 
 `content/locales/en/site/newsletter.json` is where template users should change subjects, previews, CTA labels, section headings, footer copy, and recurring writing/project email language.
 
+## Digest images (`ogImage`)
+
+If recurring digests include writing/project preview images, host them under `public/writing/...` or `public/projects/...` and set `ogImage` in frontmatter. To avoid broken images when CI sends before deploy, mirror those assets to R2 — see **[Newsletter digest images](./newsletter-digest-images.md)**.
+
 ## Mail Provider
 
 Email delivery is handled through a swappable `MailProvider` interface. The active
