@@ -27,6 +27,7 @@ function main(): void {
       updatedAt: w.updatedAt ?? null,
       readingTimeMinutes: w.readingTimeMinutes,
       excerpt: w.excerpt ?? "",
+      ogImage: w.ogImage,
       featured: w.featured,
     }));
     const writingsPath = path.join(localeDir, "writings.json");
@@ -41,6 +42,7 @@ function main(): void {
       type: p.type,
       motivation: p.motivation,
       problemAddressed: p.problemAddressed,
+      ogImage: p.ogImage,
       featured: p.featured,
     }));
     const projectsPath = path.join(localeDir, "projects.json");

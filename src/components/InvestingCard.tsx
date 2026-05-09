@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "@/lib/formatting";
 import { localizePath } from "@/lib/i18n";
+import { listingImageSrc } from "@/lib/listing-image";
 import { resolveLocale } from "@/lib/locales";
 import { getUiContent } from "@/lib/site-content";
 import type { Writing } from "@/lib/schemas";
@@ -20,6 +22,7 @@ export default function InvestingCard({
   const uiContent = getUiContent(resolvedLocale);
   const investing = writing.investing;
   const href = localizePath(resolvedLocale, `/investing/${writing.slug}`);
+  const imageSrc = listingImageSrc(writing.ogImage);
 
   if (!investing) {
     return null;
@@ -28,6 +31,21 @@ export default function InvestingCard({
   return (
     <article className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900 p-5 transition-shadow hover:shadow-sm">
       <div className="space-y-4">
+        {imageSrc ? (
+          <Link href={href} className="block overflow-hidden rounded-xl border border-gray-100 dark:border-gray-800 bg-gray-100 dark:bg-neutral-800">
+            <Image
+              src={imageSrc}
+              alt={writing.title}
+              width={1200}
+              height={675}
+              loading="lazy"
+              unoptimized
+              sizes="(min-width: 768px) 768px, 100vw"
+              className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            />
+          </Link>
+        ) : null}
+
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">

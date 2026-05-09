@@ -17,6 +17,7 @@ export interface ProjectPayload {
   type: ProjectType[];
   motivation: string;
   problemAddressed: string;
+  ogImage?: string;
   featured: boolean;
 }
 

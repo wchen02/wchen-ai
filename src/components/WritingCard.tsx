@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { type Writing } from "@/lib/schemas";
 import { formatDate } from "@/lib/formatting";
 import { localizePath } from "@/lib/i18n";
 import { resolveLocale } from "@/lib/locales";
+import { listingImageSrc } from "@/lib/listing-image";
 import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 
@@ -24,9 +26,25 @@ export default function WritingCard({
   const showUpdated = isUpdated(writing);
   const displayTags = writing.tags?.length ? writing.tags.slice(0, 3) : [];
   const writingHref = localizePath(resolveLocale(locale), `${hrefBasePath}/${writing.slug}`);
+  const imageSrc = listingImageSrc(writing.ogImage);
 
   return (
     <article className={`group flex flex-col gap-2 p-5 rounded-xl transition-shadow hover:shadow-sm ${writing.featured ? "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/10" : "border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900"}`}>
+      {imageSrc ? (
+        <Link href={writingHref} className="block overflow-hidden rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-100 dark:bg-neutral-800">
+          <Image
+            src={imageSrc}
+            alt={writing.title}
+            width={1200}
+            height={675}
+            loading="lazy"
+            unoptimized
+            sizes="(min-width: 768px) 768px, 100vw"
+            className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        </Link>
+      ) : null}
+
       <div className="flex justify-between items-baseline gap-4">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">
           <Link href={writingHref} className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">

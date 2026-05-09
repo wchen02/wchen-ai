@@ -1,7 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { type Project } from "@/lib/schemas";
 import { formatDate } from "@/lib/formatting";
 import { localizePath } from "@/lib/i18n";
+import { listingImageSrc } from "@/lib/listing-image";
 import { resolveLocale } from "@/lib/locales";
 import { getUiContent } from "@/lib/site-content";
 
@@ -14,9 +16,25 @@ export default function ProjectCard({
 }) {
   const uiContent = getUiContent(locale);
   const projectHref = localizePath(resolveLocale(locale), `/projects/${project.slug}`);
+  const imageSrc = listingImageSrc(project.ogImage);
 
   return (
-    <div className={`flex flex-col gap-3 p-5 rounded-xl hover:shadow-sm transition-shadow ${project.featured ? "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/10" : "border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900"}`}>
+    <article className={`group flex flex-col gap-3 p-5 rounded-xl hover:shadow-sm transition-shadow ${project.featured ? "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/10" : "border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900"}`}>
+      {imageSrc ? (
+        <Link href={projectHref} className="block overflow-hidden rounded-lg border border-gray-100 dark:border-gray-800 bg-gray-100 dark:bg-neutral-800">
+          <Image
+            src={imageSrc}
+            alt={project.title}
+            width={1200}
+            height={675}
+            loading="lazy"
+            unoptimized
+            sizes="(min-width: 768px) 768px, 100vw"
+            className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        </Link>
+      ) : null}
+
       <div className="flex justify-between items-start">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">
           <Link href={projectHref} className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
@@ -49,6 +67,6 @@ export default function ProjectCard({
           {uiContent.projects.readFullStoryLabel} →
         </Link>
       </div>
-    </div>
+    </article>
   );
 }

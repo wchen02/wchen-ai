@@ -19,6 +19,7 @@ export interface WritingPayload {
   updatedAt: string | null;
   readingTimeMinutes: number;
   excerpt: string;
+  ogImage?: string;
   featured: boolean;
 }
 
