@@ -95,7 +95,10 @@
       "portfolio-journal": "投资组合日志",
       "watchlist": "观察清单",
       "postmortem": "复盘",
-      "process-note": "过程笔记"
+      "process-note": "过程笔记",
+      "learning": "学习",
+      "advice": "建议",
+      "habit": "习惯"
     },
     "statusLabels": {
       "watching": "观察中",

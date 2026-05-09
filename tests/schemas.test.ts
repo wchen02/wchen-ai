@@ -105,6 +105,7 @@ describe('WritingSchema', () => {
       theme: 'Investing',
       investing: {
         kind: 'portfolio-journal',
+        showDecisionRecord: true,
         status: 'watching',
         direction: 'neutral',
         horizon: 'Long-term',
@@ -122,6 +123,24 @@ describe('WritingSchema', () => {
     if (result.success) {
       expect(result.data.investing?.kind).toBe('portfolio-journal');
       expect(result.data.investing?.disclosure).toBe('No current position');
+    }
+  });
+
+  it('accepts lightweight investing learning notes without a decision record', () => {
+    const result = WritingSchema.safeParse({
+      ...validWriting,
+      theme: 'Investing',
+      investing: {
+        kind: 'learning',
+        summary: 'A note about a trading lesson or habit.',
+      },
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.investing?.kind).toBe('learning');
+      expect(result.data.investing?.showDecisionRecord).toBe(false);
+      expect(result.data.investing?.thesis).toBeUndefined();
     }
   });
 

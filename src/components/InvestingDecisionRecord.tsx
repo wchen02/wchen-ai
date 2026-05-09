@@ -25,10 +25,12 @@ export default function InvestingDecisionRecord({
   writing: Writing;
   locale?: string;
 }) {
-  if (!writing.investing) return null;
+  if (!writing.investing?.showDecisionRecord) return null;
 
   const labels = getUiContent(locale).investing;
   const investing = writing.investing;
+  const hasPositionFields = investing.status || investing.direction || investing.horizon || investing.disclosure || investing.lastReviewed;
+  const hasDecisionFields = investing.thesis || investing.invalidation || investing.risk;
 
   return (
     <aside className="rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/40 dark:bg-emerald-950/20 p-5 space-y-5">
@@ -39,30 +41,42 @@ export default function InvestingDecisionRecord({
         <p className="text-sm text-gray-700 dark:text-gray-300">{investing.summary}</p>
       </div>
 
-      <dl className="grid gap-4 sm:grid-cols-2">
-        <Field label={labels.kindLabel}>
-          {lookupLabel(labels.kindLabels, investing.kind)}
-        </Field>
-        <Field label={labels.statusLabel}>
-          {lookupLabel(labels.statusLabels, investing.status)}
-        </Field>
-        <Field label={labels.directionLabel}>
-          {lookupLabel(labels.directionLabels, investing.direction)}
-        </Field>
-        <Field label={labels.horizonLabel}>{investing.horizon}</Field>
-        <Field label={labels.disclosureLabel}>{investing.disclosure}</Field>
-        {investing.lastReviewed ? (
-          <Field label={labels.lastReviewedLabel}>
-            {formatDate(investing.lastReviewed, { year: "numeric", month: "short", day: "numeric" }, locale)}
+      {hasPositionFields ? (
+        <dl className="grid gap-4 sm:grid-cols-2">
+          <Field label={labels.kindLabel}>
+            {lookupLabel(labels.kindLabels, investing.kind)}
           </Field>
-        ) : null}
-      </dl>
+          {investing.status ? (
+            <Field label={labels.statusLabel}>
+              {lookupLabel(labels.statusLabels, investing.status)}
+            </Field>
+          ) : null}
+          {investing.direction ? (
+            <Field label={labels.directionLabel}>
+              {lookupLabel(labels.directionLabels, investing.direction)}
+            </Field>
+          ) : null}
+          {investing.horizon ? <Field label={labels.horizonLabel}>{investing.horizon}</Field> : null}
+          {investing.disclosure ? (
+            <Field label={labels.disclosureLabel}>{investing.disclosure}</Field>
+          ) : null}
+          {investing.lastReviewed ? (
+            <Field label={labels.lastReviewedLabel}>
+              {formatDate(investing.lastReviewed, { year: "numeric", month: "short", day: "numeric" }, locale)}
+            </Field>
+          ) : null}
+        </dl>
+      ) : null}
 
-      <div className="grid gap-4">
-        <Field label={labels.thesisLabel}>{investing.thesis}</Field>
-        <Field label={labels.invalidationLabel}>{investing.invalidation}</Field>
-        <Field label={labels.riskLabel}>{investing.risk}</Field>
-      </div>
+      {hasDecisionFields ? (
+        <div className="grid gap-4">
+          {investing.thesis ? <Field label={labels.thesisLabel}>{investing.thesis}</Field> : null}
+          {investing.invalidation ? (
+            <Field label={labels.invalidationLabel}>{investing.invalidation}</Field>
+          ) : null}
+          {investing.risk ? <Field label={labels.riskLabel}>{investing.risk}</Field> : null}
+        </div>
+      ) : null}
 
       {(investing.catalysts.length > 0 || investing.decisionTriggers.length > 0) && (
         <div className="grid gap-4 md:grid-cols-2">

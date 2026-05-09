@@ -95,7 +95,10 @@
       "portfolio-journal": "Portfolio Journal",
       "watchlist": "Watchlist",
       "postmortem": "Postmortem",
-      "process-note": "Process Note"
+      "process-note": "Process Note",
+      "learning": "Learning",
+      "advice": "Advice",
+      "habit": "Habit"
     },
     "statusLabels": {
       "watching": "Watching",

@@ -39,29 +39,39 @@ export default function InvestingCard({
               </Link>
             </h2>
           </div>
-          <span className="rounded-full border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-            {lookupLabel(uiContent.investing.statusLabels, investing.status)}
-          </span>
+          {investing.status ? (
+            <span className="rounded-full border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+              {lookupLabel(uiContent.investing.statusLabels, investing.status)}
+            </span>
+          ) : null}
         </div>
 
         <p className="text-sm text-gray-600 dark:text-gray-400">{investing.summary}</p>
 
-        <dl className="grid gap-3 sm:grid-cols-3">
-          <div>
-            <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.directionLabel}</dt>
-            <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              {lookupLabel(uiContent.investing.directionLabels, investing.direction)}
-            </dd>
-          </div>
-          <div>
-            <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.horizonLabel}</dt>
-            <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">{investing.horizon}</dd>
-          </div>
-          <div>
-            <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.disclosureLabel}</dt>
-            <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">{investing.disclosure}</dd>
-          </div>
-        </dl>
+        {(investing.direction || investing.horizon || investing.disclosure) && (
+          <dl className="grid gap-3 sm:grid-cols-3">
+            {investing.direction ? (
+              <div>
+                <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.directionLabel}</dt>
+                <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {lookupLabel(uiContent.investing.directionLabels, investing.direction)}
+                </dd>
+              </div>
+            ) : null}
+            {investing.horizon ? (
+              <div>
+                <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.horizonLabel}</dt>
+                <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">{investing.horizon}</dd>
+              </div>
+            ) : null}
+            {investing.disclosure ? (
+              <div>
+                <dt className="text-xs text-gray-500 dark:text-gray-400">{uiContent.investing.disclosureLabel}</dt>
+                <dd className="text-sm font-medium text-gray-900 dark:text-gray-100">{investing.disclosure}</dd>
+              </div>
+            ) : null}
+          </dl>
+        )}
 
         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
           <time dateTime={writing.publishDate}>
