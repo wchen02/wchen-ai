@@ -10,18 +10,18 @@ const listenUi = uiEn.listen;
 const writingWithAudio = "static-first";
 const writingUrl = `${base}/writing/${writingWithAudio}`;
 
-// Audio assets are in .gitignore; in CI they are absent, so the Listen button is not rendered.
-// Skip these tests when audio files are not present (e.g. run audio:generate locally to enable).
-const publicDir = path.join(process.cwd(), "public", "audio");
-const hasWritingAudio = fs.existsSync(path.join(publicDir, "en", "writing", `${writingWithAudio}.mp3`));
-const hasProjectAudio = fs.existsSync(path.join(publicDir, "en", "projects", "env-from-example.mp3"));
+// Playwright serves the static export from out/, so skip unless the served audio
+// asset exists there. public/audio can be newer than out/ if build has not rerun.
+const servedAudioDir = path.join(process.cwd(), "out", "audio");
+const hasWritingAudio = fs.existsSync(path.join(servedAudioDir, "en", "writing", `${writingWithAudio}.mp3`));
+const hasProjectAudio = fs.existsSync(path.join(servedAudioDir, "en", "projects", "env-from-example.mp3"));
 const investingWithAudio = "public-portfolio-journal";
 const investingUrl = `${base}/investing/${investingWithAudio}`;
-const hasInvestingAudio = fs.existsSync(path.join(publicDir, "en", "investing", `${investingWithAudio}.mp3`));
+const hasInvestingAudio = fs.existsSync(path.join(servedAudioDir, "en", "investing", `${investingWithAudio}.mp3`));
 
 test.describe("Audio player", () => {
   test.beforeEach(() => {
-    test.skip(!hasWritingAudio, "public/audio not present (gitignored); run audio:generate locally");
+    test.skip(!hasWritingAudio, "out/audio not present; run audio:generate and rebuild locally");
   });
 
   test("writing page with audio shows Listen trigger", async ({ page }) => {
@@ -111,7 +111,7 @@ test.describe("Audio player", () => {
 
 test.describe("Audio player – project page", () => {
   test.beforeEach(() => {
-    test.skip(!hasProjectAudio, "public/audio not present (gitignored); run audio:generate locally");
+    test.skip(!hasProjectAudio, "out/audio not present; run audio:generate and rebuild locally");
   });
 
   // Project with audio (from manifest)
@@ -140,7 +140,7 @@ test.describe("Audio player – project page", () => {
 
 test.describe("Audio player – investing page", () => {
   test.beforeEach(() => {
-    test.skip(!hasInvestingAudio, "public/audio not present (gitignored); run audio:generate locally");
+    test.skip(!hasInvestingAudio, "out/audio not present; run audio:generate and rebuild locally");
   });
 
   test("investing page with audio shows Listen trigger", async ({ page }) => {
