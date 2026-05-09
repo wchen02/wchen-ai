@@ -306,6 +306,24 @@ export const UiContentSchema = z.object({
     backToTopLabel: z.string().min(1),
     backToTopAriaLabel: z.string().min(1),
   }),
+  investing: z.object({
+    decisionRecordHeading: z.string().min(1),
+    kindLabel: z.string().min(1),
+    statusLabel: z.string().min(1),
+    directionLabel: z.string().min(1),
+    horizonLabel: z.string().min(1),
+    disclosureLabel: z.string().min(1),
+    thesisLabel: z.string().min(1),
+    invalidationLabel: z.string().min(1),
+    catalystsLabel: z.string().min(1),
+    decisionTriggersLabel: z.string().min(1),
+    riskLabel: z.string().min(1),
+    lastReviewedLabel: z.string().min(1),
+    notFinancialAdvice: z.string().min(1),
+    kindLabels: z.record(z.string().min(1), z.string().min(1)),
+    statusLabels: z.record(z.string().min(1), z.string().min(1)),
+    directionLabels: z.record(z.string().min(1), z.string().min(1)),
+  }),
   projects: z.object({
     filterByTypeLabel: z.string().min(1),
     allLabel: z.string().min(1),
@@ -475,6 +493,24 @@ export const WritingSchema = z.object({
   
   // Optional article-specific OG image (FR-010)
   ogImage: z.string().url().optional(),
+
+  // Optional investing decision record. Used by Investing-themed entries.
+  investing: z.object({
+    kind: z.enum(["stock-thesis", "portfolio-journal", "watchlist", "postmortem", "process-note"]),
+    ticker: z.string().min(1).optional(),
+    company: z.string().min(1).optional(),
+    status: z.enum(["watching", "open", "closed", "review"]),
+    direction: z.enum(["long", "short", "neutral"]),
+    horizon: z.string().min(1),
+    disclosure: z.string().min(1),
+    summary: z.string().min(1),
+    thesis: z.string().min(1),
+    invalidation: z.string().min(1),
+    catalysts: z.array(z.string().min(1)).default([]),
+    decisionTriggers: z.array(z.string().min(1)).default([]),
+    risk: z.string().min(1),
+    lastReviewed: z.string().datetime().optional(),
+  }).optional(),
   
   // State
   featured: z.boolean().default(false), // To highlight on homepage/writing index

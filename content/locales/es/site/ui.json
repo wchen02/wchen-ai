@@ -76,6 +76,39 @@
     "backToTopLabel": "Volver arriba",
     "backToTopAriaLabel": "Volver al inicio de la pagina"
   },
+  "investing": {
+    "decisionRecordHeading": "Registro de Decision",
+    "kindLabel": "Tipo",
+    "statusLabel": "Estado",
+    "directionLabel": "Direccion",
+    "horizonLabel": "Horizonte temporal",
+    "disclosureLabel": "Disclosure",
+    "thesisLabel": "Tesis",
+    "invalidationLabel": "Que demostraria que estoy equivocado",
+    "catalystsLabel": "Catalizadores",
+    "decisionTriggersLabel": "Disparadores de decision",
+    "riskLabel": "Riesgo principal",
+    "lastReviewedLabel": "Ultima revision",
+    "notFinancialAdvice": "Nada aqui es asesoramiento financiero.",
+    "kindLabels": {
+      "stock-thesis": "Tesis de Accion",
+      "portfolio-journal": "Diario de Portfolio",
+      "watchlist": "Watchlist",
+      "postmortem": "Postmortem",
+      "process-note": "Nota de Proceso"
+    },
+    "statusLabels": {
+      "watching": "Observando",
+      "open": "Abierta",
+      "closed": "Cerrada",
+      "review": "Revision"
+    },
+    "directionLabels": {
+      "long": "Long",
+      "short": "Short",
+      "neutral": "Neutral"
+    }
+  },
   "projects": {
     "filterByTypeLabel": "Filtrar por tipo:",
     "allLabel": "Todos",

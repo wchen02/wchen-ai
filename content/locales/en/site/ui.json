@@ -76,6 +76,39 @@
     "backToTopLabel": "Back to top",
     "backToTopAriaLabel": "Back to top of page"
   },
+  "investing": {
+    "decisionRecordHeading": "Decision Record",
+    "kindLabel": "Type",
+    "statusLabel": "Status",
+    "directionLabel": "Direction",
+    "horizonLabel": "Time horizon",
+    "disclosureLabel": "Disclosure",
+    "thesisLabel": "Thesis",
+    "invalidationLabel": "What would prove me wrong",
+    "catalystsLabel": "Catalysts",
+    "decisionTriggersLabel": "Decision triggers",
+    "riskLabel": "Main risk",
+    "lastReviewedLabel": "Last reviewed",
+    "notFinancialAdvice": "Nothing here is financial advice.",
+    "kindLabels": {
+      "stock-thesis": "Stock Thesis",
+      "portfolio-journal": "Portfolio Journal",
+      "watchlist": "Watchlist",
+      "postmortem": "Postmortem",
+      "process-note": "Process Note"
+    },
+    "statusLabels": {
+      "watching": "Watching",
+      "open": "Open",
+      "closed": "Closed",
+      "review": "Review"
+    },
+    "directionLabels": {
+      "long": "Long",
+      "short": "Short",
+      "neutral": "Neutral"
+    }
+  },
   "projects": {
     "filterByTypeLabel": "Filter by type:",
     "allLabel": "All",

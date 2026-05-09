@@ -99,6 +99,32 @@ describe('WritingSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('accepts structured investing metadata', () => {
+    const result = WritingSchema.safeParse({
+      ...validWriting,
+      theme: 'Investing',
+      investing: {
+        kind: 'portfolio-journal',
+        status: 'watching',
+        direction: 'neutral',
+        horizon: 'Long-term',
+        disclosure: 'No current position',
+        summary: 'A public investing process note.',
+        thesis: 'Clear records make weak reasoning harder to excuse.',
+        invalidation: 'The journal stops changing decisions or review quality.',
+        catalysts: ['First stock thesis', 'Postmortem review'],
+        decisionTriggers: ['Add', 'trim', 'exit', 'avoid'],
+        risk: 'Writing too much commentary and not enough decision logic.',
+        lastReviewed: '2026-05-09T02:45:00Z',
+      },
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.investing?.kind).toBe('portfolio-journal');
+      expect(result.data.investing?.disclosure).toBe('No current position');
+    }
+  });
+
   it('rejects missing title', () => {
     const rest = { ...validWriting };
     delete (rest as Record<string, unknown>).title;

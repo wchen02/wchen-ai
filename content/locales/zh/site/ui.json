@@ -76,6 +76,39 @@
     "backToTopLabel": "返回顶部",
     "backToTopAriaLabel": "返回页面顶部"
   },
+  "investing": {
+    "decisionRecordHeading": "决策记录",
+    "kindLabel": "类型",
+    "statusLabel": "状态",
+    "directionLabel": "方向",
+    "horizonLabel": "时间跨度",
+    "disclosureLabel": "披露",
+    "thesisLabel": "Thesis",
+    "invalidationLabel": "什么会证明我错了",
+    "catalystsLabel": "催化因素",
+    "decisionTriggersLabel": "决策触发条件",
+    "riskLabel": "主要风险",
+    "lastReviewedLabel": "最后复盘",
+    "notFinancialAdvice": "这里的内容都不是财务建议。",
+    "kindLabels": {
+      "stock-thesis": "股票 Thesis",
+      "portfolio-journal": "投资组合日志",
+      "watchlist": "观察清单",
+      "postmortem": "复盘",
+      "process-note": "过程笔记"
+    },
+    "statusLabels": {
+      "watching": "观察中",
+      "open": "持有中",
+      "closed": "已关闭",
+      "review": "复盘中"
+    },
+    "directionLabels": {
+      "long": "Long",
+      "short": "Short",
+      "neutral": "Neutral"
+    }
+  },
   "projects": {
     "filterByTypeLabel": "按类型筛选：",
     "allLabel": "全部",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import InvestingCard from "@/components/InvestingCard";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
 import SectionReveal from "@/components/SectionReveal";
-import WritingCard from "@/components/WritingCard";
 import { getWritings } from "@/lib/mdx";
 import { getMetadataDefaults } from "@/lib/metadata-defaults";
 import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization";
@@ -81,12 +81,7 @@ export default async function LocalizedInvestingPage({
         <SectionReveal className="space-y-6">
           <div className="flex flex-col gap-2 -mx-5">
             {investingWritings.map((writing) => (
-              <WritingCard
-                key={writing.slug}
-                writing={writing}
-                locale={resolvedLocale}
-                hrefBasePath="/investing"
-              />
+              <InvestingCard key={writing.slug} writing={writing} locale={resolvedLocale} />
             ))}
           </div>
         </SectionReveal>

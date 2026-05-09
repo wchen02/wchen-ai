@@ -15,6 +15,7 @@ import {
   StickyAudioPlayerBar,
 } from "@/components/AudioPlayerVisibilityContext";
 import GiscusComments from "@/components/GiscusComments";
+import InvestingDecisionRecord from "@/components/InvestingDecisionRecord";
 import MdxImage from "@/components/MdxImage";
 import WritingProseWithHighlight from "@/components/WritingProseWithHighlight";
 import NewsletterSlideout from "@/components/NewsletterSlideout";
@@ -274,7 +275,12 @@ export default async function LocalizedWritingPage({
         </>
       }
     >
-      {articleContent}
+      <div className="space-y-10">
+        {isInvestingWriting(writing) ? (
+          <InvestingDecisionRecord writing={writing} locale={resolvedLocale} />
+        ) : null}
+        {articleContent}
+      </div>
     </ArticleWithTOC>
   );
 
