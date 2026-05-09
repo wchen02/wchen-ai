@@ -6,8 +6,16 @@
     <description>Thoughts on engineering, products, investing, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss/en.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 09 May 2026 18:26:28 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 19:17:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Why I Am Moving Away From 0DTE]]></title>
+      <link>https://wchen.ai/en/writing/moving-away-from-0dte</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/moving-away-from-0dte</guid>
+      <pubDate>Sat, 09 May 2026 19:14:00 GMT</pubDate>
+      <description><![CDATA[I am trying to get more disciplined with options, and the biggest lesson is simple: the risk is not only financial. 0DTE, weekly options, and earnings gambles are emotionally risky. They can produce…]]></description>
+      <category>Investing</category>
+    </item>
     <item>
       <title><![CDATA[My AI Infrastructure Watchlist]]></title>
       <link>https://wchen.ai/en/writing/ai-infrastructure-watchlist</link>

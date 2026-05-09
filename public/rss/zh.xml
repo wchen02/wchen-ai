@@ -6,8 +6,16 @@
     <description>关于工程、产品、投资与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 09 May 2026 18:26:28 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 19:17:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[为什么我在远离 0DTE]]></title>
+      <link>https://wchen.ai/zh/writing/moving-away-from-0dte</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/moving-away-from-0dte</guid>
+      <pubDate>Sat, 09 May 2026 19:14:00 GMT</pubDate>
+      <description><![CDATA[我正在努力让自己的期权交易更有纪律，而最重要的教训很简单：风险不只是财务上的。 0DTE、周权和财报赌博也有情绪风险。它们可能带来巨大的盈利，但也可能激发出一个交易者最糟糕的版本。 这里没有任何内容是财务建议。 短期期权的问题 做 0DTE 或周权时，我不只是需要判断正确。我还需要很快正确。 这种时间压力会改变交易。每一根 K…]]></description>
+      <category>Investing</category>
+    </item>
     <item>
       <title><![CDATA[我的 AI 基础设施 Watchlist]]></title>
       <link>https://wchen.ai/zh/writing/ai-infrastructure-watchlist</link>

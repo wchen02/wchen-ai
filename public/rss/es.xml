@@ -6,8 +6,16 @@
     <description>Ideas sobre ingenieria, productos, inversion y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 09 May 2026 18:26:28 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 19:17:16 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Por qué me estoy alejando de 0DTE]]></title>
+      <link>https://wchen.ai/es/writing/moving-away-from-0dte</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/moving-away-from-0dte</guid>
+      <pubDate>Sat, 09 May 2026 19:14:00 GMT</pubDate>
+      <description><![CDATA[Estoy intentando ser más disciplinado con las opciones, y la lección más importante es simple: el riesgo no es solo financiero. 0DTE, las opciones semanales y las apuestas de earnings son riesgosas…]]></description>
+      <category>Investing</category>
+    </item>
     <item>
       <title><![CDATA[Mi watchlist de infraestructura de IA]]></title>
       <link>https://wchen.ai/es/writing/ai-infrastructure-watchlist</link>
