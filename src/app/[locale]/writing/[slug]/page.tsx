@@ -259,7 +259,7 @@ export default async function LocalizedWritingPage({
       footer={
         <>
           <ReadNext
-            writings={getRelatedWritings(slug, 3, resolvedLocale)}
+            writings={getRelatedWritings(slug, 4, resolvedLocale)}
             locale={resolvedLocale}
             hrefBasePath={sectionPath}
           />

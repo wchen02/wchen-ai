@@ -14,14 +14,15 @@ export default function ReadNext({
   if (writings.length === 0) return null;
 
   const uiContent = getUiContent(locale);
+  const visibleWritings = writings.slice(0, 4);
 
   return (
     <section className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
         {uiContent.readNext.heading}
       </h2>
-      <div className="flex flex-col gap-2 -mx-5">
-        {writings.map((w) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {visibleWritings.map((w) => (
           <WritingCard key={w.slug} writing={w} locale={locale} hrefBasePath={hrefBasePath} />
         ))}
       </div>
