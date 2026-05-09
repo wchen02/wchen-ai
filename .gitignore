@@ -49,5 +49,5 @@ next-env.d.ts
 __pycache__
 website-content.skill
 
-*.mp3
-/public/audio/
+# generated audio binaries (manifest and subtitle JSON stay tracked)
+/public/audio/**/*.mp3

@@ -1,0 +1,278 @@
+{
+  "en": {
+    "writing": {
+      "pitch-before-you-vibe-code": {
+        "hasSubtitles": true
+      },
+      "static-first-audio": {
+        "hasSubtitles": true
+      },
+      "build-time-validation-as-product": {
+        "hasSubtitles": true
+      },
+      "cost-of-generic-ui-agent-design": {
+        "hasSubtitles": true
+      },
+      "github-as-your-backend": {
+        "hasSubtitles": true
+      },
+      "i18n-and-content-skills": {
+        "hasSubtitles": true
+      },
+      "newsletter-static-site-resend-cloudflare": {
+        "hasSubtitles": true
+      },
+      "progressive-disclosure-agent-skills": {
+        "hasSubtitles": true
+      },
+      "recurring-newsletter-as-build-step": {
+        "hasSubtitles": true
+      },
+      "site-comments-giscus": {
+        "hasSubtitles": true
+      },
+      "choosing-marketing-email-providers": {
+        "hasSubtitles": true
+      },
+      "static-site-email": {
+        "hasSubtitles": true
+      },
+      "ditching-netlify": {
+        "hasSubtitles": true
+      },
+      "spec-kit-lessons": {
+        "hasSubtitles": true
+      },
+      "vibe-coding-in-a-day": {
+        "hasSubtitles": true
+      },
+      "teaching-agents-your-voice": {
+        "hasSubtitles": true
+      },
+      "why-cloudflare": {
+        "hasSubtitles": true
+      },
+      "static-first": {
+        "hasSubtitles": true
+      }
+    },
+    "projects": {
+      "cursor-agent-learning": {
+        "hasSubtitles": true
+      },
+      "home-about-refresh-skill": {
+        "hasSubtitles": true
+      },
+      "env-from-example": {
+        "hasSubtitles": true
+      },
+      "website-content-skill": {
+        "hasSubtitles": true
+      },
+      "personal-website": {
+        "hasSubtitles": true
+      },
+      "super-mario-replica": {
+        "hasSubtitles": true
+      }
+    },
+    "investing": {
+      "moving-away-from-0dte": {
+        "hasSubtitles": true
+      },
+      "ai-infrastructure-watchlist": {
+        "hasSubtitles": true
+      },
+      "simple-macro-regime-tracker": {
+        "hasSubtitles": true
+      },
+      "public-portfolio-journal": {
+        "hasSubtitles": true
+      }
+    }
+  },
+  "es": {
+    "writing": {
+      "pitch-before-you-vibe-code": {
+        "hasSubtitles": true
+      },
+      "static-first-audio": {
+        "hasSubtitles": true
+      },
+      "build-time-validation-as-product": {
+        "hasSubtitles": true
+      },
+      "cost-of-generic-ui-agent-design": {
+        "hasSubtitles": true
+      },
+      "github-as-your-backend": {
+        "hasSubtitles": true
+      },
+      "i18n-and-content-skills": {
+        "hasSubtitles": true
+      },
+      "newsletter-static-site-resend-cloudflare": {
+        "hasSubtitles": true
+      },
+      "progressive-disclosure-agent-skills": {
+        "hasSubtitles": true
+      },
+      "recurring-newsletter-as-build-step": {
+        "hasSubtitles": true
+      },
+      "site-comments-giscus": {
+        "hasSubtitles": true
+      },
+      "choosing-marketing-email-providers": {
+        "hasSubtitles": true
+      },
+      "static-site-email": {
+        "hasSubtitles": true
+      },
+      "ditching-netlify": {
+        "hasSubtitles": true
+      },
+      "spec-kit-lessons": {
+        "hasSubtitles": true
+      },
+      "vibe-coding-in-a-day": {
+        "hasSubtitles": true
+      },
+      "teaching-agents-your-voice": {
+        "hasSubtitles": true
+      },
+      "why-cloudflare": {
+        "hasSubtitles": true
+      },
+      "static-first": {
+        "hasSubtitles": true
+      }
+    },
+    "projects": {
+      "cursor-agent-learning": {
+        "hasSubtitles": true
+      },
+      "home-about-refresh-skill": {
+        "hasSubtitles": true
+      },
+      "env-from-example": {
+        "hasSubtitles": true
+      },
+      "website-content-skill": {
+        "hasSubtitles": true
+      },
+      "personal-website": {
+        "hasSubtitles": true
+      },
+      "super-mario-replica": {
+        "hasSubtitles": true
+      }
+    },
+    "investing": {
+      "moving-away-from-0dte": {
+        "hasSubtitles": true
+      },
+      "ai-infrastructure-watchlist": {
+        "hasSubtitles": true
+      },
+      "simple-macro-regime-tracker": {
+        "hasSubtitles": true
+      },
+      "public-portfolio-journal": {
+        "hasSubtitles": true
+      }
+    }
+  },
+  "zh": {
+    "writing": {
+      "pitch-before-you-vibe-code": {
+        "hasSubtitles": true
+      },
+      "static-first-audio": {
+        "hasSubtitles": true
+      },
+      "build-time-validation-as-product": {
+        "hasSubtitles": true
+      },
+      "cost-of-generic-ui-agent-design": {
+        "hasSubtitles": true
+      },
+      "github-as-your-backend": {
+        "hasSubtitles": true
+      },
+      "i18n-and-content-skills": {
+        "hasSubtitles": true
+      },
+      "newsletter-static-site-resend-cloudflare": {
+        "hasSubtitles": true
+      },
+      "progressive-disclosure-agent-skills": {
+        "hasSubtitles": true
+      },
+      "recurring-newsletter-as-build-step": {
+        "hasSubtitles": true
+      },
+      "site-comments-giscus": {
+        "hasSubtitles": true
+      },
+      "choosing-marketing-email-providers": {
+        "hasSubtitles": true
+      },
+      "static-site-email": {
+        "hasSubtitles": true
+      },
+      "ditching-netlify": {
+        "hasSubtitles": true
+      },
+      "spec-kit-lessons": {
+        "hasSubtitles": true
+      },
+      "vibe-coding-in-a-day": {
+        "hasSubtitles": true
+      },
+      "teaching-agents-your-voice": {
+        "hasSubtitles": true
+      },
+      "why-cloudflare": {
+        "hasSubtitles": true
+      },
+      "static-first": {
+        "hasSubtitles": true
+      }
+    },
+    "projects": {
+      "cursor-agent-learning": {
+        "hasSubtitles": true
+      },
+      "home-about-refresh-skill": {
+        "hasSubtitles": true
+      },
+      "env-from-example": {
+        "hasSubtitles": true
+      },
+      "website-content-skill": {
+        "hasSubtitles": true
+      },
+      "personal-website": {
+        "hasSubtitles": true
+      },
+      "super-mario-replica": {
+        "hasSubtitles": true
+      }
+    },
+    "investing": {
+      "moving-away-from-0dte": {
+        "hasSubtitles": true
+      },
+      "ai-infrastructure-watchlist": {
+        "hasSubtitles": true
+      },
+      "simple-macro-regime-tracker": {
+        "hasSubtitles": true
+      },
+      "public-portfolio-journal": {
+        "hasSubtitles": true
+      }
+    }
+  }
+}
