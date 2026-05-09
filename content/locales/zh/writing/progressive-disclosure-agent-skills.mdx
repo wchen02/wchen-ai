@@ -3,6 +3,7 @@ title: "技能中的渐进式披露"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Developer Tools"
 tags: ["skills", "agents", "cursor", "context"]
+ogImage: "https://wchen.ai/writing/progressive-disclosure-agent-skills/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 技能里塞得越多就越有用——直到不再有用。一个 SKILL.md 想把每种内容类型、每种 schema、每种语气规则都写进去，可以轻松上百行。Agent 会一次性全加载。Token 预算被烧掉，真正和*当前*任务相关的部分淹没在噪音里。
 
 我设计技能时，让主文件当*路由器*，不当垃圾桶。它告诉 agent 有哪些东西、什么时候再读其余部分。细节放在按需加载的引用里。这样上下文更紧、行为更可预期。
+
+![Agent skill 路由器只在需要时展开 schema、语气和页面规则。](/writing/progressive-disclosure-agent-skills/feature.png)
 
 ## SKILL.md 当路由器
 

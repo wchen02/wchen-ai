@@ -3,11 +3,14 @@ title: "本站 i18n 是怎么做的，以及两个 agent skill 如何配合"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Developer Tools"
 tags: ["i18n", "nextjs", "skills", "content", "agents"]
+ogImage: "https://wchen.ai/writing/i18n-and-content-skills/feature.png"
 featured: false
 draft: false
 ---
 
 常有人问 wchen.ai 怎么做多语言、怎么在英文、西语和中文之间保持同步而不靠复制粘贴。简短回答：站点围绕一套清晰的内容模型来建，两个 agent skill——website-content 和 content-translation——规定内容放在哪、如何扩散。架构负责重活，两个 skill 负责让内容和译文每次都落到正确位置。
+
+![面向 locale 的内容流水线，把一篇规范写作条目分发到英文、西班牙语和中文输出。](/writing/i18n-and-content-skills/feature.png)
 
 ## i18n 是怎么建的
 

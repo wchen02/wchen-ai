@@ -3,11 +3,14 @@ title: "Cómo funciona la i18n de este sitio (y cómo dos skills de agente la ma
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Developer Tools"
 tags: ["i18n", "nextjs", "skills", "content", "agents"]
+ogImage: "https://wchen.ai/writing/i18n-and-content-skills/feature.png"
 featured: false
 draft: false
 ---
 
 Me preguntan cómo wchen.ai maneja varios idiomas y cómo mantengo inglés, español y chino alineados sin ahogarme en copiar y pegar. La respuesta corta: el sitio se apoya en un modelo de contenido claro, y dos skills de agente — website-content y content-translation — codifican dónde vive todo y cómo propagarlo. La arquitectura hace el trabajo pesado; las skills se encargan de que el contenido y las traducciones caigan siempre en el sitio correcto.
+
+![Pipeline de contenido consciente del locale que convierte una entrada canónica en salidas en inglés, español y chino.](/writing/i18n-and-content-skills/feature.png)
 
 ## Cómo está construida la i18n
 

@@ -3,11 +3,14 @@ title: "Comments Without a Backend"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Infrastructure"
 tags: ["giscus", "comments", "static-sites", "github"]
+ogImage: "https://wchen.ai/writing/site-comments-giscus/feature.png"
 featured: false
 draft: false
 ---
 
 I wanted a comment section on writing and project pages without running a database or a custom API.
+
+![Giscus comments architecture diagram showing a static article page mapped to a GitHub Discussion.](/writing/site-comments-giscus/feature.png)
 
 Static sites are great until you need state that lives somewhere. Comments are exactly that—someone else's data, attached to your content. The obvious options are either heavy (Disqus, with ads and tracking) or a rabbit hole (self-hosted Commento, moderation, spam). I did not want to operate another service or pay for a comment SaaS that would outlive my interest in maintaining it.
 

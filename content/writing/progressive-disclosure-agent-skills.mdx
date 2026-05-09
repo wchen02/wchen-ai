@@ -3,6 +3,7 @@ title: "Progressive Disclosure in Agent Skills"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Developer Tools"
 tags: ["skills", "agents", "cursor", "context"]
+ogImage: "https://wchen.ai/writing/progressive-disclosure-agent-skills/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 The more you put into a skill, the more useful it becomes — until it isn't. A single SKILL.md that tries to cover every content type, schema, and voice rule can run to hundreds of lines. The agent loads it all up front. Token budget burns. The parts that matter for *this* task get lost in the noise.
 
 I structure skills so that the main file is a *router*, not a dump. It tells the agent what exists and when to read the rest. The details live in references that are loaded on demand. That keeps context tight and behavior predictable.
+
+![Agent skill router revealing schema, voice, and page rules only when needed.](/writing/progressive-disclosure-agent-skills/feature.png)
 
 ## SKILL.md as Router
 

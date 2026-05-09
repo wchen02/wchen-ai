@@ -3,6 +3,7 @@ title: "把定期 newsletter 当成构建步骤"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Infrastructure"
 tags: ["newsletter", "static-sites", "ci"]
+ogImage: "https://wchen.ai/writing/recurring-newsletter-as-build-step/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 多数「发定期摘要」的建议都假设你需要一个调度器：cron、定时触发的 Lambda，或托管服务「每周二 9 点跑」。如果你的内容在 CMS 里全天更新、你只想在固定时间抓一版，那没问题。但若站点是静态的、内容只在部署时变化，调度器就是错误的抽象。
 
 我把摘要当成 CI 里的一步，紧接在站点 build 和 deploy 之后。一个脚本——叫 `send-recurring-newsletter` 或随便符合你流水线的名字——每次 deploy 跑一次。从和站点相同的数据源读已发布的文章和项目列表，用共享模板生成摘要 HTML，从邮件服务商的 API 拉订阅列表并发送。没有 cron、没有 Lambda、没有「每 N 小时跑一次」的配置。触发条件是*部署*，不是*时间*。
+
+![构建流水线图，展示由部署触发的定期 newsletter，而不是 cron 服务器。](/writing/recurring-newsletter-as-build-step/feature.png)
 
 什么时候这就够了
 

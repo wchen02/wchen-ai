@@ -3,6 +3,7 @@ title: "没有后端的评论"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Infrastructure"
 tags: ["giscus", "comments", "static-sites", "github"]
+ogImage: "https://wchen.ai/writing/site-comments-giscus/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 我想在文章和项目页有评论区，但不想自己跑数据库或写 API。
 
 静态站很好，直到你需要有地方存状态。评论就是这种——别人的数据，挂在你的内容上。常见选择要么很重（Disqus，广告和追踪），要么是坑（自建 Commento、审核、垃圾）。我不想再维护一个服务，也不想为评论 SaaS 付钱，免得以后不想管了还得惦记。
+
+![Giscus 评论架构图，展示静态文章页如何映射到一条 GitHub Discussion。](/writing/site-comments-giscus/feature.png)
 
 GitHub 本身就有身份、楼中楼和审核，公开仓库里的 Discussions 是一等公民。所以我把评论当成*按页面对应的讨论*：每篇文章或项目一条讨论，标题一眼能看出对应哪篇。站上渲染的组件是 [Giscus](https://giscus.app)：用脚本把 GitHub Discussions 嵌进来。我这边没有后端，没有新表。读者用 GitHub 登录、在那边回复，讨论会出现在仓库的 Discussions 里。
 

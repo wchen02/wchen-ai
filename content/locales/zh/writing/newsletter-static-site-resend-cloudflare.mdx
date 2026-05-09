@@ -3,11 +3,14 @@ title: "用 Resend 和 Cloudflare 从静态站发 newsletter"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Infrastructure"
 tags: ["newsletter", "resend", "cloudflare", "static-sites"]
+ogImage: "https://wchen.ai/writing/newsletter-static-site-resend-cloudflare/feature.png"
 featured: false
 draft: false
 ---
 
 静态站不会在有人打开页面时跑代码，这正是目的。但 newsletter 需要动态：接收订阅、发确认邮件、处理点击、把联系人加进列表、发欢迎信。那怎么既保持站点静态，又完整掌控整个流程？
+
+![静态站 newsletter 通过 Cloudflare Pages Functions 和 Resend 发送的流程图。](/writing/newsletter-static-site-resend-cloudflare/feature.png)
 
 我的做法是：用 Resend 发信，用 Cloudflare Pages Functions 提供那一小块 API。HTML 预构建、从 edge 提供；真正在请求时执行的只有几条路由：校验入参、签名 token、调 Resend。没有要维护的服务器，没有单独部署的后端。
 

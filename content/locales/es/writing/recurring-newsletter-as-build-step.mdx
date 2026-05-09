@@ -3,9 +3,12 @@ title: "Newsletter recurrente como paso de build"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Infrastructure"
 tags: ["newsletter", "static-sites", "ci"]
+ogImage: "https://wchen.ai/writing/recurring-newsletter-as-build-step/feature.png"
 featured: false
 draft: false
 ---
+
+![Diagrama de pipeline de build que muestra una newsletter recurrente disparada por deploy en lugar de un servidor cron.](/writing/recurring-newsletter-as-build-step/feature.png)
 
 La mayoría de consejos para enviar un digest recurrente asumen que necesitas un programador. Un cron, una Lambda a intervalos, o un servicio que ejecute "cada martes a las 9." Tiene sentido si tu contenido vive en un CMS que se actualiza todo el día y quieres hacer una instantánea en un horario fijo. Pero si tu sitio es estático y tu contenido solo cambia cuando haces deploy, un programador es la abstracción equivocada.
 

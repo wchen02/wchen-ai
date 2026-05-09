@@ -3,6 +3,7 @@ title: "Construir static-first en una era de dinamismo"
 publishDate: "2026-02-10T14:30:00Z"
 theme: "Architecture"
 tags: ["nextjs", "static", "performance"]
+ogImage: "https://wchen.ai/writing/static-first/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 Hay una tendencia creciente a renderizar todo dinámicamente en el servidor. Con la llegada del edge computing, nos dicen que el render dinámico es básicamente gratis. Ejecuta una función en el edge, devuelve HTML en milisegundos y el usuario no lo nota. ¿Para qué molestarse con la generación estática?
 
 Pero la física sigue aplicando. Da igual lo rápida que sea tu edge function, nunca superará la velocidad de servir un archivo estático precompilado desde una CDN. Un archivo estático ya está ahí. Sin cold start, sin invocación de función, sin round-trip a base de datos. La petición llega al edge y los bytes están en el cable. Esa base es difícil de mejorar.
+
+![Diagrama de arquitectura static-first que muestra artefactos de build servidos directamente desde una CDN.](/writing/static-first/feature.png)
 
 Para este sitio personal elegí explícitamente un enfoque static-first. El sitio se genera una vez en build time. No hay hit a base de datos cuando cargas esta página. No hay servidor calculando el HTML. Cada ruta es un archivo. Los despliegues son triviales: sube la salida del build a una CDN y listo. Sin runtime que escalar, sin secretos que rotar en producción, sin "la function hizo timeout" a las 3 de la madrugada.
 

@@ -3,6 +3,7 @@ title: "把构建时校验当产品"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Architecture"
 tags: ["validation", "static-sites", "zod", "dx"]
+ogImage: "https://wchen.ai/writing/build-time-validation-as-product/feature.png"
 featured: false
 draft: false
 ---
@@ -10,6 +11,8 @@ draft: false
 「在生产环境出错」是默认状态。坏链照样上线，主题描述里有个 typo 没人发现，frontmatter 少必填字段 build 照样跑——直到某页渲染错或 feed 崩了。错误在用户打开页面或你几周后才发现时出现，那时问题已经上线、被缓存，更难回溯。
 
 改成在构建时失败。把校验当成内容流水线的一等公民。有问题就不让 build 成功。不部署、不「下个 PR 再修」。作者拿到明确报错和文件路径，改完再 push，流水线保持可信。
+
+![构建时校验关卡图，展示内容检查如何阻止无效部署。](/writing/build-time-validation-as-product/feature.png)
 
 从「希望没坏」变成「流水线拒绝发布有问题的东西」——这就是我所说的「构建时校验作为产品」。产品不是内容本身，产品是*对「发布出去的东西是合法的」的信心*。一小套脚本就能做到。
 

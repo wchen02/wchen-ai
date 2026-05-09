@@ -13,3 +13,9 @@ export function getGeneralWritings(writings: Writing[]): Writing[] {
 export function getInvestingWritings(writings: Writing[]): Writing[] {
   return writings.filter(isInvestingWriting);
 }
+
+export function getHomePageWritings(writings: Writing[], limit = 3): Writing[] {
+  return [...writings]
+    .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+    .slice(0, limit);
+}

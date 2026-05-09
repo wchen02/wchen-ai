@@ -3,11 +3,14 @@ title: "在「万物动态」时代做静态优先"
 publishDate: "2026-02-10T14:30:00Z"
 theme: "Architecture"
 tags: ["nextjs", "static", "performance"]
+ogImage: "https://wchen.ai/writing/static-first/feature.png"
 featured: false
 draft: false
 ---
 
 越来越多人倾向于在服务端动态渲染一切。Edge 来了之后，说法是动态渲染几乎免费：在 edge 跑个函数、毫秒级返回 HTML，用户无感。那还折腾静态生成干什么？
+
+![静态优先架构图，展示构建时产物直接从 CDN 提供。](/writing/static-first/feature.png)
 
 但物理规律还在。再快的 edge function 也快不过从 CDN 直接送出一份预编译的静态文件。静态文件已经在那儿，没有冷启动、没有函数调用、没有数据库往返。请求到 edge，字节就上线路了。这个基线很难被超越。
 

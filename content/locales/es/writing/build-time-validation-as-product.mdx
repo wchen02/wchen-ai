@@ -3,11 +3,14 @@ title: "Validación en build como producto"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Architecture"
 tags: ["validation", "static-sites", "zod", "dx"]
+ogImage: "https://wchen.ai/writing/build-time-validation-as-product/feature.png"
 featured: false
 draft: false
 ---
 
 "Fallar en producción" es lo por defecto. Un enlace roto se publica. Un typo en un descriptor de tema se cuela. Falta un campo obligatorio en el frontmatter y el build sigue—hasta que una página se renderiza mal o un feed se rompe. El error aparece cuando un usuario abre la página o cuando lo notas semanas después. Para entonces el fallo está en vivo, cacheado y es más difícil rastrear.
+
+![Diagrama de puerta de validación en build que muestra checks de contenido bloqueando deploys inválidos.](/writing/build-time-validation-as-product/feature.png)
 
 Falla en el build en su lugar. Trata la validación como una parte de primera clase del pipeline de contenido. Si algo está mal, el build no tiene éxito. No hay deploy, no hay "lo arreglamos en el siguiente PR." El autor recibe un error claro y una ruta de archivo. Arregla, vuelve a hacer push, y el pipeline se mantiene fiable.
 

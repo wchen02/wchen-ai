@@ -3,11 +3,14 @@ title: "How This Site's i18n Works — and How Two Agent Skills Keep It Fed"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Developer Tools"
 tags: ["i18n", "nextjs", "skills", "content", "agents"]
+ogImage: "https://wchen.ai/writing/i18n-and-content-skills/feature.png"
 featured: false
 draft: false
 ---
 
 I get asked how wchen.ai handles multiple languages and how I keep English, Spanish, and Chinese in sync without drowning in copy-paste. The short answer: the site is built around a clear content model, and two agent skills — website-content and content-translation — encode where everything lives and how to propagate it. The architecture does the heavy lifting; the skills make sure content and translations land in the right place every time.
+
+![Locale-aware content pipeline sending one canonical writing entry into English, Spanish, and Chinese outputs.](/writing/i18n-and-content-skills/feature.png)
 
 ## How the i18n Is Built
 

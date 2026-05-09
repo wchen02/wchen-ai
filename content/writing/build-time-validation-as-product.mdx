@@ -3,11 +3,14 @@ title: "Build-Time Validation as a Product"
 publishDate: "2026-03-13T12:00:00Z"
 theme: "Architecture"
 tags: ["validation", "static-sites", "zod", "dx"]
+ogImage: "https://wchen.ai/writing/build-time-validation-as-product/feature.png"
 featured: false
 draft: false
 ---
 
 "Fail in production" is the default. A broken link ships. A typo in a theme descriptor slips through. Frontmatter is missing a required field and the build still runs—until a page renders wrong or a feed breaks. The error shows up when a user hits the page or when you notice it weeks later. By then the mistake is live, cached, and harder to trace back.
+
+![Build-time validation gate diagram showing content checks blocking invalid deploys.](/writing/build-time-validation-as-product/feature.png)
 
 Fail at build instead. Treat validation as a first-class part of the content pipeline. If something is wrong, the build does not succeed. No deploy, no "we'll fix it in the next PR." The author gets a clear error and a file path. Fix it, push again, and the pipeline stays trustworthy.
 
