@@ -29,8 +29,8 @@
         "description": "Me gustan los pipelines que fallan temprano y con claridad. Validacion de schemas, chequeos de metadata y flujos de contenido deterministas mantienen honesto al build y hacen que publicar se parezca menos a adivinar."
       },
       {
-        "title": "Arquitectura Static-First",
-        "description": "Prefiero sistemas rapidos por defecto, predecibles al desplegar y resistentes al fallo. Priorizo lo estatico; solo anado servidor, funcion en el edge o runtime cuando hay una razon concreta."
+        "title": "Diario de Portfolio",
+        "description": "Uso notas publicas de inversion para volver mas explicitas mis decisiones: que creia, que tenia, que cambio y donde mi criterio fallo."
       }
     ]
   },

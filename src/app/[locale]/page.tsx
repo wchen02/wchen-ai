@@ -14,6 +14,7 @@ import { getCanonicalUrl, getLanguageAlternates } from "@/lib/route-localization
 import { resolveLocale } from "@/lib/locales";
 import { getSiteProfile } from "@/lib/site-config";
 import { getHomeContent } from "@/lib/site-content";
+import { getGeneralWritings } from "@/lib/writing-sections";
 
 function featuredFirst<T extends { featured: boolean }>(items: T[]): T[] {
   return [...items].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -69,7 +70,7 @@ export default async function LocalizedHomePage({
   const siteProfile = getSiteProfile(resolvedLocale);
   const homeContent = getHomeContent(resolvedLocale);
   const projects = featuredFirst(getProjects(resolvedLocale)).slice(0, 3);
-  const writings = featuredFirst(getWritings(resolvedLocale)).slice(0, 3);
+  const writings = featuredFirst(getGeneralWritings(getWritings(resolvedLocale))).slice(0, 3);
   const githubData = getGitHubContributions();
 
   return (

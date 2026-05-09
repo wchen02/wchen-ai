@@ -7,6 +7,7 @@ import path from "path";
 import { getProjects, getWritings } from "../src/lib/mdx";
 import { SUPPORTED_LOCALES } from "../src/lib/locales";
 import { logger } from "../src/lib/logger";
+import { getGeneralWritings } from "../src/lib/writing-sections";
 
 function main(): void {
   const publicLocales = path.join(process.cwd(), "public", "locales");
@@ -16,7 +17,7 @@ function main(): void {
     const localeDir = path.join(publicLocales, locale);
     fs.mkdirSync(localeDir, { recursive: true });
 
-    const writings = getWritings(locale);
+    const writings = getGeneralWritings(getWritings(locale));
     const writingPayloads = writings.map((w) => ({
       slug: w.slug,
       title: w.title,

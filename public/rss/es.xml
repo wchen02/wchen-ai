@@ -3,11 +3,27 @@
   <channel>
     <title>Wilson Chen | Writing</title>
     <link>https://wchen.ai/es/writing</link>
-    <description>Ideas sobre ingenieria, productos y software.</description>
+    <description>Ideas sobre ingenieria, productos, inversion y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 20:06:48 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 03:18:32 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Por qué voy a escribir sobre acciones en público]]></title>
+      <link>https://wchen.ai/es/writing/public-portfolio-journal</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/public-portfolio-journal</guid>
+      <pubDate>Sat, 09 May 2026 02:45:00 GMT</pubDate>
+      <description><![CDATA[He guardado muchas ideas de inversión en privado. Eso hacía el proceso más cómodo, pero no necesariamente mejor. Las notas privadas me dejan cambiar la historia después. Puedo recordar la versión…]]></description>
+      <category>Investing</category>
+    </item>
+    <item>
+      <title><![CDATA[Presenta la idea antes de hacer vibe coding]]></title>
+      <link>https://wchen.ai/es/writing/pitch-before-you-vibe-code</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/pitch-before-you-vibe-code</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[No empiezo un proyecto nuevo en Cursor. Empiezo en ChatGPT. Antes de que exista un repositorio, existe una idea. Y antes de que exista un plan de implementación, normalmente hay una intuición a medio…]]></description>
+      <category>Workflow</category>
+    </item>
     <item>
       <title><![CDATA[Audio de lectura sin servidor]]></title>
       <link>https://wchen.ai/es/writing/static-first-audio</link>

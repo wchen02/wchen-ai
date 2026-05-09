@@ -13,6 +13,7 @@ import { resolveLocale } from "@/lib/locales";
 import { getSiteProfile } from "@/lib/site-config";
 import { getUiContent } from "@/lib/site-content";
 import { getThemeDescriptor, getThemeLabel } from "@/lib/theme-config";
+import { getGeneralWritings } from "@/lib/writing-sections";
 import type { Writing } from "@/lib/schemas";
 
 const INITIAL_WRITING_COUNT = 20;
@@ -93,7 +94,7 @@ export default async function LocalizedWritingIndexPage({
   const resolvedLocale = resolveLocale(locale);
   const siteProfile = getSiteProfile(resolvedLocale);
   const uiContent = getUiContent(resolvedLocale);
-  const allWritings = getWritings(resolvedLocale);
+  const allWritings = getGeneralWritings(getWritings(resolvedLocale));
   const initialWritings = allWritings.slice(0, INITIAL_WRITING_COUNT);
   const themeGroups = groupByTheme(initialWritings);
   const themes = Object.keys(themeGroups).sort();

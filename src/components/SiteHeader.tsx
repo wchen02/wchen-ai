@@ -112,6 +112,7 @@ export default function SiteHeader({
     <>
       <NavLink href="/projects">{navigation.projectsLabel}</NavLink>
       <NavLink href="/writing">{navigation.writingLabel}</NavLink>
+      <NavLink href="/investing">{navigation.investingLabel}</NavLink>
       <NavLink href="/about">{navigation.aboutLabel}</NavLink>
       <Link
         href={localizePath(locale, "/#contact")}
@@ -238,6 +239,13 @@ export default function SiteHeader({
                     className="block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
                   >
                     {navigation.writingLabel}
+                  </NavLink>
+                  <NavLink
+                    href="/investing"
+                    onClick={closeMenu}
+                    className="block py-4 text-lg sm:text-xl border-b border-gray-100 dark:border-gray-800"
+                  >
+                    {navigation.investingLabel}
                   </NavLink>
                   <NavLink
                     href="/about"

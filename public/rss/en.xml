@@ -3,11 +3,27 @@
   <channel>
     <title>Wilson Chen | Writing</title>
     <link>https://wchen.ai/en/writing</link>
-    <description>Thoughts on engineering, products, and building software.</description>
+    <description>Thoughts on engineering, products, investing, and building software.</description>
     <language>en-us</language>
     <atom:link href="https://wchen.ai/rss/en.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 20:06:48 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 03:18:32 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Why I Am Writing About Stocks in Public]]></title>
+      <link>https://wchen.ai/en/writing/public-portfolio-journal</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/public-portfolio-journal</guid>
+      <pubDate>Sat, 09 May 2026 02:45:00 GMT</pubDate>
+      <description><![CDATA[I have kept plenty of investing thoughts private. That made the process easier, but not necessarily better. Private notes let me change the story after the fact. I can remember the clean version of…]]></description>
+      <category>Investing</category>
+    </item>
+    <item>
+      <title><![CDATA[Pitch the Idea Before You Vibe Code]]></title>
+      <link>https://wchen.ai/en/writing/pitch-before-you-vibe-code</link>
+      <guid isPermaLink="true">https://wchen.ai/en/writing/pitch-before-you-vibe-code</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[I do not start a new project in Cursor. I start in ChatGPT. Before there is a repo, there is an idea. And before there is an implementation plan, there is usually a half-formed instinct that sounds…]]></description>
+      <category>Workflow</category>
+    </item>
     <item>
       <title><![CDATA[Read-along audio without a server]]></title>
       <link>https://wchen.ai/en/writing/static-first-audio</link>

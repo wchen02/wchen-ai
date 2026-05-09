@@ -124,6 +124,7 @@ export const SiteProfileSchema = z.object({
   navigation: z.object({
     projectsLabel: z.string().min(1),
     writingLabel: z.string().min(1),
+    investingLabel: z.string().min(1),
     aboutLabel: z.string().min(1),
     contactLabel: z.string().min(1),
     skipToContentLabel: z.string().min(1),
@@ -136,6 +137,13 @@ export const SiteProfileSchema = z.object({
     rightsLabel: z.string().min(1),
   }),
   writingPage: z.object({
+    title: z.string().min(1),
+    intro: z.string().min(1),
+    metadataDescription: z.string().min(1),
+    metadataTitle: z.string().min(1),
+    openGraphAlt: z.string().min(1),
+  }),
+  investingPage: z.object({
     title: z.string().min(1),
     intro: z.string().min(1),
     metadataDescription: z.string().min(1),

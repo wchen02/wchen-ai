@@ -40,12 +40,13 @@
   },
   "rss": {
     "title": "Wilson Chen | 写作",
-    "description": "关于工程、产品与软件构建的思考。",
+    "description": "关于工程、产品、投资与软件构建的思考。",
     "language": "zh-cn"
   },
   "navigation": {
     "projectsLabel": "项目",
     "writingLabel": "写作",
+    "investingLabel": "投资",
     "aboutLabel": "关于",
     "contactLabel": "联系",
     "skipToContentLabel": "跳到正文",
@@ -64,6 +65,13 @@
     "metadataTitle": "写作",
     "openGraphAlt": "Wilson Chen - 写作"
   },
+  "investingPage": {
+    "title": "投资",
+    "intro": "一份公开投资组合日志，用来记录股票研究、持仓笔记，以及那些我不想日后轻易改写的决策。",
+    "metadataDescription": "Wilson Chen 的公开投资组合日志，记录股票研究、投资笔记与决策过程。",
+    "metadataTitle": "投资",
+    "openGraphAlt": "Wilson Chen - 投资"
+  },
   "projectsPage": {
     "title": "项目与探索",
     "intro": "我构建的一系列应用、代理与实验，用来探索新想法并解决有意思的问题。",
@@ -79,7 +87,7 @@
   "newsletter": {
     "from": "Wilson Chen <newsletter@m.wchen.ai>",
     "subject": "确认订阅 Wilson Chen 的写作",
-    "description": "当我发布新内容时会偶尔发送更新。无垃圾邮件，可随时退订。",
+    "description": "当我发布关于构建、软件或投资的新内容时，会偶尔发送更新。无垃圾邮件，可随时退订。",
     "successTitle": "请查看你的邮箱以确认订阅。",
     "successDescription": "我们已经向你的收件箱发送了确认链接。",
     "confirmedPageTitle": "订阅成功",

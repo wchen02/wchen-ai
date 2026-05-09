@@ -3,11 +3,27 @@
   <channel>
     <title>Wilson Chen | 写作</title>
     <link>https://wchen.ai/zh/writing</link>
-    <description>关于工程、产品与软件构建的思考。</description>
+    <description>关于工程、产品、投资与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 14 Mar 2026 20:06:48 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 03:18:32 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[为什么我要公开写股票]]></title>
+      <link>https://wchen.ai/zh/writing/public-portfolio-journal</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/public-portfolio-journal</guid>
+      <pubDate>Sat, 09 May 2026 02:45:00 GMT</pubDate>
+      <description><![CDATA[我以前把很多投资想法都留在私下。这样做更轻松，但不一定更好。 私下笔记会让我事后改写故事。我可以记住更干净的那版 thesis，忘掉当时真正犹豫的部分，然后假装结果本来就比实际更显而易见。公开写作会让这件事更难。它把投资变成一份记录，而不是一种感觉。 所以我会开始在这里写股票。 不是建议。不是扮演…]]></description>
+      <category>Investing</category>
+    </item>
+    <item>
+      <title><![CDATA[先推敲想法，再开始 vibe coding]]></title>
+      <link>https://wchen.ai/zh/writing/pitch-before-you-vibe-code</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/pitch-before-you-vibe-code</guid>
+      <pubDate>Sat, 14 Mar 2026 12:00:00 GMT</pubDate>
+      <description><![CDATA[我不会在 Cursor 里开启一个新项目。我会先去 ChatGPT。 在 repo 出现之前，先有一个想法。在实现计划出现之前，通常只有一个半成形的直觉，在我脑子里听起来比它实际更聪明。我已经学会不相信那个第一版。所以现在我会把这个想法讲给一个 LLM，像是在向一个见过上千个平庸产品、对客套反馈毫无耐心的创业者做路演。…]]></description>
+      <category>Workflow</category>
+    </item>
     <item>
       <title><![CDATA[无服务端的跟读音频]]></title>
       <link>https://wchen.ai/zh/writing/static-first-audio</link>

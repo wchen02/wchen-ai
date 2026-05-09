@@ -29,8 +29,8 @@
         "description": "I like pipelines that fail early and clearly. Schema validation, metadata checks, and deterministic content workflows keep the build honest and make shipping feel less like guesswork."
       },
       {
-        "title": "Static-First Architecture",
-        "description": "I favor systems that are fast by default, predictable to deploy, and resilient to failure. Default to static; add a server, edge function, or runtime only when there is a concrete reason."
+        "title": "Portfolio Journaling",
+        "description": "I use public investing notes to make decisions more explicit: what I believed, what I owned, what changed, and where my judgment was wrong."
       }
     ]
   },

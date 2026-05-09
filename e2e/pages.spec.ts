@@ -353,6 +353,7 @@ test.describe("Mobile navigation", () => {
     await expect(drawer).toBeVisible();
     await expect(drawer.getByRole("link", { name: profile.navigation.projectsLabel })).toBeVisible();
     await expect(drawer.getByRole("link", { name: profile.navigation.writingLabel })).toBeVisible();
+    await expect(drawer.getByRole("link", { name: profile.navigation.investingLabel })).toBeVisible();
     await expect(drawer.getByRole("link", { name: profile.navigation.aboutLabel })).toBeVisible();
     await expect(drawer.getByRole("link", { name: profile.navigation.contactLabel })).toBeVisible();
   });

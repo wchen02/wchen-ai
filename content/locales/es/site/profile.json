@@ -40,12 +40,13 @@
   },
   "rss": {
     "title": "Wilson Chen | Writing",
-    "description": "Ideas sobre ingenieria, productos y software.",
+    "description": "Ideas sobre ingenieria, productos, inversion y software.",
     "language": "es-es"
   },
   "navigation": {
     "projectsLabel": "Proyectos",
     "writingLabel": "Escritos",
+    "investingLabel": "Inversion",
     "aboutLabel": "Sobre mi",
     "contactLabel": "Contacto",
     "skipToContentLabel": "Saltar al contenido",
@@ -64,6 +65,13 @@
     "metadataTitle": "Writing",
     "openGraphAlt": "Wilson Chen - Writing"
   },
+  "investingPage": {
+    "title": "Inversion",
+    "intro": "Un diario publico de portfolio para investigacion de acciones, notas de posiciones y decisiones que quiero que sean mas dificiles de reescribir despues.",
+    "metadataDescription": "Diario publico de portfolio con investigacion de acciones, notas de inversion y registros de decision de Wilson Chen.",
+    "metadataTitle": "Inversion",
+    "openGraphAlt": "Wilson Chen - Inversion"
+  },
   "projectsPage": {
     "title": "Proyectos y Exploraciones",
     "intro": "Una coleccion de apps, agentes y experimentos que he construido para explorar ideas nuevas y resolver problemas interesantes.",
@@ -79,7 +87,7 @@
   "newsletter": {
     "from": "Wilson Chen <newsletter@m.wchen.ai>",
     "subject": "Confirma tu suscripcion a los escritos de Wilson Chen",
-    "description": "Actualizaciones ocasionales cuando publico algo nuevo. Sin spam, puedes darte de baja cuando quieras.",
+    "description": "Actualizaciones ocasionales cuando publico sobre construir, software o inversion. Sin spam, puedes darte de baja cuando quieras.",
     "successTitle": "Revisa tu correo para confirmar tu suscripcion.",
     "successDescription": "Te enviamos un enlace de confirmacion a tu bandeja de entrada.",
     "confirmedPageTitle": "Suscrito",

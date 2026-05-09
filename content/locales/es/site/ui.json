@@ -136,12 +136,14 @@
     "Architecture": "Diseno de sistemas y enfoques static-first",
     "Infrastructure": "Hosting, email y decisiones de plataforma",
     "Workflow": "Como construimos y lanzamos",
-    "Developer Tools": "IA, agentes y experiencia de developer"
+    "Developer Tools": "IA, agentes y experiencia de developer",
+    "Investing": "Notas de portfolio, investigacion publica y diarios de decision"
   },
   "themeLabels": {
     "Architecture": "Arquitectura",
     "Infrastructure": "Infraestructura",
     "Workflow": "Flujo de trabajo",
-    "Developer Tools": "Herramientas de desarrollo"
+    "Developer Tools": "Herramientas de desarrollo",
+    "Investing": "Inversion"
   }
 }

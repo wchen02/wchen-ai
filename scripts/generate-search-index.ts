@@ -8,6 +8,7 @@ import { z } from "zod";
 import { getWritings } from "../src/lib/mdx";
 import { SUPPORTED_LOCALES } from "../src/lib/locales";
 import { logger } from "../src/lib/logger";
+import { getGeneralWritings } from "../src/lib/writing-sections";
 
 const SearchEntrySchema = z.object({
   slug: z.string(),
@@ -23,7 +24,7 @@ const SearchIndexSchema = z.object({
 
 function main(): void {
   for (const locale of SUPPORTED_LOCALES) {
-    const writings = getWritings(locale);
+    const writings = getGeneralWritings(getWritings(locale));
     const entries = writings.map((writing) => ({
       slug: writing.slug,
       title: writing.title,

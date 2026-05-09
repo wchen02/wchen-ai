@@ -2,19 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wchen.ai/en</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/en/about</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/en/projects</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/en/writing</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/en/projects/cursor-agent-learning</loc>
+    <lastmod>2026-03-20</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/en/projects/home-about-refresh-skill</loc>
@@ -35,6 +39,14 @@
   <url>
     <loc>https://wchen.ai/en/projects/super-mario-replica</loc>
     <lastmod>2025-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/en/writing/public-portfolio-journal</loc>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/en/writing/pitch-before-you-vibe-code</loc>
+    <lastmod>2026-03-14</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/en/writing/static-first-audio</loc>
@@ -106,19 +118,23 @@
   </url>
   <url>
     <loc>https://wchen.ai/es</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/es/about</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/es/projects</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/es/writing</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/projects/cursor-agent-learning</loc>
+    <lastmod>2026-03-20</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/es/projects/home-about-refresh-skill</loc>
@@ -139,6 +155,14 @@
   <url>
     <loc>https://wchen.ai/es/projects/super-mario-replica</loc>
     <lastmod>2025-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/public-portfolio-journal</loc>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/es/writing/pitch-before-you-vibe-code</loc>
+    <lastmod>2026-03-14</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/es/writing/static-first-audio</loc>
@@ -210,19 +234,23 @@
   </url>
   <url>
     <loc>https://wchen.ai/zh</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/zh/about</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/zh/projects</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/zh/writing</loc>
-    <lastmod>2026-03-14</lastmod>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/projects/cursor-agent-learning</loc>
+    <lastmod>2026-03-20</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/zh/projects/home-about-refresh-skill</loc>
@@ -243,6 +271,14 @@
   <url>
     <loc>https://wchen.ai/zh/projects/super-mario-replica</loc>
     <lastmod>2025-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/public-portfolio-journal</loc>
+    <lastmod>2026-05-09</lastmod>
+  </url>
+  <url>
+    <loc>https://wchen.ai/zh/writing/pitch-before-you-vibe-code</loc>
+    <lastmod>2026-03-14</lastmod>
   </url>
   <url>
     <loc>https://wchen.ai/zh/writing/static-first-audio</loc>

@@ -40,12 +40,13 @@
   },
   "rss": {
     "title": "Wilson Chen | Writing",
-    "description": "Thoughts on engineering, products, and building software.",
+    "description": "Thoughts on engineering, products, investing, and building software.",
     "language": "en-us"
   },
   "navigation": {
     "projectsLabel": "Projects",
     "writingLabel": "Writing",
+    "investingLabel": "Investing",
     "aboutLabel": "About",
     "contactLabel": "Contact",
     "skipToContentLabel": "Skip to content",
@@ -64,6 +65,13 @@
     "metadataTitle": "Writing",
     "openGraphAlt": "Wilson Chen - Writing"
   },
+  "investingPage": {
+    "title": "Investing",
+    "intro": "A public portfolio journal for stock research, position notes, and the decisions I want to make harder to rewrite later.",
+    "metadataDescription": "Public portfolio journal with stock research, investing notes, and decision records from Wilson Chen.",
+    "metadataTitle": "Investing",
+    "openGraphAlt": "Wilson Chen - Investing"
+  },
   "projectsPage": {
     "title": "Projects & Explorations",
     "intro": "A collection of apps, agents, and experiments I've built to explore new ideas and solve interesting problems.",
@@ -79,7 +87,7 @@
   "newsletter": {
     "from": "Wilson Chen <newsletter@m.wchen.ai>",
     "subject": "Confirm your subscription to Wilson Chen's writing",
-    "description": "Occasional updates when I publish new writing. No spam, unsubscribe anytime.",
+    "description": "Occasional updates when I publish new writing on building, software, or investing. No spam, unsubscribe anytime.",
     "successTitle": "Check your email to confirm your subscription.",
     "successDescription": "We sent a confirmation link to your inbox.",
     "confirmedPageTitle": "Subscribed!",

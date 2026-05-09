@@ -7,6 +7,7 @@ import uiContent from "../content/locales/en/site/ui.json";
 
 const defaultLocale = "en";
 const defaultBasePath = `/${defaultLocale}`;
+const investingTitle = "Why I Am Writing About Stocks in Public";
 
 test.describe("Homepage - 15-Second Overview", () => {
   test("redirects bare homepage to the preferred locale", async ({ page }) => {
@@ -40,6 +41,7 @@ test.describe("Homepage - 15-Second Overview", () => {
     const nav = page.locator("header nav").first();
     await expect(nav.locator(`a[href="${defaultBasePath}/projects"]`)).toBeVisible();
     await expect(nav.locator(`a[href="${defaultBasePath}/writing"]`)).toBeVisible();
+    await expect(nav.locator(`a[href="${defaultBasePath}/investing"]`)).toBeVisible();
     await expect(nav.locator(`a[href="${defaultBasePath}/about"]`)).toBeVisible();
     await expect(nav.locator(`a[href="${defaultBasePath}#contact"]`)).toBeVisible();
   });
@@ -84,6 +86,7 @@ test.describe("Writing Section", () => {
     await expect(page.locator("h1")).toContainText(siteProfile.writingPage.title);
     const writingCards = page.locator("article");
     await expect(writingCards.first()).toBeVisible();
+    await expect(page.getByRole("link", { name: investingTitle })).toHaveCount(0);
   });
 
   test("writing detail page renders content and metadata", async ({ page }) => {
@@ -97,6 +100,17 @@ test.describe("Writing Section", () => {
     const mainArticle = page.getByRole("main").locator("article").first();
     await expect(mainArticle).toBeVisible();
     await expect(mainArticle.getByText(new RegExp(uiContent.writing.minuteReadLabel))).toBeVisible();
+  });
+});
+
+test.describe("Investing Section", () => {
+  test("investing page loads separately from writing", async ({ page }) => {
+    const investingPage = siteProfile.investingPage;
+
+    await page.goto(`${defaultBasePath}/investing`);
+
+    await expect(page.locator("h1")).toContainText(investingPage.title);
+    await expect(page.getByRole("link", { name: investingTitle })).toBeVisible();
   });
 });
 
