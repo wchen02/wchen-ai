@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getProjects, getWritings, getProjectBySlug, getWritingBySlug, getGitHubContributions } from '@/lib/mdx';
+import { getProjects, getWritings, getProjectBySlug, getWritingBySlug, getGitHubContributions, getRelatedWritings } from '@/lib/mdx';
 
 describe('getProjects', () => {
   it('loads all project MDX files', () => {
@@ -104,6 +104,13 @@ describe('getWritingBySlug', () => {
   it('returns null for an invalid slug', () => {
     const writing = getWritingBySlug('nonexistent-writing-slug');
     expect(writing).toBeNull();
+  });
+});
+
+describe('getRelatedWritings', () => {
+  it('only recommends other investing posts for an investing entry', () => {
+    const related = getRelatedWritings('public-portfolio-journal');
+    expect(related.every((writing) => writing.theme === 'Investing')).toBe(true);
   });
 });
 

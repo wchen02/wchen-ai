@@ -6,6 +6,7 @@ import { ProjectSchema, WritingSchema, GitHubContributionSchema, type Project, t
 import { DEFAULT_LOCALE } from "./locales";
 import { mdxToAudioText } from "./audio-text";
 import { logger } from "./logger";
+import { isInvestingWriting } from "./writing-sections";
 
 function hashRawFileContent(raw: string): string {
   return crypto.createHash("sha256").update(raw, "utf8").digest("hex").slice(0, 16);
@@ -194,7 +195,10 @@ export function getRelatedWritings(
   const current = all.find((w) => w.slug === currentSlug);
   if (!current) return all.slice(0, limit);
 
-  const candidates = all.filter((w) => w.slug !== currentSlug);
+  const candidates = all.filter((w) => {
+    if (w.slug === currentSlug) return false;
+    return isInvestingWriting(w) === isInvestingWriting(current);
+  });
   if (candidates.length === 0) return [];
 
   const scored = candidates.map((w) => {
