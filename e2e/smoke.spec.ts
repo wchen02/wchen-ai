@@ -110,7 +110,7 @@ test.describe("Investing Section", () => {
     await page.goto(`${defaultBasePath}/investing`);
 
     await expect(page.locator("h1")).toContainText(investingPage.title);
-    await expect(page.getByRole("link", { name: investingTitle })).toBeVisible();
+    await expect(page.getByRole("heading", { name: investingTitle }).getByRole("link")).toBeVisible();
     await expect(page.getByText("Portfolio Journal", { exact: true })).toBeVisible();
     await expect(page.getByText("A public investing process note about making stock decisions easier to inspect later.")).toBeVisible();
   });
@@ -118,7 +118,7 @@ test.describe("Investing Section", () => {
   test("investing article opens under investing and links back there", async ({ page }) => {
     await page.goto(`${defaultBasePath}/investing`);
 
-    await page.getByRole("link", { name: investingTitle }).click();
+    await page.getByRole("heading", { name: investingTitle }).getByRole("link").click();
     await page.waitForURL(`**${defaultBasePath}/investing/public-portfolio-journal`);
 
     await expect(page.locator("h1")).toContainText(investingTitle);
