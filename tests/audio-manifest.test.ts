@@ -1,5 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { createEmptyAudioManifest, registerAudioManifestEntry } from "@/lib/audio-manifest";
+
+const ORIGINAL_ENV = { ...process.env };
+
+beforeEach(() => {
+  process.env = { ...ORIGINAL_ENV };
+  delete process.env.AUDIO_SOURCE;
+  delete process.env.R2_AUDIO_PUBLIC_BASE_URL;
+  vi.restoreAllMocks();
+});
+
+afterEach(() => {
+  process.env = { ...ORIGINAL_ENV };
+  vi.restoreAllMocks();
+});
 
 describe("createEmptyAudioManifest", () => {
   it("returns an empty object", () => {
@@ -53,5 +67,37 @@ describe("registerAudioManifestEntry", () => {
 
     expect(manifest.en.writing["same-slug"]).toEqual({ hasSubtitles: true });
     expect(manifest.zh.writing["same-slug"]).toEqual({ hasSubtitles: false });
+  });
+});
+
+describe("getAudioInfo", () => {
+  it("uses the CDN URL for remote audio and same-origin URL for remote subtitles", async () => {
+    process.env.AUDIO_SOURCE = "r2";
+    process.env.R2_AUDIO_PUBLIC_BASE_URL = "https://cdn.example.com";
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => ({
+          en: {
+            writing: {},
+            projects: {},
+            investing: {
+              "portfolio-note": { hasSubtitles: true },
+            },
+          },
+        }),
+      }))
+    );
+    vi.resetModules();
+
+    const { getAudioInfo } = await import("@/lib/audio-manifest");
+    const audioInfo = await getAudioInfo("en", "investing", "portfolio-note");
+
+    expect(audioInfo).toEqual({
+      hasAudio: true,
+      url: "https://cdn.example.com/en/investing/portfolio-note.mp3",
+      subtitlesUrl: "/audio/en/investing/portfolio-note.mp3.json",
+    });
   });
 });

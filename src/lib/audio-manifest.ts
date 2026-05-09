@@ -127,6 +127,13 @@ export interface AudioInfo {
   subtitlesUrl?: string;
 }
 
+function getSubtitlesUrl(relativePath: string): string {
+  if (isLocalAudioSource()) {
+    return getAudioAssetUrl(relativePath);
+  }
+  return `/audio/${relativePath.replace(/^\/+/, "")}`;
+}
+
 /**
  * Returns whether pre-generated audio exists for this locale/type/slug and its URL.
  * When subtitle JSON exists alongside the MP3, also returns subtitlesUrl for read-along.
@@ -148,7 +155,7 @@ export async function getAudioInfo(
     return {
       hasAudio: true,
       url: getAudioAssetUrl(audioRelativePath),
-      ...(entry.hasSubtitles ? { subtitlesUrl: getAudioAssetUrl(subtitlesRelativePath) } : {}),
+      ...(entry.hasSubtitles ? { subtitlesUrl: getSubtitlesUrl(subtitlesRelativePath) } : {}),
     };
   }
 
@@ -181,6 +188,6 @@ export async function getAudioInfo(
   return {
     hasAudio: true,
     url: getAudioAssetUrl(audioRelativePath),
-    ...(hasSubtitles ? { subtitlesUrl: getAudioAssetUrl(subtitlesRelativePath) } : {}),
+    ...(hasSubtitles ? { subtitlesUrl: getSubtitlesUrl(subtitlesRelativePath) } : {}),
   };
 }

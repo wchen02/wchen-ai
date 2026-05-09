@@ -136,15 +136,17 @@ jobs:
       - name: Run E2E Tests
         run: pnpm test:e2e
 
-      # Sync contact form env from GitHub to Cloudflare Pages (production).
-      # Required in GitHub environment "production": vars CONTACT_TO_EMAIL, MAILGUN_DOMAIN; secret MAILGUN_API_KEY.
-      # Optional vars: MAILGUN_FROM_EMAIL, MAILGUN_EU.
-      - name: Sync contact form env to Cloudflare Pages
-        if: vars.CONTACT_TO_EMAIL != '' && vars.MAILGUN_DOMAIN != ''
+      # Sync runtime env from GitHub to Cloudflare Pages (production).
+      # Audio vars are needed by Pages Functions at request time, not just by the build.
+      # Contact vars are optional; when present, they keep the contact form runtime configured too.
+      - name: Sync runtime env to Cloudflare Pages
+        if: vars.R2_AUDIO_PUBLIC_BASE_URL != '' || (vars.CONTACT_TO_EMAIL != '' && vars.MAILGUN_DOMAIN != '')
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_PROJECT_NAME: ${{ vars.CLOUDFLARE_PROJECT_NAME }}
+          AUDIO_SOURCE: ${{ vars.AUDIO_SOURCE }}
+          R2_AUDIO_PUBLIC_BASE_URL: ${{ vars.R2_AUDIO_PUBLIC_BASE_URL }}
           CONTACT_TO_EMAIL: ${{ vars.CONTACT_TO_EMAIL }}
           MAILGUN_DOMAIN: ${{ vars.MAILGUN_DOMAIN }}
           MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
@@ -152,16 +154,14 @@ jobs:
           MAILGUN_EU: ${{ vars.MAILGUN_EU }}
         run: |
           ENV_VARS=$(jq -n \
-            --arg to "$CONTACT_TO_EMAIL" \
-            --arg domain "$MAILGUN_DOMAIN" \
-            --arg key "$MAILGUN_API_KEY" \
+            --arg audioSource "${AUDIO_SOURCE:-}" \
+            --arg r2AudioPublicBaseUrl "${R2_AUDIO_PUBLIC_BASE_URL:-}" \
+            --arg to "${CONTACT_TO_EMAIL:-}" \
+            --arg domain "${MAILGUN_DOMAIN:-}" \
+            --arg key "${MAILGUN_API_KEY:-}" \
             --arg from "${MAILGUN_FROM_EMAIL:-}" \
             --arg eu "${MAILGUN_EU:-}" \
-            '{
-              CONTACT_TO_EMAIL: { type: "plain_text", value: $to },
-              MAILGUN_DOMAIN: { type: "plain_text", value: $domain },
-              MAILGUN_API_KEY: { type: "secret_text", value: $key }
-            } + (if $from != "" then { MAILGUN_FROM_EMAIL: { type: "plain_text", value: $from } } else {} end) + (if $eu != "" then { MAILGUN_EU: { type: "plain_text", value: $eu } } else {} end)')
+            '(if $audioSource != "" then { AUDIO_SOURCE: { type: "plain_text", value: $audioSource } } else {} end) + (if $r2AudioPublicBaseUrl != "" then { R2_AUDIO_PUBLIC_BASE_URL: { type: "plain_text", value: $r2AudioPublicBaseUrl } } else {} end) + (if $to != "" then { CONTACT_TO_EMAIL: { type: "plain_text", value: $to } } else {} end) + (if $domain != "" then { MAILGUN_DOMAIN: { type: "plain_text", value: $domain } } else {} end) + (if $key != "" then { MAILGUN_API_KEY: { type: "secret_text", value: $key } } else {} end) + (if $from != "" then { MAILGUN_FROM_EMAIL: { type: "plain_text", value: $from } } else {} end) + (if $eu != "" then { MAILGUN_EU: { type: "plain_text", value: $eu } } else {} end)')
           BODY=$(jq -n --argjson ev "$ENV_VARS" '{ deployment_configs: { production: { env_vars: $ev } } }')
           curl -sS -X PATCH \
             "https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${CLOUDFLARE_PROJECT_NAME}" \
