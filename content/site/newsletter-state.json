@@ -41,70 +41,88 @@
       "subject": "New on Wilson Chen"
     },
     {
-      "slug": "build-time-validation-as-product",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "887ea3694833969f"
-    },
-    {
-      "slug": "cost-of-generic-ui-agent-design",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "8c9ba9712ef6f3e2"
-    },
-    {
-      "slug": "github-as-your-backend",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "970771d637d8f07c"
-    },
-    {
-      "slug": "i18n-and-content-skills",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "0b31c1eaaaef2fa9"
-    },
-    {
-      "slug": "newsletter-static-site-resend-cloudflare",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "46a1503da5b56e8c"
-    },
-    {
-      "slug": "progressive-disclosure-agent-skills",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "4e836466637efc66"
-    },
-    {
-      "slug": "recurring-newsletter-as-build-step",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "b842e880ee69891f"
-    },
-    {
-      "slug": "site-comments-giscus",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "94680756d2056ae2"
-    },
-    {
-      "slug": "pitch-before-you-vibe-code",
-      "sentAt": "2026-03-15T12:51:27.262Z",
-      "subject": "New on Wilson Chen",
-      "contentVersion": "9e245353ac5b6362"
-    },
-    {
       "slug": "static-first-audio",
       "sentAt": "2026-03-15T12:51:27.262Z",
       "subject": "New on Wilson Chen",
       "contentVersion": "8ed180c3d8d31c6e"
     },
     {
-      "slug": "public-portfolio-journal",
-      "sentAt": "2026-05-09T05:27:31.368Z",
+      "slug": "build-time-validation-as-product",
+      "sentAt": "2026-05-09T21:18:13.990Z",
       "subject": "New on Wilson Chen",
-      "contentVersion": "e8888876abfabfd6"
+      "contentVersion": "7bab4a101bab233a"
+    },
+    {
+      "slug": "cost-of-generic-ui-agent-design",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "d4e020af396e27e1"
+    },
+    {
+      "slug": "github-as-your-backend",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "2c4aad53bf78eb56"
+    },
+    {
+      "slug": "i18n-and-content-skills",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "7d08d01593b3e20d"
+    },
+    {
+      "slug": "newsletter-static-site-resend-cloudflare",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "83096b9944e082b4"
+    },
+    {
+      "slug": "progressive-disclosure-agent-skills",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "68bc77d918df83a2"
+    },
+    {
+      "slug": "recurring-newsletter-as-build-step",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "881d0b98e3caadeb"
+    },
+    {
+      "slug": "site-comments-giscus",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "b5248606ec795ba3"
+    },
+    {
+      "slug": "pitch-before-you-vibe-code",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "16c2a78644c6e1f6"
+    },
+    {
+      "slug": "public-portfolio-journal",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "5e8ef0df12d6f3e8"
+    },
+    {
+      "slug": "simple-macro-regime-tracker",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "4b554a73010e6c63"
+    },
+    {
+      "slug": "ai-infrastructure-watchlist",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "e25d5bbb054c79fd"
+    },
+    {
+      "slug": "moving-away-from-0dte",
+      "sentAt": "2026-05-09T21:18:13.990Z",
+      "subject": "New on Wilson Chen",
+      "contentVersion": "c524f7a9fbcd3cc5"
     }
   ],
   "projects": [
