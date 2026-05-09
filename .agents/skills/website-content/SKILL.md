@@ -15,7 +15,7 @@ Write content for the site in the site owner's voice. The site splits content in
 1. Read [references/voice-guide.md](references/voice-guide.md) to internalize the site owner's voice (customize that guide for your own voice if you forked this template).
 2. Read [references/content-schemas.md](references/content-schemas.md) for the content type being written.
 3. If updating homepage/about or other page-level copy, also read [references/page-patterns.md](references/page-patterns.md).
-4. For every new writing, investing, or project entry, read [references/images.md](references/images.md) and create a feature image before finalizing the entry.
+4. For every new writing, investing, or project entry, read [references/images.md](references/images.md) and create a raster feature image (`.jpg` or `.png`, not `.svg`) before finalizing the entry.
 
 ## Content Types
 
@@ -48,7 +48,7 @@ For investing content, use `theme: "Investing"` and add the `investing` object d
 - Keep paragraphs short: 1-3 sentences
 - Use *italics* sparingly for emphasis on key reframes
 - End with a forward-looking conviction, not a summary
-- Feature image: always create or source one, save it under `public/writing/<slug>/`, set `ogImage`, and include the Markdown image in the body near the opening where it supports the narrative. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
+- Feature image: always create or source one as `.jpg` or `.png` (not `.svg`), save it under `public/writing/<slug>/`, set `ogImage`, and include the Markdown image in the body near the opening where it supports the narrative. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
 
 **Slug**: derive from the core concept in lowercase kebab case, for example `context-aware-agents.mdx`.
 
@@ -124,7 +124,7 @@ After creating or updating a shared entry in `content/projects/[slug].mdx`, imme
 - Common sections: `How it works`, `The Vision`, `Architecture`, `Results`
 - Include code snippets only when they add real clarity
 - Focus on narrative arc, not feature lists
-- Feature image: always create or source one, save it under `public/projects/<slug>/`, set `ogImage`, and include the Markdown image near the opening. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
+- Feature image: always create or source one as `.jpg` or `.png` (not `.svg`), save it under `public/projects/<slug>/`, set `ogImage`, and include the Markdown image near the opening. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
 
 ### Homepage Copy
 
@@ -208,15 +208,15 @@ Run this check against every piece of content before finalizing:
 - [ ] Every paragraph advances one idea
 - [ ] Paragraphs are 1-3 sentences when writing prose
 - [ ] The ending lands on conviction, not recap
-- [ ] New writing, investing, and project entries include a feature image file, body image reference, meaningful alt text, and `ogImage`
+- [ ] New writing, investing, and project entries include a `.jpg` or `.png` feature image file, body image reference, meaningful alt text, and `ogImage`
 - [ ] Frontmatter or JSON shape matches the active schema (Zod in `src/lib/schemas.ts`; invalid content fails the build; see also `scripts/validate-links.ts`, `validate-theme-descriptors.ts`, `validate-metadata.ts`)
 
 ## File Placement
 
 ```text
 public/
-  writing/[slug]/                         -> Image assets for writing entry [slug]; reference as /writing/<slug>/filename.ext
-  projects/[slug]/                        -> Image assets for project entry [slug]; reference as /projects/<slug>/filename.ext
+  writing/[slug]/                         -> Image assets for writing entry [slug]; feature images use .jpg/.png, e.g. /writing/<slug>/feature.jpg
+  projects/[slug]/                        -> Image assets for project entry [slug]; feature images use .jpg/.png, e.g. /projects/<slug>/hero.png
 content/
   writing/[slug].mdx                      -> Shared/default writing entries (canonical)
   projects/[slug].mdx                     -> Shared/default project entries (canonical)
