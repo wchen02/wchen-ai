@@ -99,6 +99,7 @@ investing:
 - For stock theses: answer `Why now?`, `What is the market missing?`, `What is already priced in?`, `What would make me add, trim, exit, or avoid?`
 - For learning/advice/habit posts: focus on the behavior, mistake pattern, or operating rule; do not force ticker, status, thesis, or invalidation fields.
 - Avoid performance theater. Prefer decision quality, thesis integrity, review cadence, and mistake taxonomy over return bragging.
+- Feature images for investing posts should use the high-contrast editorial thumbnail style in [references/images.md](references/images.md): bold headline energy, market charts, red/green risk contrast, and clear visual framing around the trade, watchlist, or investing behavior.
 
 ### Project Entry
 

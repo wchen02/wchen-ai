@@ -8,6 +8,17 @@ Every new writing, investing, and project entry must include a feature image. Us
 
 Use images that support the article or project: hero, diagram, concept, screenshot, or key visual. Do not add generic decoration. Feature images must be raster assets (`.jpg` or `.png`), not `.svg`. If no perfect image is available, create or source a simple concept image that clarifies the post's core idea.
 
+## Investing feature image style
+
+For investing posts, prefer a bold editorial thumbnail style rather than a quiet abstract illustration. Make the image feel like a serious market note with strong visual hierarchy:
+
+- Use a 16:9 composition with high contrast, cinematic lighting, and dark market-screen backgrounds.
+- Include large headline-style typography when the image tool can render it cleanly. Keep text short: title fragments like `AI MEMORY, SEMIS & SPACE`, `MOVING AWAY FROM 0DTE`, `HIGH-CONVICTION WATCHLIST`, `RISK, EMOTION & BETTER SETUPS`.
+- Use market-native visuals: candlestick charts, green/red price action, volatility panels, chip wafers, data centers, rockets/satellites, dashboards, notebooks, trade plans, calendars, or risk checklists.
+- Match the post's investing kind: watchlists can show tier cards, tickers, theme labels, and asset imagery; process notes can show dashboards, traffic-light rules, journals, and decision checklists; trading lessons can contrast the bad setup versus the preferred setup.
+- Use red for danger, emotion, drawdowns, or avoid zones; use green/blue for preferred setups, discipline, watchlists, and constructive risk.
+- Avoid tiny unreadable labels, fake brokerage UI that implies real performance, brand logos, or claims that turn the post into financial advice.
+
 ## Sourcing royalty-free images
 
 - **Sources**: Use only sources that allow commercial use without payment. Examples: **Unsplash**, **Pexels**, **Pixabay**. Prefer CC0 or equivalent licenses.

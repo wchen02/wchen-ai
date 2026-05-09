@@ -128,6 +128,7 @@ Only use `showDecisionRecord: true` for decision-oriented posts. Do not force de
 ### Investing body structure
 
 - Always create a `.jpg` or `.png` feature image for investing entries using the same writing image path: `public/writing/<slug>/feature.jpg` or similar. Do not use SVG for feature images.
+- Generate investing feature images in the bold editorial thumbnail style from [images.md](images.md): high-contrast 16:9 composition, large short headline text when legible, market charts, red/green risk contrast, and visuals tied to the specific watchlist, trade setup, lesson, or process note.
 - Always include a short public disclaimer for stock/trading content: `Nothing here is financial advice.`
 - For stock theses: cover why now, what the market may be missing, what is already priced in, key catalysts, invalidation, and add/trim/exit/avoid rules.
 - For learning/advice/habit notes: focus on the behavior, mistake pattern, or operating rule; avoid pretending there is a ticker-specific thesis.
