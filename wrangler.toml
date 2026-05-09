@@ -1,3 +1,7 @@
 name = "wchen-ai"
 pages_build_output_dir = "out"
 compatibility_date = "2025-01-01"
+
+[vars]
+AUDIO_SOURCE = "r2"
+R2_AUDIO_PUBLIC_BASE_URL = "https://cdn.wchen.ai"
