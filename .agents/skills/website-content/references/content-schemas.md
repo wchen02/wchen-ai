@@ -55,7 +55,7 @@ draft: false                        # boolean. If true, excluded from build.
 - **Reading time**: Auto-calculated at build time from word count
 - **Slug**: Derived from filename (e.g. `static-first.mdx` -> `/writing/static-first`, localized at runtime when needed)
 - **Location**: Prefer `content/locales/<locale>/writing/[slug].mdx` for locale-specific pieces; use `content/writing/[slug].mdx` for shared/default content
-- **Feature image**: New entries must include a `.jpg` or `.png` feature image under `public/writing/<slug>/`, an absolute `ogImage`, and a Markdown image reference in the body. Do not use SVG for feature images.
+- **Feature image**: New entries must include a 16:9 `.jpg` or `.png` feature image under `public/writing/<slug>/`, an absolute `ogImage`, and a Markdown image reference in the body. Do not use SVG for feature images.
 
 ### Writing body structure
 Typical pattern from existing content:
@@ -127,7 +127,7 @@ Only use `showDecisionRecord: true` for decision-oriented posts. Do not force de
 
 ### Investing body structure
 
-- Always create a `.jpg` or `.png` feature image for investing entries using the same writing image path: `public/writing/<slug>/feature.jpg` or similar. Do not use SVG for feature images.
+- Always create a 16:9 `.jpg` or `.png` feature image for investing entries using the same writing image path: `public/writing/<slug>/feature.jpg` or similar. Do not use SVG for feature images.
 - Generate investing feature images in the bold editorial thumbnail style from [images.md](images.md): high-contrast 16:9 composition, large short headline text when legible, market charts, red/green risk contrast, and visuals tied to the specific watchlist, trade setup, lesson, or process note.
 - Always include a short public disclaimer for stock/trading content: `Nothing here is financial advice.`
 - For stock theses: cover why now, what the market may be missing, what is already priced in, key catalysts, invalidation, and add/trim/exit/avoid rules.
@@ -175,7 +175,7 @@ Typical pattern from existing content:
 
 ## Images in writing and project MDX
 
-Writing, investing, and project entries must include a `.jpg` or `.png` feature image. Bodies support standard Markdown images. The site serves images from `public/` at build time (static export). Do not use SVG for feature images.
+Writing, investing, and project entries must include a 16:9 `.jpg` or `.png` feature image. Bodies support standard Markdown images. The site serves images from `public/` at build time (static export). Do not use SVG for feature images.
 
 **Where to put image files**
 - Writing: `public/writing/<slug>/` (e.g. `public/writing/my-post/feature.jpg`)
