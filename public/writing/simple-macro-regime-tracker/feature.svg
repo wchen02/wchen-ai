@@ -1,0 +1,55 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Simple macro regime tracker</title>
+  <desc id="desc">A dark dashboard card showing SPY, QQQ, RSP, VIX, HYG, and BTC as market regime signals.</desc>
+  <rect width="1200" height="630" rx="42" fill="#0b1020"/>
+  <rect x="70" y="64" width="1060" height="502" rx="34" fill="#11182c" stroke="#2c395a" stroke-width="2"/>
+  <circle cx="106" cy="101" r="8" fill="#ef4444"/>
+  <circle cx="132" cy="101" r="8" fill="#f59e0b"/>
+  <circle cx="158" cy="101" r="8" fill="#22c55e"/>
+  <text x="92" y="168" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="700">Simple Macro Regime Tracker</text>
+  <text x="94" y="211" fill="#9fb1d1" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="24">Six liquid signals for risk appetite, breadth, stress, credit, and speculative liquidity.</text>
+
+  <g transform="translate(94 270)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Broad Risk</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">SPY</text>
+    <path d="M190 65L218 42L244 54L274 28" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(450 270)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Growth Appetite</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">QQQ</text>
+    <path d="M188 67L214 50L238 56L272 32" stroke="#38bdf8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(806 270)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Breadth Check</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">RSP</text>
+    <path d="M188 60L214 60L240 46L272 48" stroke="#a78bfa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(94 404)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Stress Gauge</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">VIX</text>
+    <path d="M188 32L214 54L240 38L272 64" stroke="#fb7185" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(450 404)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Credit Risk</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">HYG</text>
+    <path d="M188 55L214 47L240 50L272 42" stroke="#facc15" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(806 404)">
+    <rect width="300" height="92" rx="22" fill="#17213a" stroke="#334466" stroke-width="2"/>
+    <text x="28" y="38" fill="#94a3b8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600">Speculative Liquidity</text>
+    <text x="28" y="70" fill="#f8fafc" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="32" font-weight="800">BTC</text>
+    <path d="M188 66L214 36L240 62L272 30" stroke="#f97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <text x="94" y="536" fill="#7182a8" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="18">Regime awareness over prediction</text>
+</svg>

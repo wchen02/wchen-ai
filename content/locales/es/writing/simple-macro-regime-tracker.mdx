@@ -1,0 +1,100 @@
+---
+title: "Un rastreador simple de regimen macro"
+publishDate: "2026-05-09T13:30:00Z"
+theme: "Investing"
+tags: ["investing", "macro", "process"]
+investing:
+  kind: "process-note"
+  summary: "Un dashboard simple de mercado para revisar apetito por riesgo, amplitud, estres, credito y liquidez especulativa."
+ogImage: "https://wchen.ai/writing/simple-macro-regime-tracker/feature.svg"
+featured: false
+draft: false
+---
+
+No necesito un modelo macro complicado para saber en que tipo de mercado estoy operando.
+
+Necesito un pequeno conjunto de senales liquidas que me mantengan honesto. Cuando tengo ganas de anadir riesgo, quiero saber si el mercado esta premiando el riesgo de forma amplia, escondiendo debilidad debajo de unos pocos nombres grandes, o entrando en estres en silencio.
+
+![Un dashboard simple que muestra SPY, QQQ, RSP, VIX, HYG y BTC como senales de regimen de mercado.](/writing/simple-macro-regime-tracker/feature.svg)
+
+Nada aqui es asesoramiento financiero.
+
+## El dashboard de correccion
+
+El rastreador es un dashboard de correccion con seis simbolos: `SPY`, `QQQ`, `RSP`, `VIX`, `HYG` y `BTC` o `IBIT`.
+
+Eso basta para darme una lectura aproximada del regimen. No perfecta. No predictiva. Pero lo bastante util como para evitar que finja que todos los mercados son el mismo mercado.
+
+| Senal | Simbolo | Que miro |
+| --- | --- | --- |
+| Mercado principal | `SPY` | Por encima o por debajo de las medias moviles de 20 y 50 dias |
+| Riesgo de crecimiento | `QQQ` | Por encima o por debajo de las medias moviles de 20 y 50 dias |
+| Amplitud de mercado | `RSP` | Rendimiento de 5 y 20 dias comparado con `SPY` |
+| Volatilidad | `VIX` | Por encima de 20 significa cautela; por encima de 25 significa risk-off |
+| Estres crediticio | `HYG` | Por encima o por debajo de las medias moviles de 20 y 50 dias, mas rendimiento contra `SPY` |
+| Apetito cripto | `BTC` / `IBIT` | Por encima o por debajo de las medias moviles de 20 y 50 dias |
+
+`SPY` me dice como se ve el apetito por riesgo en las grandes empresas de Estados Unidos. `QQQ` me dice cuanto apetito hay por crecimiento y duracion. Si ambos estan por encima de sus medias moviles de 20 dias, el mercado suele estar mas sano. Si ambos pierden sus medias de 50 dias, no quiero fingir que el mismo playbook sigue aplicando.
+
+`RSP` es la revision de amplitud. Es el S&P 500 equal-weight, asi que me dice si el indice esta siendo sostenido por un pequeno grupo de gigantes o por una base mas amplia. Un `SPY` fuerte con un `RSP` debil no es lo mismo que un `SPY` fuerte con participacion amplia.
+
+`VIX` es el medidor de estres. Por debajo de 20, el mercado suele ser mas indulgente. Por encima de 20, quiero menos agresividad. Por encima de 25, asumo que el mercado me esta diciendo que primero proteja capital.
+
+`HYG` es apetito por riesgo crediticio. Las acciones pueden verse tranquilas mientras el credito empieza a debilitarse. Si `HYG` esta por debajo de su media movil de 20 dias durante varios dias, o por debajo de su media de 50 dias mientras `SPY` aun aguanta, lo trato como una advertencia desde la fontaneria debajo de las acciones.
+
+`BTC` o `IBIT` es la revision de liquidez especulativa. No necesito que cripto explique todo el mercado. Lo uso como otra lectura sobre si el capital quiere opcionalidad, volatilidad y upside.
+
+## La regla del semaforo
+
+Quiero que el dashboard fuerce una postura de decision, no que solo produzca observaciones.
+
+### 🟢 Verde: mantener largos
+
+Verde significa que el mercado todavia me esta dando permiso para tener riesgo.
+
+- `SPY` y `QQQ` estan por encima de sus medias moviles de 20 dias.
+- `VIX` esta por debajo de 20.
+- `RSP` esta dentro de 1% del rendimiento de 5 dias de `SPY`.
+- `HYG` esta por encima de su media movil de 20 dias.
+- `BTC` esta por encima de su media movil de 20 dias o haciendo minimos crecientes.
+
+En ese entorno puedo estar mas dispuesto a apretar buenos setups porque la corriente va conmigo.
+
+### 🟡 Amarillo: reducir agresividad
+
+Amarillo significa que no tengo que entrar en panico, pero debo dejar de actuar como si el mercado estuviera limpio.
+
+- `SPY` o `QQQ` rompe la media movil de 20 dias.
+- `VIX` esta por encima de 20.
+- `RSP` queda por debajo de `SPY` por 1-2% en 5 dias de mercado.
+- `HYG` permanece por debajo de su media movil de 20 dias durante 2 dias o mas.
+- `BTC` pierde su media movil de 20 dias o no logra rebotar con `QQQ`.
+
+Ahi quiero menor tamano, invalidacion mas limpia y menos confianza en conclusiones amplias.
+
+### 🔴 Rojo: proteger capital
+
+Rojo significa que el objetivo cambia de apretar upside a evitar errores forzados.
+
+- `SPY` o `QQQ` rompe la media movil de 50 dias.
+- `VIX` esta por encima de 25.
+- `RSP` queda por debajo de `SPY` por 2% o mas en 5 dias de mercado.
+- `RSP` esta por debajo de su media movil de 50 dias mientras `SPY` sigue por encima de la suya.
+- `HYG` esta por debajo de su media movil de 50 dias mientras `SPY` sigue por encima de la suya.
+- `BTC` rompe su media movil de 50 dias o un soporte importante.
+
+Eso no significa que tenga que venderlo todo. Significa que el mercado ya no me esta dando la misma estructura de permiso.
+
+## El punto es entender el regimen
+
+Este dashboard no pronostica el futuro.
+
+Esa es la ventaja. No quiero que se convierta en una maquina de profecias. Quiero que sea una funcion de obligacion: antes de tomar una decision de portfolio, tengo que nombrar el mercado en el que creo estar operando.
+
+Si el regimen es risk-on, puedo preguntarme si mi exceso de efectivo es intencional o solo miedo. Si el regimen es defensivo, puedo preguntarme si mi impulso de comprar cada caida es disciplina o impaciencia. Si el regimen es mixto, puedo preguntarme si la posicion de verdad merece capital antes de que la evidencia mejore.
+
+El mercado no me debe una senal limpia. La mayor parte del tiempo entrega informacion parcial y presion emocional.
+
+Asi que quiero un ritual simple. Revisar los seis tickers. Escribir el regimen. Despues tomar la decision.
+
+La meta no es predecir cada giro. La meta es dejar de confundir mi estado de animo con el caracter del mercado.
