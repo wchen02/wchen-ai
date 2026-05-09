@@ -43,6 +43,7 @@ tags: ["array", "of", "strings"]    # Lowercase, specific. Default: []
 investing:                          # optional; required by convention when theme is "Investing"
   kind: "learning"                  # see Investing Entries below
   summary: "string"
+ogImage: "https://wchen.ai/writing/<slug>/feature.jpg" # required by content workflow for new entries
 featured: false                     # boolean. Featured items appear first on homepage/index.
 draft: false                        # boolean. If true, excluded from build.
 ---
@@ -54,6 +55,7 @@ draft: false                        # boolean. If true, excluded from build.
 - **Reading time**: Auto-calculated at build time from word count
 - **Slug**: Derived from filename (e.g. `static-first.mdx` -> `/writing/static-first`, localized at runtime when needed)
 - **Location**: Prefer `content/locales/<locale>/writing/[slug].mdx` for locale-specific pieces; use `content/writing/[slug].mdx` for shared/default content
+- **Feature image**: New entries must include a feature image under `public/writing/<slug>/`, an absolute `ogImage`, and a Markdown image reference in the body.
 
 ### Writing body structure
 Typical pattern from existing content:
@@ -125,6 +127,7 @@ Only use `showDecisionRecord: true` for decision-oriented posts. Do not force de
 
 ### Investing body structure
 
+- Always create a feature image for investing entries using the same writing image path: `public/writing/<slug>/feature.jpg` or similar.
 - Always include a short public disclaimer for stock/trading content: `Nothing here is financial advice.`
 - For stock theses: cover why now, what the market may be missing, what is already priced in, key catalysts, invalidation, and add/trim/exit/avoid rules.
 - For learning/advice/habit notes: focus on the behavior, mistake pattern, or operating rule; avoid pretending there is a ticker-specific thesis.
@@ -145,6 +148,7 @@ problemAddressed: "string, min 10 chars"   # The specific problem. Concrete, not
 learnings: "string, optional"              # What was discovered. Honest, specific.
 url: "valid URL, optional"                 # Live app link
 github: "valid URL, optional"              # GitHub repo link
+ogImage: "https://wchen.ai/projects/<slug>/hero.jpg" # required by content workflow for new entries
 featured: true | false                     # Featured items appear first on homepage
 ---
 ```
@@ -152,9 +156,10 @@ featured: true | false                     # Featured items appear first on home
 ### Project body structure
 Typical pattern from existing content:
 1. Brief context (1 paragraph)
-2. "How it works" or "The Vision" section (H2 + technical explanation)
-3. Optional: "Architecture" or "Results" section
-4. Code snippets where relevant (TypeScript)
+2. Feature image near the opening
+3. "How it works" or "The Vision" section (H2 + technical explanation)
+4. Optional: "Architecture" or "Results" section
+5. Code snippets where relevant (TypeScript)
 
 ### Project location rules
 - Prefer `content/locales/<locale>/projects/[slug].mdx` for locale-specific entries
@@ -169,14 +174,14 @@ Typical pattern from existing content:
 
 ## Images in writing and project MDX
 
-Writing and project bodies support standard Markdown images. The site serves images from `public/` at build time (static export).
+Writing, investing, and project entries must include a feature image. Bodies support standard Markdown images. The site serves images from `public/` at build time (static export).
 
 **Where to put image files**
 - Writing: `public/writing/<slug>/` (e.g. `public/writing/my-post/hero.png`)
 - Projects: `public/projects/<slug>/` (e.g. `public/projects/my-project/diagram.svg`)
 
 **How to reference them in MDX**  
-Use root-relative URLs in Markdown image syntax:
+Use root-relative URLs in Markdown image syntax and set `ogImage` to the absolute `https://wchen.ai/...` URL:
 
 - Writing: `![Alt text](/writing/my-post/hero.png)`
 - Projects: `![Diagram](/projects/my-project/diagram.svg)`
