@@ -6,8 +6,24 @@
     <description>关于工程、产品、投资与软件构建的思考。</description>
     <language>zh-cn</language>
     <atom:link href="https://wchen.ai/rss/zh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 09 May 2026 05:50:11 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 18:26:28 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[我的 AI 基础设施 Watchlist]]></title>
+      <link>https://wchen.ai/zh/writing/ai-infrastructure-watchlist</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/ai-infrastructure-watchlist</guid>
+      <pubDate>Sat, 09 May 2026 18:30:00 GMT</pubDate>
+      <description><![CDATA[我反复回到的市场主题很简单：AI 正在变成一笔产能交易。 有一段时间，最干净的故事是模型、应用和软件采用。这些仍然重要，但市场正在问一个更物理的问题：当智能需要内存、芯片、光纤、电力、冷却、房地产，甚至未来更多空间基础设施时，谁拥有瓶颈？ 这里的内容都不是财务建议。这是我为自己流程准备的个人 watchlist。 市场主题 我不想追逐每一个贴着 AI 标签的 ticker。…]]></description>
+      <category>Investing</category>
+    </item>
+    <item>
+      <title><![CDATA[一个简单的宏观市场状态追踪器]]></title>
+      <link>https://wchen.ai/zh/writing/simple-macro-regime-tracker</link>
+      <guid isPermaLink="true">https://wchen.ai/zh/writing/simple-macro-regime-tracker</guid>
+      <pubDate>Sat, 09 May 2026 13:30:00 GMT</pubDate>
+      <description><![CDATA[我不需要一个复杂的宏观模型，才能知道自己处在什么样的市场里。 我需要的是一组足够流动、足够简单的信号，让我保持诚实。当我想增加风险时，我想先知道市场是在广泛奖励风险，还是少数大公司掩盖了下面的疲弱，或者压力正在安静地累积。 这里的内容都不是财务建议。 修正仪表盘 这个追踪器是一个六符号修正仪表盘：SPY、QQQ、RSP、VIX、HYG，以及 BTC 或 IBIT。…]]></description>
+      <category>Investing</category>
+    </item>
     <item>
       <title><![CDATA[为什么我要公开写股票]]></title>
       <link>https://wchen.ai/zh/writing/public-portfolio-journal</link>

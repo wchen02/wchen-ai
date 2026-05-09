@@ -6,8 +6,24 @@
     <description>Ideas sobre ingenieria, productos, inversion y software.</description>
     <language>es-es</language>
     <atom:link href="https://wchen.ai/rss/es.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 09 May 2026 05:50:11 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 09 May 2026 18:26:28 GMT</lastBuildDate>
     
+    <item>
+      <title><![CDATA[Mi watchlist de infraestructura de IA]]></title>
+      <link>https://wchen.ai/es/writing/ai-infrastructure-watchlist</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/ai-infrastructure-watchlist</guid>
+      <pubDate>Sat, 09 May 2026 18:30:00 GMT</pubDate>
+      <description><![CDATA[El tema de mercado al que sigo volviendo es simple: la IA se está convirtiendo en una operación de capacidad. Durante un tiempo, la historia más limpia fueron los modelos, las aplicaciones y la…]]></description>
+      <category>Investing</category>
+    </item>
+    <item>
+      <title><![CDATA[Un rastreador simple de regimen macro]]></title>
+      <link>https://wchen.ai/es/writing/simple-macro-regime-tracker</link>
+      <guid isPermaLink="true">https://wchen.ai/es/writing/simple-macro-regime-tracker</guid>
+      <pubDate>Sat, 09 May 2026 13:30:00 GMT</pubDate>
+      <description><![CDATA[No necesito un modelo macro complicado para saber en que tipo de mercado estoy operando. Necesito un pequeno conjunto de senales liquidas que me mantengan honesto. Cuando tengo ganas de anadir…]]></description>
+      <category>Investing</category>
+    </item>
     <item>
       <title><![CDATA[Por qué voy a escribir sobre acciones en público]]></title>
       <link>https://wchen.ai/es/writing/public-portfolio-journal</link>
