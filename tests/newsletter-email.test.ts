@@ -466,4 +466,17 @@ describe("recurring newsletter state", () => {
     const sortedCandidates = [...loadedCandidates].sort(compareRecurringCandidates);
     expect(loadedCandidates).toEqual(sortedCandidates);
   });
+
+  it("links Investing-themed writing candidates to the investing article route", () => {
+    const loadedCandidates = getRecurringNewsletterCandidates();
+    const investingCandidate = loadedCandidates.find(
+      (candidate) => candidate.slug === "public-portfolio-journal"
+    );
+
+    expect(investingCandidate).toBeDefined();
+    expect(investingCandidate?.type).toBe("writing");
+    expect(investingCandidate?.ctaUrl).toBe(
+      "https://wchen.ai/en/investing/public-portfolio-journal"
+    );
+  });
 });

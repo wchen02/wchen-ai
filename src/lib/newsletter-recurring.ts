@@ -12,6 +12,7 @@ import {
   getWritingContentVersion,
   getWritings,
 } from "./mdx";
+import { isInvestingWriting } from "./writing-sections";
 
 export type RecurringNewsletterItemType = "writing" | "project";
 
@@ -71,7 +72,7 @@ export function getRecurringNewsletterCandidates(locale: string = DEFAULT_LOCALE
     slug: writing.slug,
     title: writing.title,
     summary: writing.excerpt,
-    ctaUrl: absoluteUrl(`/writing/${writing.slug}`, locale),
+    ctaUrl: absoluteUrl(`/${isInvestingWriting(writing) ? "investing" : "writing"}/${writing.slug}`, locale),
     publishedAt: writing.publishDate,
     contentVersion: getWritingContentVersion(writing.slug, locale),
     imageUrl: writing.ogImage ? resolveDigestImageUrl(writing.ogImage, locale) : undefined,

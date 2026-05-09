@@ -17,7 +17,13 @@ const hasWritingAudio = fs.existsSync(path.join(servedAudioDir, "en", "writing",
 const hasProjectAudio = fs.existsSync(path.join(servedAudioDir, "en", "projects", "env-from-example.mp3"));
 const investingWithAudio = "public-portfolio-journal";
 const investingUrl = `${base}/investing/${investingWithAudio}`;
-const hasInvestingAudio = fs.existsSync(path.join(servedAudioDir, "en", "investing", `${investingWithAudio}.mp3`));
+const investingPageHtml = path.join(process.cwd(), "out", "en", "investing", `${investingWithAudio}.html`);
+const investingPageHasAudioTrigger =
+  fs.existsSync(investingPageHtml) &&
+  fs.readFileSync(investingPageHtml, "utf8").includes(listenUi.ariaLabel);
+const hasInvestingAudio =
+  fs.existsSync(path.join(servedAudioDir, "en", "investing", `${investingWithAudio}.mp3`)) &&
+  investingPageHasAudioTrigger;
 
 test.describe("Audio player", () => {
   test.beforeEach(() => {
