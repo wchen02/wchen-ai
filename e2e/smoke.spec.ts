@@ -112,7 +112,7 @@ test.describe("Investing Section", () => {
     await expect(page.locator("h1")).toContainText(investingPage.title);
     await expect(page.getByRole("link", { name: investingTitle })).toBeVisible();
     await expect(page.getByText("Portfolio Journal", { exact: true })).toBeVisible();
-    await expect(page.getByText("No current position")).toBeVisible();
+    await expect(page.getByText("A public investing process note about making stock decisions easier to inspect later.")).toBeVisible();
   });
 
   test("investing article opens under investing and links back there", async ({ page }) => {
@@ -122,9 +122,8 @@ test.describe("Investing Section", () => {
     await page.waitForURL(`**${defaultBasePath}/investing/public-portfolio-journal`);
 
     await expect(page.locator("h1")).toContainText(investingTitle);
-    await expect(page.getByRole("heading", { name: "Decision Record" })).toBeVisible();
-    await expect(page.getByText("What would prove me wrong")).toBeVisible();
-    await expect(page.getByText("Nothing here is financial advice.", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Decision Record" })).toHaveCount(0);
+    await expect(page.getByText(/Nothing here is financial advice/)).toBeVisible();
     await expect(page.getByRole("link", { name: /investing/i }).first()).toHaveAttribute(
       "href",
       `${defaultBasePath}/investing`
