@@ -40,6 +40,9 @@ publishDate: "ISO 8601 datetime"    # e.g. "2026-02-20T10:00:00Z"
 updatedAt: "ISO 8601 datetime"      # optional, for revised pieces
 theme: "string, required"           # Single theme. See Theme Values table below.
 tags: ["array", "of", "strings"]    # Lowercase, specific. Default: []
+investing:                          # optional; required by convention when theme is "Investing"
+  kind: "learning"                  # see Investing Entries below
+  summary: "string"
 featured: false                     # boolean. Featured items appear first on homepage/index.
 draft: false                        # boolean. If true, excluded from build.
 ---
@@ -60,6 +63,72 @@ Typical pattern from existing content:
 4. Closing conviction or forward-looking statement (1 paragraph)
 
 No H1 in body (title is rendered from frontmatter). Use H2 sparingly for structure within longer pieces.
+
+---
+
+## Investing Entries (`theme: "Investing"`)
+
+Investing entries are writing entries that appear under `/investing`. They use the same MDX location rules as writing:
+
+- Shared/default: `content/writing/[slug].mdx`
+- Locale-specific: `content/locales/<locale>/writing/[slug].mdx`
+
+### Investing frontmatter
+
+Use `theme: "Investing"` plus an `investing` object.
+
+Minimum for lightweight investing notes:
+
+```yaml
+investing:
+  kind: "learning" # stock-thesis | portfolio-journal | watchlist | postmortem | process-note | learning | advice | habit
+  summary: "A concise description used on investing cards."
+```
+
+Decision-record entries opt in with `showDecisionRecord: true`:
+
+```yaml
+investing:
+  kind: "stock-thesis"
+  showDecisionRecord: true
+  ticker: "AAPL"              # optional
+  company: "Apple"            # optional
+  status: "watching"          # watching | open | closed | review
+  direction: "long"           # long | short | neutral
+  horizon: "6-18 months"
+  disclosure: "No current position"
+  summary: "The setup in one sentence."
+  thesis: "What I believe the market is missing."
+  invalidation: "What evidence would prove the thesis wrong."
+  catalysts:
+    - "Upcoming event or company-specific trigger"
+  decisionTriggers:
+    - "Add, trim, exit, or avoid rule."
+  risk: "The main way this can go wrong."
+  lastReviewed: "2026-05-09T02:45:00Z"
+```
+
+### Kind guidance
+
+| Kind | Use when |
+|---|---|
+| `stock-thesis` | A ticker/company-specific long, short, or neutral thesis |
+| `portfolio-journal` | Portfolio process, allocation, concentration, cash, or public accountability |
+| `watchlist` | A company being monitored but not necessarily owned |
+| `postmortem` | A closed position, broken thesis, or mistake review |
+| `process-note` | A general investing/trading process note |
+| `learning` | A lesson learned from markets, behavior, or research |
+| `advice` | A reusable recommendation or principle |
+| `habit` | A recurring operating habit or checklist |
+
+Only use `showDecisionRecord: true` for decision-oriented posts. Do not force decision-record fields onto learning, advice, habit, or light process notes.
+
+### Investing body structure
+
+- Always include a short public disclaimer for stock/trading content: `Nothing here is financial advice.`
+- For stock theses: cover why now, what the market may be missing, what is already priced in, key catalysts, invalidation, and add/trim/exit/avoid rules.
+- For learning/advice/habit notes: focus on the behavior, mistake pattern, or operating rule; avoid pretending there is a ticker-specific thesis.
+- Avoid performance theater. Track decision quality, thesis integrity, review cadence, and mistake type instead.
 
 ---
 
@@ -126,6 +195,7 @@ Themes for writing entries. Not strictly enumerated — new themes can be added,
 | Developer Tools | DX, productivity, tooling, agents, cursor, skills, friction reduction |
 | Infrastructure | Hosting, deployment, email, platform choice, migration, CDN |
 | Workflow | Process, spec-kit, vibe coding, agent-augmented development |
+| Investing | Stock theses, portfolio journals, watchlists, postmortems, habits, and investing lessons |
 
 Add new themes only when content genuinely doesn't fit existing ones.
 

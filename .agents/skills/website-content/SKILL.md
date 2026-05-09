@@ -1,6 +1,6 @@
 ---
 name: website-content
-description: Write, rewrite, or improve content for the site owner's personal website (this repo). Use when the user asks to write a new writing entry, create a new project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, add an image, find an image for a post, or use a user-provided image; or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," or "draft copy for the site." This skill covers MDX content authoring, frontmatter construction, page copy, adding images to entries (sourcing royalty-free or placing user-provided), and handing shared writing/project entries off to the translation workflow when they are finished.
+description: Write, rewrite, or improve content for the site owner's personal website (this repo). Use when the user asks to write a new writing entry, investing article, stock thesis, portfolio journal, trading lesson, project entry, update about page copy, update homepage copy, write frontmatter, draft an essay, add an image, find an image for a post, or use a user-provided image; or says "write content for," "new blog post," "add a project," "update the about page," "write a writing entry," "draft copy for the site," or "write an investing post." This skill covers MDX content authoring, investing frontmatter, page copy, images, and handing shared writing/project entries off to translation.
 ---
 
 # Website Content
@@ -38,6 +38,8 @@ After creating or updating a shared entry in `content/writing/[slug].mdx`, immed
 - `featured`: `true` only for foundational or especially important pieces
 - `draft`: `true` for work-in-progress
 
+For investing content, use `theme: "Investing"` and add the `investing` object described below.
+
 **Body guidelines:**
 - 200-1500 words
 - No H1; the title renders from frontmatter
@@ -48,6 +50,54 @@ After creating or updating a shared entry in `content/writing/[slug].mdx`, immed
 - Images: place files in `public/writing/<slug>/` and use `![alt](/writing/<slug>/filename.png)`. For **sourcing royalty-free images** or **using a user-provided image**, read [references/images.md](references/images.md). Mechanics (paths, syntax) in content-schemas.md.
 
 **Slug**: derive from the core concept in lowercase kebab case, for example `context-aware-agents.mdx`.
+
+### Investing Entry (Stock Thesis / Portfolio Journal / Learning Note)
+
+Investing entries are writing entries with `theme: "Investing"`. They render under `/investing` and use investing-specific cards. Choose the entry kind before writing:
+
+- Decision-oriented entries: `stock-thesis`, `portfolio-journal`, `watchlist`, `postmortem`, `process-note`
+- Lightweight entries: `learning`, `advice`, `habit`
+
+Use a `Decision Record` only when the entry makes or reviews an investment decision. Set `showDecisionRecord: true` and include thesis/invalidation/risk fields for stock theses, watchlist notes, postmortems, or decision-heavy portfolio journals. For learning, advice, habit, or general process notes, keep `showDecisionRecord` omitted or `false` and provide only `kind` plus `summary` unless more fields genuinely help.
+
+**Required investing frontmatter minimum:**
+
+```yaml
+theme: "Investing"
+tags: ["investing", "portfolio", "public-journal"]
+investing:
+  kind: "learning" # stock-thesis | portfolio-journal | watchlist | postmortem | process-note | learning | advice | habit
+  summary: "One concise sentence describing what this note helps inspect."
+```
+
+**Decision-record frontmatter pattern:**
+
+```yaml
+investing:
+  kind: "stock-thesis"
+  showDecisionRecord: true
+  ticker: "AAPL" # optional
+  company: "Apple" # optional
+  status: "watching" # watching | open | closed | review
+  direction: "long" # long | short | neutral
+  horizon: "6-18 months"
+  disclosure: "No current position"
+  summary: "The setup in one sentence."
+  thesis: "What I believe the market is missing."
+  invalidation: "What evidence would prove the thesis wrong."
+  catalysts:
+    - "Upcoming product cycle"
+  decisionTriggers:
+    - "Add if valuation compresses while thesis remains intact."
+  risk: "The main way this can go wrong."
+  lastReviewed: "2026-05-09T02:45:00Z"
+```
+
+**Investing body guidelines:**
+- Always include a short disclaimer in the body for public stock/trading posts: `Nothing here is financial advice.`
+- For stock theses: answer `Why now?`, `What is the market missing?`, `What is already priced in?`, `What would make me add, trim, exit, or avoid?`
+- For learning/advice/habit posts: focus on the behavior, mistake pattern, or operating rule; do not force ticker, status, thesis, or invalidation fields.
+- Avoid performance theater. Prefer decision quality, thesis integrity, review cadence, and mistake taxonomy over return bragging.
 
 ### Project Entry
 
