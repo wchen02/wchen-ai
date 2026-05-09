@@ -81,7 +81,12 @@ export default async function LocalizedInvestingPage({
         <SectionReveal className="space-y-6">
           <div className="flex flex-col gap-2 -mx-5">
             {investingWritings.map((writing) => (
-              <WritingCard key={writing.slug} writing={writing} locale={resolvedLocale} />
+              <WritingCard
+                key={writing.slug}
+                writing={writing}
+                locale={resolvedLocale}
+                hrefBasePath="/investing"
+              />
             ))}
           </div>
         </SectionReveal>

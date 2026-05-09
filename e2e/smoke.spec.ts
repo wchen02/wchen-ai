@@ -112,6 +112,19 @@ test.describe("Investing Section", () => {
     await expect(page.locator("h1")).toContainText(investingPage.title);
     await expect(page.getByRole("link", { name: investingTitle })).toBeVisible();
   });
+
+  test("investing article opens under investing and links back there", async ({ page }) => {
+    await page.goto(`${defaultBasePath}/investing`);
+
+    await page.getByRole("link", { name: investingTitle }).click();
+    await page.waitForURL(`**${defaultBasePath}/investing/public-portfolio-journal`);
+
+    await expect(page.locator("h1")).toContainText(investingTitle);
+    await expect(page.getByRole("link", { name: /investing/i }).first()).toHaveAttribute(
+      "href",
+      `${defaultBasePath}/investing`
+    );
+  });
 });
 
 test.describe("About Page", () => {

@@ -39,6 +39,7 @@ import { getGiscusConfig } from "@/lib/giscus-config";
 import { getThemeLabel } from "@/lib/theme-config";
 import { getUiContent } from "@/lib/site-content";
 import { rehypeAudioOffsets } from "@/lib/rehype-audio-offsets";
+import { isInvestingWriting } from "@/lib/writing-sections";
 
 export async function generateStaticParams() {
   return SUPPORTED_LOCALES.flatMap((locale) =>
@@ -67,6 +68,8 @@ export async function generateMetadata({
 
   const description = extractExcerpt(writing.content);
   const ogImageUrl = writing.ogImage ?? metadataDefaults.defaultOgImageUrl;
+  const sectionPath = isInvestingWriting(writing) ? "/investing" : "/writing";
+  const detailPath = `${sectionPath}/${slug}`;
 
   return {
     title: resolveContentTokens(uiContent.writing.detailTitleTemplate, {
@@ -75,13 +78,13 @@ export async function generateMetadata({
     }),
     description,
     alternates: {
-      canonical: getCanonicalUrl(resolvedLocale, `/writing/${slug}`),
-      languages: getLanguageAlternates(`/writing/${slug}`),
+      canonical: getCanonicalUrl(resolvedLocale, detailPath),
+      languages: getLanguageAlternates(detailPath),
     },
     openGraph: {
       title: writing.title,
       description,
-      url: getCanonicalUrl(resolvedLocale, `/writing/${slug}`),
+      url: getCanonicalUrl(resolvedLocale, detailPath),
       siteName: metadataDefaults.siteName,
       locale: metadataDefaults.locale,
       type: "article",
@@ -122,6 +125,11 @@ export default async function LocalizedWritingPage({
   const audioInfo = await getAudioInfo(resolvedLocale, "writing", slug);
   const audioTextHash = audioInfo.subtitlesUrl ? hashAudioText(mdxToAudioText(writing.content)) : undefined;
   const shareDescription = extractExcerpt(writing.content);
+  const sectionPath = isInvestingWriting(writing) ? "/investing" : "/writing";
+  const sectionLabel = isInvestingWriting(writing)
+    ? siteProfile.investingPage.title
+    : uiContent.writing.backToAllLabel;
+  const detailPath = `${sectionPath}/${slug}`;
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -130,7 +138,7 @@ export default async function LocalizedWritingPage({
     datePublished: writing.publishDate,
     ...(writing.updatedAt ? { dateModified: writing.updatedAt } : {}),
     description: shareDescription,
-    url: absoluteUrl(`/writing/${slug}`, resolvedLocale),
+    url: absoluteUrl(detailPath, resolvedLocale),
     image: writing.ogImage ?? metadataDefaults.defaultOgImageUrl,
   };
 
@@ -165,10 +173,10 @@ export default async function LocalizedWritingPage({
       locale={resolvedLocale}
       backLink={
         <Link
-          href={localizePath(resolvedLocale, "/writing")}
+          href={localizePath(resolvedLocale, sectionPath)}
           className="text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:underline"
         >
-          ← {uiContent.writing.backToAllLabel}
+          ← {sectionLabel}
         </Link>
       }
       header={
@@ -190,7 +198,7 @@ export default async function LocalizedWritingPage({
             </span>
             <span>•</span>
             <ShareButton
-              url={absoluteUrl(`/writing/${slug}`, resolvedLocale)}
+              url={absoluteUrl(detailPath, resolvedLocale)}
               title={writing.title}
               description={shareDescription}
             />
@@ -248,7 +256,11 @@ export default async function LocalizedWritingPage({
       tocHeadings={tocHeadings}
       footer={
         <>
-          <ReadNext writings={getRelatedWritings(slug, 3, resolvedLocale)} locale={resolvedLocale} />
+          <ReadNext
+            writings={getRelatedWritings(slug, 3, resolvedLocale)}
+            locale={resolvedLocale}
+            hrefBasePath={sectionPath}
+          />
           {giscusConfig && (
             <GiscusComments
               discussionTerm={discussionTerm}

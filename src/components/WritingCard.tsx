@@ -14,14 +14,16 @@ function isUpdated(writing: Writing): boolean {
 export default function WritingCard({
   writing,
   locale,
+  hrefBasePath = "/writing",
 }: {
   writing: Writing;
   locale?: string;
+  hrefBasePath?: "/writing" | "/investing";
 }) {
   const uiContent = getUiContent(locale);
   const showUpdated = isUpdated(writing);
   const displayTags = writing.tags?.length ? writing.tags.slice(0, 3) : [];
-  const writingHref = localizePath(resolveLocale(locale), `/writing/${writing.slug}`);
+  const writingHref = localizePath(resolveLocale(locale), `${hrefBasePath}/${writing.slug}`);
 
   return (
     <article className={`group flex flex-col gap-2 p-5 rounded-xl transition-shadow hover:shadow-sm ${writing.featured ? "border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/30 dark:bg-emerald-950/10" : "border border-gray-200 dark:border-gray-800 bg-white dark:bg-neutral-900"}`}>

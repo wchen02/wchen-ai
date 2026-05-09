@@ -5,9 +5,11 @@ import { getUiContent } from "@/lib/site-content";
 export default function ReadNext({
   writings,
   locale,
+  hrefBasePath = "/writing",
 }: {
   writings: Writing[];
   locale?: string;
+  hrefBasePath?: "/writing" | "/investing";
 }) {
   if (writings.length === 0) return null;
 
@@ -20,7 +22,7 @@ export default function ReadNext({
       </h2>
       <div className="flex flex-col gap-2 -mx-5">
         {writings.map((w) => (
-          <WritingCard key={w.slug} writing={w} locale={locale} />
+          <WritingCard key={w.slug} writing={w} locale={locale} hrefBasePath={hrefBasePath} />
         ))}
       </div>
     </section>
