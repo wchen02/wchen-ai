@@ -28,6 +28,15 @@ describe("registerAudioManifestEntry", () => {
     expect(manifest.es.writing).toEqual({});
   });
 
+  it("adds entry for investing content type", () => {
+    const manifest = createEmptyAudioManifest();
+    registerAudioManifestEntry(manifest, "en", "investing", "my-investing-post", { hasSubtitles: true });
+
+    expect(manifest.en.investing["my-investing-post"]).toEqual({ hasSubtitles: true });
+    expect(manifest.en.writing).toEqual({});
+    expect(manifest.en.projects).toEqual({});
+  });
+
   it("reuses existing locale bucket when adding second entry", () => {
     const manifest = createEmptyAudioManifest();
     registerAudioManifestEntry(manifest, "en", "writing", "slug-a", { hasSubtitles: true });

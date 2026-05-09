@@ -1,5 +1,5 @@
 /**
- * Build-time script: generates MP3 audio for writing and project content using the
+ * Build-time script: generates MP3 audio for writing, investing, and project content using the
  * configured TTS provider (default: Edge TTS). Outputs to public/audio/<locale>/<type>/<slug>.mp3
  * and public/audio/audio-manifest.json. Set SKIP_AUDIO=1 to skip. Swap provider via TTS_PROVIDER env.
  */
@@ -15,6 +15,7 @@ import type { SubtitleSegment } from "../src/lib/tts";
 import { getTTSProvider } from "../src/lib/tts";
 import { getWritings, getProjects } from "../src/lib/mdx";
 import { SUPPORTED_LOCALES } from "../src/lib/locales";
+import { isInvestingWriting } from "../src/lib/writing-sections";
 import {
   AUDIO_TEXT_VERSION,
   buildAudioTimingSegments,
@@ -213,21 +214,22 @@ async function main(): Promise<void> {
     for (const w of writings) {
       const plain = mdxToAudioText(w.content);
       if (!plain || plain.length < 50) continue;
-      const outPath = path.join(PUBLIC_AUDIO, locale, "writing", `${w.slug}.mp3`);
+      const contentType = isInvestingWriting(w) ? "investing" : "writing";
+      const outPath = path.join(PUBLIC_AUDIO, locale, contentType, `${w.slug}.mp3`);
       const textHash = hashAudioText(plain);
       if (!shouldGenerateAudio(outPath, textHash)) {
-        registerAudioManifestEntry(manifest, locale, "writing", w.slug, { hasSubtitles: true });
-        logger.log(`[generate-audio] ${locale}/writing/${w.slug} (skip, exists)`);
+        registerAudioManifestEntry(manifest, locale, contentType, w.slug, { hasSubtitles: true });
+        logger.log(`[generate-audio] ${locale}/${contentType}/${w.slug} (skip, exists)`);
         continue;
       }
       try {
         const ok = await generateAudioForItem(plain, locale, outPath, provider, textHash);
         if (ok) {
-          registerAudioManifestEntry(manifest, locale, "writing", w.slug, { hasSubtitles: true });
+          registerAudioManifestEntry(manifest, locale, contentType, w.slug, { hasSubtitles: true });
         }
-        logger.log(`[generate-audio] ${locale}/writing/${w.slug}`);
+        logger.log(`[generate-audio] ${locale}/${contentType}/${w.slug}`);
       } catch (err) {
-        logger.error(`[generate-audio] ${locale}/writing/${w.slug}:`, err);
+        logger.error(`[generate-audio] ${locale}/${contentType}/${w.slug}:`, err);
       }
     }
 

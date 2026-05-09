@@ -15,6 +15,9 @@ const writingUrl = `${base}/writing/${writingWithAudio}`;
 const publicDir = path.join(process.cwd(), "public", "audio");
 const hasWritingAudio = fs.existsSync(path.join(publicDir, "en", "writing", `${writingWithAudio}.mp3`));
 const hasProjectAudio = fs.existsSync(path.join(publicDir, "en", "projects", "env-from-example.mp3"));
+const investingWithAudio = "public-portfolio-journal";
+const investingUrl = `${base}/investing/${investingWithAudio}`;
+const hasInvestingAudio = fs.existsSync(path.join(publicDir, "en", "investing", `${investingWithAudio}.mp3`));
 
 test.describe("Audio player", () => {
   test.beforeEach(() => {
@@ -132,5 +135,17 @@ test.describe("Audio player – project page", () => {
       timeout: 15000,
     });
     await expect(page.getByRole("slider", { name: listenUi.progressAriaLabel })).toBeVisible();
+  });
+});
+
+test.describe("Audio player – investing page", () => {
+  test.beforeEach(() => {
+    test.skip(!hasInvestingAudio, "public/audio not present (gitignored); run audio:generate locally");
+  });
+
+  test("investing page with audio shows Listen trigger", async ({ page }) => {
+    await page.goto(investingUrl);
+    const listenTrigger = page.getByRole("button", { name: listenUi.ariaLabel });
+    await expect(listenTrigger).toBeVisible({ timeout: 10000 });
   });
 });

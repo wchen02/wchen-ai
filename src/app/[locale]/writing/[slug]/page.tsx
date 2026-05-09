@@ -123,10 +123,11 @@ export default async function LocalizedWritingPage({
     notFound();
   }
 
-  const audioInfo = await getAudioInfo(resolvedLocale, "writing", slug);
-  const audioTextHash = audioInfo.subtitlesUrl ? hashAudioText(mdxToAudioText(writing.content)) : undefined;
   const shareDescription = extractExcerpt(writing.content);
   const sectionPath = isInvestingWriting(writing) ? "/investing" : "/writing";
+  const audioContentType = isInvestingWriting(writing) ? "investing" : "writing";
+  const audioInfo = await getAudioInfo(resolvedLocale, audioContentType, slug);
+  const audioTextHash = audioInfo.subtitlesUrl ? hashAudioText(mdxToAudioText(writing.content)) : undefined;
   const sectionLabel = isInvestingWriting(writing)
     ? siteProfile.investingPage.title
     : uiContent.writing.backToAllLabel;

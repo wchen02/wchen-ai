@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { getAudioAssetUrl, getAudioManifestUrl, isLocalAudioSource } from "./audio-config";
 
-export type AudioContentType = "writing" | "projects";
+export type AudioContentType = "writing" | "projects" | "investing";
 
 export interface AudioManifestEntry {
   hasSubtitles: boolean;
@@ -12,6 +12,7 @@ export interface AudioManifest {
   [locale: string]: {
     writing: Record<string, AudioManifestEntry>;
     projects: Record<string, AudioManifestEntry>;
+    investing: Record<string, AudioManifestEntry>;
   };
 }
 
@@ -19,7 +20,7 @@ let cachedLocalManifest: AudioManifest | null = null;
 let cachedRemoteManifestPromise: Promise<AudioManifest | null> | null = null;
 
 function createAudioContentBucket(): AudioManifest[string] {
-  return { writing: {}, projects: {} };
+  return { writing: {}, projects: {}, investing: {} };
 }
 
 export function createEmptyAudioManifest(): AudioManifest {
@@ -41,8 +42,8 @@ function isAudioManifest(parsed: unknown): parsed is AudioManifest {
   if (!parsed || typeof parsed !== "object") return false;
   return Object.values(parsed as Record<string, unknown>).every((localeValue) => {
     if (!localeValue || typeof localeValue !== "object") return false;
-    const bucket = localeValue as { writing?: unknown; projects?: unknown };
-    return ["writing", "projects"].every((contentType) => {
+    const bucket = localeValue as { writing?: unknown; projects?: unknown; investing?: unknown };
+    return ["writing", "projects", "investing"].every((contentType) => {
       const entries = bucket[contentType as keyof typeof bucket];
       if (!entries || typeof entries !== "object" || Array.isArray(entries)) return false;
       return Object.values(entries as Record<string, unknown>).every(
@@ -56,12 +57,12 @@ function isAudioManifest(parsed: unknown): parsed is AudioManifest {
 function normalizeToAudioManifest(parsed: unknown): AudioManifest | null {
   if (!parsed || typeof parsed !== "object") return null;
   const result: AudioManifest = {};
-  const locales = parsed as Record<string, { writing?: unknown; projects?: unknown }>;
+  const locales = parsed as Record<string, { writing?: unknown; projects?: unknown; investing?: unknown }>;
   for (const locale of Object.keys(locales)) {
     const bucket = locales[locale];
     if (!bucket || typeof bucket !== "object") continue;
-    result[locale] = { writing: {}, projects: {} };
-    for (const contentType of ["writing", "projects"] as const) {
+    result[locale] = { writing: {}, projects: {}, investing: {} };
+    for (const contentType of ["writing", "projects", "investing"] as const) {
       const raw = bucket[contentType];
       if (!raw) continue;
       if (Array.isArray(raw)) {
